@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <meta charset="UTF-8">
+   <meta http-equiv="content-language" content="en-us">
+   <base href="{global.baseUrl}">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <meta http-equiv="X-UA-Compatible" content="ie=edge">
+   <meta name="description" content="{head.description}">
+   <title>{head.title} - {global.companyName}</title>
+   <link rel="icon" href="favicon.ico" type="image/x-icon">
+   <link rel="stylesheet" href="public/app.css" type="text/css">
+   <script type="text/javascript" charset="utf8" src="public/app.js"></script>
+</head>
+<body class="{body.class}">
+   <header>
+      <nav>
+         <ul class="menu">
+            <li class="home">
+               <a href="/">Home</a>
+            </li>
+            <li class="loggedOut signUp">
+               <a href="/account/create">Sign Up</a>
+            </li>
+            <li class="loggedOut login">
+               <a href="/session/create">Login</a>
+            </li>
+            <li class="loggedIn menu">
+               <a href="/menu">Menu</a>
+            </li>
+            <li class="loggedIn cart">
+               <a href="/cart/edit">Cart</a>
+            </li>
+            <li class="loggedIn settings">
+               <a href="/account/edit">Settings</a>
+            </li>
+            <li class="loggedIn">
+               <a href="#" id="logoutButton">Logout</a>
+            </li>
+         </ul>
+      </nav>
+   </header>
+   <main>
+      <div class="wrapper">
+         <section class="splash">
+            <h1>Jim's Brew House</h1>
+            <p class="logo">
+               <img src="public/letter-j.png" alt="Logo">
+            </p>
+            <h1>est. 1983</h1>
+         </section>
+   <!-- Page Specific Content -->
+         <section class="inputArea">
