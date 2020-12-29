@@ -4,10 +4,20 @@
    "description": "H-W Engineering Calculations",
    "main": "index.js",
    "scripts": {
-      "staging": "nodemon index",
-      "production": "set NODE_ENV=production && node index"
+      "build-dev": "webpack --mode=development",
+      "build-prod": "webpack --mode=production",
+      "prod": "set NODE_ENV=production&& node index",
+      "prod-dev": "set NODE_ENV=production&& nodemon index",
+      "staging": "node index",
+      "staging-dev": "nodemon index",
+      "watch": "webpack --mode=development --watch"
    },
    "author": "Gregory Harder",
    "license": "MIT",
-   "devDependencies": {}
+   "devDependencies": {
+      "svelte": "^3.31.0",
+      "svelte-loader": "^2.13.6",
+      "webpack": "^5.11.1",
+      "webpack-cli": "^4.3.0"
+   }
 }
