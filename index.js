@@ -2,28 +2,44 @@
  * Primary file for the API
  */
 
-// Node Dependencies
-
 // Project Dependencies
-var server = require('./lib/server');
-var workers = require('./lib/workers');
-var cli = require('./lib/cli');
+const server = require('./lib/server');
+const config = require('./lib/config/main');
+const workers = require('./lib/workers');
+const cli = require('./lib/cli');
 
 // Declare the app
-var app = {};
+const app = {};
 
 // Init function
-app.init = () => {
+app.init = async () => {
+   const { env, protocol, port, baseUrl } = config;
+
+   let line = '';
+
+   do {
+      line += '-';
+   } while (line.length < baseUrl.length + 13);
+
+   console.log('\nEnvironment:', env);
+
    // Start the server
-   server.init();
+   await server.init();
 
    // Start the workers
-   workers.init();
+   await workers.init();
 
-   // Start the CLI, but start it last
-   setTimeout(() => {
-      cli.init();
-   }, 100);
+   // // Start the CLI, but start it last
+   // setTimeout(() => {
+   //    cli.init();
+   // }, 100);
+
+   console.log('\x1b[1m%s\x1b[0m', 'Access URLs:');
+   console.log(line);
+   console.log('\x1b[0m%s\x1b[35m%s\x1b[0m', 'Localhost: ', `${protocol}://localhost:${port}`);
+   console.log('\x1b[0m%s\x1b[35m%s\x1b[0m', '      LAN: ', baseUrl);
+   console.log(line);
+   console.log('\x1b[34m\x1b[1m%s\x1b[0m', 'Press CTRL-C to stop\n');
 };
 
 // Execute

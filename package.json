@@ -5,8 +5,9 @@
    "main": "index.js",
    "scripts": {
       "staging": "nodemon index",
-      "production": "set NODE_ENV=production&& node index"
+      "production": "set NODE_ENV=production && node index"
    },
    "author": "Gregory Harder",
-   "license": "MIT"
+   "license": "MIT",
+   "devDependencies": {}
 }

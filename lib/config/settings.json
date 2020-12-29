@@ -1,0 +1,17 @@
+{
+   "common": {
+      "hash": "Hollister-Whitney 1906"
+   },
+   "staging": {
+      "env":"staging",
+      "protocol": "http",
+      "port": 3000,
+      "baseUrl": "http://eng-875:3000"
+   },
+   "production": {
+      "env":"production",
+      "protocol": "https",
+      "port": 5000,
+      "baseUrl": "https://eng-875:5000"
+   }
+}
