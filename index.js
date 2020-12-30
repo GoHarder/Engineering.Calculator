@@ -4,7 +4,7 @@
 
 // Project Dependencies
 const server = require('./lib/server');
-const config = require('./lib/config/main');
+const config = require('./lib/config/build');
 const workers = require('./lib/workers');
 const cli = require('./lib/cli');
 

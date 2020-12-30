@@ -1,6 +1,7 @@
 {
    "common": {
-      "hash": "Hollister-Whitney 1906"
+      "hash": "Hollister-Whitney 1906",
+      "reload": false
    },
    "staging": {
       "env":"staging",
