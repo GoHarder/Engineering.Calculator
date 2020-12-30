@@ -1,3 +1,3 @@
-// import Svelte from '../svelte/App.svelte';
+import Svelte from '../svelte/App.svelte';
 
-// new Svelte({ target: document.body });
+new Svelte({ target: document.body });

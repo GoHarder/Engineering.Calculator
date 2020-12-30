@@ -15,8 +15,10 @@
    "author": "Gregory Harder",
    "license": "MIT",
    "devDependencies": {
+      "node-sass": "^5.0.0",
       "svelte": "^3.31.0",
       "svelte-loader": "^2.13.6",
+      "svelte-preprocess": "^4.6.1",
       "webpack": "^5.11.1",
       "webpack-cli": "^4.3.0"
    }
