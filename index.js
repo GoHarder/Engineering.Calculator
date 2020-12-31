@@ -3,10 +3,12 @@
  */
 
 // Project Dependencies
-const server = require('./lib/server');
 const config = require('./lib/config/build');
+const mongo = require('./lib/mongo');
+const server = require('./lib/server/server');
 const workers = require('./lib/workers');
-const cli = require('./lib/cli');
+
+const info = () => {};
 
 // Declare the app
 const app = {};
@@ -23,23 +25,18 @@ app.init = async () => {
 
    console.log('\nEnvironment:', env);
 
-   // Start the server
-   await server.init();
-
-   // Start the workers
-   await workers.init();
-
-   // // Start the CLI, but start it last
-   // setTimeout(() => {
-   //    cli.init();
-   // }, 100);
-
-   console.log('\x1b[1m%s\x1b[0m', 'Access URLs:');
-   console.log(line);
-   console.log('\x1b[0m%s\x1b[35m%s\x1b[0m', 'Localhost: ', `${protocol}://localhost:${port}`);
-   console.log('\x1b[0m%s\x1b[35m%s\x1b[0m', '      LAN: ', baseUrl);
-   console.log(line);
-   console.log('\x1b[34m\x1b[1m%s\x1b[0m', 'Press CTRL-C to stop\n');
+   Promise.all([
+      mongo.init(), // Start the database
+      server.init(), // Start the server
+      workers.init(), // Start the workers
+   ]).then(() => {
+      console.log('\x1b[1m%s\x1b[0m', '\nAccess URLs:');
+      console.log(line);
+      console.log('\x1b[0m%s\x1b[35m%s\x1b[0m', 'Localhost: ', `${protocol}://localhost:${port}`);
+      console.log('\x1b[0m%s\x1b[35m%s\x1b[0m', '      LAN: ', baseUrl);
+      console.log(line);
+      console.log('\x1b[34m\x1b[1m%s\x1b[0m', 'Press CTRL-C to stop\n');
+   });
 };
 
 // Execute

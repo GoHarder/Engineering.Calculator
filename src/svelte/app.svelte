@@ -1,8 +1,6 @@
-<style lang="scss">
-  p {
-    color: red;
-  }
-</style>
+<script>
+  // Components
+  import Header from "./Header.svelte";
+</script>
 
-<p>Whoo</p>
-<p>ding</p>
+<Header />
