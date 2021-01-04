@@ -1,6 +1,5 @@
 {
    "common": {
-      "hash": "Hollister-Whitney 1906",
       "reload": false,
       "mongo":{
           "url": "mongodb://localhost:27017"
@@ -8,12 +7,14 @@
    },
    "staging": {
       "env":"staging",
+      "hash": "Hollister-Whitney",
       "protocol": "http",
       "port": 5000,
       "baseUrl": "http://eng-875:5000"
    },
    "production": {
       "env":"production",
+      "hash": "Hollister-Whitney 1906",
       "protocol": "https",
       "port": 5000,
       "baseUrl": "https://eng-875:5000"
