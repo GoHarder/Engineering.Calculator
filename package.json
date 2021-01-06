@@ -15,6 +15,7 @@
    "author": "Gregory Harder",
    "license": "MIT",
    "dependencies": {
+      "jsonwebtoken": "^8.5.1",
       "mongodb": "^3.6.3"
    },
    "devDependencies": {
