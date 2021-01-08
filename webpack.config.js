@@ -12,7 +12,7 @@ const watch = process.argv.includes('--watch');
 
 // File Entry
 lib.entry = {
-   app: './src/js/app.js',
+   app: ['./src/js/app.js', './src/index.html'],
 };
 
 // File Output
@@ -24,13 +24,21 @@ lib.output = {
 lib.module = { rules: [] };
 
 lib.module.rules[0] = {
+   test: /\.html$/,
+   exclude: /node_modules/,
+   use: 'null-loader',
+};
+
+lib.module.rules[1] = {
    test: /\.svelte$/,
    exclude: /node_modules/,
    use: {
       loader: 'svelte-loader',
       options: {
          preprocess: require('svelte-preprocess')({
-            // options
+            postcss: {
+               plugins: [require('autoprefixer')()],
+            },
          }),
       },
    },
