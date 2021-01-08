@@ -28,7 +28,7 @@ app.init = async () => {
    Promise.all([
       mongo.init(), // Start the database
       server.init(), // Start the server
-      workers.init(), // Start the workers
+      // workers.init(), // Start the workers
    ]).then(() => {
       console.log('\x1b[1m%s\x1b[0m', '\nAccess URLs:');
       console.log(line);
