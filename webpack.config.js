@@ -12,7 +12,7 @@ const watch = process.argv.includes('--watch');
 
 // File Entry
 lib.entry = {
-   app: ['./src/js/app.js', './src/index.html'],
+   app: ['./src/js/app.js', './public/style.css'],
 };
 
 // File Output
@@ -25,6 +25,12 @@ lib.module = { rules: [] };
 
 lib.module.rules[0] = {
    test: /\.html$/,
+   exclude: /node_modules/,
+   use: 'null-loader',
+};
+
+lib.module.rules[0] = {
+   test: /\.css$/,
    exclude: /node_modules/,
    use: 'null-loader',
 };
