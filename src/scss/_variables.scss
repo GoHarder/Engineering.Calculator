@@ -1,0 +1,26 @@
+$white: #ffffff;
+$gray-300: #e6e6e6;
+$black: #000000;
+
+$grays: ();
+$grays: map-merge(
+   (
+      '300': $gray-300,
+   ),
+   $grays
+);
+
+$primary: #ffcb30;
+$secondary: #4d4d4d;
+
+$theme-colors: ();
+
+$theme-colors: map-merge(
+   (
+      'primary': $primary,
+      'secondary': $secondary,
+   ),
+   $theme-colors
+);
+
+$font-family-sans-serif: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;

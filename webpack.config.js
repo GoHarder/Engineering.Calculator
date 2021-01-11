@@ -1,9 +1,9 @@
 // Node Dependencies
 const path = require('path');
-const { webpack } = require('webpack');
 
 // NPM Dependencies
 const LiveReloadPlugin = require('@kooneko/livereload-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 // Module Container
 const lib = {};
@@ -12,7 +12,7 @@ const watch = process.argv.includes('--watch');
 
 // File Entry
 lib.entry = {
-   app: ['./src/js/app.js', './public/style.css'],
+   app: ['./src/js/app.js', './src/scss/style.scss'],
 };
 
 // File Output
@@ -29,13 +29,13 @@ lib.module.rules[0] = {
    use: 'null-loader',
 };
 
-lib.module.rules[0] = {
-   test: /\.css$/,
+lib.module.rules[1] = {
+   test: /\.scss$/,
    exclude: /node_modules/,
-   use: 'null-loader',
+   use: [MiniCssExtractPlugin.loader, { loader: 'css-loader' }, { loader: 'postcss-loader' }, { loader: 'sass-loader' }],
 };
 
-lib.module.rules[1] = {
+lib.module.rules[2] = {
    test: /\.svelte$/,
    exclude: /node_modules/,
    use: {
@@ -53,8 +53,12 @@ lib.module.rules[1] = {
 // Plugins
 lib.plugins = [];
 
+lib.plugins[0] = new MiniCssExtractPlugin({
+   filename: 'style.css',
+});
+
 if (watch) {
-   lib.plugins[0] = new LiveReloadPlugin({
+   lib.plugins[1] = new LiveReloadPlugin({
       options: {
          ignore: /node_modules/,
       },

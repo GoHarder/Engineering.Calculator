@@ -1,4 +1,6 @@
 <style lang="scss">
+  @import "../scss/variables";
+
   footer {
     align-items: center;
     background-color: #ffffff;
