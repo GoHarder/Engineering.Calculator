@@ -32,7 +32,24 @@ lib.module.rules[0] = {
 lib.module.rules[1] = {
    test: /\.scss$/,
    exclude: /node_modules/,
-   use: [MiniCssExtractPlugin.loader, { loader: 'css-loader' }, { loader: 'postcss-loader' }, { loader: 'sass-loader' }],
+   use: [
+      MiniCssExtractPlugin.loader,
+      { loader: 'css-loader' },
+      { loader: 'postcss-loader' },
+      {
+         loader: 'sass-loader',
+         options: {
+            // Prefer Dart Sass
+            implementation: require('sass'),
+
+            // See https://github.com/webpack-contrib/sass-loader/issues/804
+            webpackImporter: false,
+            sassOptions: {
+               includePaths: ['./node_modules'],
+            },
+         },
+      },
+   ],
 };
 
 lib.module.rules[2] = {
