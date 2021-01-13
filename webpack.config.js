@@ -2,34 +2,48 @@
 const path = require('path');
 
 // NPM Dependencies
-const LiveReloadPlugin = require('@kooneko/livereload-webpack-plugin');
+const LiveReloadPlugin = require('webpack-livereload-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const sveltePreprocess = require('svelte-preprocess');
+const sass = require('sass');
 
-// Module Container
-const lib = {};
-
+// Checks the cli command if it includes the watch flag
 const watch = process.argv.includes('--watch');
 
-// File Entry
-lib.entry = {
-   app: ['./src/js/app.js', './src/scss/style.scss'],
-};
+// The module container
+const lib = {};
 
-// File Output
+// The entry files to process
+lib.entry = ['./src/scss/style.scss', './src/js/app.js'];
+
+// The file it compiles to
 lib.output = {
+   filename: 'app.js',
    path: path.resolve(__dirname, 'public'),
 };
 
-//Rules
+// Rules
 lib.module = { rules: [] };
 
 lib.module.rules[0] = {
-   test: /\.html$/,
+   test: /\.(html|svelte)$/,
    exclude: /node_modules/,
-   use: 'null-loader',
+   use: {
+      loader: 'svelte-loader',
+      options: {
+         emitCss: true,
+         preprocess: sveltePreprocess(),
+      },
+   },
 };
 
 lib.module.rules[1] = {
+   test: /\.css$/,
+   exclude: /node_modules/,
+   use: [MiniCssExtractPlugin.loader, 'css-loader', 'postcss-loader'],
+};
+
+lib.module.rules[2] = {
    test: /\.scss$/,
    exclude: /node_modules/,
    use: [
@@ -39,10 +53,7 @@ lib.module.rules[1] = {
       {
          loader: 'sass-loader',
          options: {
-            // Prefer Dart Sass
-            implementation: require('sass'),
-
-            // See https://github.com/webpack-contrib/sass-loader/issues/804
+            implementation: sass,
             webpackImporter: false,
             sassOptions: {
                includePaths: ['./node_modules'],
@@ -50,21 +61,6 @@ lib.module.rules[1] = {
          },
       },
    ],
-};
-
-lib.module.rules[2] = {
-   test: /\.svelte$/,
-   exclude: /node_modules/,
-   use: {
-      loader: 'svelte-loader',
-      options: {
-         preprocess: require('svelte-preprocess')({
-            postcss: {
-               plugins: [require('autoprefixer')()],
-            },
-         }),
-      },
-   },
 };
 
 // Plugins
@@ -82,7 +78,7 @@ if (watch) {
    });
 }
 
-// File Watch
+// File watch options
 lib.watch = watch;
 
 lib.watchOptions = {
@@ -91,5 +87,5 @@ lib.watchOptions = {
    poll: 1000,
 };
 
-// Export the Module
+// Export the container
 module.exports = lib;

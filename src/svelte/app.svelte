@@ -1,24 +1,14 @@
 <script>
-  // Components
-  import Header from "./Header.svelte";
-  import Footer from "./Footer.svelte";
+  console.log("ding");
 </script>
 
-<style>
-  body {
-    flex-grow: 1;
-    display: flex;
-    padding-top: 16px;
-    padding-bottom: 16px;
-    display: flex;
-    align-items: center;
-    flex-direction: column;
-    justify-content: center;
+<style lang="scss">
+  .ding {
+    background-color: black;
+    color: white;
   }
 </style>
 
-<Header />
-<body>
-  <!-- Ding -->
-</body>
-<Footer />
+<div class="ding">
+  <p>ding</p>
+</div>
