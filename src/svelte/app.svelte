@@ -1,14 +1,15 @@
 <script>
-  console.log("ding");
+  // Components
+  import Header from "./Header.svelte";
+  import Footer from "./Footer.svelte";
+
+  import Button from "./comp/base/Button.svelte";
 </script>
 
-<style lang="scss">
-  .ding {
-    background-color: black;
-    color: white;
-  }
-</style>
+<Header />
 
-<div class="ding">
-  <p>ding</p>
-</div>
+<Button color="primary" endIcon="login" size="large" variant="contained">
+  Login
+</Button>
+
+<Footer />
