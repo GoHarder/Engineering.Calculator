@@ -1,7 +1,0 @@
-:root {
-   @each $color, $value in $theme-colors {
-      --#{$color}: #{$value};
-   }
-
-   --font-family-sans-serif: #{inspect($font-family-sans-serif)};
-}

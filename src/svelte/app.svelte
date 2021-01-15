@@ -1,15 +1,8 @@
 <script>
   // Components
-  import Header from "./Header.svelte";
-  import Footer from "./Footer.svelte";
-
-  import Button from "./comp/base/Button.svelte";
+  import Header from "./comp/common/Header.svelte";
+  import Footer from "./comp/common/Footer.svelte";
 </script>
 
 <Header />
-
-<Button color="primary" endIcon="login" size="large" variant="contained">
-  Login
-</Button>
-
 <Footer />

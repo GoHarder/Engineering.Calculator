@@ -1,6 +1,4 @@
 <style lang="scss">
-  @import "../scss/variables";
-
   header {
     align-items: center;
     background-color: #333333;
