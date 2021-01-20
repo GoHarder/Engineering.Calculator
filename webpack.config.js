@@ -75,9 +75,9 @@ if (watch) {
 
 // File watch options
 const watchOptions = {
-   aggregateTimeout: 1000,
+   aggregateTimeout: 5000,
    ignored: /node_modules/,
-   poll: 1000,
+   poll: 5000,
 };
 
 // Export the settings

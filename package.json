@@ -4,12 +4,10 @@
    "description": "H-W Engineering Calculations",
    "main": "index.js",
    "scripts": {
-      "build-dev": "webpack --mode=development",
-      "build-prod": "webpack --mode=production",
+      "build": "webpack --mode=production",
       "prod": "set NODE_ENV=production&& node index",
-      "prod-dev": "set NODE_ENV=production&& nodemon index --reload",
       "staging": "node index",
-      "staging-dev": "nodemon index --reload",
+      "start": "nodemon index --reload",
       "watch": "webpack --mode=development --watch"
    },
    "author": "Gregory Harder",

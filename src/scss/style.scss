@@ -10,4 +10,67 @@ body {
    margin: 0;
    line-height: 1.5;
    font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+   background-color: #e6e6e6;
+}
+
+.mdc-button {
+   .mdc-button__label {
+      font-weight: 600;
+   }
+
+   &.text-transform-none {
+      text-transform: none;
+   }
+}
+
+@import '@material/typography/mixins';
+
+html {
+   @include mdc-typography('body1');
+}
+
+h1 {
+   @include mdc-typography('headline1');
+}
+
+h2 {
+   @include mdc-typography('headline2');
+}
+
+h3 {
+   @include mdc-typography('headline3');
+}
+
+h4 {
+   @include mdc-typography('headline4');
+}
+
+h5 {
+   @include mdc-typography('headline5');
+}
+
+h6 {
+   @include mdc-typography('headline6');
+}
+
+caption {
+   @include mdc-typography('caption');
+}
+
+code,
+pre {
+   font-family: 'Roboto Mono', monospace;
+}
+
+small {
+   font-size: 0.9em;
+}
+
+big {
+   font-size: 1.1em;
+}
+
+b,
+strong {
+   font-weight: bold;
 }
