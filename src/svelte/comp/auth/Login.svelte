@@ -6,6 +6,8 @@
 
   // SMUI Components
   import Paper from "@smui/paper";
+  import Snackbar, { Actions, Label } from "@smui/snackbar";
+  import IconButton from "@smui/icon-button";
 
   // Constants
   const comps = {
@@ -16,12 +18,24 @@
 
   // Variables
   let comp = LoginForm;
+  let errorSnackbar;
+  let errorMessage;
 
   // Reactive Variables
   $: signInText = comp === LoginForm ? "Sign In" : "Forgot Password";
 
   // Events
   const changeForm = event => (comp = comps[event.detail]);
+
+  const showError = event => {
+    let { error } = { ...event.detail };
+
+    error = Array.isArray(error) ? error[0] : error;
+
+    errorMessage = `${error.charAt(0).toUpperCase() + error.slice(1)}.`;
+
+    errorSnackbar.open();
+  };
 </script>
 
 <style>
@@ -52,12 +66,26 @@
   }
 </style>
 
+<Snackbar
+  class="error"
+  bind:this={errorSnackbar}
+  labelText={errorMessage}
+  timeoutMs={10 * 1000}>
+  <Label />
+  <Actions>
+    <IconButton class="material-icons" title="Dismiss">close</IconButton>
+  </Actions>
+</Snackbar>
+
 <main>
   <p class="sign-in-text">{signInText}</p>
   <p class="title-text">Hollister-Whitney Engineering Calculations</p>
   <form>
     <Paper elevation={3} square>
-      <svelte:component this={comp} on:changeForm={changeForm} />
+      <svelte:component
+        this={comp}
+        on:changeForm={changeForm}
+        on:error={showError} />
     </Paper>
   </form>
 </main>

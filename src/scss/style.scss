@@ -23,6 +23,12 @@ body {
    }
 }
 
+.mdc-snackbar.error {
+   .mdc-snackbar__surface {
+      background-color: $mdc-theme-error;
+   }
+}
+
 @import '@material/typography/mixins';
 
 html {

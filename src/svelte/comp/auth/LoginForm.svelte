@@ -13,6 +13,9 @@
   import FormField from "@smui/form-field";
   import LineRipple from "@smui/line-ripple";
 
+  // Stores
+  import token from "../../stores/token.js";
+
   // Constants
   const dispatch = createEventDispatcher();
 
@@ -33,6 +36,25 @@
   const signIn = event => {
     event.preventDefault();
     console.log("TODO: hook up sign in");
+
+    fetch("/api/tokens", {
+      method: "POST",
+      body: JSON.stringify({ email, password, longToken }),
+      headers: { "Content-Type": "application/json" }
+    })
+      .then(res => {
+        return res.json();
+      })
+      .then(res => {
+        if (res.token) {
+          token.set(res.token);
+        } else {
+          dispatch("error", res);
+        }
+      })
+      .catch(error => {
+        console.log(error);
+      });
   };
 </script>
 
