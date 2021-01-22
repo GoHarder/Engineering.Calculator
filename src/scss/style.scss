@@ -20,6 +20,16 @@ body {
 
    &.text-transform-none {
       text-transform: none;
+      &.white {
+         color: #ffffff;
+         font-weight: normal;
+      }
+   }
+}
+
+.mdc-list-item {
+   i.mdc-text-field__icon {
+      padding-right: 10px;
    }
 }
 

@@ -1,3 +1,26 @@
+<script>
+  // SMUI Components
+  import Icon from "@smui/textfield/icon/index";
+  import Button, { Label } from "@smui/button";
+  import Menu, { SelectionGroup, SelectionGroupIcon } from "@smui/menu";
+  import { Anchor } from "@smui/menu-surface";
+  import List, { Item, Text } from "@smui/list";
+
+  // Properties
+  export let user = undefined;
+
+  // Stores
+  import tokenStore from "../../stores/token.js";
+
+  // Variables
+  let menu;
+  let anchor;
+  let anchorClasses = [];
+
+  // Events
+  const logout = () => tokenStore.destroy();
+</script>
+
 <style lang="scss">
   header {
     align-items: center;
@@ -58,6 +81,11 @@
   p {
     font-size: 18px;
   }
+
+  .right {
+    display: flex;
+    align-items: center;
+  }
 </style>
 
 <header>
@@ -67,4 +95,52 @@
     </div>
     <p>Hollister-Whitney Engineering Calculations</p>
   </div>
+
+  {#if user}
+    <div class="right">
+      <Icon class="material-icons">person</Icon>
+
+      <div
+        class={anchorClasses.join(' ')}
+        use:Anchor={{ classForward: classes => (anchorClasses = classes) }}
+        bind:this={anchor}>
+        <Button
+          on:click={() => menu.setOpen(true)}
+          class="text-transform-none white">
+          <Label>{`${user.firstName} ${user.lastName}`}</Label>
+          <Icon class="material-icons">arrow_drop_down</Icon>
+        </Button>
+
+        <Menu
+          bind:this={menu}
+          anchor={false}
+          bind:anchorElement={anchor}
+          anchorCorner="BOTTOM_LEFT">
+          <List>
+            <Item on:SMUI:action={() => console.log('ding')}>
+              <Icon class="material-icons">account_circle</Icon>
+              <Text>My Account</Text>
+            </Item>
+
+            {#if user.admin}
+              <Item on:SMUI:action={() => console.log('ding')}>
+                <Icon class="material-icons">build</Icon>
+                <Text>Admin Tools</Text>
+              </Item>
+
+              <Item on:SMUI:action={() => console.log('ding')}>
+                <Icon class="material-icons">person_add</Icon>
+                <Text>Create New User</Text>
+              </Item>
+            {/if}
+
+            <Item on:SMUI:action={logout}>
+              <Icon class="material-icons">close</Icon>
+              <Text>Logout</Text>
+            </Item>
+          </List>
+        </Menu>
+      </div>
+    </div>
+  {/if}
 </header>
