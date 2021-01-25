@@ -24,7 +24,7 @@
   const sendEmail = event => {
     event.preventDefault();
     dispatch("changeForm", "ConfirmPassword");
-    console.log("TODO: send email to reset password");
+    console.log("TODO: 1-25-2021 8:17 AM - Send email to reset password");
   };
 </script>
 

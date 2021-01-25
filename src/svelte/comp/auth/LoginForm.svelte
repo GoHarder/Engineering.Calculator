@@ -35,7 +35,6 @@
 
   const signIn = event => {
     event.preventDefault();
-    console.log("TODO: hook up sign in");
 
     fetch("/api/tokens", {
       method: "POST",

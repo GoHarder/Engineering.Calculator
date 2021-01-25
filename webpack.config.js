@@ -11,11 +11,14 @@ const sveltePreprocess = require('svelte-preprocess');
 const watch = process.argv.includes('--watch');
 
 // The entry files to process
-const entry = ['./src/scss/style.scss', './src/js/app.js'];
+const entry = {
+   app: ['./src/scss/style.scss', './src/js/app.js'],
+   sw: './src/js/sw.js',
+};
 
 // The file it compiles to
 const output = {
-   filename: 'app.js',
+   filename: '[name].js',
    path: path.resolve(__dirname, 'public'),
 };
 

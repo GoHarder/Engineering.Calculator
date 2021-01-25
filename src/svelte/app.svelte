@@ -32,7 +32,7 @@
     comp = Login;
     user = undefined;
   } else {
-    getUser();
+    if (!user) getUser();
   }
 
   // Methods

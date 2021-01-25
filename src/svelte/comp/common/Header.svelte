@@ -117,17 +117,20 @@
           bind:anchorElement={anchor}
           anchorCorner="BOTTOM_LEFT">
           <List>
+            <!-- TODO: 1-25-2021 8:12 AM - Create my account -->
             <Item on:SMUI:action={() => console.log('ding')}>
               <Icon class="material-icons">account_circle</Icon>
               <Text>My Account</Text>
             </Item>
 
             {#if user.admin}
+              <!-- TODO: 1-25-2021 8:13 AM - Create admin tools -->
               <Item on:SMUI:action={() => console.log('ding')}>
                 <Icon class="material-icons">build</Icon>
                 <Text>Admin Tools</Text>
               </Item>
 
+              <!-- TODO: 1-25-2021 8:15 AM = Create add person -->
               <Item on:SMUI:action={() => console.log('ding')}>
                 <Icon class="material-icons">person_add</Icon>
                 <Text>Create New User</Text>

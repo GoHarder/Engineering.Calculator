@@ -24,7 +24,7 @@
 
   const resetPassword = event => {
     event.preventDefault();
-    console.log("TODO: send request to update password");
+    console.log("TODO: 1-25-2021 8:16 AM - Send request to update password");
     dispatch("changeForm", "LoginForm");
   };
 </script>
