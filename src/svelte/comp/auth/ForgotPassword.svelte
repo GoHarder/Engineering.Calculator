@@ -9,6 +9,9 @@
   import Textfield, { Input, Textarea } from "@smui/textfield";
   import Button, { Label, Icon } from "@smui/button";
 
+  // Parameters
+  export let reset = undefined;
+
   // Constants
   const dispatch = createEventDispatcher();
 
@@ -21,10 +24,21 @@
     dispatch("changeForm", "LoginForm");
   };
 
-  const sendEmail = event => {
+  const sendEmail = async event => {
     event.preventDefault();
-    dispatch("changeForm", "ConfirmPassword");
-    console.log("TODO: 1-25-2021 8:17 AM - Send email to reset password");
+
+    const res = await fetch(`/api/users?email=${email}`, {
+      headers: { "Content-Type": "application/json" }
+    });
+
+    const body = await res.json();
+
+    if (res.ok) {
+      reset = body;
+      dispatch("changeForm", "ConfirmPassword");
+    } else {
+      dispatch("error", { error: "could not send reset email" });
+    }
   };
 </script>
 
@@ -42,6 +56,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    width: 500px;
   }
 </style>
 
@@ -57,7 +72,7 @@
     class="text-transform-none"
     color="secondary"
     variant="raised">
-    <Label>Send</Label>
+    <Label>Send Reset Email</Label>
     <Icon class="material-icons">email</Icon>
   </Button>
 </div>

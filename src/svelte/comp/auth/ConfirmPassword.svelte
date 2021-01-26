@@ -4,17 +4,27 @@
 
   // Project Components
   import A from "../common/A.svelte";
+  import PasswordRequire from "./PasswordRequire.svelte";
 
   // SMUI Components
   import Textfield, { Input, Textarea } from "@smui/textfield";
-  import Button, { Label, Icon } from "@smui/button";
+  import Button, { Label, Icon as BtnIcon } from "@smui/button";
+  import Icon from "@smui/textfield/icon/index";
+
+  // Parameters
+  export let reset = undefined;
 
   // Constants
   const dispatch = createEventDispatcher();
 
-  let email = "";
+  // Variables
+  let resetCode = "";
   let password = "";
-  let longToken = false;
+  let newPassword = "";
+
+  // Reactive Variables
+  $: id = reset ? reset.id : undefined;
+  $: token = reset ? reset.token : undefined;
 
   // Events
   const changeForm = event => {
@@ -22,10 +32,36 @@
     dispatch("changeForm", "LoginForm");
   };
 
-  const resetPassword = event => {
+  const resend = () => {
+    dispatch("changeForm", "ForgotPassword");
+  };
+
+  const resetPassword = async event => {
     event.preventDefault();
-    console.log("TODO: 1-25-2021 8:16 AM - Send request to update password");
-    dispatch("changeForm", "LoginForm");
+
+    if (password === newPassword && reset) {
+      const body = {
+        reset: resetCode,
+        newPassword
+      };
+
+      const res = await fetch(`/api/users/${id}`, {
+        method: "PUT",
+        headers: {
+          Authorization: token,
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(body)
+      });
+
+      if (res.ok) {
+        dispatch("changeForm", "LoginForm");
+      } else {
+        dispatch("error", { error: "invalid password" });
+      }
+    } else {
+      dispatch("error", { error: "passwords do not match" });
+    }
   };
 </script>
 
@@ -52,36 +88,71 @@
     justify-content: space-between;
     align-items: center;
   }
+
+  .p-1 {
+    margin-top: 0;
+  }
+
+  .main {
+    display: flex;
+  }
+
+  .box-1 {
+    width: 350px;
+    margin-right: 25px;
+  }
+
+  .box-2 {
+    min-width: 325px;
+  }
 </style>
 
-<p class="input-label-1">Verification Code</p>
+<p class="p-1">
+  A reset code has been sent to your email account. Please enter it below to
+  complete verification and set your new password.
+</p>
+<div class="main">
+  <div class="box-1">
+    <p class="input-label-1">Verification Code</p>
 
-<Textfield bind:value={email} fullwidth label="Enter Code" />
+    <Textfield
+      bind:value={resetCode}
+      fullwidth
+      label="Enter Code"
+      withTrailingIcon>
+      <Icon on:click={resend} role="button" class="material-icons">replay</Icon>
+    </Textfield>
 
-<p class="input-label-2">New Password</p>
+    <p class="input-label-2">New Password</p>
 
-<Textfield
-  bind:value={email}
-  fullwidth
-  label="Enter Password"
-  type="password" />
+    <Textfield
+      bind:value={password}
+      fullwidth
+      label="Enter Password"
+      type="password" />
 
-<p class="input-label-2">Confirm New Password</p>
+    <p class="input-label-2">Confirm New Password</p>
 
-<Textfield
-  bind:value={email}
-  fullwidth
-  label="Confirm Password"
-  type="password" />
+    <Textfield
+      bind:value={newPassword}
+      fullwidth
+      label="Confirm Password"
+      type="password" />
 
-<div class="row">
-  <A on:click={changeForm}>Back to Login</A>
-  <Button
-    on:click={resetPassword}
-    class="text-transform-none"
-    color="secondary"
-    variant="raised">
-    <Label>Reset Password</Label>
-    <Icon class="material-icons">check</Icon>
-  </Button>
+    <div class="row">
+      <A on:click={changeForm}>Back to Login</A>
+      <Button
+        on:click={resetPassword}
+        class="text-transform-none"
+        color="secondary"
+        variant="raised">
+        <Label>Reset Password</Label>
+        <BtnIcon class="material-icons">check</BtnIcon>
+      </Button>
+    </div>
+  </div>
+  <div class="box-2">
+    <p class="input-label-1">Password Requirements</p>
+    <PasswordRequire {password} />
+  </div>
 </div>

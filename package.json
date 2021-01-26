@@ -17,6 +17,7 @@
    ],
    "dependencies": {
       "jsonwebtoken": "^8.5.1",
+      "mailgun-js": "^0.22.0",
       "mongodb": "^3.6.3"
    },
    "devDependencies": {

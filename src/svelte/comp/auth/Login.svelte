@@ -17,9 +17,10 @@
   };
 
   // Variables
-  let comp = LoginForm;
+  let comp = ConfirmPassword;
   let errorSnackbar;
   let errorMessage;
+  let reset;
 
   // Reactive Variables
   $: signInText = comp === LoginForm ? "Sign In" : "Forgot Password";
@@ -61,7 +62,7 @@
     color: #343434;
   }
   form {
-    width: 555px;
+    max-width: 700px;
     border-top: 5px solid #ffcb30;
   }
 </style>
@@ -84,6 +85,7 @@
     <Paper elevation={3} square>
       <svelte:component
         this={comp}
+        bind:reset
         on:changeForm={changeForm}
         on:error={showError} />
     </Paper>

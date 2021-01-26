@@ -33,27 +33,22 @@
     dispatch("changeForm", "ForgotPassword");
   };
 
-  const signIn = event => {
+  const signIn = async event => {
     event.preventDefault();
 
-    fetch("/api/tokens", {
+    const res = await fetch("/api/tokens", {
       method: "POST",
       body: JSON.stringify({ email, password, longToken }),
       headers: { "Content-Type": "application/json" }
-    })
-      .then(res => {
-        return res.json();
-      })
-      .then(res => {
-        if (res.token) {
-          token.set(res.token);
-        } else {
-          dispatch("error", res);
-        }
-      })
-      .catch(error => {
-        console.log(error);
-      });
+    });
+
+    const body = await res.json();
+
+    if (res.ok) {
+      token.set(body.token);
+    } else {
+      dispatch("error", res);
+    }
   };
 </script>
 
@@ -79,6 +74,7 @@
     justify-content: center;
     align-items: center;
     margin: 15px 0;
+    width: 500px;
   }
   .row-4 {
     text-align: center;
