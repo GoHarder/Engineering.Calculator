@@ -3,8 +3,8 @@
   import { createEventDispatcher } from "svelte";
 
   // Project Components
-  import A from "../common/A.svelte";
-  import PasswordRequire from "./PasswordRequire.svelte";
+  import A from "../../common/A.svelte";
+  import PasswordRequire from "../PasswordRequire.svelte";
 
   // SMUI Components
   import Textfield, { Input, Textarea } from "@smui/textfield";
@@ -40,10 +40,10 @@
     event.preventDefault();
 
     if (password === newPassword && reset) {
-      const body = {
+      const body = JSON.stringify({
         reset: resetCode,
         newPassword
-      };
+      });
 
       const res = await fetch(`/api/users/${id}`, {
         method: "PUT",
@@ -51,7 +51,7 @@
           Authorization: token,
           "Content-Type": "application/json"
         },
-        body: JSON.stringify(body)
+        body
       });
 
       if (res.ok) {

@@ -3,7 +3,7 @@
   import { createEventDispatcher } from "svelte";
 
   // Project Components
-  import A from "../common/A.svelte";
+  import A from "../../common/A.svelte";
 
   // SMUI Components
   import Textfield, { Input, Textarea } from "@smui/textfield";

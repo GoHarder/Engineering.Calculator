@@ -33,12 +33,18 @@ body {
    }
 }
 
-.mdc-snackbar.error {
-   .mdc-snackbar__surface {
-      background-color: $mdc-theme-error;
+.mdc-snackbar {
+   &.error {
+      .mdc-snackbar__surface {
+         background-color: $mdc-theme-error;
+      }
+   }
+   &.good {
+      .mdc-snackbar__surface {
+         background-color: #2e7d32;
+      }
    }
 }
-
 @import '@material/typography/mixins';
 
 html {

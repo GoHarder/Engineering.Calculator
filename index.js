@@ -21,22 +21,31 @@ app.init = async () => {
 
    do {
       line += '-';
-   } while (line.length < baseUrl.length + 13);
+   } while (line.length < baseUrl.length + 11);
 
    console.log('\nEnvironment:', env);
 
-   Promise.all([
+   const modules = await Promise.all([
       mongo.init(), // Start the database
-      server.init(), // Start the server
-      // workers.init(), // Start the workers
-   ]).then(() => {
-      console.log('\x1b[1m%s\x1b[0m', '\nAccess URLs:');
-      console.log(line);
-      console.log('\x1b[0m%s\x1b[35m%s\x1b[0m', 'Localhost: ', `${protocol}://localhost:${port}`);
-      console.log('\x1b[0m%s\x1b[35m%s\x1b[0m', '      LAN: ', baseUrl);
-      console.log(line);
-      console.log('\x1b[34m\x1b[1m%s\x1b[0m', 'Press CTRL-C to stop\n');
-   });
+      // Add more later is needed
+   ]);
+
+   const loaded = modules.filter((pass) => !pass).length === 0;
+
+   if (loaded) {
+      server.init();
+
+      setTimeout(() => {
+         console.log('\x1b[1m%s\x1b[0m', '\nAccess URLs:');
+         console.log(line);
+         console.log('\x1b[0m%s\x1b[35m%s\x1b[0m', 'Localhost: ', `${protocol}://localhost:${port}`);
+         console.log('\x1b[0m%s\x1b[35m%s\x1b[0m', '      LAN: ', baseUrl);
+         console.log(line);
+         console.log('\x1b[34m\x1b[1m%s\x1b[0m', 'Press CTRL-C to stop\n');
+      }, 0);
+   } else {
+      console.log('Fuck You!');
+   }
 };
 
 // Execute

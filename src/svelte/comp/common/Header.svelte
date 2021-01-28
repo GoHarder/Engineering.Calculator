@@ -1,16 +1,21 @@
 <script>
+  // Svelte Imports
+  import { createEventDispatcher } from "svelte";
+
   // SMUI Components
   import Icon from "@smui/textfield/icon/index";
   import Button, { Label } from "@smui/button";
-  import Menu, { SelectionGroup, SelectionGroupIcon } from "@smui/menu";
+  import Menu from "@smui/menu";
   import { Anchor } from "@smui/menu-surface";
   import List, { Item, Text } from "@smui/list";
+  import LinearProgress from "@smui/linear-progress";
 
   // Properties
   export let user = undefined;
+  export let loading = false;
 
-  // Stores
-  import tokenStore from "../../stores/token.js";
+  // Constants
+  const dispatch = createEventDispatcher();
 
   // Variables
   let menu;
@@ -18,10 +23,20 @@
   let anchorClasses = [];
 
   // Events
-  const logout = () => tokenStore.destroy();
+  const logout = () => dispatch("logout");
 </script>
 
 <style lang="scss">
+  :global {
+    @import "@material/linear-progress/mixins";
+    @import "@material/theme/color-palette";
+
+    .header-bar {
+      @include mdc-linear-progress-bar-color(#ffcb30);
+      @include mdc-linear-progress-buffer-color(#ffffff);
+    }
+  }
+
   header {
     align-items: center;
     background-color: #333333;
@@ -118,7 +133,7 @@
           anchorCorner="BOTTOM_LEFT">
           <List>
             <!-- TODO: 1-25-2021 8:12 AM - Create my account -->
-            <Item on:SMUI:action={() => console.log('ding')}>
+            <Item on:SMUI:action={() => dispatch('changePage', 'MyAccount')}>
               <Icon class="material-icons">account_circle</Icon>
               <Text>My Account</Text>
             </Item>
@@ -147,3 +162,7 @@
     </div>
   {/if}
 </header>
+
+{#if loading}
+  <LinearProgress class="header-bar" indeterminate />
+{/if}

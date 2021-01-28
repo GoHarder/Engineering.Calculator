@@ -3,7 +3,7 @@
   import { createEventDispatcher } from "svelte";
 
   // Project Components
-  import A from "../common/A.svelte";
+  import A from "../../common/A.svelte";
 
   // SMUI Components
   import Textfield from "@smui/textfield";
@@ -14,7 +14,7 @@
   import LineRipple from "@smui/line-ripple";
 
   // Stores
-  import token from "../../stores/token.js";
+  import token from "../../../stores/token.js";
 
   // Constants
   const dispatch = createEventDispatcher();
@@ -47,7 +47,7 @@
     if (res.ok) {
       token.set(body.token);
     } else {
-      dispatch("error", res);
+      dispatch("error", body);
     }
   };
 </script>
@@ -93,6 +93,7 @@
 
 {#if showPassword}
   <Textfield
+    tabindex="0"
     bind:value={password}
     fullwidth
     label="Enter Password"
@@ -103,12 +104,17 @@
   </Textfield>
 {:else}
   <Textfield
+    tabindex="1"
     bind:value={password}
     fullwidth
     label="Enter Password"
     type="password"
     withTrailingIcon>
-    <Icon on:click={toggleShowPassword} role="button" class="material-icons">
+    <Icon
+      tabindex="2"
+      on:click={toggleShowPassword}
+      role="button"
+      class="material-icons">
       visibility_off
     </Icon>
   </Textfield>

@@ -1,5 +1,5 @@
 <script>
-  // Auth Components
+  // Project Components
   import LoginForm from "./LoginForm.svelte";
   import ForgotPassword from "./ForgotPassword.svelte";
   import ConfirmPassword from "./ConfirmPassword.svelte";
@@ -17,7 +17,7 @@
   };
 
   // Variables
-  let comp = ConfirmPassword;
+  let comp = LoginForm;
   let errorSnackbar;
   let errorMessage;
   let reset;
