@@ -17,7 +17,7 @@ const { subscribe, set: setStore } = writable(localStorage.getItem('token'), (se
          const res = await fetch('/api/tokens', {
             method: 'PUT',
             headers: { Authorization: token },
-         });
+         }).catch(() => {});
 
          // If a new token is returned set it else delete all tokens
          if (res.ok) {

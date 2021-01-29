@@ -1,5 +1,6 @@
 <script>
   import DataTable, { Head, Body, Row, Cell } from "@smui/data-table";
+  import Chip, { Set, Icon, Text } from "@smui/chips";
 
   const workbooks = [
     {
@@ -123,6 +124,22 @@
       car: "4"
     }
   ];
+
+  $: rows = workbooks.map(book => {
+    const regex = /(\b[a-zA-Z])[a-zA-Z]* ?/g;
+
+    book.initials = book.user.replace(regex, "$1");
+
+    book.created = book.created.replace(/-/g, " ");
+    book.opened = book.opened.replace(/-/g, " ");
+
+    book.created = Date.parse(book.created);
+    book.opened = Date.parse(book.opened);
+
+    return book;
+  });
+
+  //   $: console.log(rows);
 </script>
 
 <main>
@@ -133,10 +150,14 @@
         <Cell>Job Name</Cell>
         <Cell>Customer</Cell>
         <Cell>Laout Number</Cell>
+        <Cell>Created</Cell>
+        <Cell>Last Opened</Cell>
+        <Cell>User</Cell>
+        <Cell>Car</Cell>
       </Row>
     </Head>
     <Body>
-      {#each workbooks as { contract, job, customer, layout, created, opened, user, car }}
+      {#each rows as { contract, job, customer, layout, created, opened, user, car, initials }}
         <Row>
           <Cell>{contract}</Cell>
           <Cell>{job}</Cell>
@@ -144,7 +165,9 @@
           <Cell>{layout}</Cell>
           <Cell>{created}</Cell>
           <Cell>{opened}</Cell>
-          <Cell>{user}</Cell>
+          <Cell>
+            <Chip title={user}>{initials}</Chip>
+          </Cell>
           <Cell>{car}</Cell>
         </Row>
       {/each}

@@ -165,7 +165,7 @@
   }
 
   .paper-2 {
-    margin: 25px 0;
+    margin: 15px 0;
   }
 </style>
 
