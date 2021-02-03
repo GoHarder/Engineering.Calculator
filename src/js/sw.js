@@ -1,7 +1,13 @@
 const version = 1;
 const static = `static v${version}`;
 
-const shell = ['/', '/favicon.ico', '/public/img/vantage-logo.png', 'https://fonts.googleapis.com/icon?family=Material+Icons'];
+const shell = [
+   '/',
+   '/favicon.ico',
+   '/public/img/vantage-logo.png',
+   'https://fonts.googleapis.com/icon?family=Material+Icons',
+   'https://fonts.googleapis.com/css?family=Open+Sans',
+];
 
 self.addEventListener('install', (event) => {
    event.waitUntil(

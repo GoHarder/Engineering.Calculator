@@ -78,7 +78,7 @@ if (watch) {
 
 // File watch options
 const watchOptions = {
-   aggregateTimeout: 5000,
+   aggregateTimeout: 10000,
    ignored: /node_modules/,
    poll: 5000,
 };
