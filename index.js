@@ -4,11 +4,9 @@
 
 // Project Dependencies
 const config = require('./lib/config/build');
-const mongo = require('./lib/mongo');
+const mongo = require('./lib/mongo/mongo');
 const server = require('./lib/server/server');
 const workers = require('./lib/workers');
-
-const info = () => {};
 
 // Declare the app
 const app = {};
