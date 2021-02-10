@@ -14,7 +14,7 @@
 
    // Parameters
    export let token = null;
-   export let id = undefined;
+   export let _id = undefined;
    export let firstName = undefined;
    export let lastName = undefined;
    export let email = undefined;
@@ -57,7 +57,7 @@
    const sendReq = async (body) => {
       body = JSON.stringify(body);
 
-      const res = await fetch(`api/users/${id}`, {
+      const res = await fetch(`api/users/${_id}`, {
          method: 'PUT',
          headers: {
             Authorization: token,
@@ -72,9 +72,9 @@
             dispatch('changePage', 'Home');
          }, 10250);
       } else {
-         const resBody = await res.json();
+         const body = await res.json();
 
-         showError({ detail: resBody });
+         showError({ detail: body });
       }
    };
 

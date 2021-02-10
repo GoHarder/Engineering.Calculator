@@ -7,7 +7,7 @@
    import PasswordRequire from '../PasswordRequire.svelte';
 
    // SMUI Components
-   import Textfield, { Input, Textarea } from '@smui/textfield';
+   import Textfield from '@smui/textfield';
    import Button, { Label, Icon as BtnIcon } from '@smui/button';
    import Icon from '@smui/textfield/icon/index';
 

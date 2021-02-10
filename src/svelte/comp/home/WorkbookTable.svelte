@@ -6,7 +6,18 @@
    import DataTable, { Head, Body, Row, Cell } from '@smui/data-table';
 
    // Properties
+   export let userId = '';
    export let workbooks = [];
+
+   $: rows = workbooks.map((book) => {
+      book.creator = `${book.creator.firstName} ${book.creator.lastName}`;
+
+      const user = book.opened.find((user) => user.userId === `${userId}`);
+
+      book.opened = user ? user.time : 0;
+
+      return book;
+   });
 </script>
 
 <DataTable class="workbook-table">
@@ -24,7 +35,7 @@
       </Row>
    </Head>
    <Body>
-      {#each workbooks as workbook (workbook._id)}
+      {#each rows as workbook (workbook._id)}
          <WorkbookRow {...workbook} />
       {/each}
    </Body>
@@ -34,6 +45,8 @@
    :global {
       .workbook-table {
          border-top: 5px solid #ffcb30;
+         min-width: 1200px;
+         overflow-x: visible;
 
          table {
             thead {

@@ -4,143 +4,50 @@
    import Search from './Search.svelte';
 
    // Parameters
+   export let _id = '';
    export let firstName = '';
    export let lastName = '';
 
-   const workbooks = [
-      {
-         _id: 1,
-         contract: '435180',
-         job: 'VMAC Tuskegee, Bldg. 120',
-         customer: 'Diversified Elevator Service',
-         layout: 'L-8293',
-         created: 1602478800000,
-         opened: 1611554400000,
-         user: 'Gregory Harder',
-         car: 'P1',
-      },
-      {
-         _id: 2,
-         contract: '423741',
-         job: 'Exchange Place Station',
-         customer: 'Mid-American Elevator',
-         layout: 'L-8143',
-         created: 1602565200000,
-         opened: 1602738000000,
-         user: 'Gregory Harder',
-         car: '55',
-      },
-      {
-         _id: 3,
-         contract: '420993',
-         job: 'James A. Haley VAMC Tampa Bed Tower',
-         customer: 'Skyline Elevator',
-         layout: 'L-8110-2',
-         created: 1602565200000,
-         opened: 1602738000000,
-         user: 'Gregory Harder',
-         car: '42',
-      },
-      {
-         _id: 4,
-         contract: '418833',
-         job: '33-02 Skillman Avenue',
-         customer: 'Liberty Elevator',
-         layout: 'L-8069',
-         created: 1602478800000,
-         opened: 1602738000000,
-         user: 'Gregory Harder',
-         car: 'A2',
-      },
-      {
-         _id: 5,
-         contract: '419777',
-         job: 'Space X Cape Canaveral',
-         customer: 'Otis Elevator',
-         layout: 'L-8089',
-         created: 1602478800000,
-         opened: 1602738000000,
-         user: 'Gregory Harder',
-         car: '1',
-      },
-      {
-         _id: 6,
-         contract: '452140',
-         job: 'Purdue Gateway',
-         customer: 'American Elevator',
-         layout: 'L-8527-1',
-         created: 1602478800000,
-         opened: 1602738000000,
-         user: 'Gregory Harder',
-         car: '3',
-      },
-      {
-         _id: 7,
-         contract: '451668',
-         job: '111 Canal Street',
-         customer: 'Anderson Elevator Company',
-         layout: 'L-8522',
-         created: 1602478800000,
-         opened: 1602738000000,
-         user: 'Gregory Harder',
-         car: 'S2',
-      },
-      {
-         _id: 8,
-         contract: '446104',
-         job: 'West Virginia Building 5 Freight',
-         customer: 'West Virginia Elevator',
-         layout: 'L-8452',
-         created: 1602478800000,
-         opened: 1602738000000,
-         user: 'Gregory Harder',
-         car: '6',
-      },
-      {
-         _id: 9,
-         contract: '451008A',
-         job: 'WRNMMD P114 Med. Ctr.',
-         customer: 'Delaware Elevator',
-         layout: 'L-8517-6',
-         created: 1602478800000,
-         opened: 1602738000000,
-         user: 'Gregory Harder',
-         car: 'H1 H2',
-      },
-      {
-         _id: 10,
-         contract: '420520',
-         job: 'WCK2-A',
-         customer: 'Lift Solutions',
-         layout: 'L-8098',
-         created: 1602478800000,
-         opened: 1602738000000,
-         user: 'Gregory Harder',
-         car: 'FE-1',
-      },
-      {
-         _id: 11,
-         contract: '418879',
-         job: 'JW Marriot Tampa West Lot',
-         customer: 'Lift Solutions',
-         layout: 'L-8071',
-         created: 1602478800000,
-         opened: 1602738000000,
-         user: 'Gregory Harder',
-         car: 'BSE-3',
-      },
-      {
-         _id: 12,
-         contract: '445562',
-         job: 'Emory HSRB II',
-         customer: 'Premier Elevator',
-         layout: 'L-8441-3',
-         created: 1602478800000,
-         opened: 1602738000000,
-         user: 'Gregory Harder',
-         car: '4',
-      },
-   ];
+   // Methods
+   const fetchRecent = async (page) => {
+      const res = await fetch(`api/proj?id=${_id}&page=${page}`);
+      const body = await res.json();
+
+      if (res.ok) {
+         // fetchType = 'recent';
+         return body;
+      } else {
+         throw new Error('text');
+      }
+   };
+
+   const fetchSearch = async (page) => {
+      const res = await fetch(`api/proj?search=${search}&page=${page}`);
+      const body = await res.json();
+
+      if (res.ok) {
+         // fetchType = 'search';
+         return body;
+      } else {
+         throw new Error('text');
+      }
+   };
+
+   // Variables
+   let workbooks = fetchRecent(1);
+   let search = '';
+   // let fetchType = '';
+
+   // Events
+   const onSearch = () => {
+      if (search) {
+         workbooks = fetchSearch(1);
+      } else {
+         workbooks = fetchRecent(1);
+      }
+   };
+
+   // TODO: 2-10-2021 9:11 AM - load more rows when scrolled to bottom of page
 </script>
 
 <main>
@@ -159,8 +66,15 @@
          <strong>Create New Workbook</strong>
          button
       </h6>
-      <Search />
-      <WorkbookTable {workbooks} />
+      <Search bind:value={search} on:search={onSearch} />
+
+      {#await workbooks}
+         <p>...waiting</p>
+      {:then workbooks}
+         <WorkbookTable userId={_id} {workbooks} />
+      {:catch error}
+         <p style="color: red">{error.message}</p>
+      {/await}
    </div>
 </main>
 

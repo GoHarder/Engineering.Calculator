@@ -11,6 +11,7 @@
    import Login from './comp/auth/login/Login.svelte';
    import Home from './comp/home/Home.svelte';
    import MyAccount from './comp/auth/my-account/MyAccount.svelte';
+   import SignUp from './comp/auth/sign-up/SignUp.svelte';
 
    // Stores
    import tokenStore from './stores/token.js';
@@ -20,6 +21,7 @@
       Login,
       Home,
       MyAccount,
+      SignUp,
    };
 
    // Variables

@@ -6,7 +6,7 @@
    import A from '../../common/A.svelte';
 
    // SMUI Components
-   import Textfield, { Input, Textarea } from '@smui/textfield';
+   import Textfield from '@smui/textfield';
    import Button, { Label, Icon } from '@smui/button';
 
    // Parameters

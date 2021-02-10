@@ -11,7 +11,6 @@
    import Button, { Label } from '@smui/button';
    import Checkbox from '@smui/checkbox';
    import FormField from '@smui/form-field';
-   import LineRipple from '@smui/line-ripple';
 
    // Stores
    import token from '../../../stores/token.js';

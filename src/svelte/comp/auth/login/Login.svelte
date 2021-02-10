@@ -48,7 +48,7 @@
 
 <main>
    <p class="sign-in-text">{signInText}</p>
-   <p class="title-text">Hollister-Whitney Engineering Calculations</p>
+   <p class="title-text">Hollister-Whitney Engineering Calculator</p>
    <form>
       <Paper elevation={3} square>
          <svelte:component this={comp} bind:reset on:changeForm={changeForm} on:error={showError} />

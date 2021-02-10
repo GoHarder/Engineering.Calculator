@@ -24,6 +24,8 @@
 
    // Events
    const logout = () => dispatch('logout');
+
+   const createNewUser = () => dispatch('changePage', 'SignUp');
 </script>
 
 <header>
@@ -52,12 +54,12 @@
                   </Item>
 
                   {#if user.admin}
-                     <Item on:SMUI:action={() => console.log('ding')}>
+                     <!-- <Item on:SMUI:action={() => console.log('TODO: 2-09-2021 3:22 PM - hook up admin tools')}>
                         <Icon class="material-icons">build</Icon>
                         <Text>Admin Tools</Text>
-                     </Item>
+                     </Item> -->
 
-                     <Item on:SMUI:action={() => console.log('ding')}>
+                     <Item on:SMUI:action={createNewUser}>
                         <Icon class="material-icons">person_add</Icon>
                         <Text>Create New User</Text>
                      </Item>
