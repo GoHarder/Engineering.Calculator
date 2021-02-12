@@ -6,8 +6,9 @@
 
    // SMUI Components
    import Paper from '@smui/paper';
-   import Snackbar, { Actions, Label } from '@smui/snackbar';
-   import IconButton from '@smui/icon-button';
+
+   // Project Components
+   import ErrorDialog from '../../common/ErrorDialog.svelte';
 
    // Constants
    const comps = {
@@ -18,9 +19,10 @@
 
    // Variables
    let comp = LoginForm;
-   let errorSnackbar;
-   let errorMessage;
    let reset;
+   let status;
+   let statusText;
+   let errors = [];
 
    // Reactive Variables
    $: signInText = comp === LoginForm ? 'Sign In' : 'Forgot Password';
@@ -29,22 +31,14 @@
    const changeForm = (event) => (comp = comps[event.detail]);
 
    const showError = (event) => {
-      let { error } = { ...event.detail };
+      console.log(event.detail);
+      let { status: resStatus, statusText: resStatusText, errors: resErrors } = event.detail;
 
-      error = Array.isArray(error) ? error[0] : error;
-
-      errorMessage = `${error.charAt(0).toUpperCase() + error.slice(1)}.`;
-
-      errorSnackbar.open();
+      status = resStatus;
+      statusText = resStatusText;
+      errors = Array.isArray(resErrors) ? resErrors : [resErrors];
    };
 </script>
-
-<Snackbar class="error" bind:this={errorSnackbar} labelText={errorMessage} timeoutMs={10 * 1000}>
-   <Label />
-   <Actions>
-      <IconButton class="material-icons" title="Dismiss">close</IconButton>
-   </Actions>
-</Snackbar>
 
 <main>
    <p class="sign-in-text">{signInText}</p>
@@ -55,6 +49,8 @@
       </Paper>
    </form>
 </main>
+
+<ErrorDialog {status} {statusText} {errors} />
 
 <style>
    main {

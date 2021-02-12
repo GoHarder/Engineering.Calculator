@@ -37,7 +37,10 @@
          reset = body;
          dispatch('changeForm', 'ConfirmPassword');
       } else {
-         dispatch('error', { error: 'could not send reset email' });
+         const { status, statusText } = res;
+         const errors = body.error;
+
+         dispatch('error', { status, statusText, errors });
       }
    };
 </script>

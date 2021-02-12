@@ -39,14 +39,17 @@
          method: 'POST',
          body: JSON.stringify({ email, password, longToken }),
          headers: { 'Content-Type': 'application/json' },
-      });
+      }).catch(() => {});
 
       const body = await res.json();
 
       if (res.ok) {
          token.set(body.token);
       } else {
-         dispatch('error', body);
+         const { status, statusText } = res;
+         const errors = body.error;
+
+         dispatch('error', { status, statusText, errors });
       }
    };
 </script>

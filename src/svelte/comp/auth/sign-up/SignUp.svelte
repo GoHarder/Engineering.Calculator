@@ -6,21 +6,20 @@
    import Paper from '@smui/paper';
    import Button, { Label, Icon as BtnIcon } from '@smui/button';
    import Textfield from '@smui/textfield';
-   import FormField from '@smui/form-field';
-   import Checkbox from '@smui/checkbox';
+
+   // Project Components
+   import ErrorDialog from '../../common/ErrorDialog.svelte';
 
    // Constants
    const dispatch = createEventDispatcher();
-
-   // Methods
-   const generatePassword = () => `Vantage-${Math.floor(Math.random() * 10)}`;
 
    // Variables
    let firstName = '';
    let lastName = '';
    let email = '';
-   let password = generatePassword();
-   let admin = false;
+   let errors = [];
+   let status = 200;
+   let statusText = '';
 
    // Events
    const onCancel = (event) => {
@@ -34,26 +33,29 @@
       firstName = '';
       lastName = '';
       email = '';
-      password = generatePassword();
-      admin = false;
    };
 
    const onCreate = async (event) => {
       event.preventDefault();
 
-      // const res = await fetch('/api/users', {
-      //    method: 'POST',
-      //    body: JSON.stringify({ email, password, longToken }),
-      //    headers: { 'Content-Type': 'application/json' },
-      // });
+      const res = await fetch('/api/users', {
+         method: 'POST',
+         body: JSON.stringify({ firstName, lastName, email }),
+         headers: { 'Content-Type': 'application/json' },
+      }).catch(() => {});
 
-      // const body = await res.json();
+      const body = await res.json();
 
-      // if (res.ok) {
-      //    token.set(body.token);
-      // } else {
-      //    dispatch('error', body);
-      // }
+      if (res.ok) {
+         dispatch('changePage', 'Home');
+      } else {
+         status = res.status;
+         statusText = res.statusText;
+
+         if (!Array.isArray(body.error)) body.error = [body.error];
+
+         errors = body.error;
+      }
    };
 </script>
 
@@ -70,16 +72,6 @@
 
          <p class="input-label n2">Email</p>
          <Textfield bind:value={email} fullwidth label="Email" type="email" />
-
-         <p class="input-label n2">Password</p>
-         <Textfield bind:value={password} fullwidth label="Password" type="password" />
-
-         <div class="check-row">
-            <FormField>
-               <Checkbox bind:checked={admin} />
-               <span class="input-label" slot="label">Admin User</span>
-            </FormField>
-         </div>
 
          <div class="btn-row">
             <div class="left">
@@ -105,6 +97,8 @@
       </Paper>
    </form>
 </main>
+
+<ErrorDialog {status} {statusText} {errors} />
 
 <style lang="scss">
    main {
@@ -143,13 +137,12 @@
          margin: 14px 0 0 0;
       }
    }
-   .check-row {
-      margin: 16px 0;
-   }
+
    .btn-row {
       display: flex;
       justify-content: space-between;
       align-items: center;
+      margin-top: 24px;
    }
    svg {
       margin-left: 5px;
