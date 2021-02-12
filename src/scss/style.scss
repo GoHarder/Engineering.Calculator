@@ -11,6 +11,8 @@ body {
    line-height: 1.5;
    font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
    background-color: #e6e6e6;
+   -webkit-font-smoothing: antialiased;
+   -moz-osx-font-smoothing: auto;
 }
 
 .mdc-button {
