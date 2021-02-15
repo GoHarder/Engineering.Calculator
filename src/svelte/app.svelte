@@ -1,6 +1,6 @@
 <script>
    // Svelte Imports
-   import { onMount } from 'svelte';
+   // import { onMount } from 'svelte';
    import { fade } from 'svelte/transition';
 
    // Common Components
@@ -33,15 +33,6 @@
    // Subscriptions
    tokenStore.subscribe((store) => (token = store));
 
-   // Reactive rules
-   $: if (token) {
-      getUser();
-   } else {
-      user = undefined;
-      comp = Login;
-      show = true;
-   }
-
    // Methods
    const getUser = async () => {
       // Check if there is a token and user data isn't loaded
@@ -66,8 +57,17 @@
       }
    };
 
+   // Reactive rules
+   $: if (token) {
+      getUser();
+   } else {
+      user = undefined;
+      comp = Login;
+      show = true;
+   }
+
    // Events
-   const logout = (event) => {
+   const logout = () => {
       tokenStore.destroy();
       user = undefined;
       comp = Login;
@@ -76,9 +76,9 @@
    const changePage = (event) => (comp = comps[event.detail]);
 
    // Lifecycle
-   onMount(() => {
-      getUser();
-   });
+   // onMount(() => {
+   //    getUser();
+   // });
 </script>
 
 <Header on:logout={logout} on:changePage={changePage} {user} loading={!show} />

@@ -31,7 +31,6 @@
    const changeForm = (event) => (comp = comps[event.detail]);
 
    const showError = (event) => {
-      console.log(event.detail);
       let { status: resStatus, statusText: resStatusText, errors: resErrors } = event.detail;
 
       status = resStatus;

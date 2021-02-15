@@ -57,10 +57,15 @@
          if (res.ok) {
             dispatch('changeForm', 'LoginForm');
          } else {
-            dispatch('error', { error: 'invalid password' });
+            const body = await res.json();
+
+            const { status, statusText } = res;
+            const errors = status === 400 ? 'form data is invalid' : body.error;
+
+            dispatch('error', { status, statusText, errors });
          }
       } else {
-         dispatch('error', { error: 'passwords do not match' });
+         dispatch('error', { status: 400, statusText: 'Bad Request', errors: 'passwords do not match' });
       }
    };
 </script>

@@ -35,11 +35,58 @@
    const signIn = async (event) => {
       event.preventDefault();
 
+      // Step 1: start the fetch and obtain a reader
       const res = await fetch('/api/tokens', {
          method: 'POST',
          body: JSON.stringify({ email, password, longToken }),
          headers: { 'Content-Type': 'application/json' },
       }).catch(() => {});
+
+      // NOTE: 2-12-2021 4:22 PM - how to get download progress with fetch
+      // Step 1: start the fetch and obtain a reader
+      //  const res = await fetch('/api/tokens', {
+      //       method: 'POST',
+      //       body: JSON.stringify({ email, password, longToken }),
+      //       headers: { 'Content-Type': 'application/json' },
+      //    }).catch(() => {});
+
+      // const reader = res.body.getReader();
+
+      // // Step 2: get total length
+      // const contentLength = res.headers.get('Content-Length');
+
+      // // Step 3: read the data
+      // let receivedLength = 0;
+      // let chunks = [];
+
+      // while (true) {
+      //    const { done, value } = await reader.read();
+
+      //    if (done) {
+      //       break;
+      //    }
+
+      //    chunks.push(value);
+      //    receivedLength += value.length;
+
+      //    console.log(`Received ${receivedLength} of ${contentLength} - ${(receivedLength / contentLength) * 100}%`);
+      // }
+
+      // // Step 4: concatenate chunks into single Uint8Array
+      // let chunksAll = new Uint8Array(receivedLength);
+      // let position = 0;
+      // for (let chunk of chunks) {
+      //    chunksAll.set(chunk, position);
+      //    position += chunk.length;
+      // }
+
+      // // Step 5: decode into a string
+      // let result = new TextDecoder('utf-8').decode(chunksAll);
+
+      // // We're done!
+      // let commits = JSON.parse(result);
+
+      // console.log(commits);
 
       const body = await res.json();
 
