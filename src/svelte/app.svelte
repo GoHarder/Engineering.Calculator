@@ -12,6 +12,7 @@
    import Home from './comp/home/Home.svelte';
    import MyAccount from './comp/auth/my-account/MyAccount.svelte';
    import SignUp from './comp/auth/sign-up/SignUp.svelte';
+   import Project from './comp/project/Project.svelte';
 
    // Stores
    import tokenStore from './stores/token.js';
@@ -22,6 +23,7 @@
       Home,
       MyAccount,
       SignUp,
+      Project,
    };
 
    // Variables
@@ -48,7 +50,7 @@
             // Set the user data
             user = await res.json();
             // Set the page to the home screen
-            comp = Home;
+            comp = Project;
             show = true;
          }
       } else {
@@ -73,7 +75,16 @@
       comp = Login;
    };
 
-   const changePage = (event) => (comp = comps[event.detail]);
+   const changePage = (event) => {
+      if (typeof event.detail === 'string') {
+         comp = comps[event.detail];
+      } else {
+         console.log('TODO: 2-15-2021 9:43 AM - hook up open event');
+         console.log(event);
+
+         comp = comps[event.detail.comp];
+      }
+   };
 
    // Lifecycle
    // onMount(() => {

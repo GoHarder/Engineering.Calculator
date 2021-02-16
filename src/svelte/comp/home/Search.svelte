@@ -14,31 +14,28 @@
    const dispatch = createEventDispatcher();
 
    // Events
-   const newWorkbook = () => {
-      console.log('TODO: 2-09-2021 3:38 PM - hook up new workbook button');
-      dispatch('changePage', 'Project');
-   };
+   const onNew = () => dispatch('new');
 
-   const search = () => dispatch('search');
+   const onSearch = () => dispatch('search');
 
-   const keydown = (event) => {
-      if (event.keyCode === 13) search();
+   const onKeydown = (event) => {
+      if (event.keyCode === 13) onSearch();
    };
 </script>
 
-<svelte:window on:keydown={keydown} />
+<svelte:window on:keydown={onKeydown} />
 
 <div class="search-container">
    <div class="left-box">
       <div class="search-icon">
-         <IconButton on:click={search} class="material-icons">search</IconButton>
+         <IconButton on:click={onSearch} class="material-icons">search</IconButton>
       </div>
       <div class="search-field">
          <Textfield class="medium" bind:value fullwidth label="Search Existing Workbooks" />
       </div>
    </div>
 
-   <Button on:click={newWorkbook} class="text-transform-none" color="secondary" variant="raised">
+   <Button on:click={onNew} class="text-transform-none" color="secondary" variant="raised">
       <Label>Create New Workbook</Label>
 
       <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 0 24 24" width="20">

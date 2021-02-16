@@ -44,31 +44,22 @@
    $: initials = creator.replace(/(\b[a-zA-Z])[a-zA-Z]* ?/g, '$1');
 
    // Events
-   const select = () => {
-      console.log('TODO: 2-09-2021 3:12 PM - hook up select button');
-      dispatch('select', _id);
-   };
+   const onSelect = () => dispatch('select', _id);
 
-   const remove = () => {
-      console.log('TODO: 2-09-2021 3:21 PM - hook up delete button');
-      dispatch('delete', _id);
-   };
+   const onDelete = () => dispatch('delete', _id);
 
-   const share = () => {
-      console.log('TODO: 2-09-2021 3:22 PM = hook up share button');
-      dispatch('share', _id);
-   };
+   const onShare = () => dispatch('share', _id);
 </script>
 
 <Row>
-   <Cell on:click={select} style="text-align: center" title={contract}>{contract}</Cell>
-   <Cell on:click={select} style="text-align: center" title={jobName}>{jobName}</Cell>
-   <Cell on:click={select} style="text-align: center" title={carNo}>{carNo}</Cell>
-   <Cell on:click={select} style="text-align: center" title={customer}>{customer}</Cell>
-   <Cell on:click={select} style="text-align: center" title={layout}>{layout}</Cell>
-   <Cell on:click={select} style="text-align: center">{getDateString(created)}</Cell>
-   <Cell on:click={select} style="text-align: center">{getDateString(opened)}</Cell>
-   <Cell on:click={select} style="text-align: center">
+   <Cell on:click={onSelect} style="text-align: center" title={contract}>{contract}</Cell>
+   <Cell on:click={onSelect} style="text-align: center" title={jobName}>{jobName}</Cell>
+   <Cell on:click={onSelect} style="text-align: center" title={carNo}>{carNo}</Cell>
+   <Cell on:click={onSelect} style="text-align: center" title={customer}>{customer}</Cell>
+   <Cell on:click={onSelect} style="text-align: center" title={layout}>{layout}</Cell>
+   <Cell on:click={onSelect} style="text-align: center" title={getDateString(created)}>{getDateString(created)}</Cell>
+   <Cell on:click={onSelect} style="text-align: center" title={getDateString(opened)}>{getDateString(opened)}</Cell>
+   <Cell on:click={onSelect} style="text-align: center">
       <Chip title={creator}>{initials}</Chip>
    </Cell>
 
@@ -77,11 +68,11 @@
       <div class="dropdown-content">
          <Menu anchor={false} bind:this={menu}>
             <List>
-               <Item on:SMUI:action={remove}>
+               <Item on:SMUI:action={onDelete}>
                   <Icon class="material-icons">delete</Icon>
                   <Text>Delete</Text>
                </Item>
-               <Item on:SMUI:action={share}>
+               <Item on:SMUI:action={onShare}>
                   <Icon class="material-icons">share</Icon>
                   <Text>Share</Text>
                </Item>

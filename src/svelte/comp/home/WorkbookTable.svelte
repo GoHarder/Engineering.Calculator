@@ -1,14 +1,21 @@
 <script>
+   // Svelte Imports
+   import { createEventDispatcher } from 'svelte';
+
    // Project Components
    import WorkbookRow from './WorkbookRow.svelte';
 
    // SMUI Components
    import DataTable, { Head, Body, Row, Cell } from '@smui/data-table';
 
+   // Constants
+   const dispatch = createEventDispatcher();
+
    // Properties
    export let userId = '';
    export let workbooks = [];
 
+   // Reactive Rules
    $: rows = workbooks.map((book) => {
       book.creator = `${book.creator.firstName} ${book.creator.lastName}`;
 
@@ -18,6 +25,13 @@
 
       return book;
    });
+
+   // Events
+   const onSelect = (event) => dispatch('select', event.detail);
+
+   const onDelete = (event) => dispatch('delete', event.detail);
+
+   const onShare = (event) => dispatch('share', event.detail);
 </script>
 
 <DataTable class="workbook-table">
@@ -36,7 +50,7 @@
    </Head>
    <Body>
       {#each rows as workbook (workbook._id)}
-         <WorkbookRow {...workbook} />
+         <WorkbookRow {...workbook} on:select={onSelect} on:delete={onDelete} on:share={onShare} />
       {/each}
    </Body>
 </DataTable>

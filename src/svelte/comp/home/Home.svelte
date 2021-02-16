@@ -1,4 +1,7 @@
 <script>
+   // Svelte Imports
+   import { createEventDispatcher } from 'svelte';
+
    // Project Components
    import WorkbookTable from './WorkbookTable.svelte';
    import Search from './Search.svelte';
@@ -33,6 +36,9 @@
       }
    };
 
+   // Constants
+   const dispatch = createEventDispatcher();
+
    // Variables
    let workbooks = fetchRecent(1);
    let search = '';
@@ -45,6 +51,24 @@
       } else {
          workbooks = fetchRecent(1);
       }
+   };
+
+   const onOpen = (event) => {
+      if (event.detail) {
+         dispatch('changePage', { comp: 'Project' });
+      } else {
+         dispatch('changePage', 'Project');
+      }
+   };
+
+   const onDelete = (event) => {
+      console.log('TODO: 2-15-2021 9:47 AM - hook up delete event');
+      console.log(event);
+   };
+
+   const onShare = (event) => {
+      console.log('TODO: 2-15-2021 9:48 AM - hook up share event');
+      console.log(event);
    };
 
    // TODO: 2-10-2021 9:11 AM - load more rows when scrolled to bottom of page
@@ -66,12 +90,12 @@
          <strong>Create New Workbook</strong>
          button
       </h6>
-      <Search bind:value={search} on:search={onSearch} />
+      <Search bind:value={search} on:search={onSearch} on:new={onOpen} />
 
       {#await workbooks}
          <p>...waiting</p>
       {:then workbooks}
-         <WorkbookTable userId={_id} {workbooks} />
+         <WorkbookTable userId={_id} {workbooks} on:select={onOpen} on:delete={onDelete} on:share={onShare} />
       {:catch error}
          <p style="color: red">{error.message}</p>
       {/await}

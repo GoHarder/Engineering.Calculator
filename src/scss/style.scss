@@ -15,7 +15,8 @@ body {
    -moz-osx-font-smoothing: auto;
 }
 
-.mdc-button {
+.mdc-button,
+.mdc-tab {
    .mdc-button__label {
       font-weight: 600;
    }
