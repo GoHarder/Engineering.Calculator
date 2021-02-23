@@ -16,6 +16,7 @@
 
    // Stores
    import tokenStore from './stores/token.js';
+   import projStore from './stores/project';
 
    // Constants
    const comps = {
@@ -59,6 +60,18 @@
       }
    };
 
+   const open = async (calcId) => {
+      const res = await fetch(`/api/proj/${calcId}`).catch(() => {});
+
+      const body = await res.json();
+
+      if (res.ok) {
+         projStore.set(body);
+      } else {
+         projStore.set(undefined);
+      }
+   };
+
    // Reactive rules
    $: if (token) {
       getUser();
@@ -79,17 +92,14 @@
       if (typeof event.detail === 'string') {
          comp = comps[event.detail];
       } else {
-         console.log('TODO: 2-15-2021 9:43 AM - hook up open event');
-         console.log(event);
+         // NOTE: 2-18-2021 11:36 AM - may have other selections other than open
+         const { comp: newComp, calcId } = event.detail;
 
-         comp = comps[event.detail.comp];
+         open(calcId);
+
+         comp = comps[newComp];
       }
    };
-
-   // Lifecycle
-   // onMount(() => {
-   //    getUser();
-   // });
 </script>
 
 <Header on:logout={logout} on:changePage={changePage} {user} loading={!show} />

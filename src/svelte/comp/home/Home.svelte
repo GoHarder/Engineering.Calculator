@@ -1,3 +1,4 @@
+<!-- TODO: 2-10-2021 9:11 AM - load more rows when scrolled to bottom of page -->
 <script>
    // Svelte Imports
    import { createEventDispatcher } from 'svelte';
@@ -6,7 +7,7 @@
    import WorkbookTable from './WorkbookTable.svelte';
    import Search from './Search.svelte';
 
-   // Parameters
+   // Properties
    export let _id = '';
    export let firstName = '';
    export let lastName = '';
@@ -55,7 +56,7 @@
 
    const onOpen = (event) => {
       if (event.detail) {
-         dispatch('changePage', { comp: 'Project' });
+         dispatch('changePage', { comp: 'Project', calcId: event.detail });
       } else {
          dispatch('changePage', 'Project');
       }
@@ -70,8 +71,6 @@
       console.log('TODO: 2-15-2021 9:48 AM - hook up share event');
       console.log(event);
    };
-
-   // TODO: 2-10-2021 9:11 AM - load more rows when scrolled to bottom of page
 </script>
 
 <main>

@@ -23,6 +23,7 @@ body {
 
    &.text-transform-none {
       text-transform: none;
+
       &.white {
          color: #ffffff;
          font-weight: normal;
@@ -34,6 +35,10 @@ body {
    &.medium {
       height: 36px;
    }
+}
+
+.mdc-text-field:not(.mdc-text-field--disabled) .mdc-text-field__icon.label {
+   font-style: normal;
 }
 
 .mdc-list-item {
@@ -54,6 +59,36 @@ body {
       }
    }
 }
+
+.vantage-input {
+   display: flex;
+   flex-wrap: wrap;
+   align-items: baseline;
+
+   .input {
+      flex-basis: 100%;
+      min-width: 250px;
+      margin-right: 10px;
+      &-metric {
+         flex-basis: calc(100% - 110px);
+         min-width: 250px;
+         margin-right: 10px;
+         &.split {
+            display: flex;
+         }
+      }
+      &.split {
+         display: flex;
+      }
+   }
+   .metric-value {
+      font-size: 14px;
+      color: gray;
+      flex-basis: 100px;
+      margin: 0;
+   }
+}
+
 @import '@material/typography/mixins';
 
 html {

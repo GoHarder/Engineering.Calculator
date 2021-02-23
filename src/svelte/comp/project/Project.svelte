@@ -1,3 +1,4 @@
+<!-- // TODO: 2-17-2021 7:59 AM - load data into form -->
 <script>
    // Svelte Imports
    import { createEventDispatcher } from 'svelte';
@@ -23,8 +24,7 @@
    };
 
    // Variables
-   let activeTab = 1;
-   // let comp = ProjectSummary;
+   let activeTab = 2;
 
    // Reactive Variables
    $: comp = comps[`_${activeTab}`];
@@ -120,11 +120,11 @@
    .tabs {
       background-color: #f5f5f5;
       display: flex;
-      padding: 16px;
+      padding: 16px 16px 0;
    }
    .form {
       padding: 16px;
-      min-height: 575px;
+      min-height: calc(100vh - 400px);
    }
    .buttons {
       display: flex;
