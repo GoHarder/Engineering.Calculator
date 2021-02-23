@@ -1,8 +1,6 @@
 <script>
-   import Default from './number/Default.svelte';
-
    // Project Components
-   import Defalut from './number/Default.svelte';
+   import Default from './number/Default.svelte';
    import Length from './number/Length.svelte';
    import Speed from './number/Speed.svelte';
    import Weight from './number/Weight.svelte';

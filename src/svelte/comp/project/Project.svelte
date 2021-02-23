@@ -10,7 +10,7 @@
 
    // Project Components
    import A from '../common/A.svelte';
-   import CalculationModules from './CalculationModules.svelte';
+   import CalculationModules from './calculation_modules/CalculationModules.svelte';
    import ProjectSummary from './ProjectSummary.svelte';
    import Requirements from './Requirements.svelte';
    import ProjectTab from './ProjectTab.svelte';
@@ -24,7 +24,7 @@
    };
 
    // Variables
-   let activeTab = 2;
+   let activeTab = 3;
 
    // Reactive Variables
    $: comp = comps[`_${activeTab}`];
@@ -124,7 +124,8 @@
    }
    .form {
       padding: 16px;
-      min-height: calc(100vh - 400px);
+      height: calc(100vh - 375px);
+      overflow-y: auto;
    }
    .buttons {
       display: flex;
