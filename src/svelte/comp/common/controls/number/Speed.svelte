@@ -21,7 +21,7 @@
 
 <div class="vantage-input">
    <div class={inputClass}>
-      <Textfield class="medium" type="number" bind:value on:focus={onFocus} fullwidth withTrailingIcon input$step={precision}>
+      <Textfield class="medium" type="number" bind:value on:focus={onFocus} fullwidth withTrailingIcon input$step={precision} input$min="0">
          <Icon class="label">ft/min</Icon>
       </Textfield>
    </div>

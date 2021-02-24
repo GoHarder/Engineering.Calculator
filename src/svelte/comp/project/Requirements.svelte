@@ -1,7 +1,13 @@
 <script>
+   // Svelte imports
+   import { onDestroy } from 'svelte';
+
    // Project Components
    import InputNumber from '../common/controls/InputNumber.svelte';
    import Select from '../common/controls/Select.svelte';
+
+   // Stores
+   import projectStore from '../../stores/project';
 
    // Methods
    const filterFreightSel = (type) => freightSel.filter((option) => option.types.includes(type));
@@ -38,7 +44,7 @@
    let capacity = 0;
    let carSpeed = 0;
    let overallTravel = 0;
-   let code = 'ASME A17-1 2013';
+   let code = 'ASME A17-1 2010';
    let type = 'Passenger';
    let freight = 'None';
    let carRoping = 1;
@@ -51,6 +57,38 @@
    let sds = 0;
    let showIP = false;
    let showSDS = false;
+
+   // Subscriptions
+   const clearProject = projectStore.subscribe((store) => {
+      console.log('Requirements', store);
+
+      if (Object.keys(store).length !== 0) {
+         const project = { ...store };
+
+         // Project data
+         metric = project.metric;
+
+         if (project.modules.globals) {
+            const globals = project.modules.globals;
+
+            // Global data
+            capacity = globals.capacity;
+            carSpeed = globals.carSpeed;
+            overallTravel = globals.overallTravel;
+            code = globals.code;
+            type = globals.loading.type;
+            freight = globals.loading.freight;
+            carRoping = globals.carRoping;
+            cwtRoping = globals.cwtRoping;
+            seismicZone = globals.seismic.zone;
+
+            // Weird seisic data
+            ibcCategory = globals.ibcCategory;
+            ip = globals.ip;
+            sds = globals.sds;
+         }
+      }
+   });
 
    // Reactive Variables
    $: filteredFreightSel = filterFreightSel(type);
@@ -119,6 +157,15 @@
             break;
       }
    }
+
+   // Lifecycle
+   onDestroy(() => {
+      console.log('TODO: 2-24-2021 11:11 AM - add to store when unmount');
+
+      // projectStore.save('project', { contract, jobName, carNo, customer, layout, metric });
+
+      clearProject();
+   });
 </script>
 
 <p>Enter the car requirements and proceed to the next step</p>
@@ -153,7 +200,7 @@
    </div>
 
    <div class="box">
-      <Select bind:value={cwtRoping} label="Cwt Roping" options={ropingSel} style={4} bullet />
+      <Select bind:value={cwtRoping} label="Counterweight Roping" options={ropingSel} style={4} bullet />
    </div>
 
    <div class="box">

@@ -9,6 +9,9 @@
    // Stores
    import projectStore from '../../stores/project';
 
+   // Properties
+   export let creator = '';
+
    // Variables
    let contract = '';
    let jobName = '';
@@ -16,24 +19,42 @@
    let customer = '';
    let layout = '';
    let metric = false;
-   // TODO: 2-18-2021 1:11 PM - need metric settings in database
+   let created = new Date();
+   let opened = [];
+   let modules = {};
+   let temp = false;
 
    // Subscriptions
    const clearProject = projectStore.subscribe((store) => {
-      if (Object.keys(store).length !== 0) {
+      // console.log('Project Summary', store);
+
+      if (Object.keys(store).length > 1) {
          const project = { ...store };
-         contract = project.contract;
-         jobName = project.jobName;
          carNo = project.carNo;
+         contract = project.contract;
+         created = project.created;
+         creator = project.creator;
          customer = project.customer;
+         jobName = project.jobName;
          layout = project.layout;
-         metric = project.metric ? project.metric : false;
+         metric = project.metric;
+         modules = project.modules;
+         opened = project.opened;
+         temp = project.temp;
+
+         const search = opened.findIndex((user) => creator === user.userId);
+
+         if (search >= 0) {
+            opened[search].time = new Date();
+         } else {
+            opened.push({ userId: creator, time: created });
+         }
       }
    });
 
    // Lifecycle
    onDestroy(() => {
-      projectStore.save('project', { contract, jobName, carNo, customer, layout, metric });
+      projectStore.save('project', { carNo, contract, created, creator, customer, jobName, layout, metric, modules, opened, temp });
 
       clearProject();
    });
@@ -64,6 +85,10 @@
 
    <div class="box">
       <Checkbox bind:checked={metric} label="Show Metric Units" bullet />
+   </div>
+
+   <div class="box">
+      <Checkbox bind:checked={temp} label="Temporary Workbook" bullet />
    </div>
 </div>
 

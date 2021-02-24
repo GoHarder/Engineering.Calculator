@@ -15,6 +15,8 @@
    import Requirements from './Requirements.svelte';
    import ProjectTab from './ProjectTab.svelte';
 
+   export let _id = '';
+
    // Constants
    const dispatch = createEventDispatcher();
    const comps = {
@@ -24,7 +26,7 @@
    };
 
    // Variables
-   let activeTab = 3;
+   let activeTab = 1;
 
    // Reactive Variables
    $: comp = comps[`_${activeTab}`];
@@ -52,7 +54,7 @@
             <ProjectTab label="Calculation Modules" index={3} {activeTab} on:switch={onSwitchTab} />
          </div>
          <div class="form">
-            <svelte:component this={comp} />
+            <svelte:component this={comp} creator={_id} />
          </div>
       </Paper>
       <div class="spacer">

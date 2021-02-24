@@ -5,9 +5,9 @@
 
    // Constants
    const modules = [
-      { i: 0, title: 'Weight Calculations', description: 'Calculates the weight of the elevator', checked: false },
-      { i: 1, title: 'Counterweight', description: '', checked: false },
-      { i: 2, title: '3-Beam Reactions & Deflections', description: '', checked: false },
+      { i: 0, title: 'Weight Calculations', description: 'Calculates the weight of the elevator', checked: true },
+      { i: 1, title: 'Counterweight', description: '', checked: true },
+      { i: 2, title: '3-Beam Reactions & Deflections', description: '', checked: true },
    ];
 
    // Variables

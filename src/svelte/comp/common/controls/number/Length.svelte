@@ -11,31 +11,35 @@
    export let metric = false;
 
    // Methods
-   const setValue = () => (value = round(feet * 12 + inches, 4));
+   const setValue = () => {
+      value = round(feet * 12 + inches, 4);
+   };
 
    // Variables
-   let feet = floor(value / 12);
-   let inches = value - round(feet * 12);
+   let feet = 0;
+   let inches = 0;
 
    // Reactive Variables
    $: metricValue = round(value * 0.0254, 3);
    $: inputClass = `input${metric ? '-metric' : ''} split`;
 
+   $: if (value) {
+      feet = floor(value / 12);
+
+      inches = round(value - feet * 12, 4);
+   }
+
    // Events
-   const onFeet = () => setValue();
+   const onFeet = (event) => {
+      feet = event.target.valueAsNumber;
 
-   const onInches = () => {
-      if (inches >= 12) {
-         setValue();
-         feet = floor(value / 12);
-         inches = value - round(feet * 12);
-      }
+      setValue();
+   };
 
-      if (inches < 0) {
-         feet -= 1;
-         inches += 12;
-         setValue();
-      }
+   const onInches = (event) => {
+      inches = event.target.valueAsNumber;
+
+      setValue();
    };
 
    // Events
@@ -45,20 +49,20 @@
 <div class="vantage-input">
    <div class={inputClass}>
       <div class="ft">
-         <Textfield class="medium" type="number" bind:value={feet} on:change={onFeet} on:focus={onFocus} fullwidth withTrailingIcon>
+         <Textfield class="medium" type="number" value={feet} on:change={onFeet} on:focus={onFocus} fullwidth withTrailingIcon input$min="0">
             <Icon class="label">ft</Icon>
          </Textfield>
       </div>
 
       <div class="in">
-         <Textfield class="medium" type="number" bind:value={inches} on:change={onInches} on:focus={onFocus} fullwidth withTrailingIcon input$step={0.0001}>
+         <Textfield class="medium" type="number" value={inches} on:change={onInches} on:focus={onFocus} fullwidth withTrailingIcon input$step={0.0001} input$min="0">
             <Icon class="label">in</Icon>
          </Textfield>
       </div>
    </div>
 
    {#if metric}
-      <p class="metric-value">({metricValue} m)</p>
+      <p class="metric-value">{`${metricValue} m`}</p>
    {/if}
 </div>
 

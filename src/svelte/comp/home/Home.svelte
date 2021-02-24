@@ -7,6 +7,9 @@
    import WorkbookTable from './WorkbookTable.svelte';
    import Search from './Search.svelte';
 
+   // Stores
+   import projectStore from '../../stores/project';
+
    // Properties
    export let _id = '';
    export let firstName = '';
@@ -59,6 +62,7 @@
          dispatch('changePage', { comp: 'Project', calcId: event.detail });
       } else {
          dispatch('changePage', 'Project');
+         projectStore.set({ newFile: true });
       }
    };
 
