@@ -90,7 +90,6 @@
 </main>
 
 <style lang="scss">
-   // wehe
    :global {
       .project-paper {
          padding: 0;

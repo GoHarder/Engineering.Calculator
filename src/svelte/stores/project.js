@@ -25,15 +25,27 @@ const set = (proj) => {
 const save = (location, update) => {
    updateStore((store) => {
       let output = { ...store };
+      let copy;
 
       switch (location) {
          case 'project':
             output = { ...store, ...update };
             break;
          case 'globals':
-            const copy = { ...store };
+            copy = { ...store };
 
             copy.modules.globals = { ...update };
+
+            output = copy;
+            break;
+         case 'modules':
+            copy = { ...store };
+            copy.modules = {};
+
+            update.reduce((acc, mod) => {
+               acc[mod.module] = mod;
+               return acc;
+            }, copy.modules);
 
             output = copy;
             break;

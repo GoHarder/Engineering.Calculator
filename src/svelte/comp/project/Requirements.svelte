@@ -69,7 +69,7 @@
 
    // Subscriptions
    const clearProject = projectStore.subscribe((store) => {
-      console.log('Requirements', store);
+      // console.log('Requirements', store);
 
       if (Object.keys(store).length !== 0) {
          const project = { ...store };

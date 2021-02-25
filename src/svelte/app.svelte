@@ -51,7 +51,7 @@
             // Set the user data
             user = await res.json();
             // Set the page to the home screen
-            comp = Project;
+            comp = Home;
             show = true;
          }
       } else {
