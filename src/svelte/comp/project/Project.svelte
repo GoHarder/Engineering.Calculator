@@ -15,6 +15,7 @@
    import Requirements from './Requirements.svelte';
    import ProjectTab from './ProjectTab.svelte';
 
+   // Properties
    export let _id = '';
 
    // Constants
@@ -89,6 +90,7 @@
 </main>
 
 <style lang="scss">
+   // wehe
    :global {
       .project-paper {
          padding: 0;

@@ -5,6 +5,7 @@
    export let label = '';
    export let style = 1;
    export let bullet = false;
+   export let disabled = false;
 </script>
 
 <div class={`select n${style}`}>
@@ -15,7 +16,7 @@
       <span class="label">{label}</span>
    </div>
    <div class={`input-container${bullet ? '-bullet' : ''}`}>
-      <select bind:value class="select-css">
+      <select bind:value class="select-css" {disabled}>
          {#each options as option}
             <option value={option.value ? option.value : option.text}>{option.text}</option>
          {/each}

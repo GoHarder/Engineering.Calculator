@@ -24,11 +24,18 @@ const set = (proj) => {
  */
 const save = (location, update) => {
    updateStore((store) => {
-      let output;
+      let output = { ...store };
 
       switch (location) {
          case 'project':
             output = { ...store, ...update };
+            break;
+         case 'globals':
+            const copy = { ...store };
+
+            copy.modules.globals = { ...update };
+
+            output = copy;
             break;
       }
 

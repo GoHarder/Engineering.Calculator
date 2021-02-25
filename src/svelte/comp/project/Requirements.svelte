@@ -5,6 +5,7 @@
    // Project Components
    import InputNumber from '../common/controls/InputNumber.svelte';
    import Select from '../common/controls/Select.svelte';
+   import Checkbox from '../common/controls/Checkbox.svelte';
 
    // Stores
    import projectStore from '../../stores/project';
@@ -39,24 +40,32 @@
    const seismicZoneSel = [{ text: 0 }, { text: 1 }, { text: 2 }, { text: 3 }, { text: 4 }];
    const ibcCategorySel = [{ text: 'A' }, { text: 'B' }, { text: 'C' }, { text: 'D' }, { text: 'E' }, { text: 'F' }];
    const ibcIpSel = [{ text: 1 }, { text: 1.5 }];
+   const module = 'globals';
 
    // Variables
-   let capacity = 0;
-   let carSpeed = 0;
-   let overallTravel = 0;
-   let code = 'ASME A17-1 2010';
-   let type = 'Passenger';
-   let freight = 'None';
-   let carRoping = 1;
-   let cwtRoping = 1;
-   let seismicZone = 0;
-   let metric = false;
 
+   // Workbook
+   let capacity = 0;
+   let carRoping = 1;
+   let carSpeed = 0;
+   let code = 'ASME A17-1 2010';
+   let cwtRoping = 1;
+   // Loading
+   let freight = 'None';
+   let type = 'Passenger';
+
+   let overallTravel = 0;
+   // Seismic
+   let seismicZone = 0;
    let ibcCategory = 'A';
    let ip = 1;
    let sds = 0;
+
+   // DOM
+   let metric = false;
    let showIP = false;
    let showSDS = false;
+   let useIbc = false;
 
    // Subscriptions
    const clearProject = projectStore.subscribe((store) => {
@@ -80,12 +89,13 @@
             freight = globals.loading.freight;
             carRoping = globals.carRoping;
             cwtRoping = globals.cwtRoping;
-            seismicZone = globals.seismic.zone;
 
             // Weird seisic data
-            ibcCategory = globals.ibcCategory;
-            ip = globals.ip;
-            sds = globals.sds;
+            useIbc = globals.seismic.useIbc;
+            seismicZone = globals.seismic.zone;
+            ibcCategory = globals.seismic.ibcCategory;
+            ip = globals.seismic.ip;
+            sds = globals.seismic.sds;
          }
       }
    });
@@ -99,7 +109,7 @@
 
    // NOTE: Logic is from ASME TR A17.1-8.4-2013
    // This converts the convoluted new seismic zones to the 0-4 scale
-   $: if (ibc) {
+   $: if (ibc && useIbc) {
       switch (ibcCategory) {
          case 'C':
             showIP = true;
@@ -160,9 +170,10 @@
 
    // Lifecycle
    onDestroy(() => {
-      console.log('TODO: 2-24-2021 11:11 AM - add to store when unmount');
+      const loading = { freight, type };
+      const seismic = { ibcCategory, ip, sds, useIbc, zone: seismicZone };
 
-      // projectStore.save('project', { contract, jobName, carNo, customer, layout, metric });
+      projectStore.save('globals', { capacity, carRoping, carSpeed, code, cwtRoping, loading, module, overallTravel, type, freight, seismic });
 
       clearProject();
    });
@@ -204,35 +215,45 @@
    </div>
 
    <div class="box">
-      <Select bind:value={seismicZone} label="Seismic Zone" options={seismicZoneSel} style={4} bullet />
+      <Select bind:value={seismicZone} label="Seismic Zone" options={seismicZoneSel} style={4} bullet disabled={ibc && useIbc} />
    </div>
 </div>
 
 {#if ibc}
-   <p>IBC/ASCE 7 Seismic Parameters</p>
+   <hr />
 
-   <div class="form-box">
-      <div class="box">
-         <Select bind:value={ibcCategory} label="Seismic Design Category" options={ibcCategorySel} style={4} bullet />
-      </div>
+   <div class="ibc">
+      <Checkbox bind:checked={useIbc} label="Use IBC/ASCE 7 Seismic Parameters" />
+   </div>
 
-      {#if showIP}
+   {#if useIbc}
+      <div class="form-box">
          <div class="box">
-            <Select bind:value={ip} label="IP" options={ibcIpSel} style={4} bullet />
+            <Select bind:value={ibcCategory} label="Seismic Design Category" options={ibcCategorySel} style={4} bullet />
          </div>
 
-         {#if showSDS}
+         {#if showIP}
             <div class="box">
-               <InputNumber bind:value={sds} label="SDS" style={4} {metric} bullet precision={0.001} />
+               <Select bind:value={ip} label="IP" options={ibcIpSel} style={4} bullet />
             </div>
+
+            {#if showSDS}
+               <div class="box">
+                  <InputNumber bind:value={sds} label="SDS" style={4} {metric} bullet precision={0.001} />
+               </div>
+            {/if}
          {/if}
-      {/if}
-   </div>
+      </div>
+   {/if}
 {/if}
 
 <style lang="scss">
    p {
       padding: 0 30px;
+   }
+   .ibc {
+      padding: 0 30px;
+      width: 400px;
    }
    .form-box {
       display: flex;
