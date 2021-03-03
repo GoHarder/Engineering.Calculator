@@ -35,6 +35,8 @@
    // Events
    const onReturn = () => dispatch('changePage', 'Home');
 
+   const onStart = () => dispatch('changePage', 'Workbook');
+
    const onSwitchTab = (event) => (activeTab = event.detail);
 </script>
 
@@ -77,7 +79,7 @@
                   {/if}
 
                   {#if activeTab === 3}
-                     <Button on:click={() => console.log('TODO: 2-16-2021 11:19 AM - hook up start button')} class="text-transform-none" color="secondary" variant="raised">
+                     <Button on:click={onStart} class="text-transform-none" color="secondary" variant="raised">
                         <Label>Start</Label>
                         <BtnIcon class="material-icons">arrow_forward_ios</BtnIcon>
                      </Button>

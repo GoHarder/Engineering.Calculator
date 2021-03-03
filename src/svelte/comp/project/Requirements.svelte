@@ -3,9 +3,7 @@
    import { onDestroy } from 'svelte';
 
    // Project Components
-   import InputNumber from '../common/controls/InputNumber.svelte';
-   import Select from '../common/controls/Select.svelte';
-   import Checkbox from '../common/controls/Checkbox.svelte';
+   import { Checkbox, InputNumber, Select } from '../common/controls/lib.js';
 
    // Stores
    import projectStore from '../../stores/project';
@@ -173,7 +171,7 @@
       const loading = { freight, type };
       const seismic = { ibcCategory, ip, sds, useIbc, zone: seismicZone };
 
-      projectStore.save('globals', { capacity, carRoping, carSpeed, code, cwtRoping, loading, module, overallTravel, type, freight, seismic });
+      projectStore.save('globals', { capacity, carRoping, carSpeed, code, cwtRoping, loading, module, overallTravel, type, seismic });
 
       clearProject();
    });

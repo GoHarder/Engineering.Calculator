@@ -65,20 +65,40 @@ body {
    flex-wrap: wrap;
    align-items: baseline;
 
+   &.n1 {
+      flex-wrap: nowrap;
+   }
+
    .input {
       flex-basis: 100%;
       min-width: 250px;
-      margin-right: 10px;
-      &-metric {
-         flex-basis: calc(100% - 110px);
-         min-width: 250px;
-         margin-right: 10px;
-         &.split {
-            display: flex;
+
+      .display {
+         display: flex;
+         justify-content: space-between;
+         align-items: center;
+         height: 36px;
+         .label {
+            color: rgba($color: #000000, $alpha: 0.54);
          }
+      }
+      &.metric {
+         flex-basis: calc(100% - 110px);
+         margin-right: 10px;
       }
       &.split {
          display: flex;
+      }
+      &.display {
+         .mdc-text-field__input,
+         i {
+            font-style: normal;
+            border: none;
+            color: rgba($color: #000000, $alpha: 0.54);
+         }
+         .mdc-text-field__input {
+            color: black;
+         }
       }
    }
    .metric-value {
@@ -86,6 +106,7 @@ body {
       color: gray;
       flex-basis: 100px;
       margin: 0;
+      white-space: nowrap;
    }
 }
 

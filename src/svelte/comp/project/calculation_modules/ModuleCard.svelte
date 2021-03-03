@@ -1,4 +1,7 @@
 <script>
+   // Svelte Imports
+   import { createEventDispatcher } from 'svelte';
+
    // SMUI Components
    import Paper from '@smui/paper';
    import Checkbox from '@smui/checkbox';
@@ -8,8 +11,14 @@
    export let title = 'Title';
    export let description = '';
 
+   // Constants
+   const dispatch = createEventDispatcher();
+
    // Events
-   const onClick = () => (checked = !checked);
+   const onClick = () => {
+      checked = !checked;
+      dispatch('select', { title, checked });
+   };
 </script>
 
 <div class="card" on:click={onClick}>

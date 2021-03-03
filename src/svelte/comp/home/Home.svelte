@@ -62,7 +62,7 @@
          dispatch('changePage', { comp: 'Project', calcId: event.detail });
       } else {
          dispatch('changePage', 'Project');
-         projectStore.set({ newFile: true });
+         projectStore.set({});
       }
    };
 

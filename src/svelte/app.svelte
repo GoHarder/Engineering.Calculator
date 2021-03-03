@@ -13,6 +13,7 @@
    import MyAccount from './comp/auth/my-account/MyAccount.svelte';
    import SignUp from './comp/auth/sign-up/SignUp.svelte';
    import Project from './comp/project/Project.svelte';
+   import Workbook from './comp/workbook/Workbook.svelte';
 
    // Stores
    import tokenStore from './stores/token.js';
@@ -25,6 +26,7 @@
       MyAccount,
       SignUp,
       Project,
+      Workbook,
    };
 
    // Variables
@@ -52,6 +54,8 @@
             user = await res.json();
             // Set the page to the home screen
             comp = Home;
+            // NOTE: for development
+            // comp = Workbook;
             show = true;
          }
       } else {

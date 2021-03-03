@@ -7,10 +7,11 @@
    export let label = '';
    export let style = 1;
    export let bullet = false;
+   export let labelWidth = 0;
 </script>
 
 <div class={`input-text n${style}`}>
-   <div class="label-container">
+   <div class="label-container" style={labelWidth ? `min-width: ${labelWidth}px;` : null}>
       {#if bullet}
          <span class="bullet" />
       {/if}
@@ -27,6 +28,18 @@
          display: flex;
          align-items: center;
          flex-direction: row;
+      }
+
+      &.n1 {
+         display: flex;
+         justify-content: space-between;
+         .label-container {
+            flex-grow: 0;
+         }
+         .input-container {
+            flex-grow: 1;
+            // max-width: 60%;
+         }
       }
 
       &.n4 {

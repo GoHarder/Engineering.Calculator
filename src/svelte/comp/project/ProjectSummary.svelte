@@ -3,8 +3,7 @@
    import { onDestroy } from 'svelte';
 
    // Project Components
-   import Checkbox from '../common/controls/Checkbox.svelte';
-   import InputText from '../common/controls/InputText.svelte';
+   import { Checkbox, InputText } from '../common/controls/lib.js';
 
    // Stores
    import projectStore from '../../stores/project';

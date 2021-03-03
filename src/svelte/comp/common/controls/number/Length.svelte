@@ -9,6 +9,8 @@
    // Properties
    export let value = 0;
    export let metric = false;
+   export let disabled = false;
+   export let style = 0;
 
    // Methods
    const setValue = () => {
@@ -21,8 +23,9 @@
 
    // Reactive Variables
    $: metricValue = round(value * 0.0254, 3);
-   $: inputClass = `input${metric ? '-metric' : ''} split`;
+   $: inputClass = `input${metric ? ' metric' : ''} split`;
 
+   // Reactive Rules
    $: if (value) {
       feet = floor(value / 12);
 
@@ -42,27 +45,37 @@
       setValue();
    };
 
-   // Events
    const onFocus = (event) => event.target.select();
 </script>
 
-<div class="vantage-input">
+<div class={`vantage-input ${style ? `n${style}` : ''}`}>
    <div class={inputClass}>
       <div class="ft">
-         <Textfield class="medium" type="number" value={feet} on:change={onFeet} on:focus={onFocus} fullwidth withTrailingIcon input$min="0">
+         <Textfield class="medium" type="number" value={feet} on:change={onFeet} on:focus={onFocus} {disabled} fullwidth withTrailingIcon input$min="0">
             <Icon class="label">ft</Icon>
          </Textfield>
       </div>
 
       <div class="in">
-         <Textfield class="medium" type="number" value={inches} on:change={onInches} on:focus={onFocus} fullwidth withTrailingIcon input$step={0.0001} input$min="0">
+         <Textfield
+            class="medium"
+            type="number"
+            value={inches}
+            on:change={onInches}
+            on:focus={onFocus}
+            {disabled}
+            fullwidth
+            withTrailingIcon
+            input$step={0.0001}
+            input$min="0"
+         >
             <Icon class="label">in</Icon>
          </Textfield>
       </div>
    </div>
 
    {#if metric}
-      <p class="metric-value">{`${metricValue} m`}</p>
+      <p class="metric-value">{`(${metricValue} m)`}</p>
    {/if}
 </div>
 

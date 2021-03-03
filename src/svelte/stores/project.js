@@ -40,12 +40,8 @@ const save = (location, update) => {
             break;
          case 'modules':
             copy = { ...store };
-            copy.modules = {};
 
-            update.reduce((acc, mod) => {
-               acc[mod.module] = mod;
-               return acc;
-            }, copy.modules);
+            copy.modules = { ...update };
 
             output = copy;
             break;

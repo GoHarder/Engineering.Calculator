@@ -66,7 +66,7 @@
                   {/if}
 
                   <Item on:SMUI:action={logout}>
-                     <Icon class="material-icons">close</Icon>
+                     <Icon class="material-icons">logout</Icon>
                      <Text>Logout</Text>
                   </Item>
                </List>

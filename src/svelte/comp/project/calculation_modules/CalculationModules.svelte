@@ -1,4 +1,6 @@
 <script>
+   import modules from '../../workbook/modules/modules';
+
    // Svelte imports
    import { onDestroy } from 'svelte';
 
@@ -9,53 +11,29 @@
    // Stores
    import projectStore from '../../../stores/project';
 
-   // Constants
-   const modules = [
-      { i: 0, title: 'Weight Calculations', description: 'Calculates the weight of the elevator', checked: true, module: 'weightCalcs', comp: 'WeightCalcs' },
-      { i: 1, title: 'Counterweight', description: '', checked: false, module: 'counterweight', comp: 'Counterweight' },
-      { i: 2, title: '3-Beam Reactions & Deflections', description: '', checked: false, module: '3beam', comp: 'tacos' },
-   ];
-
    // Variables
    let search = '';
-   let filteredModules = modules;
+   let filteredModules = [...modules];
+   let projectModules = {};
 
    // TODO: 2-25-2021 12:48 PM - connect form to store
 
    // Subscriptions
    const clearProject = projectStore.subscribe((store) => {
-      console.log('Calculation Modules', store);
-
-      const stored = Object.keys(store.modules);
+      // console.log('Calculation Modules', store);
+      const project = { ...store };
+      const stored = Object.keys(project.modules);
 
       if (stored.length > 1) {
-         const test = filteredModules.map((mod) => {
+         // Set the checked status for each module in the menu
+         filteredModules.map((mod) => {
             mod.checked = stored.includes(mod.module);
-
             return mod;
          });
       }
 
-      // if (Object.keys(store).length > 1) {
-      //    const project = { ...store };
-      //    carNo = project.carNo;
-      //    contract = project.contract;
-      //    created = project.created;
-      //    creator = project.creator;
-      //    customer = project.customer;
-      //    jobName = project.jobName;
-      //    layout = project.layout;
-      //    metric = project.metric;
-      //    modules = project.modules;
-      //    opened = project.opened;
-      //    temp = project.temp;
-      //    const search = opened.findIndex((user) => creator === user.userId);
-      //    if (search >= 0) {
-      //       opened[search].time = new Date();
-      //    } else {
-      //       opened.push({ userId: creator, time: created });
-      //    }
-      // }
+      // Load the modules
+      projectModules = project.modules;
    });
 
    // Reactive Rules
@@ -87,16 +65,39 @@
       filteredModules = copy;
    };
 
+   const onSelect = (event) => {
+      const copy = [...filteredModules];
+      const search = copy.findIndex((nth) => nth.title === event.detail.title);
+
+      copy[search].checked = event.detail.checked;
+
+      filteredModules = copy;
+   };
+
    // Lifecycle
    onDestroy(() => {
-      let selectedModules = filteredModules.filter((mod) => mod.checked);
+      projectModules = filteredModules.reduce(
+         (acc, nth) => {
+            if (Object.keys(acc).includes(nth.module)) {
+               // console.log('already exist', nth.module);
 
-      selectedModules = selectedModules.map((mod) => {
-         const { module, comp } = mod;
-         return { module, comp };
-      });
+               if (!nth.checked) {
+                  delete acc[nth.module];
+               }
+            } else {
+               // console.log('does not exist', nth.module);
 
-      projectStore.save('modules', selectedModules);
+               if (nth.checked) {
+                  acc[nth.module] = { module: nth.module };
+               }
+            }
+
+            return acc;
+         },
+         { ...projectModules }
+      );
+
+      projectStore.save('modules', projectModules);
 
       clearProject();
    });
@@ -105,9 +106,9 @@
 <Search bind:value={search} on:selectAll={onSelectAll} on:selectNone={onSelectNone} />
 
 <div class="form-box">
-   {#each filteredModules as module (module.i)}
+   {#each filteredModules as { i, title, description, checked } (i)}
       <div class="box">
-         <ModuleCard title={module.title} description={module.description} bind:checked={module.checked} />
+         <ModuleCard {title} {description} {checked} on:select={onSelect} />
       </div>
    {/each}
 </div>
