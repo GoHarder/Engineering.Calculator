@@ -3,7 +3,7 @@
    // import { onMount } from 'svelte';
    import { fade } from 'svelte/transition';
 
-   import Number from './components/material/input/number/Number.svelte';
+   import Input from './components/material/input/Input.svelte';
 
    // Common Components
    // import Header from './comp/common/Header.svelte';
@@ -108,15 +108,15 @@
    // };
 </script>
 
-<Number label="Capacity" unit="weight" />
-<Number label="Car Speed" value={0} unit="speed" list="test" />
-<datalist id="test">
-   <option value="10" />
-   <option value="20" />
-   <option value="30" />
+<Input label="Number" />
+<Input label="Counterbalance" unit="%" list="counterbalance" />
+<datalist id="counterbalance">
    <option value="40" />
    <option value="50" />
 </datalist>
+
+<Input label="Capacity" unit="weight" value={2000} disabled />
+<Input label="Car Speed" unit="speed" invalid />
 
 <!-- <Header on:logout={logout} on:changePage={changePage} {user} loading={!show} />
 {#if show}

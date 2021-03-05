@@ -1,4 +1,5 @@
 <script>
+   import Default from './Default.svelte';
    import Speed from './Speed.svelte';
    import Weight from './Weight.svelte';
 
@@ -10,19 +11,20 @@
    export let step = 1;
    export let max = undefined;
    export let min = undefined;
-   export let unit = 'weight';
+   export let unit = 'default';
    export let useNatValid = false;
    export let value = undefined;
 
    const components = {
+      default: Default,
       speed: Speed,
       weight: Weight,
    };
 
-   $: component = components[unit];
+   $: component = components[unit] ? components[unit] : components.default;
 </script>
 
-<svelte:component this={component} bind:disabled bind:invalid bind:value {label} {list} {required} {step} {max} {min} useNativeValidation={useNatValid} />
+<svelte:component this={component} bind:disabled bind:invalid bind:value {label} {list} {required} {step} {unit} {max} {min} useNativeValidation={useNatValid} />
 
 <style lang="scss" global>
    @use "@material/floating-label/mdc-floating-label";
@@ -39,9 +41,6 @@
       @include textfield.line-ripple-color(#ffcb30);
 
       padding: 0 8px; // 0 16px
-
-      // @include textfield.height(50px);
-      // @include textfield.label-color(green);
 
       .mdc-floating-label {
          left: 8px; // 16px
