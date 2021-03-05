@@ -3,35 +3,37 @@
    // import { onMount } from 'svelte';
    import { fade } from 'svelte/transition';
 
+   import Number from './components/material/input/number/Number.svelte';
+
    // Common Components
-   import Header from './comp/common/Header.svelte';
-   import Footer from './comp/common/Footer.svelte';
+   // import Header from './comp/common/Header.svelte';
+   // import Footer from './comp/common/Footer.svelte';
 
    // Auth Components
-   import Login from './comp/auth/login/Login.svelte';
-   import Home from './comp/home/Home.svelte';
-   import MyAccount from './comp/auth/my-account/MyAccount.svelte';
-   import SignUp from './comp/auth/sign-up/SignUp.svelte';
-   import Project from './comp/project/Project.svelte';
-   import Workbook from './comp/workbook/Workbook.svelte';
+   // import Login from './comp/auth/login/Login.svelte';
+   // import Home from './comp/home/Home.svelte';
+   // import MyAccount from './comp/auth/my-account/MyAccount.svelte';
+   // import SignUp from './comp/auth/sign-up/SignUp.svelte';
+   // import Project from './comp/project/Project.svelte';
+   // import Workbook from './comp/workbook/Workbook.svelte';
 
    // Stores
    import tokenStore from './stores/token.js';
    import projStore from './stores/project';
 
    // Constants
-   const comps = {
-      Login,
-      Home,
-      MyAccount,
-      SignUp,
-      Project,
-      Workbook,
-   };
+   // const comps = {
+   //    Login,
+   //    Home,
+   //    MyAccount,
+   //    SignUp,
+   //    Project,
+   //    Workbook,
+   // };
 
    // Variables
    let token = null;
-   let comp = Login;
+   // let comp = Login;
    let user = undefined;
    let show = false;
 
@@ -39,30 +41,30 @@
    tokenStore.subscribe((store) => (token = store));
 
    // Methods
-   const getUser = async () => {
-      // Check if there is a token and user data isn't loaded
-      if (token && !user) {
-         const res = await fetch('/api/users', {
-            headers: { Authorization: token },
-         }).catch(() => {
-            return { ok: false };
-         });
+   // const getUser = async () => {
+   //    // Check if there is a token and user data isn't loaded
+   //    if (token && !user) {
+   //       const res = await fetch('/api/users', {
+   //          headers: { Authorization: token },
+   //       }).catch(() => {
+   //          return { ok: false };
+   //       });
 
-         // Check if response was good
-         if (res.ok) {
-            // Set the user data
-            user = await res.json();
-            // Set the page to the home screen
-            comp = Home;
-            // NOTE: for development
-            // comp = Workbook;
-            show = true;
-         }
-      } else {
-         // Set the page to the login screen
-         show = true;
-      }
-   };
+   //       // Check if response was good
+   //       if (res.ok) {
+   //          // Set the user data
+   //          user = await res.json();
+   //          // Set the page to the home screen
+   //          comp = Home;
+   //          // NOTE: for development
+   //          // comp = Workbook;
+   //          show = true;
+   //       }
+   //    } else {
+   //       // Set the page to the login screen
+   //       show = true;
+   //    }
+   // };
 
    const open = async (calcId) => {
       const res = await fetch(`/api/proj/${calcId}`).catch(() => {});
@@ -77,39 +79,49 @@
    };
 
    // Reactive rules
-   $: if (token) {
-      getUser();
-   } else {
-      user = undefined;
-      comp = Login;
-      show = true;
-   }
+   // $: if (token) {
+   //    getUser();
+   // } else {
+   //    user = undefined;
+   //    comp = Login;
+   //    show = true;
+   // }
 
    // Events
-   const logout = () => {
-      tokenStore.destroy();
-      user = undefined;
-      comp = Login;
-   };
+   // const logout = () => {
+   //    tokenStore.destroy();
+   //    user = undefined;
+   //    comp = Login;
+   // };
 
-   const changePage = (event) => {
-      if (typeof event.detail === 'string') {
-         comp = comps[event.detail];
-      } else {
-         // NOTE: 2-18-2021 11:36 AM - may have other selections other than open
-         const { comp: newComp, calcId } = event.detail;
+   // const changePage = (event) => {
+   //    if (typeof event.detail === 'string') {
+   //       comp = comps[event.detail];
+   //    } else {
+   //       // NOTE: 2-18-2021 11:36 AM - may have other selections other than open
+   //       const { comp: newComp, calcId } = event.detail;
 
-         open(calcId);
+   //       open(calcId);
 
-         comp = comps[newComp];
-      }
-   };
+   //       comp = comps[newComp];
+   //    }
+   // };
 </script>
 
-<Header on:logout={logout} on:changePage={changePage} {user} loading={!show} />
+<Number label="Capacity" unit="weight" />
+<Number label="Car Speed" value={0} unit="speed" list="test" />
+<datalist id="test">
+   <option value="10" />
+   <option value="20" />
+   <option value="30" />
+   <option value="40" />
+   <option value="50" />
+</datalist>
+
+<!-- <Header on:logout={logout} on:changePage={changePage} {user} loading={!show} />
 {#if show}
    <div transition:fade>
       <svelte:component this={comp} on:changePage={changePage} {...user} {token} />
    </div>
 {/if}
-<Footer />
+<Footer /> -->

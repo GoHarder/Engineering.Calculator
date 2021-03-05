@@ -29,7 +29,10 @@ rules[0] = {
    test: /\.(html|svelte)$/,
    use: {
       loader: 'svelte-loader',
-      options: { preprocess: sveltePreprocess() },
+      options: {
+         preprocess: sveltePreprocess(),
+         emitCss: true,
+      },
    },
 };
 
