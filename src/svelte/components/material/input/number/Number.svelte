@@ -26,7 +26,7 @@
 
 <svelte:component this={component} bind:disabled bind:invalid bind:value {label} {list} {required} {step} {unit} {max} {min} useNativeValidation={useNatValid} />
 
-<style lang="scss" global>
+<!-- <style lang="scss" global>
    @use "@material/floating-label/mdc-floating-label";
    @use "@material/line-ripple/mdc-line-ripple";
    @use "@material/notched-outline/mdc-notched-outline";
@@ -50,4 +50,4 @@
          text-align: right;
       }
    }
-</style>
+</style> -->

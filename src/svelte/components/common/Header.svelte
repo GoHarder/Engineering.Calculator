@@ -3,12 +3,12 @@
    import { createEventDispatcher } from 'svelte';
 
    // SMUI Components
-   import Icon from '@smui/textfield/icon/index';
-   import Button, { Label } from '@smui/button';
-   import Menu from '@smui/menu';
-   import { Anchor } from '@smui/menu-surface';
-   import List, { Item, Text } from '@smui/list';
-   import LinearProgress from '@smui/linear-progress';
+   // import Icon from '@smui/textfield/icon/index';
+   // import Button, { Label } from '@smui/button';
+   // import Menu from '@smui/menu';
+   // import { Anchor } from '@smui/menu-surface';
+   // import List, { Item, Text } from '@smui/list';
+   // import LinearProgress from '@smui/linear-progress';
 
    // Properties
    export let user = undefined;
@@ -36,50 +36,50 @@
       <p>Hollister-Whitney Engineering Calculator</p>
    </div>
 
-   {#if user}
-      <div class="right">
-         <Icon class="material-icons">person</Icon>
+   <!-- {#if user} -->
+   <!-- <div class="right"> -->
+   <!-- <Icon class="material-icons">person</Icon> -->
 
-         <div class={anchorClasses.join(' ')} use:Anchor={{ classForward: (classes) => (anchorClasses = classes) }} bind:this={anchor}>
-            <Button on:click={() => menu.setOpen(true)} class="text-transform-none white">
-               <Label>{`${user.firstName} ${user.lastName}`}</Label>
-               <Icon class="material-icons">arrow_drop_down</Icon>
-            </Button>
+   <!-- <div class={anchorClasses.join(' ')} use:Anchor={{ classForward: (classes) => (anchorClasses = classes) }} bind:this={anchor}> -->
+   <!-- <Button on:click={() => menu.setOpen(true)} class="text-transform-none white"> -->
+   <!-- <Label>{`${user.firstName} ${user.lastName}`}</Label> -->
+   <!-- <Icon class="material-icons">arrow_drop_down</Icon> -->
+   <!-- </Button> -->
 
-            <Menu bind:this={menu} anchor={false} bind:anchorElement={anchor} anchorCorner="BOTTOM_LEFT">
-               <List>
-                  <Item on:SMUI:action={() => dispatch('changePage', 'MyAccount')}>
-                     <Icon class="material-icons">account_circle</Icon>
-                     <Text>My Account</Text>
-                  </Item>
+   <!-- <Menu bind:this={menu} anchor={false} bind:anchorElement={anchor} anchorCorner="BOTTOM_LEFT"> -->
+   <!-- <List> -->
+   <!-- <Item on:SMUI:action={() => dispatch('changePage', 'MyAccount')}> -->
+   <!-- <Icon class="material-icons">account_circle</Icon> -->
+   <!-- <Text>My Account</Text> -->
+   <!-- </Item> -->
 
-                  {#if user.admin}
-                     <!-- <Item on:SMUI:action={() => console.log('TODO: 2-09-2021 3:22 PM - hook up admin tools')}>
+   <!-- {#if user.admin} -->
+   <!-- <Item on:SMUI:action={() => console.log('TODO: 2-09-2021 3:22 PM - hook up admin tools')}>
                         <Icon class="material-icons">build</Icon>
                         <Text>Admin Tools</Text>
                      </Item> -->
 
-                     <Item on:SMUI:action={createNewUser}>
-                        <Icon class="material-icons">person_add</Icon>
-                        <Text>Create New User</Text>
-                     </Item>
-                  {/if}
+   <!-- <Item on:SMUI:action={createNewUser}> -->
+   <!-- <Icon class="material-icons">person_add</Icon> -->
+   <!-- <Text>Create New User</Text> -->
+   <!-- </Item> -->
+   <!-- {/if} -->
 
-                  <Item on:SMUI:action={logout}>
-                     <Icon class="material-icons">logout</Icon>
-                     <Text>Logout</Text>
-                  </Item>
-               </List>
-            </Menu>
-         </div>
-      </div>
-   {/if}
+   <!-- <Item on:SMUI:action={logout}> -->
+   <!-- <Icon class="material-icons">logout</Icon> -->
+   <!-- <Text>Logout</Text> -->
+   <!-- </Item> -->
+   <!-- </List> -->
+   <!-- </Menu> -->
+   <!-- </div> -->
+   <!-- </div> -->
+   <!-- {/if} -->
 </header>
 
-{#if loading}
-   <LinearProgress class="header-bar" indeterminate />
-{/if}
+<!-- {#if loading} -->
+<!-- <LinearProgress class="header-bar" indeterminate /> -->
 
+<!-- {/if} -->
 <style lang="scss">
    :global {
       @import '@material/linear-progress/mixins';

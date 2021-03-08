@@ -4,13 +4,9 @@
 
    // Project Components
    import A from '../../common/A.svelte';
-
-   // SMUI Components
-   import Textfield from '@smui/textfield';
-   import Icon from '@smui/textfield/icon/index';
-   import Button, { Label } from '@smui/button';
-   import Checkbox from '@smui/checkbox';
-   import FormField from '@smui/form-field';
+   import { Checkbox } from '../../material/checkbox';
+   import { HelperText, Input } from '../../material/input';
+   import { Button, Label } from '../../material/button';
 
    // Stores
    import token from '../../../stores/token.js';
@@ -22,71 +18,27 @@
    let email = '';
    let password = '';
    let longToken = false;
-   let showPassword = false;
+   let invalidEmail = false;
+   let invalidPassword = false;
+   let emailMsg = 'Email is invalid';
+   let passwordMsg = 'Password is invalid';
 
    // Events
-   const toggleShowPassword = () => (showPassword = !showPassword);
-
-   const changeForm = (event) => {
-      event.preventDefault();
+   const changeForm = () => {
       dispatch('changeForm', 'ForgotPassword');
    };
 
-   const signIn = async (event) => {
-      event.preventDefault();
-
-      // Step 1: start the fetch and obtain a reader
+   const signIn = async () => {
       const res = await fetch('/api/tokens', {
          method: 'POST',
          body: JSON.stringify({ email, password, longToken }),
          headers: { 'Content-Type': 'application/json' },
       }).catch(() => {});
 
-      // NOTE: 2-12-2021 4:22 PM - how to get download progress with fetch
-      // Step 1: start the fetch and obtain a reader
-      //  const res = await fetch('/api/tokens', {
-      //       method: 'POST',
-      //       body: JSON.stringify({ email, password, longToken }),
-      //       headers: { 'Content-Type': 'application/json' },
-      //    }).catch(() => {});
-
-      // const reader = res.body.getReader();
-
-      // // Step 2: get total length
-      // const contentLength = res.headers.get('Content-Length');
-
-      // // Step 3: read the data
-      // let receivedLength = 0;
-      // let chunks = [];
-
-      // while (true) {
-      //    const { done, value } = await reader.read();
-
-      //    if (done) {
-      //       break;
-      //    }
-
-      //    chunks.push(value);
-      //    receivedLength += value.length;
-
-      //    console.log(`Received ${receivedLength} of ${contentLength} - ${(receivedLength / contentLength) * 100}%`);
-      // }
-
-      // // Step 4: concatenate chunks into single Uint8Array
-      // let chunksAll = new Uint8Array(receivedLength);
-      // let position = 0;
-      // for (let chunk of chunks) {
-      //    chunksAll.set(chunk, position);
-      //    position += chunk.length;
-      // }
-
-      // // Step 5: decode into a string
-      // let result = new TextDecoder('utf-8').decode(chunksAll);
-
-      // // We're done!
-      // let commits = JSON.parse(result);
-
-      // console.log(commits);
+      invalidEmail = false;
+      invalidPassword = false;
+      emailMsg = 'Email is invalid';
+      passwordMsg = 'Password is invalid';
 
       const body = await res.json();
 
@@ -95,75 +47,72 @@
       } else {
          const { status, statusText } = res;
          const errors = body.error;
+         const msg = body.msg;
 
-         dispatch('error', { status, statusText, errors });
+         console.log(status, statusText);
+         console.log(errors);
+
+         invalidEmail = errors.includes('email');
+         invalidPassword = errors.includes('password');
+
+         if (msg) {
+            emailMsg = msg.email ? msg.email : emailMsg;
+            passwordMsg = msg.password ? msg.password : passwordMsg;
+         }
       }
    };
 </script>
 
-<p class="input-label-1">Email</p>
+<div class="row n1">
+   <Input bind:value={email} bind:invalid={invalidEmail} label="Email" type="email" width="100%" />
+   <HelperText validation>{emailMsg}</HelperText>
+</div>
+<div class="row n2">
+   <Input bind:value={password} bind:invalid={invalidPassword} label="Password" type="password" width="100%" />
+   <HelperText validation>{passwordMsg}</HelperText>
+</div>
 
-<Textfield bind:value={email} fullwidth label="Enter Email" type="email" />
-
-<p class="input-label-2">Password</p>
-
-{#if showPassword}
-   <Textfield tabindex="0" bind:value={password} fullwidth label="Enter Password" withTrailingIcon>
-      <Icon on:click={toggleShowPassword} role="button" class="material-icons">visibility</Icon>
-   </Textfield>
-{:else}
-   <Textfield tabindex="1" bind:value={password} fullwidth label="Enter Password" type="password" withTrailingIcon>
-      <Icon tabindex="2" on:click={toggleShowPassword} role="button" class="material-icons">visibility_off</Icon>
-   </Textfield>
-{/if}
-
-<div class="row-3">
-   <FormField>
-      <Checkbox bind:checked={longToken} />
-      <span slot="label">Keep me signed in</span>
-   </FormField>
+<div class="row n3">
+   <Checkbox bind:checked={longToken} label="Keep me signed in" />
 
    <span class="pipe">|</span>
 
    <A on:click={changeForm}>Forgot Password?</A>
 </div>
 
-<div class="row-4">
-   <Button on:click={signIn} class="text-transform-none" color="secondary" variant="raised">
+<div class="row n4">
+   <Button on:click={signIn} variant="contained">
       <Label>Sign In</Label>
-      <Icon class="material-icons">login</Icon>
+      <svg slot="icon-2" class="mdc-button__icon" xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" height="24" viewBox="0 0 24 24" width="24">
+         <g>
+            <rect fill="none" height="24" width="24" />
+         </g>
+         <g>
+            <path d="M11,7L9.6,8.4l2.6,2.6H2v2h10.2l-2.6,2.6L11,17l5-5L11,7z M20,19h-8v2h8c1.1,0,2-0.9,2-2V5c0-1.1-0.9-2-2-2h-8v2h8V19z" />
+         </g>
+      </svg>
    </Button>
 </div>
 
 <style lang="scss">
-   .input-label-1,
-   .input-label-2 {
-      font-size: 18px;
-      font-weight: 700;
-      color: #343434;
-   }
-   .input-label {
-      &-1 {
-         margin: 0;
-         margin-top: 6px;
-      }
-      &-2 {
-         margin: 0;
-         margin-top: 14px;
-      }
-   }
-   .row-3 {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      margin: 15px 0;
-      width: 500px;
-   }
-   .row-4 {
+   .row {
+      margin: 8px 0;
       text-align: center;
-   }
-   .pipe {
-      color: #d3d3d3;
-      padding: 0 10px;
+
+      &.n1 {
+         margin-top: 0;
+      }
+      &.n3 {
+         display: flex;
+         justify-content: center;
+         align-items: center;
+         span {
+            color: #d3d3d3;
+            padding: 0 10px;
+         }
+      }
+      &.n4 {
+         margin-bottom: 0;
+      }
    }
 </style>

@@ -3,14 +3,12 @@
    // import { onMount } from 'svelte';
    import { fade } from 'svelte/transition';
 
-   import Input from './components/material/input/Input.svelte';
-
    // Common Components
-   // import Header from './comp/common/Header.svelte';
-   // import Footer from './comp/common/Footer.svelte';
+   import Header from './components/common/Header.svelte';
+   import Footer from './components/common/Footer.svelte';
 
    // Auth Components
-   // import Login from './comp/auth/login/Login.svelte';
+   import Login from './components/auth/login/Login.svelte';
    // import Home from './comp/home/Home.svelte';
    // import MyAccount from './comp/auth/my-account/MyAccount.svelte';
    // import SignUp from './comp/auth/sign-up/SignUp.svelte';
@@ -22,18 +20,18 @@
    import projStore from './stores/project';
 
    // Constants
-   // const comps = {
-   //    Login,
-   //    Home,
-   //    MyAccount,
-   //    SignUp,
-   //    Project,
-   //    Workbook,
-   // };
+   const comps = {
+      Login,
+      // Home,
+      // MyAccount,
+      // SignUp,
+      // Project,
+      // Workbook,
+   };
 
    // Variables
    let token = null;
-   // let comp = Login;
+   let comp = Login;
    let user = undefined;
    let show = false;
 
@@ -108,20 +106,11 @@
    // };
 </script>
 
-<Input label="Number" />
-<Input label="Counterbalance" unit="%" list="counterbalance" />
-<datalist id="counterbalance">
-   <option value="40" />
-   <option value="50" />
-</datalist>
-
-<Input label="Capacity" unit="weight" value={2000} disabled />
-<Input label="Car Speed" unit="speed" invalid />
-
-<!-- <Header on:logout={logout} on:changePage={changePage} {user} loading={!show} />
-{#if show}
-   <div transition:fade>
-      <svelte:component this={comp} on:changePage={changePage} {...user} {token} />
-   </div>
-{/if}
-<Footer /> -->
+<Header />
+<!-- {#if show} -->
+<!-- <div transition:fade> -->
+<!-- <svelte:component this={comp} on:changePage={changePage} {...user} {token} /> -->
+<svelte:component this={comp} />
+<!-- </div> -->
+<!-- {/if} -->
+<Footer />
