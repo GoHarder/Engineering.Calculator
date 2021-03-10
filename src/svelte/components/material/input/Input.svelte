@@ -1,5 +1,5 @@
 <script>
-   import { onMount } from 'svelte';
+   import { onDestroy, onMount } from 'svelte';
    import { MDCTextField } from '@material/textfield';
 
    // Parameters
@@ -63,20 +63,18 @@
       TextField.required = required;
       TextField.useNativeValidation = !disableValidation;
 
-      let icon, wrapper;
-
       if ($$slots.leadingIcon) {
          const label = bind1.querySelector('.mdc-floating-label');
-         icon = bind1.querySelector('.mdc-text-field__icon--leading');
-         wrapper = icon.parentNode;
+         const icon = bind1.querySelector('.mdc-text-field__icon--leading');
+         // wrapper = icon.parentNode;
 
          label.parentNode.insertBefore(icon, label.nextSibling);
       }
 
       if ($$slots.trailingIcon) {
          const input = bind1.querySelector('input');
-         icon = bind1.querySelector('.mdc-text-field__icon--trailing');
-         wrapper = icon.parentNode;
+         const icon = bind1.querySelector('.mdc-text-field__icon--trailing');
+         // wrapper = icon.parentNode;
 
          input.parentNode.insertBefore(icon, input.nextSibling);
       }
@@ -84,10 +82,14 @@
       if ($$slots.helperText) {
          // bind1
          const text = bind2.querySelector('.mdc-text-field-helper-line');
-         wrapper = text.parentNode;
+         // wrapper = text.parentNode;
 
          bind1.parentNode.insertBefore(text, bind1.nextSibling);
       }
+   });
+
+   onDestroy(() => {
+      TextField.destroy();
    });
 </script>
 
@@ -148,6 +150,9 @@
       input[type='number'] {
          text-align: right;
          -moz-appearance: textfield;
+      }
+      .mdc-text-field__icon.mdc-text-field__icon--leading {
+         margin-left: 12px;
       }
    }
 </style>

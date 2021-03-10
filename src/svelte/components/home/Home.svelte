@@ -5,6 +5,7 @@
    // Project Components
    // import WorkbookTable from './WorkbookTable.svelte';
    // import Search from './Search.svelte';
+   import { InputSearch } from '../material/input';
 
    import { Body, Cell, Head, Row, Table } from '../material/data-table';
 
@@ -51,11 +52,13 @@
 
    // Events
    const onSearch = () => {
-      if (search) {
-         workbooks = fetchSearch(1);
-      } else {
-         workbooks = fetchRecent(1);
-      }
+      console.log('ding');
+
+      // if (search) {
+      //    workbooks = fetchSearch(1);
+      // } else {
+      //    workbooks = fetchRecent(1);
+      // }
    };
 
    const onOpen = (event) => {
@@ -94,6 +97,9 @@
          <strong>Create New Workbook</strong>
          button
       </h6>
+
+      <InputSearch on:click={onSearch} />
+
       <!-- <Search bind:value={search} on:search={onSearch} on:new={onOpen} /> -->
 
       <!-- {#await workbooks} -->

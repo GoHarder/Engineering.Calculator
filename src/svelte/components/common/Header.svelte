@@ -10,6 +10,12 @@
    // import List, { Item, Text } from '@smui/list';
    // import LinearProgress from '@smui/linear-progress';
 
+   // Project Components
+   import { Button, Label } from '../material/button';
+   import { ArrowDropDown } from '../material/button/icons';
+   import { Anchor, Icon, Item, Menu, Text } from '../material/menu';
+   import { LinearProgress } from '../material/progress';
+
    // Properties
    export let user = undefined;
    export let loading = false;
@@ -18,9 +24,7 @@
    const dispatch = createEventDispatcher();
 
    // Variables
-   let menu;
-   let anchor;
-   let anchorClasses = [];
+   let open = false;
 
    // Events
    const logout = () => dispatch('logout');
@@ -36,59 +40,53 @@
       <p>Hollister-Whitney Engineering Calculator</p>
    </div>
 
-   <!-- {#if user} -->
-   <!-- <div class="right"> -->
-   <!-- <Icon class="material-icons">person</Icon> -->
+   {#if user}
+      <div class="right">
+         <i class="material-icons">person</i>
 
-   <!-- <div class={anchorClasses.join(' ')} use:Anchor={{ classForward: (classes) => (anchorClasses = classes) }} bind:this={anchor}> -->
-   <!-- <Button on:click={() => menu.setOpen(true)} class="text-transform-none white"> -->
-   <!-- <Label>{`${user.firstName} ${user.lastName}`}</Label> -->
-   <!-- <Icon class="material-icons">arrow_drop_down</Icon> -->
-   <!-- </Button> -->
+         <Anchor>
+            <Button on:click={() => (open = !open)}>
+               <Label>{`${user.firstName} ${user.lastName}`}</Label>
+               <ArrowDropDown />
+            </Button>
+            <Menu bind:open>
+               <Item on:click={() => dispatch('changePage', 'MyAccount')}>
+                  <Icon>account_circle</Icon>
+                  <Text>My Account</Text>
+               </Item>
 
-   <!-- <Menu bind:this={menu} anchor={false} bind:anchorElement={anchor} anchorCorner="BOTTOM_LEFT"> -->
-   <!-- <List> -->
-   <!-- <Item on:SMUI:action={() => dispatch('changePage', 'MyAccount')}> -->
-   <!-- <Icon class="material-icons">account_circle</Icon> -->
-   <!-- <Text>My Account</Text> -->
-   <!-- </Item> -->
+               {#if user.admin}
+                  <!-- <Item on:SMUI:action={() => console.log('TODO: 2-09-2021 3:22 PM - hook up admin tools')}> -->
+                  <!-- <Icon class="material-icons">build</Icon> -->
+                  <!-- <Text>Admin Tools</Text> -->
+                  <!-- </Item> -->
 
-   <!-- {#if user.admin} -->
-   <!-- <Item on:SMUI:action={() => console.log('TODO: 2-09-2021 3:22 PM - hook up admin tools')}>
-                        <Icon class="material-icons">build</Icon>
-                        <Text>Admin Tools</Text>
-                     </Item> -->
+                  <Item on:click={createNewUser}>
+                     <Icon class="material-icons">person_add</Icon>
+                     <Text>Create New User</Text>
+                  </Item>
+               {/if}
 
-   <!-- <Item on:SMUI:action={createNewUser}> -->
-   <!-- <Icon class="material-icons">person_add</Icon> -->
-   <!-- <Text>Create New User</Text> -->
-   <!-- </Item> -->
-   <!-- {/if} -->
-
-   <!-- <Item on:SMUI:action={logout}> -->
-   <!-- <Icon class="material-icons">logout</Icon> -->
-   <!-- <Text>Logout</Text> -->
-   <!-- </Item> -->
-   <!-- </List> -->
-   <!-- </Menu> -->
-   <!-- </div> -->
-   <!-- </div> -->
-   <!-- {/if} -->
+               <Item on:click={logout}>
+                  <Icon class="material-icons">logout</Icon>
+                  <Text>Logout</Text>
+               </Item>
+            </Menu>
+         </Anchor>
+      </div>
+   {/if}
 </header>
 
-<!-- {#if loading} -->
-<!-- <LinearProgress class="header-bar" indeterminate /> -->
+{#if loading}
+   <div class="sticky">
+      <LinearProgress indeterminate />
+   </div>
+{/if}
 
-<!-- {/if} -->
 <style lang="scss">
-   :global {
-      @import '@material/linear-progress/mixins';
-      @import '@material/theme/color-palette';
-
-      .header-bar {
-         @include mdc-linear-progress-bar-color(#ffcb30);
-         @include mdc-linear-progress-buffer-color(#ffffff);
-      }
+   div.sticky {
+      position: sticky;
+      top: 0;
    }
 
    header {

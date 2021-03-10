@@ -7,6 +7,7 @@
    import PasswordRequire from '../../common/PasswordRequire.svelte';
    import { HelperText, Input, InputIcon, InputPassword } from '../../material/input';
    import { Button, Label } from '../../material/button';
+   import { RestartAlt } from '../../material/button/icons';
 
    // Parameters
    export let reset = undefined;
@@ -103,6 +104,7 @@
 
          <Button on:click={resetPassword} variant="contained">
             <Label>Reset Password</Label>
+            <RestartAlt />
          </Button>
       </div>
    </div>

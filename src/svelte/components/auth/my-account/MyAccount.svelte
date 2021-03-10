@@ -1,3 +1,4 @@
+<!-- TODO: 3-10-2021 2:45 PM - add error trapping -->
 <script>
    // Svelte Imports
    import { createEventDispatcher } from 'svelte';
@@ -6,11 +7,14 @@
    import PasswordRequire from '../../common/PasswordRequire.svelte';
 
    // SMUI Components
-   import Paper from '@smui/paper';
-   import Textfield from '@smui/textfield';
-   import Button, { Label, Icon as BtnIcon } from '@smui/button';
-   import Snackbar, { Actions, Label as SnackLabel } from '@smui/snackbar';
-   import IconButton from '@smui/icon-button';
+   // import Paper from '@smui/paper';
+   // import Textfield from '@smui/textfield';
+   // import Button, { Label, Icon as BtnIcon } from '@smui/button';
+   // import Snackbar, { Actions, Label as SnackLabel } from '@smui/snackbar';
+   // import IconButton from '@smui/icon-button';
+   import { HelperText, Input, InputPassword } from '../../material/input';
+   import { Button, Label } from '../../material/button';
+   import { Close, Save } from '../../material/button/icons';
 
    // Parameters
    export let token = null;
@@ -26,9 +30,6 @@
    let password = '';
    let newPassword1 = '';
    let newPassword2 = '';
-   let msgSnackbar;
-   let message = '';
-   let msgClass = '';
 
    // Reactive Variables
    $: same = newPassword1 === newPassword2;
@@ -44,14 +45,6 @@
       error = Array.isArray(error) ? error[0] : error;
 
       message = `${error.charAt(0).toUpperCase() + error.slice(1)}.`;
-
-      msgSnackbar.open();
-   };
-
-   const showMsg = (msg) => {
-      msgClass = 'good';
-      message = msg;
-      msgSnackbar.open();
    };
 
    const sendReq = async (body) => {
@@ -67,14 +60,13 @@
       }).catch(() => {});
 
       if (res.ok) {
-         showMsg('Saved! Returning to the main menu...');
          setTimeout(() => {
             dispatch('changePage', 'Home');
          }, 10250);
       } else {
          const body = await res.json();
 
-         showError({ detail: body });
+         console.log(body);
       }
    };
 
@@ -107,69 +99,72 @@
    };
 </script>
 
-<Snackbar class={msgClass} bind:this={msgSnackbar} labelText={message} timeoutMs={10 * 1000}>
+<!-- <Snackbar class={msgClass} bind:this={msgSnackbar} labelText={message} timeoutMs={10 * 1000}>
    <SnackLabel />
    <Actions>
       <IconButton class="material-icons" title="Dismiss">close</IconButton>
    </Actions>
-</Snackbar>
+</Snackbar> -->
 
 <main>
    <p class="title-1">My Account</p>
    <p class="title-2">Hollister-Whitney Engineering Calculations</p>
-   <form>
-      <Paper elevation={3} square>
-         <p class="input-label first">First Name</p>
-         <Textfield bind:value={firstName} fullwidth label="First Name" />
 
-         <p class="input-label">Last Name</p>
-         <Textfield bind:value={lastName} fullwidth label="Last Name" />
+   <div class="paper n1">
+      <Input bind:value={firstName} label="First Name">
+         <span slot="helperText">
+            <HelperText validation>Invalid Email</HelperText>
+         </span>
+      </Input>
 
-         <p class="input-label">Email</p>
-         <Textfield bind:value={email} fullwidth label="Enter Email" type="email" />
+      <Input bind:value={lastName} label="Last Name">
+         <span slot="helperText">
+            <HelperText validation>Invalid Email</HelperText>
+         </span>
+      </Input>
 
-         <div class="password-section">
-            <div class="box-1">
-               <p class="input-label">New Password</p>
+      <Input bind:value={email} label="Email" type="email">
+         <span slot="helperText">
+            <HelperText validation>Invalid Email</HelperText>
+         </span>
+      </Input>
 
-               <Textfield bind:value={newPassword1} fullwidth label="Enter New Password" type="password" />
+      <div class="password-section">
+         <div class="box-1">
+            <InputPassword bind:value={newPassword1} helperText="" label="New Password" />
 
-               <p class="input-label">Confirm New Password</p>
-
-               <Textfield bind:value={newPassword2} fullwidth label="Confirm New Password" type="password" />
-            </div>
-
-            <div class="box-2">
-               <p class="input-label">Password Requirements</p>
-
-               <PasswordRequire password={newPassword1} />
-            </div>
+            <InputPassword bind:value={newPassword2} helperText="" label="Confirm New Password" />
          </div>
-      </Paper>
 
-      <div class="paper-2">
-         <Paper elevation={3} square>
-            <p class="bottom-text">Enter current password to confirm settings</p>
+         <div class="box-2">
+            <p class="input-label">Password Requirements</p>
 
-            <Textfield bind:value={password} fullwidth label="Current Password" type="password" />
-
-            <div class="button-section">
-               <Button on:click={cancel} class="text-transform-none" variant="outlined">
-                  <Label>Cancel</Label>
-                  <BtnIcon class="material-icons">close</BtnIcon>
-               </Button>
-
-               <Button on:click={save} class="text-transform-none" color="secondary" variant="raised">
-                  <Label>Save</Label>
-                  <BtnIcon class="material-icons">save</BtnIcon>
-               </Button>
-            </div>
-         </Paper>
+            <PasswordRequire password={newPassword1} />
+         </div>
       </div>
-   </form>
+   </div>
+
+   <div class="paper n2">
+      <p class="bottom-text">Enter current password to confirm settings</p>
+
+      <InputPassword bind:value={password} helperText="" label="Current Password" required />
+
+      <div class="button-section">
+         <Button on:click={cancel} color="secondary" variant="outlined">
+            <Label>Cancel</Label>
+            <Close />
+         </Button>
+
+         <Button on:click={save} variant="contained">
+            <Label>Save</Label>
+            <Save />
+         </Button>
+      </div>
+   </div>
 </main>
 
 <style lang="scss">
+   @import './src/scss/vantage-theme';
    main {
       display: flex;
       flex-direction: column;
@@ -191,20 +186,12 @@
       font-size: 24px;
       color: #343434;
    }
-   form {
-      max-width: 700px;
-      border-top: 5px solid #ffcb30;
-   }
 
    .input-label {
       font-size: 18px;
       font-weight: 700;
       color: #343434;
       margin-bottom: 0;
-
-      &.first {
-         margin-top: 0;
-      }
    }
 
    .bottom-text {
@@ -221,12 +208,21 @@
    }
 
    .button-section {
-      margin-top: 24px;
+      margin-top: 8px;
       display: flex;
       justify-content: space-between;
    }
 
-   .paper-2 {
-      margin: 15px 0;
+   .paper {
+      padding: 16px;
+      box-shadow: $mdc-elevation-3;
+      background-color: #ffffff;
+      width: 700px;
+      &.n1 {
+         border-top: 5px solid $mdc-theme-primary;
+      }
+      &.n2 {
+         margin: 15px 0;
+      }
    }
 </style>

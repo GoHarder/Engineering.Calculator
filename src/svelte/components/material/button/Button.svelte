@@ -1,12 +1,14 @@
 <script>
-   import { onMount } from 'svelte';
+   import { onDestroy, onMount } from 'svelte';
    import { MDCRipple } from '@material/ripple';
 
+   // Parameters
    export let color = 'primary';
    export let variant = 'text';
    export let disabled = false;
    export let unelevated = false;
 
+   // Variables
    let bind1;
    let buttonRipple;
 
@@ -15,19 +17,22 @@
    let raised = unelevated ? 'mdc-button--unelevated' : 'mdc-button--raised';
    let contained = variant === 'contained' ? raised : '';
 
+   // Reactive Variables
    $: buttonClass = ['mdc-button', `mdc-button-${color}`, text, outlined, contained].join(' ');
 
+   // Lifecycle
    onMount(() => {
       buttonRipple = new MDCRipple(bind1);
+   });
+
+   onDestroy(() => {
+      buttonRipple.destroy();
    });
 </script>
 
 <button bind:this={bind1} on:click {disabled} class={buttonClass}>
    <span class="mdc-button__ripple" />
-   <slot name="icon-1" />
    <slot />
-   <slot name="icon-2" />
-   <span class="mdc-button__touch" />
 </button>
 
 <style lang="scss" global>
@@ -45,7 +50,7 @@
 
       &.mdc-button {
          &-primary.mdc-button--text {
-            @include button.ink-color(#4d4d4d);
+            @include button.ink-color(#ffffff);
          }
 
          &-secondary.mdc-button--text {

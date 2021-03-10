@@ -1,5 +1,6 @@
 <script>
    // Svelte Imports
+   import { onDestroy } from 'svelte';
    import { fade } from 'svelte/transition';
 
    // Common Components
@@ -9,7 +10,7 @@
    // Auth Components
    import Login from './components/auth/login/Login.svelte';
    import Home from './components/home/Home.svelte';
-   // import MyAccount from './comp/auth/my-account/MyAccount.svelte';
+   import MyAccount from './components/auth/my-account/MyAccount.svelte';
    // import SignUp from './comp/auth/sign-up/SignUp.svelte';
    // import Project from './comp/project/Project.svelte';
    // import Workbook from './comp/workbook/Workbook.svelte';
@@ -22,25 +23,28 @@
    const comps = {
       Login,
       Home,
-      // MyAccount,
+      MyAccount,
       // SignUp,
       // Project,
       // Workbook,
    };
 
    // Variables
-   let token = null;
    let comp = Login;
-   let user = undefined;
+   let loading = false;
    let show = false;
+   let token = null;
+   let user = undefined;
 
    // Subscriptions
-   tokenStore.subscribe((store) => (token = store));
+   const clearToken = tokenStore.subscribe((store) => (token = store));
 
    // Methods
    const getUser = async () => {
       // Check if there is a token and user data isn't loaded
       if (token && !user) {
+         loading = true;
+
          const res = await fetch('/api/users', {
             headers: { Authorization: token },
          }).catch(() => {
@@ -54,8 +58,9 @@
             // Set the page to the home screen
             comp = Home;
             // NOTE: for development
-            // comp = Workbook;
+            // comp = MyAccount;
             show = true;
+            loading = false;
          }
       } else {
          // Set the page to the login screen
@@ -64,12 +69,16 @@
    };
 
    const open = async (calcId) => {
+      loading = true;
+
       const res = await fetch(`/api/proj/${calcId}`).catch(() => {});
 
       const body = await res.json();
 
       if (res.ok) {
          projStore.set(body);
+
+         loading = false;
       } else {
          projStore.set(undefined);
       }
@@ -103,9 +112,14 @@
          comp = comps[newComp];
       }
    };
+
+   // Lifecycle
+   onDestroy(() => {
+      clearToken();
+   });
 </script>
 
-<Header />
+<Header on:changePage={changePage} on:logout={logout} {user} {loading} />
 {#if show}
    <div transition:fade>
       <svelte:component this={comp} on:changePage={changePage} {...user} {token} />
