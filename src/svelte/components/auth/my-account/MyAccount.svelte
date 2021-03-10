@@ -3,7 +3,7 @@
    import { createEventDispatcher } from 'svelte';
 
    // Project Components
-   import PasswordRequire from '../PasswordRequire.svelte';
+   import PasswordRequire from '../../common/PasswordRequire.svelte';
 
    // SMUI Components
    import Paper from '@smui/paper';

@@ -1,11 +1,12 @@
-<!-- TODO: 2-10-2021 9:11 AM - load more rows when scrolled to bottom of page -->
 <script>
    // Svelte Imports
    import { createEventDispatcher } from 'svelte';
 
    // Project Components
-   import WorkbookTable from './WorkbookTable.svelte';
-   import Search from './Search.svelte';
+   // import WorkbookTable from './WorkbookTable.svelte';
+   // import Search from './Search.svelte';
+
+   import { Body, Cell, Head, Row, Table } from '../material/data-table';
 
    // Stores
    import projectStore from '../../stores/project';
@@ -93,15 +94,26 @@
          <strong>Create New Workbook</strong>
          button
       </h6>
-      <Search bind:value={search} on:search={onSearch} on:new={onOpen} />
+      <!-- <Search bind:value={search} on:search={onSearch} on:new={onOpen} /> -->
 
-      {#await workbooks}
-         <p>...waiting</p>
-      {:then workbooks}
-         <WorkbookTable userId={_id} {workbooks} on:select={onOpen} on:delete={onDelete} on:share={onShare} />
-      {:catch error}
-         <p style="color: red">{error.message}</p>
-      {/await}
+      <!-- {#await workbooks} -->
+      <!-- <p>...waiting</p> -->
+      <!-- {:then workbooks} -->
+      <!-- <WorkbookTable userId={_id} {workbooks} on:select={onOpen} on:delete={onDelete} on:share={onShare} /> -->
+      <!-- {:catch error} -->
+      <!-- <p style="color: red">{error.message}</p> -->
+      <!-- {/await} -->
+
+      <Table>
+         <Head>
+            <Row header>
+               <Cell>Head</Cell>
+            </Row>
+         </Head>
+         <Body>
+            <Cell>Body</Cell>
+         </Body>
+      </Table>
    </div>
 </main>
 

@@ -5,7 +5,7 @@
    // Project Components
    import A from '../../common/A.svelte';
    import { Checkbox } from '../../material/checkbox';
-   import { HelperText, Input } from '../../material/input';
+   import { HelperText, Input, InputPassword } from '../../material/input';
    import { Button, Label } from '../../material/button';
 
    // Stores
@@ -35,22 +35,18 @@
          headers: { 'Content-Type': 'application/json' },
       }).catch(() => {});
 
+      const body = await res.json();
+
       invalidEmail = false;
       invalidPassword = false;
       emailMsg = 'Email is invalid';
       passwordMsg = 'Password is invalid';
 
-      const body = await res.json();
-
       if (res.ok) {
          token.set(body.token);
       } else {
-         const { status, statusText } = res;
          const errors = body.error;
          const msg = body.msg;
-
-         console.log(status, statusText);
-         console.log(errors);
 
          invalidEmail = errors.includes('email');
          invalidPassword = errors.includes('password');
@@ -64,12 +60,14 @@
 </script>
 
 <div class="row n1">
-   <Input bind:value={email} bind:invalid={invalidEmail} label="Email" type="email" width="100%" />
-   <HelperText validation>{emailMsg}</HelperText>
+   <Input bind:value={email} invalid={invalidEmail} label="Email" required type="email">
+      <span slot="helperText">
+         <HelperText validation>{emailMsg}</HelperText>
+      </span>
+   </Input>
 </div>
 <div class="row n2">
-   <Input bind:value={password} bind:invalid={invalidPassword} label="Password" type="password" width="100%" />
-   <HelperText validation>{passwordMsg}</HelperText>
+   <InputPassword bind:value={password} helperText={passwordMsg} invalid={invalidPassword} label="Password" required />
 </div>
 
 <div class="row n3">

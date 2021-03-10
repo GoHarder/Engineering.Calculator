@@ -1,35 +1,113 @@
 <script>
-   import Email from './email/Email.svelte';
-   import Number from './number/Number.svelte';
-   import Password from './password/Password.svelte';
+   import { onMount } from 'svelte';
+   import { MDCTextField } from '@material/textfield';
 
-   export { className as class };
+   // Parameters
    export let disabled = false;
+   export let disableValidation = false;
    export let invalid = false;
    export let label = '';
-   export let list = undefined;
-   export let required = false;
-   export let step = 1;
-   export let type = 'number';
+   export let list = '';
    export let max = undefined;
+   export let maxLength = undefined;
    export let min = undefined;
-   export let unit = 'default';
-   export let useNatValid = true;
-   export let value = undefined;
-   export let width = '';
+   export let minLength = undefined;
+   export let pattern = undefined;
+   export let prefix = '';
+   export let required = false;
+   export let step = undefined;
+   export let suffix = false;
+   export let type = 'text';
+   export let value = '';
+   export let variant = 'filled';
 
-   let className;
-
-   const components = {
-      email: Email,
-      number: Number,
-      password: Password,
+   // Constants
+   const parameters = {
+      list,
+      max,
+      maxLength,
+      min,
+      minLength,
+      pattern,
+      step,
+      type,
    };
 
-   $: component = components[type];
+   // Variables
+   let bind1 = undefined;
+   let bind2 = undefined;
+   let TextField = undefined;
+
+   // Reactive Variables
+   $: labelClass = [
+      'mdc-text-field',
+      variant === 'filled' ? 'mdc-text-field--filled' : 'mdc-text-field--outlined',
+      $$slots.leadingIcon ? 'mdc-text-field--with-leading-icon' : '',
+      $$slots.trailingIcon ? 'mdc-text-field--with-trailing-icon' : '',
+   ].join(' ');
+
+   // Reactive Rules
+   $: if (TextField) {
+      TextField.disabled = disabled;
+      TextField.valid = !invalid;
+   }
+
+   // Events
+   const onChange = (event) => {
+      value = type === 'number' ? event.target.valueAsNumber : event.target.value;
+   };
+
+   // Lifecycle
+   onMount(() => {
+      TextField = new MDCTextField(bind1);
+      TextField.required = required;
+      TextField.useNativeValidation = !disableValidation;
+
+      let icon, wrapper;
+
+      if ($$slots.leadingIcon) {
+         const label = bind1.querySelector('.mdc-floating-label');
+         icon = bind1.querySelector('.mdc-text-field__icon--leading');
+         wrapper = icon.parentNode;
+
+         label.parentNode.insertBefore(icon, label.nextSibling);
+      }
+
+      if ($$slots.trailingIcon) {
+         const input = bind1.querySelector('input');
+         icon = bind1.querySelector('.mdc-text-field__icon--trailing');
+         wrapper = icon.parentNode;
+
+         input.parentNode.insertBefore(icon, input.nextSibling);
+      }
+
+      if ($$slots.helperText) {
+         // bind1
+         const text = bind2.querySelector('.mdc-text-field-helper-line');
+         wrapper = text.parentNode;
+
+         bind1.parentNode.insertBefore(text, bind1.nextSibling);
+      }
+   });
 </script>
 
-<svelte:component this={component} bind:disabled bind:invalid bind:value {className} {label} {list} {required} {step} {unit} {max} {min} {useNatValid} {width} />
+<div bind:this={bind2}>
+   <label bind:this={bind1} class={labelClass}>
+      <span class="mdc-text-field__ripple" />
+      <span class="mdc-floating-label">{label}</span>
+      <slot name="leadingIcon" />
+      {#if prefix}
+         <span class="mdc-text-field__affix mdc-text-field__affix--prefix">{prefix}</span>
+      {/if}
+      <input class="mdc-text-field__input" on:change={onChange} {...parameters} {value} />
+      <slot name="trailingIcon" />
+      {#if suffix}
+         <span class="mdc-text-field__affix mdc-text-field__affix--suffix">{suffix}</span>
+      {/if}
+      <span class="mdc-line-ripple" />
+   </label>
+   <slot name="helperText" />
+</div>
 
 <style lang="scss" global>
    @use "@material/theme" with (
@@ -49,7 +127,7 @@
       @include textfield.label-color($mdc-theme-secondary);
 
       padding: 0 8px; // 0 16px
-
+      width: 100%;
       + .mdc-text-feild-helper-line {
          padding: 0 8px;
       }
@@ -57,12 +135,19 @@
          left: 8px; // 16px
       }
 
-      .mdc-text-field__icon {
-         padding: 12px 0;
+      // .mdc-text-field__icon {
+      //    padding: 12px 0;
+      // }
+
+      input::-webkit-outer-spin-button,
+      input::-webkit-inner-spin-button {
+         -webkit-appearance: none;
+         margin: 0;
       }
 
       input[type='number'] {
          text-align: right;
+         -moz-appearance: textfield;
       }
    }
 </style>

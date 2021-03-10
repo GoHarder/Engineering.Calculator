@@ -4,12 +4,9 @@
 
    // Project Components
    import A from '../../common/A.svelte';
-   import PasswordRequire from '../PasswordRequire.svelte';
-
-   // SMUI Components
-   import Textfield from '@smui/textfield';
-   import Button, { Label, Icon as BtnIcon } from '@smui/button';
-   import Icon from '@smui/textfield/icon/index';
+   import PasswordRequire from '../../common/PasswordRequire.svelte';
+   import { HelperText, Input, InputIcon, InputPassword } from '../../material/input';
+   import { Button, Label } from '../../material/button';
 
    // Parameters
    export let reset = undefined;
@@ -21,14 +18,19 @@
    let resetCode = '';
    let password = '';
    let newPassword = '';
+   let invalidResetCode = false;
+   let invalidPassword = false;
+   let invalidNewPassword = false;
+   let resetCodeMsg = 'Invalid Code';
+   let passwordMsg = 'Invalid Password';
+   let newPasswordMsg = 'Invalid Password';
 
    // Reactive Variables
    $: id = reset ? reset.id : undefined;
    $: token = reset ? reset.token : undefined;
 
    // Events
-   const changeForm = (event) => {
-      event.preventDefault();
+   const changeForm = () => {
       dispatch('changeForm', 'LoginForm');
    };
 
@@ -36,9 +38,7 @@
       dispatch('changeForm', 'ForgotPassword');
    };
 
-   const resetPassword = async (event) => {
-      event.preventDefault();
-
+   const resetPassword = async () => {
       if (password === newPassword && reset) {
          const body = JSON.stringify({
             reset: resetCode,
@@ -54,18 +54,30 @@
             body,
          });
 
+         invalidResetCode = false;
+         invalidPassword = false;
+         invalidNewPassword = false;
+         resetCodeMsg = 'Invalid Code';
+         passwordMsg = 'Invalid Password';
+         newPasswordMsg = 'Invalid Password';
+
          if (res.ok) {
             dispatch('changeForm', 'LoginForm');
          } else {
             const body = await res.json();
 
-            const { status, statusText } = res;
-            const errors = status === 400 ? 'form data is invalid' : body.error;
+            const errors = body.error;
+            const msg = body.msg;
 
-            dispatch('error', { status, statusText, errors });
+            invalidResetCode = errors.includes('password');
+            invalidPassword = errors.includes('newPassword');
+            invalidNewPassword = errors.includes('newPassword');
          }
       } else {
-         dispatch('error', { status: 400, statusText: 'Bad Request', errors: 'passwords do not match' });
+         invalidPassword = true;
+         invalidNewPassword = true;
+         passwordMsg = 'Passwords do not match';
+         newPasswordMsg = 'Passwords do not match';
       }
    };
 </script>
@@ -73,25 +85,24 @@
 <p class="p-1">A reset code has been sent to your email account. Please enter it below to complete verification and set your new password.</p>
 <div class="main">
    <div class="box-1">
-      <p class="input-label-1">Verification Code</p>
+      <Input bind:value={resetCode} invalid={invalidResetCode} label="Enter Code" required>
+         <span slot="trailingIcon">
+            <InputIcon on:click={resend} button title="Resend Code" trailing>undo</InputIcon>
+         </span>
+         <span slot="helperText">
+            <HelperText validation>{resetCodeMsg}</HelperText>
+         </span>
+      </Input>
 
-      <Textfield bind:value={resetCode} fullwidth label="Enter Code" withTrailingIcon>
-         <Icon on:click={resend} role="button" class="material-icons">replay</Icon>
-      </Textfield>
+      <InputPassword bind:value={password} helperText={passwordMsg} invalid={invalidPassword} label="New Password" required />
 
-      <p class="input-label-2">New Password</p>
-
-      <Textfield bind:value={password} fullwidth label="Enter Password" type="password" />
-
-      <p class="input-label-2">Confirm New Password</p>
-
-      <Textfield bind:value={newPassword} fullwidth label="Confirm Password" type="password" />
+      <InputPassword bind:value={newPassword} helperText={newPasswordMsg} invalid={invalidNewPassword} label="Confirm New Password" required />
 
       <div class="row">
          <A on:click={changeForm}>Back to Login</A>
-         <Button on:click={resetPassword} class="text-transform-none" color="secondary" variant="raised">
+
+         <Button on:click={resetPassword} variant="contained">
             <Label>Reset Password</Label>
-            <BtnIcon class="material-icons">check</BtnIcon>
          </Button>
       </div>
    </div>
@@ -102,22 +113,14 @@
 </div>
 
 <style lang="scss">
-   .input-label-1,
-   .input-label-2 {
+   .input-label-1 {
       font-size: 18px;
       font-weight: 700;
       color: #343434;
+      margin: 0;
+      margin-top: 6px;
    }
-   .input-label {
-      &-1 {
-         margin: 0;
-         margin-top: 6px;
-      }
-      &-2 {
-         margin: 0;
-         margin-top: 14px;
-      }
-   }
+
    .row {
       margin-top: 15px;
       display: flex;

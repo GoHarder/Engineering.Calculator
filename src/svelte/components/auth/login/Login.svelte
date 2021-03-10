@@ -1,42 +1,25 @@
 <script>
    // Project Components
    import LoginForm from './LoginForm.svelte';
-   // import ForgotPassword from './ForgotPassword.svelte';
-   // import ConfirmPassword from './ConfirmPassword.svelte';
-
-   // SMUI Components
-   // import Paper from '@smui/paper';
-
-   // Project Components
-   // import ErrorDialog from '../../common/ErrorDialog.svelte';
+   import ForgotPassword from './ForgotPassword.svelte';
+   import ConfirmPassword from './ConfirmPassword.svelte';
 
    // Constants
    const comps = {
       LoginForm,
-      // ForgotPassword,
-      // ConfirmPassword,
+      ForgotPassword,
+      ConfirmPassword,
    };
 
    // Variables
    let comp = LoginForm;
    let reset;
-   let status;
-   let statusText;
-   let errors = [];
 
    // Reactive Variables
    $: signInText = comp === LoginForm ? 'Sign In' : 'Forgot Password';
 
    // Events
    const changeForm = (event) => (comp = comps[event.detail]);
-
-   const showError = (event) => {
-      let { status: resStatus, statusText: resStatusText, errors: resErrors } = event.detail;
-
-      status = resStatus;
-      statusText = resStatusText;
-      errors = Array.isArray(resErrors) ? resErrors : [resErrors];
-   };
 </script>
 
 <main>
@@ -44,7 +27,7 @@
    <p class="title-2">Hollister-Whitney Engineering Calculator</p>
    <div class="form" />
    <div class="paper">
-      <svelte:component this={comp} bind:reset on:changeForm={changeForm} on:error={showError} />
+      <svelte:component this={comp} bind:reset on:changeForm={changeForm} />
    </div>
 </main>
 
@@ -77,6 +60,7 @@
       box-shadow: $mdc-elevation-3;
       border-top: 5px solid $mdc-theme-primary;
       background-color: #ffffff;
-      width: 500px;
+      min-width: 500px;
+      max-width: 700px;
    }
 </style>
