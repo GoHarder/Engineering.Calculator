@@ -152,7 +152,7 @@
          -moz-appearance: textfield;
       }
       .mdc-text-field__icon.mdc-text-field__icon--leading {
-         margin-left: 12px;
+         margin-left: 8px;
       }
    }
 </style>

@@ -9,6 +9,7 @@
    export let disabled = false;
    export let disableValidation = false;
    export let invalid = false;
+   export let label = 'Search';
    export let list = '';
    export let maxLength = undefined;
    export let minLength = undefined;
@@ -20,7 +21,7 @@
 
    const parameters = {
       disableValidation,
-      label: 'Search',
+      label,
       list,
       maxLength,
       minLength,

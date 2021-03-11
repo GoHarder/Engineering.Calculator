@@ -2,24 +2,16 @@
    // Svelte Imports
    import { createEventDispatcher } from 'svelte';
 
-   // SMUI Components
-   import Icon from '@smui/textfield/icon/index';
-   import { Row, Cell } from '@smui/data-table';
-   import Chip from '@smui/chips';
-   import IconButton from '@smui/icon-button';
-   import Menu from '@smui/menu';
-   import List, { Item, Text } from '@smui/list';
+   // Components
+   import { Cell, Row } from '../material/data-table';
+   import { IconButton } from '../material/button';
+   import { MoreVert } from '../material/button/icons';
+   import { Anchor, Icon, Item, Menu, Text } from '../material/menu';
+   import { Chip } from '../material/chip';
 
    // Properties
-   export let _id = '';
-   export let contract = '';
-   export let jobName = '';
-   export let carNo = '';
-   export let customer = '';
-   export let layout = '';
-   export let created = 0;
-   export let opened = 0;
-   export let creator = '';
+   export let workbook = {};
+   export let userId = undefined;
 
    // Methods
    const getDateString = (number) => {
@@ -36,64 +28,119 @@
 
    // Constants
    const dispatch = createEventDispatcher();
+   const creator = `${workbook.creator.firstName} ${workbook.creator.lastName}`;
+   const initials = creator.replace(/(\b[a-zA-Z])[a-zA-Z]* ?/g, '$1');
+   const opened = workbook.opened.find((book) => book.userId === userId).time;
 
    // Variables
    let menu;
-
-   // Reactive Variables
-   $: initials = creator.replace(/(\b[a-zA-Z])[a-zA-Z]* ?/g, '$1');
+   let open = false;
 
    // Events
-   const onSelect = () => dispatch('select', _id);
+   const onSelect = () => dispatch('select', workbook._id);
 
-   const onDelete = () => dispatch('delete', _id);
+   const onDelete = () => dispatch('delete', workbook._id);
 
-   const onShare = () => dispatch('share', _id);
+   const onShare = () => dispatch('share', workbook._id);
 </script>
 
-<Row>
-   <Cell on:click={onSelect} style="text-align: center" title={contract}>{contract}</Cell>
-   <Cell on:click={onSelect} style="text-align: center" title={jobName}>{jobName}</Cell>
-   <Cell on:click={onSelect} style="text-align: center" title={carNo}>{carNo}</Cell>
-   <Cell on:click={onSelect} style="text-align: center" title={customer}>{customer}</Cell>
-   <Cell on:click={onSelect} style="text-align: center" title={layout}>{layout}</Cell>
-   <Cell on:click={onSelect} style="text-align: center" title={getDateString(created)}>{getDateString(created)}</Cell>
-   <Cell on:click={onSelect} style="text-align: center" title={getDateString(opened)}>{getDateString(opened)}</Cell>
-   <Cell on:click={onSelect} style="text-align: center">
-      <Chip title={creator}>{initials}</Chip>
+<Row class="workbook-row">
+   <Cell row on:click={onSelect}>{workbook.contract}</Cell>
+   <Cell class="workbook-cell job-name" on:click={onSelect}>{workbook.jobName}</Cell>
+   <Cell class="workbook-cell car-no" on:click={onSelect}>{workbook.carNo}</Cell>
+   <Cell class="workbook-cell customer" on:click={onSelect}>{workbook.customer}</Cell>
+   <Cell class="workbook-cell layout" on:click={onSelect}>{workbook.layout}</Cell>
+   <Cell class="workbook-cell date" on:click={onSelect}>{getDateString(workbook.created)}</Cell>
+   <Cell class="workbook-cell date" on:click={onSelect}>{getDateString(opened)}</Cell>
+   <Cell class="workbook-cell owner" on:click={onSelect} title={creator}>
+      <Chip>{initials}</Chip>
    </Cell>
 
-   <div class="dropdown">
-      <IconButton class="material-icons" on:click={() => menu.setOpen(true)}>more_vert</IconButton>
-      <div class="dropdown-content">
-         <Menu anchor={false} bind:this={menu}>
-            <List>
-               <Item on:SMUI:action={onDelete}>
-                  <Icon class="material-icons">delete</Icon>
-                  <Text>Delete</Text>
-               </Item>
-               <Item on:SMUI:action={onShare}>
-                  <Icon class="material-icons">share</Icon>
-                  <Text>Share</Text>
-               </Item>
-            </List>
-         </Menu>
-      </div>
-   </div>
+   <Anchor>
+      <IconButton on:click={() => (open = !open)}>
+         <MoreVert />
+      </IconButton>
+      <Menu bind:open corner="top-right">
+         <Item on:click={onShare}>
+            <Icon>share</Icon>
+            <Text>Share</Text>
+         </Item>
+         <Item on:click={onDelete}>
+            <Icon>delete</Icon>
+            <Text>Delete</Text>
+         </Item>
+      </Menu>
+   </Anchor>
 </Row>
 
-<style>
-   .dropdown {
-      position: relative;
-      display: inline-block;
+<style lang="scss" global>
+   .workbook-row {
+      cursor: pointer;
    }
-   .dropdown-content {
-      display: block;
-      position: absolute;
 
-      transform-origin: left top;
-      left: -112px;
-      top: 0px;
-      max-height: 945px;
+   .workbook-cell {
+      .contract {
+         max-width: 105px;
+      }
+      .job-name {
+         max-width: 300px;
+      }
+      .car-no {
+         max-width: 100px;
+      }
+      .customer {
+         max-width: 220px;
+      }
+      .layout {
+         max-width: 100px;
+      }
+      &.date {
+         display: none;
+      }
+      &.owner {
+         display: none;
+      }
+   }
+
+   @media (min-width: 1100px) {
+      .workbook-cell {
+         .job-name {
+            max-width: 300px;
+         }
+         .car-no {
+            max-width: 100px;
+         }
+         .customer {
+            max-width: 220px;
+         }
+         .layout {
+            max-width: 100px;
+         }
+         &.date {
+            display: table-cell;
+            max-width: 120px;
+         }
+      }
+   }
+
+   @media (min-width: 1200px) {
+      .workbook-cell {
+         .job-name {
+            max-width: 300px;
+         }
+         .car-no {
+            max-width: 100px;
+         }
+         .customer {
+            max-width: 220px;
+         }
+         .layout {
+            max-width: 100px;
+         }
+
+         &.owner {
+            display: table-cell;
+         }
+      }
    }
 </style>

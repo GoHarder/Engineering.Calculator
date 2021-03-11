@@ -5,13 +5,6 @@
 
    // Project Components
    import PasswordRequire from '../../common/PasswordRequire.svelte';
-
-   // SMUI Components
-   // import Paper from '@smui/paper';
-   // import Textfield from '@smui/textfield';
-   // import Button, { Label, Icon as BtnIcon } from '@smui/button';
-   // import Snackbar, { Actions, Label as SnackLabel } from '@smui/snackbar';
-   // import IconButton from '@smui/icon-button';
    import { HelperText, Input, InputPassword } from '../../material/input';
    import { Button, Label } from '../../material/button';
    import { Close, Save } from '../../material/button/icons';

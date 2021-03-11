@@ -5,8 +5,10 @@
    // Project Components
    // import WorkbookTable from './WorkbookTable.svelte';
    // import Search from './Search.svelte';
+   import WorkbookRow from './WorkbookRow.svelte';
    import { InputSearch } from '../material/input';
-
+   import { Button, Label } from '../material/button';
+   import { AddCircle } from '../material/button/icons';
    import { Body, Cell, Head, Row, Table } from '../material/data-table';
 
    // Stores
@@ -52,22 +54,20 @@
 
    // Events
    const onSearch = () => {
-      console.log('ding');
+      if (search) {
+         workbooks = fetchSearch(1);
+      } else {
+         workbooks = fetchRecent(1);
+      }
+   };
 
-      // if (search) {
-      //    workbooks = fetchSearch(1);
-      // } else {
-      //    workbooks = fetchRecent(1);
-      // }
+   const onNew = () => {
+      dispatch('changePage', 'Project');
+      projectStore.set({});
    };
 
    const onOpen = (event) => {
-      if (event.detail) {
-         dispatch('changePage', { comp: 'Project', calcId: event.detail });
-      } else {
-         dispatch('changePage', 'Project');
-         projectStore.set({});
-      }
+      dispatch('changePage', { comp: 'Project', calcId: event.detail });
    };
 
    const onDelete = (event) => {
@@ -82,14 +82,12 @@
 </script>
 
 <main>
-   <div>
-      <div>
-         <h5>Hi {`${firstName} ${lastName}`},</h5>
-         <h6 class="title-1">
-            Welcome to the
-            <span>Hollister-Whitney Engineering Calculator</span>
-         </h6>
-      </div>
+   <div class="title-container">
+      <h5>Hi {`${firstName} ${lastName}`},</h5>
+      <h6 class="title-1">
+         Welcome to the
+         <span>Hollister-Whitney Engineering Calculator</span>
+      </h6>
       <h6 class="title-2">
          Select an existing
          <strong>Workbook</strong>
@@ -97,41 +95,67 @@
          <strong>Create New Workbook</strong>
          button
       </h6>
+   </div>
 
-      <InputSearch on:click={onSearch} />
+   <div class="search-container">
+      <div class="box n1"><InputSearch bind:value={search} on:click={onSearch} label="Search Workbooks" /></div>
+      <div class="box n2">
+         <Button on:click={onNew} variant="contained">
+            <Label>Create New Workbook</Label>
+            <AddCircle />
+         </Button>
+      </div>
+   </div>
 
-      <!-- <Search bind:value={search} on:search={onSearch} on:new={onOpen} /> -->
+   <!-- <Search bind:value={search} on:search={onSearch} on:new={onOpen} /> -->
 
-      <!-- {#await workbooks} -->
-      <!-- <p>...waiting</p> -->
-      <!-- {:then workbooks} -->
-      <!-- <WorkbookTable userId={_id} {workbooks} on:select={onOpen} on:delete={onDelete} on:share={onShare} /> -->
-      <!-- {:catch error} -->
-      <!-- <p style="color: red">{error.message}</p> -->
-      <!-- {/await} -->
+   <!-- {#await workbooks} -->
+   <!-- <p>...waiting</p> -->
+   <!-- {:then workbooks} -->
+   <!-- <WorkbookTable userId={_id} {workbooks} on:select={onOpen} on:delete={onDelete} on:share={onShare} /> -->
+   <!-- {:catch error} -->
+   <!-- <p style="color: red">{error.message}</p> -->
+   <!-- {/await} -->
 
-      <Table>
+   <div class="table">
+      <Table sticky>
          <Head>
             <Row header>
-               <Cell>Head</Cell>
+               <Cell header>Contract #</Cell>
+               <Cell header class="workbook-cell job-name">Job Name</Cell>
+               <Cell header class="workbook-cell car-no">Car #</Cell>
+               <Cell header class="workbook-cell customer">Customer</Cell>
+               <Cell header class="workbook-cell layout">Layout #</Cell>
+               <Cell header class="workbook-cell date">Created</Cell>
+               <Cell header class="workbook-cell date">Last Opened</Cell>
+               <Cell header class="workbook-cell owner">Owned By</Cell>
+               <Cell header />
             </Row>
          </Head>
          <Body>
-            <Cell>Body</Cell>
+            {#await workbooks}
+               <p>Loading...</p>
+            {:then workbooks}
+               {#each workbooks as workbook (workbook._id)}
+                  <WorkbookRow userId={_id} {workbook} on:delete={onDelete} on:share={onShare} on:select={onOpen} />
+               {/each}
+            {:catch error}
+               <p style="color: red">{error.message}</p>
+            {/await}
          </Body>
       </Table>
    </div>
 </main>
 
 <style lang="scss">
+   @import './src/scss/vantage-theme';
    main {
       margin-bottom: 30px;
       padding: 16px;
       display: flex;
-      flex-grow: 1;
-      justify-content: center;
+      flex-direction: column;
+      align-items: center;
    }
-
    h5 {
       color: #676767;
       font: {
@@ -140,6 +164,9 @@
       }
       line-height: 1.334;
       margin: 0;
+   }
+   .title-container {
+      margin: 0 auto;
    }
 
    .title-1 {
@@ -154,7 +181,6 @@
          font-weight: 600;
       }
    }
-
    .title-2 {
       color: #343434;
       font: {
@@ -164,6 +190,44 @@
       line-height: 1.57;
       margin: 0 {
          top: 8px;
+      }
+   }
+
+   .search-container {
+      display: flex;
+      margin: 16px auto;
+      align-items: center;
+      justify-content: space-between;
+      border-radius: 4px;
+      padding: 14px;
+      background-color: #ffffff;
+      max-width: 835px;
+      width: 100%;
+
+      .box.n1 {
+         flex-grow: 1;
+         margin-right: 8px;
+         max-width: 700px;
+      }
+      .box.n2 {
+         margin-left: 8px;
+      }
+   }
+
+   .table {
+      box-shadow: $mdc-elevation-3;
+      border-top: 5px solid $mdc-theme-primary;
+   }
+
+   @media (min-width: 1100px) {
+      .search-container {
+         max-width: 1070px;
+      }
+   }
+
+   @media (min-width: 1200px) {
+      .search-container {
+         max-width: 1170px;
       }
    }
 </style>
