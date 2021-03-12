@@ -1,3 +1,4 @@
+<!-- NOTE: Depricated -->
 <script>
    // Svelte Imports
    import { createEventDispatcher } from 'svelte';

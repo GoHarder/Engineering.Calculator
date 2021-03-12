@@ -4,6 +4,7 @@
 
    // Parameters
    export let color = 'primary';
+   export { className as class };
    export let variant = 'text';
    export let disabled = false;
    export let unelevated = false;
@@ -11,6 +12,7 @@
    // Variables
    let bind1;
    let buttonRipple;
+   let className = '';
 
    let text = variant === 'text' ? 'mdc-button--text' : '';
    let outlined = variant === 'outlined' ? 'mdc-button--outlined' : '';
@@ -18,7 +20,7 @@
    let contained = variant === 'contained' ? raised : '';
 
    // Reactive Variables
-   $: buttonClass = ['mdc-button', `mdc-button-${color}`, text, outlined, contained].join(' ');
+   $: buttonClass = ['mdc-button', className, `mdc-button-${color}`, text, outlined, contained].join(' ');
 
    // Lifecycle
    onMount(() => {
@@ -47,6 +49,10 @@
    .mdc-button {
       text-transform: unset;
       @include button.horizontal-padding(12px);
+
+      &.mdc-banner__primary-action {
+         @include button.ink-color(#4d4d4d);
+      }
 
       &.mdc-button {
          &-primary.mdc-button--text {

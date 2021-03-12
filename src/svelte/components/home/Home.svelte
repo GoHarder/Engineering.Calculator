@@ -1,10 +1,9 @@
 <script>
    // Svelte Imports
    import { createEventDispatcher } from 'svelte';
+   import { fade } from 'svelte/transition';
 
    // Project Components
-   // import WorkbookTable from './WorkbookTable.svelte';
-   // import Search from './Search.svelte';
    import WorkbookRow from './WorkbookRow.svelte';
    import { InputSearch } from '../material/input';
    import { Button, Label } from '../material/button';
@@ -13,6 +12,7 @@
 
    // Stores
    import projectStore from '../../stores/project';
+   import loadingStore from '../../stores/loading';
 
    // Properties
    export let _id = '';
@@ -21,25 +21,31 @@
 
    // Methods
    const fetchRecent = async (page) => {
+      loadingStore.set(true);
       const res = await fetch(`api/proj?id=${_id}&page=${page}`);
       const body = await res.json();
 
       if (res.ok) {
          // fetchType = 'recent';
+         loadingStore.set(false);
          return body;
       } else {
+         loadingStore.set(false);
          throw new Error('text');
       }
    };
 
    const fetchSearch = async (page) => {
+      loadingStore.set(true);
       const res = await fetch(`api/proj?search=${search}&page=${page}`);
       const body = await res.json();
 
       if (res.ok) {
          // fetchType = 'search';
+         loadingStore.set(false);
          return body;
       } else {
+         loadingStore.set(false);
          throw new Error('text');
       }
    };
@@ -97,53 +103,44 @@
       </h6>
    </div>
 
-   <div class="search-container">
-      <div class="box n1"><InputSearch bind:value={search} on:click={onSearch} label="Search Workbooks" /></div>
-      <div class="box n2">
-         <Button on:click={onNew} variant="contained">
-            <Label>Create New Workbook</Label>
-            <AddCircle />
-         </Button>
+   <div transition:fade>
+      <div class="search-container">
+         <div class="box n1"><InputSearch bind:value={search} on:click={onSearch} label="Search Workbooks" /></div>
+         <div class="box n2">
+            <Button on:click={onNew} variant="contained">
+               <Label>Create New Workbook</Label>
+               <AddCircle />
+            </Button>
+         </div>
       </div>
-   </div>
-
-   <!-- <Search bind:value={search} on:search={onSearch} on:new={onOpen} /> -->
-
-   <!-- {#await workbooks} -->
-   <!-- <p>...waiting</p> -->
-   <!-- {:then workbooks} -->
-   <!-- <WorkbookTable userId={_id} {workbooks} on:select={onOpen} on:delete={onDelete} on:share={onShare} /> -->
-   <!-- {:catch error} -->
-   <!-- <p style="color: red">{error.message}</p> -->
-   <!-- {/await} -->
-
-   <div class="table">
-      <Table sticky>
-         <Head>
-            <Row header>
-               <Cell header>Contract #</Cell>
-               <Cell header class="workbook-cell job-name">Job Name</Cell>
-               <Cell header class="workbook-cell car-no">Car #</Cell>
-               <Cell header class="workbook-cell customer">Customer</Cell>
-               <Cell header class="workbook-cell layout">Layout #</Cell>
-               <Cell header class="workbook-cell date">Created</Cell>
-               <Cell header class="workbook-cell date">Last Opened</Cell>
-               <Cell header class="workbook-cell owner">Owned By</Cell>
-               <Cell header />
-            </Row>
-         </Head>
-         <Body>
-            {#await workbooks}
-               <p>Loading...</p>
-            {:then workbooks}
-               {#each workbooks as workbook (workbook._id)}
-                  <WorkbookRow userId={_id} {workbook} on:delete={onDelete} on:share={onShare} on:select={onOpen} />
-               {/each}
-            {:catch error}
-               <p style="color: red">{error.message}</p>
-            {/await}
-         </Body>
-      </Table>
+      <div class="table" transition:fade>
+         <Table sticky>
+            <Head>
+               <Row header>
+                  <Cell header>Contract #</Cell>
+                  <Cell header class="workbook-cell job-name">Job Name</Cell>
+                  <Cell header class="workbook-cell car-no">Car #</Cell>
+                  <Cell header class="workbook-cell customer">Customer</Cell>
+                  <Cell header class="workbook-cell layout">Layout #</Cell>
+                  <Cell header class="workbook-cell date">Created</Cell>
+                  <Cell header class="workbook-cell date">Last Opened</Cell>
+                  <Cell header class="workbook-cell owner">Owned By</Cell>
+                  <Cell header />
+               </Row>
+            </Head>
+            <Body>
+               {#await workbooks}
+                  <Cell row colspan="20">Loading...</Cell>
+               {:then workbooks}
+                  {#each workbooks as workbook (workbook._id)}
+                     <WorkbookRow userId={_id} {workbook} on:delete={onDelete} on:share={onShare} on:select={onOpen} />
+                  {/each}
+               {:catch error}
+                  <Cell row colspan="20"><span style="color: red">{error.message}</span></Cell>
+               {/await}
+            </Body>
+         </Table>
+      </div>
    </div>
 </main>
 

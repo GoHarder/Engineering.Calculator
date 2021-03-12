@@ -30,7 +30,6 @@
       minLength,
       pattern,
       step,
-      type,
    };
 
    // Variables
@@ -94,14 +93,22 @@
 </script>
 
 <div bind:this={bind2}>
-   <label bind:this={bind1} class={labelClass}>
+   <label bind:this={bind1} class={labelClass} for="input">
       <span class="mdc-text-field__ripple" />
       <span class="mdc-floating-label">{label}</span>
       <slot name="leadingIcon" />
       {#if prefix}
          <span class="mdc-text-field__affix mdc-text-field__affix--prefix">{prefix}</span>
       {/if}
-      <input class="mdc-text-field__input" on:change={onChange} {...parameters} {value} />
+
+      {#if type === 'text'}
+         <input class="mdc-text-field__input" bind:value {...parameters} />
+      {:else if type === 'number'}
+         <input class="mdc-text-field__input" bind:value {...parameters} type="number" />
+      {:else}
+         <input class="mdc-text-field__input" on:change={onChange} {...parameters} {type} {value} />
+      {/if}
+
       <slot name="trailingIcon" />
       {#if suffix}
          <span class="mdc-text-field__affix mdc-text-field__affix--suffix">{suffix}</span>

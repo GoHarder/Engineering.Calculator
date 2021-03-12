@@ -11,20 +11,21 @@
    import Login from './components/auth/login/Login.svelte';
    import Home from './components/home/Home.svelte';
    import MyAccount from './components/auth/my-account/MyAccount.svelte';
-   // import SignUp from './comp/auth/sign-up/SignUp.svelte';
+   import SignUp from './components/auth/sign-up/SignUp.svelte';
    // import Project from './comp/project/Project.svelte';
    // import Workbook from './comp/workbook/Workbook.svelte';
 
    // Stores
-   import tokenStore from './stores/token.js';
+   import tokenStore from './stores/token';
    import projStore from './stores/project';
+   import loadingStore from './stores/loading';
 
    // Constants
    const comps = {
       Login,
       Home,
       MyAccount,
-      // SignUp,
+      SignUp,
       // Project,
       // Workbook,
    };
@@ -38,6 +39,7 @@
 
    // Subscriptions
    const clearToken = tokenStore.subscribe((store) => (token = store));
+   const clearLoading = loadingStore.subscribe((store) => (loading = store));
 
    // Methods
    const getUser = async () => {
@@ -56,9 +58,9 @@
             // Set the user data
             user = await res.json();
             // Set the page to the home screen
-            comp = Home;
+            // comp = Home;
             // NOTE: for development
-            // comp = MyAccount;
+            comp = SignUp;
             show = true;
             loading = false;
          }
@@ -116,6 +118,7 @@
    // Lifecycle
    onDestroy(() => {
       clearToken();
+      clearLoading();
    });
 </script>
 

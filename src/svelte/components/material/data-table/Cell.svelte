@@ -2,6 +2,7 @@
    export let header = false;
    export let row = false;
    export let title = '';
+   export let colspan = '';
    export { className as class };
 
    let className;
@@ -17,7 +18,7 @@
 </script>
 
 {#if scope}
-   <th class={tdClass} {role} {scope} {title} on:click><slot /></th>
+   <th class={tdClass} {role} {scope} {title} {colspan} on:click><slot /></th>
 {:else}
-   <td class={tdClass} {role} {title} on:click><slot /></td>
+   <td class={tdClass} {role} {title} {colspan} on:click><slot /></td>
 {/if}

@@ -77,21 +77,25 @@
    .workbook-row {
       cursor: pointer;
    }
-
    .workbook-cell {
-      .contract {
-         max-width: 105px;
+      &.contract {
+         min-width: 100px;
+         max-width: 110px;
       }
-      .job-name {
+      &.job-name {
+         min-width: 290px;
          max-width: 300px;
       }
-      .car-no {
+      &.car-no {
+         min-width: 70px;
          max-width: 100px;
       }
-      .customer {
+      &.customer {
+         min-width: 200px;
          max-width: 220px;
       }
-      .layout {
+      &.layout {
+         min-width: 90px;
          max-width: 100px;
       }
       &.date {
@@ -101,43 +105,15 @@
          display: none;
       }
    }
-
    @media (min-width: 1100px) {
       .workbook-cell {
-         .job-name {
-            max-width: 300px;
-         }
-         .car-no {
-            max-width: 100px;
-         }
-         .customer {
-            max-width: 220px;
-         }
-         .layout {
-            max-width: 100px;
-         }
          &.date {
             display: table-cell;
-            max-width: 120px;
          }
       }
    }
-
    @media (min-width: 1200px) {
       .workbook-cell {
-         .job-name {
-            max-width: 300px;
-         }
-         .car-no {
-            max-width: 100px;
-         }
-         .customer {
-            max-width: 220px;
-         }
-         .layout {
-            max-width: 100px;
-         }
-
          &.owner {
             display: table-cell;
          }
