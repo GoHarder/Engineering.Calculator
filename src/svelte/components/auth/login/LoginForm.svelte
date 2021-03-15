@@ -1,8 +1,7 @@
 <script>
-   // Svelte Imports
-   import { createEventDispatcher } from 'svelte';
+   import { createEventDispatcher, onDestroy } from 'svelte';
 
-   // Project Components
+   // Components
    import A from '../../common/A.svelte';
    import { Checkbox } from '../../material/checkbox';
    import { HelperText, Input, InputPassword } from '../../material/input';
@@ -10,19 +9,21 @@
    import { Login } from '../../material/button/icons';
 
    // Stores
-   import token from '../../../stores/token.js';
+   import tokenStore from '../../../stores/token.js';
+   import loadingStore from '../../../stores/loading.js';
 
    // Constants
    const dispatch = createEventDispatcher();
+   const clearToken = tokenStore.subscribe(() => {});
+   const clearLoading = loadingStore.subscribe(() => {});
 
    // Variables
    let email = '';
    let password = '';
    let longToken = false;
-   let invalidEmail = false;
-   let invalidPassword = false;
-   let emailMsg = 'Email is invalid';
-   let passwordMsg = 'Password is invalid';
+
+   let emailError = '';
+   let passwordError = '';
 
    // Events
    const changeForm = () => {
@@ -36,6 +37,10 @@
    };
 
    const signIn = async () => {
+      loadingStore.set(true);
+      emailError = '';
+      passwordError = '';
+
       const res = await fetch('/api/tokens', {
          method: 'POST',
          body: JSON.stringify({ email, password, longToken }),
@@ -44,39 +49,34 @@
 
       const body = await res.json();
 
-      invalidEmail = false;
-      invalidPassword = false;
-      emailMsg = 'Email is invalid';
-      passwordMsg = 'Password is invalid';
-
       if (res.ok) {
-         token.set(body.token);
+         tokenStore.set(body.token);
+         loadingStore.set(false);
       } else {
-         const errors = body.error;
-         const msg = body.msg;
-
-         invalidEmail = errors.includes('email');
-         invalidPassword = errors.includes('password');
-
-         if (msg) {
-            emailMsg = msg.email ? msg.email : emailMsg;
-            passwordMsg = msg.password ? msg.password : passwordMsg;
-         }
+         emailError = body?.error?.email ? body.error.email : 'Invalid email';
+         passwordError = body?.error?.password ? body.error.password : 'Invalid password';
+         loadingStore.set(false);
       }
    };
+
+   // Lifecycle
+   onDestroy(() => {
+      clearLoading();
+      clearToken();
+   });
 </script>
 
 <svelte:window on:keydown={onEnter} />
 
 <div class="row n1">
-   <Input bind:value={email} invalid={invalidEmail} label="Email" required type="email">
+   <Input bind:value={email} invalid={emailError} label="Email" required type="email">
       <span slot="helperText">
-         <HelperText validation>{emailMsg}</HelperText>
+         <HelperText validation>{emailError}</HelperText>
       </span>
    </Input>
 </div>
 <div class="row n2">
-   <InputPassword bind:value={password} helperText={passwordMsg} invalid={invalidPassword} label="Password" required />
+   <InputPassword bind:value={password} helperText={passwordError} invalid={passwordError} label="Password" required />
 </div>
 
 <div class="row n3">

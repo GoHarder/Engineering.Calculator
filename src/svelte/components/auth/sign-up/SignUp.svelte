@@ -1,6 +1,5 @@
 <script>
-   // Svelte Imports
-   import { createEventDispatcher } from 'svelte';
+   import { createEventDispatcher, onDestroy } from 'svelte';
 
    // Components
    import { HelperText, Input } from '../../material/input';
@@ -8,8 +7,12 @@
    import { Check, Close, Replay } from '../../material/button/icons';
    import { Actions, Banner, Text } from '../../material/banner';
 
+   // Stores
+   import loadingStore from '../../../stores/loading.js';
+
    // Constants
    const dispatch = createEventDispatcher();
+   const clearLoading = loadingStore.subscribe(() => {});
 
    // Variables
    let firstName = '';
@@ -38,6 +41,7 @@
    };
 
    const onCreate = async () => {
+      loadingStore.set(true);
       formError = '';
       firstNameError = '';
       lastNameError = '';
@@ -52,6 +56,7 @@
       if (res.ok) {
          openBanner = true;
          onReset();
+         loadingStore.set(false);
       } else {
          firstNameError = body?.error?.firstName ? body.error.firstName : 'Invalid first name';
          lastNameError = body?.error?.lastName ? body.error.lastName : 'Invalid first name';
@@ -61,8 +66,14 @@
             formError = body.error.form;
             openBanner = true;
          }
+         loadingStore.set(false);
       }
    };
+
+   // Lifecycle
+   onDestroy(() => {
+      clearLoading();
+   });
 </script>
 
 <Banner bind:open={openBanner} centered>
@@ -89,7 +100,7 @@
 
    <div class="paper">
       <div class="row n1">
-         <Input bind:value={firstName} invalid={firstNameError} label="First Name">
+         <Input bind:value={firstName} invalid={firstNameError} label="First Name" required>
             <span slot="helperText">
                <HelperText validation>{firstNameError}</HelperText>
             </span>
@@ -97,14 +108,14 @@
       </div>
 
       <div class="row n2">
-         <Input bind:value={lastName} invalid={lastNameError} label="Last Name">
+         <Input bind:value={lastName} invalid={lastNameError} label="Last Name" required>
             <span slot="helperText">
                <HelperText validation>{lastNameError}</HelperText>
             </span>
          </Input>
       </div>
       <div class="row n3">
-         <Input bind:value={email} invalid={emailError} label="Email" type="email">
+         <Input bind:value={email} invalid={emailError} label="Email" type="email" required>
             <span slot="helperText">
                <HelperText validation>{emailError}</HelperText>
             </span>

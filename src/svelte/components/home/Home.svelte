@@ -58,6 +58,10 @@
    let search = '';
    // let fetchType = '';
 
+   $: if (_id) {
+      workbooks = fetchRecent(1);
+   }
+
    // Events
    const onSearch = () => {
       if (search) {
@@ -73,7 +77,7 @@
    };
 
    const onOpen = (event) => {
-      dispatch('changePage', { comp: 'Project', calcId: event.detail });
+      dispatch('changePage', { comp: 'Project', run: 'open', calcId: event.detail });
    };
 
    const onDelete = (event) => {

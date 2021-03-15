@@ -76,7 +76,7 @@
    };
 
    const onPrint = () => {
-      console.log('TODO: 2-26-2021 9:25 AM - hook up pring button');
+      console.log('TODO: 2-26-2021 9:25 AM - hook up print button');
    };
 
    const onSave = () => {

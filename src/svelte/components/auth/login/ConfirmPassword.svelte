@@ -1,30 +1,34 @@
 <script>
-   // Svelte Imports
-   import { createEventDispatcher } from 'svelte';
+   import { createEventDispatcher, onDestroy } from 'svelte';
 
-   // Project Components
+   //  Components
    import A from '../../common/A.svelte';
    import PasswordRequire from '../../common/PasswordRequire.svelte';
    import { HelperText, Input, InputIcon, InputPassword } from '../../material/input';
    import { Button, Label } from '../../material/button';
-   import { Replay } from '../../material/button/icons';
+   import { Check, Replay } from '../../material/button/icons';
+   import { Actions, Banner, Text } from '../../material/banner';
+
+   // Stores
+   import loadingStore from '../../../stores/loading.js';
 
    // Parameters
    export let reset = undefined;
 
    // Constants
    const dispatch = createEventDispatcher();
+   const clearLoading = loadingStore.subscribe(() => {});
 
    // Variables
    let resetCode = '';
    let password = '';
    let newPassword = '';
-   let invalidResetCode = false;
-   let invalidPassword = false;
-   let invalidNewPassword = false;
-   let resetCodeMsg = 'Invalid Code';
-   let passwordMsg = 'Invalid Password';
-   let newPasswordMsg = 'Invalid Password';
+
+   let formError = '';
+   let resetCodeError = '';
+   let passwordError = '';
+   let newPasswordError = '';
+   let openBanner = false;
 
    // Reactive Variables
    $: id = reset ? reset.id : undefined;
@@ -40,6 +44,12 @@
    };
 
    const resetPassword = async () => {
+      loadingStore.set(true);
+      formError = '';
+      resetCodeError = '';
+      passwordError = '';
+      newPasswordError = '';
+
       if (password === newPassword && reset) {
          const body = JSON.stringify({
             reset: resetCode,
@@ -55,49 +65,81 @@
             body,
          });
 
-         invalidResetCode = false;
-         invalidPassword = false;
-         invalidNewPassword = false;
-         resetCodeMsg = 'Invalid Code';
-         passwordMsg = 'Invalid Password';
-         newPasswordMsg = 'Invalid Password';
-
          if (res.ok) {
-            dispatch('changeForm', 'LoginForm');
+            loadingStore.set(false);
+            openBanner = true;
+
+            setTimeout(() => {
+               dispatch('changeForm', 'LoginForm');
+            }, 5000);
          } else {
             const body = await res.json();
+            const error = body.error;
 
-            const errors = body.error;
-            const msg = body.msg;
+            if (Array.isArray(error)) {
+               if (error.length > 1) {
+                  passwordError = error?.password ? error.password : 'Invalid Password';
+                  newPasswordError = error?.password ? error.newPassword : 'Invalid Password';
+               } else {
+                  resetCodeError = 'Invalid code';
+               }
+            } else {
+               passwordError = error?.password ? error.password : 'Invalid Password';
+               newPasswordError = error?.password ? error.newPassword : 'Invalid Password';
 
-            invalidResetCode = errors.includes('password');
-            invalidPassword = errors.includes('newPassword');
-            invalidNewPassword = errors.includes('newPassword');
+               if (error?.form) {
+                  formError = error.form;
+                  openBanner = true;
+               }
+            }
+
+            loadingStore.set(false);
          }
       } else {
-         invalidPassword = true;
-         invalidNewPassword = true;
-         passwordMsg = 'Passwords do not match';
-         newPasswordMsg = 'Passwords do not match';
+         passwordError = 'Passwords do not match';
+         newPasswordError = 'Passwords do not match';
       }
    };
+
+   // Lifecycle
+   onDestroy(() => {
+      clearLoading();
+   });
 </script>
+
+<Banner bind:open={openBanner} centered>
+   {#if !formError}
+      <Text>Password was reset.</Text>
+   {:else}
+      <Text>
+         <span style="color: #b00020;">
+            {formError}
+         </span>
+      </Text>
+   {/if}
+   <Actions>
+      <Button color="primary" class="mdc-banner__primary-action" variant="contained">
+         <Label>Ok</Label>
+         <Check />
+      </Button>
+   </Actions>
+</Banner>
 
 <p class="p-1">A reset code has been sent to your email account. Please enter it below to complete verification and set your new password.</p>
 <div class="main">
    <div class="box-1">
-      <Input bind:value={resetCode} invalid={invalidResetCode} label="Enter Code" required>
+      <Input bind:value={resetCode} invalid={resetCodeError} label="Enter Code" required>
          <span slot="trailingIcon">
             <InputIcon on:click={resend} button title="Resend Code" trailing>undo</InputIcon>
          </span>
          <span slot="helperText">
-            <HelperText validation>{resetCodeMsg}</HelperText>
+            <HelperText validation>{resetCodeError}</HelperText>
          </span>
       </Input>
 
-      <InputPassword bind:value={password} helperText={passwordMsg} invalid={invalidPassword} label="New Password" required />
+      <InputPassword bind:value={password} helperText={passwordError} invalid={passwordError} label="New Password" required />
 
-      <InputPassword bind:value={newPassword} helperText={newPasswordMsg} invalid={invalidNewPassword} label="Confirm New Password" required />
+      <InputPassword bind:value={newPassword} helperText={newPasswordError} invalid={newPasswordError} label="Confirm New Password" required />
 
       <div class="row">
          <A on:click={changeForm}>Back to Login</A>

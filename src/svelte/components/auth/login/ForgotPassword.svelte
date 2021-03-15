@@ -1,23 +1,25 @@
 <script>
-   // Svelte Imports
-   import { createEventDispatcher } from 'svelte';
+   import { createEventDispatcher, onDestroy } from 'svelte';
 
-   // Project Components
+   //  Components
    import A from '../../common/A.svelte';
    import { HelperText, Input } from '../../material/input';
    import { Button, Label } from '../../material/button';
    import { MailOutline } from '../../material/button/icons';
+
+   // Stores
+   import loadingStore from '../../../stores/loading.js';
 
    // Parameters
    export let reset = undefined;
 
    // Constants
    const dispatch = createEventDispatcher();
+   const clearLoading = loadingStore.subscribe(() => {});
 
    // Variables
    let email = '';
-   let invalidEmail = false;
-   let emailMsg = 'Email is invalid';
+   let emailError = '';
 
    // Events
    const changeForm = () => {
@@ -25,30 +27,34 @@
    };
 
    const sendEmail = async () => {
+      emailError = '';
+      loadingStore.set(true);
+
       const res = await fetch(`/api/users?email=${email}`, {
          headers: { 'Content-Type': 'application/json' },
       });
 
       const body = await res.json();
 
-      emailMsg = 'Email is invalid';
-      invalidEmail = false;
-
       if (res.ok) {
          reset = body;
+         loadingStore.set(false);
          dispatch('changeForm', 'ConfirmPassword');
       } else {
-         const errors = body.error;
-
-         invalidEmail = true;
-         emailMsg = errors;
+         loadingStore.set(false);
+         emailError = body.error;
       }
    };
+
+   // Lifecycle
+   onDestroy(() => {
+      clearLoading();
+   });
 </script>
 
-<Input bind:value={email} invalid={invalidEmail} label="Email" required type="email">
+<Input bind:value={email} invalid={emailError} label="Email" required type="email">
    <span slot="helperText">
-      <HelperText validation>{emailMsg}</HelperText>
+      <HelperText validation>{emailError}</HelperText>
    </span>
 </Input>
 

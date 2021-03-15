@@ -31,7 +31,6 @@
    </div>
 </main>
 
-<!-- <ErrorDialog {status} {statusText} {errors} /> -->
 <style lang="scss">
    @import './src/scss/vantage-theme';
    main {

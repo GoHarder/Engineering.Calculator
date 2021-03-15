@@ -30,7 +30,7 @@
 <style lang="scss">
    ul {
       list-style: none;
-      margin-left: 0;
+      // margin: 0;
       padding-left: 0;
    }
 

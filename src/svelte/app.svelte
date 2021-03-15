@@ -42,7 +42,7 @@
    const clearLoading = loadingStore.subscribe((store) => (loading = store));
 
    // Methods
-   const getUser = async () => {
+   const getUser = async (setComp = Home) => {
       // Check if there is a token and user data isn't loaded
       if (token && !user) {
          loading = true;
@@ -58,9 +58,13 @@
             // Set the user data
             user = await res.json();
             // Set the page to the home screen
-            // comp = Home;
-            // NOTE: for development
-            comp = SignUp;
+
+            if (typeof setComp === 'string') {
+               setComp = comps[setComp];
+            }
+
+            comp = setComp;
+
             show = true;
             loading = false;
          }
@@ -106,12 +110,19 @@
       if (typeof event.detail === 'string') {
          comp = comps[event.detail];
       } else {
-         // NOTE: 2-18-2021 11:36 AM - may have other selections other than open
-         const { comp: newComp, calcId } = event.detail;
+         // console.log(event.detail);
 
-         open(calcId);
+         switch (event.detail.run) {
+            case 'getUser':
+               user = undefined;
+               getUser(event.detail.comp);
+               break;
 
-         comp = comps[newComp];
+            case 'open':
+               open(event.detail.calcId);
+               comp = comps[event.detail.comp];
+               break;
+         }
       }
    };
 
