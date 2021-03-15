@@ -261,12 +261,12 @@
       }
    }
 
-   .input-label {
-      font-size: 18px;
-      font-weight: 300;
-      color: #343434;
-      margin: 0;
-   }
+   // .input-label {
+   //    font-size: 18px;
+   //    font-weight: 300;
+   //    color: #343434;
+   //    margin: 0;
+   // }
 
    .bottom-text {
       margin: 0 0 16px;

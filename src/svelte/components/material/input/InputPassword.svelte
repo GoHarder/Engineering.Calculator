@@ -1,4 +1,5 @@
 <script>
+   // Components
    import HelperText from './HelperText.svelte';
    import Input from './Input.svelte';
    import Icon from './Icon.svelte';

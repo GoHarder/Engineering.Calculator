@@ -16,7 +16,7 @@
    export let prefix = '';
    export let required = false;
    export let step = undefined;
-   export let suffix = false;
+   export let suffix = '';
    export let type = 'text';
    export let value = '';
    export let variant = 'filled';
@@ -83,7 +83,9 @@
          const text = bind2.querySelector('.mdc-text-field-helper-line');
          // wrapper = text.parentNode;
 
-         bind1.parentNode.insertBefore(text, bind1.nextSibling);
+         if (text) {
+            bind1.parentNode.insertBefore(text, bind1.nextSibling);
+         }
       }
    });
 
@@ -92,7 +94,7 @@
    });
 </script>
 
-<div bind:this={bind2}>
+<div bind:this={bind2} class="input-wrapper">
    <label bind:this={bind1} class={labelClass} for="input">
       <span class="mdc-text-field__ripple" />
       <span class="mdc-floating-label">{label}</span>
@@ -104,7 +106,7 @@
       {#if type === 'text'}
          <input class="mdc-text-field__input" bind:value {...parameters} />
       {:else if type === 'number'}
-         <input class="mdc-text-field__input" bind:value {...parameters} type="number" />
+         <input class="mdc-text-field__input" bind:value on:focus {...parameters} type="number" />
       {:else}
          <input class="mdc-text-field__input" on:change={onChange} {...parameters} {type} {value} />
       {/if}
@@ -129,6 +131,33 @@
    @use "@material/textfield";
    @import './src/scss/vantage-theme';
    @include textfield.core-styles;
+
+   .split {
+      display: flex;
+      .input-wrapper {
+         flex-grow: 1;
+         width: 50%;
+      }
+
+      &.metric-wrapper .input-wrapper {
+         width: calc(50% - 50px);
+      }
+   }
+   .metric-wrapper {
+      display: flex;
+      align-items: baseline;
+
+      .input-wrapper {
+         flex-grow: 1;
+      }
+   }
+
+   .metric-value {
+      width: 100px;
+      margin-left: 12px;
+      color: gray;
+      font-size: 14px;
+   }
 
    .mdc-text-field {
       @include textfield.fill-color(rgba($color: #000000, $alpha: 0.02));

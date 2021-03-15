@@ -72,7 +72,7 @@
    };
 
    const onNew = () => {
-      dispatch('changePage', 'Project');
+      dispatch('changePage', 'ProjectSummary');
       projectStore.set({});
    };
 

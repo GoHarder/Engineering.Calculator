@@ -7,12 +7,15 @@
    import Header from './components/common/Header.svelte';
    import Footer from './components/common/Footer.svelte';
 
-   // Auth Components
+   // Page Components
    import Login from './components/auth/login/Login.svelte';
    import Home from './components/home/Home.svelte';
    import MyAccount from './components/auth/my-account/MyAccount.svelte';
    import SignUp from './components/auth/sign-up/SignUp.svelte';
-   // import Project from './comp/project/Project.svelte';
+   // import Project from './components/project-old/Project.svelte';
+   import ProjectSummary from './components/project/project-summary/ProjectSummary.svelte';
+   import Requirements from './components/project/requirements/Requirements.svelte';
+
    // import Workbook from './comp/workbook/Workbook.svelte';
 
    // Stores
@@ -27,6 +30,8 @@
       MyAccount,
       SignUp,
       // Project,
+      ProjectSummary,
+      Requirements,
       // Workbook,
    };
 

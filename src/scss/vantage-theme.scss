@@ -8,6 +8,9 @@ $mdc-elevation-3: 0 3px 3px -2px rgb(0 0 0 / 20%), 0 3px 4px 0 rgb(0 0 0 / 14%),
 
 @mixin vantage-paper {
    box-shadow: $mdc-elevation-3;
-   border-top: 5px solid $mdc-theme-primary;
    background-color: #ffffff;
+}
+
+@mixin vantage-border {
+   border-top: 5px solid $mdc-theme-primary;
 }
