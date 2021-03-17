@@ -15,8 +15,8 @@
    // import Project from './components/project-old/Project.svelte';
    import ProjectSummary from './components/project/project-summary/ProjectSummary.svelte';
    import Requirements from './components/project/requirements/Requirements.svelte';
-
-   // import Workbook from './comp/workbook/Workbook.svelte';
+   import CalculationModules from './components/project/calculation-modules/CalculationModules.svelte';
+   import Workbook from './components/workbook/Workbook.svelte';
 
    // Stores
    import tokenStore from './stores/token';
@@ -32,7 +32,8 @@
       // Project,
       ProjectSummary,
       Requirements,
-      // Workbook,
+      CalculationModules,
+      Workbook,
    };
 
    // Variables

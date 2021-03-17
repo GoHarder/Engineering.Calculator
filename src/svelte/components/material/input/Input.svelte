@@ -5,7 +5,7 @@
    // Parameters
    export let disabled = false;
    export let disableValidation = false;
-   export let invalid = false;
+   export let invalid = undefined;
    export let label = '';
    export let list = '';
    export let max = undefined;
@@ -53,11 +53,17 @@
 
    // Events
    const onChange = (event) => {
-      value = type === 'number' ? event.target.valueAsNumber : event.target.value;
+      value = event.target.value;
    };
+
+   const onFocus = (event) => event.target.select();
 
    // Lifecycle
    onMount(() => {
+      if (invalid === true || invalid === false) {
+         disableValidation = true;
+      }
+
       TextField = new MDCTextField(bind1);
       TextField.required = required;
       TextField.useNativeValidation = !disableValidation;
@@ -104,11 +110,11 @@
       {/if}
 
       {#if type === 'text'}
-         <input class="mdc-text-field__input" bind:value {...parameters} />
+         <input class="mdc-text-field__input" bind:value on:focus={onFocus} {...parameters} />
       {:else if type === 'number'}
-         <input class="mdc-text-field__input" bind:value on:focus {...parameters} type="number" />
+         <input class="mdc-text-field__input" bind:value on:focus={onFocus} on:change {...parameters} type="number" />
       {:else}
-         <input class="mdc-text-field__input" on:change={onChange} {...parameters} {type} {value} />
+         <input class="mdc-text-field__input" on:change={onChange} on:focus={onFocus} {...parameters} {type} {value} />
       {/if}
 
       <slot name="trailingIcon" />

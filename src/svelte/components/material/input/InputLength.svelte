@@ -1,6 +1,6 @@
 <script>
    // Components
-   import { round } from './round.js';
+   import { round, floor } from './round.js';
    import HelperText from './HelperText.svelte';
    import Input from './Input.svelte';
 
@@ -48,26 +48,40 @@
    };
 
    // Variables
+   let feet = 0;
+   let inches = 0;
+
    // Subscriptions
    // Reactive Variables
    $: metricValue = round(value * 0.0254, 2);
 
    // Reactive Rules
+   $: if (value) {
+      feet = floor(value / 12);
+      inches = round(value % 12, 4);
+   }
+
    // Events
-   const onFocus = (event) => event.target.select();
+   const onFeet = (event) => {
+      value = round(event.target.valueAsNumber * 12 + inches, 4);
+   };
+
+   const onInches = (event) => {
+      value = round(feet * 12 + event.target.valueAsNumber, 4);
+   };
 
    // Lifecycle
 </script>
 
 <div class="split" class:metric-wrapper={metric}>
-   <Input bind:disabled bind:invalid bind:value on:focus={onFocus} {...parameters1}>
+   <Input bind:disabled bind:invalid on:change={onFeet} value={feet} {...parameters1}>
       <span slot="helperText">
          {#if helperText}
             <HelperText validation>{helperText}</HelperText>
          {/if}
       </span>
    </Input>
-   <Input bind:disabled bind:invalid bind:value on:focus={onFocus} {...parameters2} />
+   <Input bind:disabled bind:invalid on:change={onInches} value={inches} {...parameters2} />
 
    {#if metric}
       <span class="metric-value">{`(${metricValue} m)`}</span>

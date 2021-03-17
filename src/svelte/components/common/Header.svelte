@@ -1,16 +1,7 @@
 <script>
-   // Svelte Imports
    import { createEventDispatcher } from 'svelte';
 
-   // SMUI Components
-   // import Icon from '@smui/textfield/icon/index';
-   // import Button, { Label } from '@smui/button';
-   // import Menu from '@smui/menu';
-   // import { Anchor } from '@smui/menu-surface';
-   // import List, { Item, Text } from '@smui/list';
-   // import LinearProgress from '@smui/linear-progress';
-
-   // Project Components
+   // Components
    import { Button, Label } from '../material/button';
    import { ArrowDropDown } from '../material/button/icons';
    import { Anchor, Icon, Item, Menu, Text } from '../material/menu';

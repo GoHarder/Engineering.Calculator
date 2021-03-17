@@ -10,7 +10,7 @@
 
    // Project Components
    import SectionTitle from '../common/SectionTitle.svelte';
-   import { InputNumber, Select } from '../../../common/controls/lib.js';
+   // import { InputNumber, Select } from '../../../common/controls/lib.js';
 
    // Properties
    export let workbook = {};
@@ -74,7 +74,7 @@
 
 <section>
    <div class="input-group">
-      <InputNumber bind:value={capacity} {labelWidth} label="Capacity" type="weight" {metric} display />
+      <!-- <InputNumber bind:value={capacity} {labelWidth} label="Capacity" type="weight" {metric} display /> -->
    </div>
 </section>
 
@@ -83,25 +83,25 @@
 
    <SectionTitle level={2}>Outside</SectionTitle>
    <div class="input-group level-2">
-      <InputNumber bind:value={platformWidth} {labelWidth} label="Width" type="length" {metric} />
-      <InputNumber bind:value={platformLength} {labelWidth} label="Depth" type="length" {metric} />
-      <InputNumber bind:value={platformArea} {labelWidth} label="Area" type="area" {metric} display />
+      <!-- <InputNumber bind:value={platformWidth} {labelWidth} label="Width" type="length" {metric} /> -->
+      <!-- <InputNumber bind:value={platformLength} {labelWidth} label="Depth" type="length" {metric} /> -->
+      <!-- <InputNumber bind:value={platformArea} {labelWidth} label="Area" type="area" {metric} display /> -->
    </div>
 
    <SectionTitle level={2}>Inside</SectionTitle>
    <div class="input-group level-2">
-      <InputNumber bind:value={insidePlatformWidth} {labelWidth} label="Width" type="length" {metric} />
-      <InputNumber bind:value={insidePlatformLength} {labelWidth} label="Depth" type="length" {metric} />
-      <InputNumber bind:value={insidePlatformArea} {labelWidth} label="Area" type="area" {metric} display />
+      <!-- <InputNumber bind:value={insidePlatformWidth} {labelWidth} label="Width" type="length" {metric} /> -->
+      <!-- <InputNumber bind:value={insidePlatformLength} {labelWidth} label="Depth" type="length" {metric} /> -->
+      <!-- <InputNumber bind:value={insidePlatformArea} {labelWidth} label="Area" type="area" {metric} display /> -->
    </div>
 
    <SectionTitle level={2}>A17.1 Table 207.1 Limits</SectionTitle>
    <div class="input-group level-2">
-      <InputNumber value={maxPlatformArea} {labelWidth} label="Max Inside Net Area" type="area" {metric} display />
-      <InputNumber value={round(maxPlatformArea * 1.05, 2)} {labelWidth} label="Net Area + 5%" type="area" {metric} display />
+      <!-- <InputNumber value={maxPlatformArea} {labelWidth} label="Max Inside Net Area" type="area" {metric} display /> -->
+      <!-- <InputNumber value={round(maxPlatformArea * 1.05, 2)} {labelWidth} label="Net Area + 5%" type="area" {metric} display /> -->
 
       {#if loading.freight !== 'None'}
-         <InputNumber bind:value={minCapacity} {labelWidth} label="Min. Freight Capacity" type="weight" {metric} display />
+         <!-- <InputNumber bind:value={minCapacity} {labelWidth} label="Min. Freight Capacity" type="weight" {metric} display /> -->
       {/if}
    </div>
 </section>

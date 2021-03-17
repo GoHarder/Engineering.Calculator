@@ -41,13 +41,11 @@
 
    // Reactive Rules
    // Events
-   const onFocus = (event) => event.target.select();
-
    // Lifecycle
 </script>
 
 <div class:metric-wrapper={metric}>
-   <Input bind:disabled bind:invalid bind:value on:focus={onFocus} {...parameters}>
+   <Input bind:disabled bind:invalid bind:value {...parameters}>
       <span slot="helperText">
          {#if helperText}
             <HelperText validation>{helperText}</HelperText>
