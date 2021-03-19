@@ -7,7 +7,7 @@
    // import List, { Item, Text, Graphic, Separator, Subheader } from '@smui/list';
    import { IconButton } from '../material/button';
    import { ArrowBackIos, ArrowForwardIos, Menu, NoteAdd, Print, Save, Share } from '../material/button/icons';
-   import { AppContent, Drawer } from '../material/drawer';
+   import { AppContent, Drawer, Header, Item, List, Title } from '../material/drawer';
 
    // Project Components
    import A from '../common/A.svelte';
@@ -107,79 +107,60 @@
             <h6>{domTitle}</h6>
          </div>
       </div>
-
       <div class="button-box">
-         <IconButton on:click={onShare} title="Share"><Share /></IconButton>
-         <IconButton on:click={onNote} title="Add Note"><NoteAdd /></IconButton>
-         <IconButton on:click={onPrint} title="Print"><Print /></IconButton>
-         <IconButton on:click={onSave} title="Save"><Save /></IconButton>
+         <IconButton on:click={onShare} title="Share">
+            <Share />
+         </IconButton>
+         <IconButton on:click={onNote} title="Add Note">
+            <NoteAdd />
+         </IconButton>
+         <IconButton on:click={onPrint} title="Print">
+            <Print />
+         </IconButton>
+         <IconButton on:click={onSave} title="Save">
+            <Save />
+         </IconButton>
       </div>
    </header>
-
    <section class="paper">
-      <Drawer bind:open={menuOpen}>Placeholder</Drawer>
+      <Drawer bind:open={menuOpen}>
+         <Header>
+            <Title>Modules</Title>
+         </Header>
+         <List>
+            {#each tabs as tab}
+               <Item on:click={() => setActiveTab(tab)} activated={activeTab === tab}>
+                  {tab.title}
+               </Item>
+            {/each}
+         </List>
+      </Drawer>
       <AppContent>
          <div class="page-title">
             <div class="box-1">
-               <IconButton on:click={() => (menuOpen = !menuOpen)} title="Navigaiton"><Menu /></IconButton>
+               <IconButton on:click={() => (menuOpen = !menuOpen)} title="Navigaiton">
+                  <Menu />
+               </IconButton>
                <h6>{activeTab.title}</h6>
             </div>
             <div class="box-2">
                <div class="border-1">
-                  <IconButton on:click={() => console.log('TODO: 2-26-2021 3:13 PM - connect previous page button')} title="Previous"><ArrowBackIos /></IconButton>
+                  <IconButton on:click={() => console.log('TODO: 2-26-2021 3:13 PM - connect previous page button')} title="Previous">
+                     <ArrowBackIos />
+                  </IconButton>
                </div>
                <div class="border-2">
-                  <IconButton on:click={() => console.log('TODO: 2-26-2021 3:13 PM - connect next page button')} title="Next"><ArrowForwardIos /></IconButton>
+                  <IconButton on:click={() => console.log('TODO: 2-26-2021 3:13 PM - connect next page button')} title="Next">
+                     <ArrowForwardIos />
+                  </IconButton>
                </div>
             </div>
          </div>
+         <div class="comp">
+            <svelte:component this={activeTab.comp} bind:workbook {save} />
+         </div>
       </AppContent>
    </section>
-
-   <!-- <div class="paper mdc-elevation--z3"> -->
-   <!-- <div class="form"> -->
-   <!-- <Drawer variant="dismissible" bind:this={sideMenu} bind:open={menuOpen}> -->
-   <!-- <Header style="background-color: #333; display: flex; justify-content: space-between;"> -->
-   <!-- <Title style="color: #ffcb30; font-weight: medium">Modules</Title> -->
-   <!-- </Header> -->
-
-   <!-- <Content> -->
-   <!-- <List> -->
-   <!-- {#each tabs as tab} -->
-   <!-- <Item on:click={() => setActiveTab(tab)} activated={activeTab === tab}> -->
-   <!-- <Graphic class="material-icons" aria-hidden="true">{tab}</Graphic> -->
-   <!-- <Text>{tab.title}</Text> -->
-   <!-- </Item> -->
-   <!-- {/each} -->
-   <!-- </List> -->
-   <!-- </Content> -->
-   <!-- </Drawer> -->
-
-   <!-- <AppContent class="app-content"> -->
-   <!-- <div class="main-content"> -->
-   <!-- <div class="section-title"> -->
-   <!-- <div class="n1"> -->
-   <!-- <IconButton title="Menu" class="material-icons" on:click={() => (menuOpen = !menuOpen)}>menu</IconButton> -->
-   <!-- <h6>{activeTab.title}</h6> -->
-   <!-- </div> -->
-
-   <!-- <div class="n2"> -->
-   <!-- <IconButton title="Previous Page" class="material-icons" on:click={() => console.log('TODO: 2-26-2021 3:13 PM - connect previous page button')}> -->
-   <!-- chevron_left -->
-   <!-- </IconButton> -->
-   <!-- <span>|</span> -->
-   <!-- <IconButton title="Next Page" class="material-icons" on:click={() => console.log('TODO: 2-26-2021 3:13 PM - connect next page button')}> -->
-   <!-- chevron_right -->
-   <!-- </IconButton> -->
-   <!-- </div> -->
-   <!-- </div> -->
-   <!-- <div class="comp"> -->
-   <!-- <svelte:component this={activeTab.comp} bind:workbook {save} /> -->
-   <!-- </div> -->
-   <!-- </div> -->
-   <!-- </AppContent> -->
-   <!-- </div> -->
-   <!-- </div> -->
 </main>
 
 <style lang="scss">
@@ -260,62 +241,10 @@
       }
    }
 
-   // .paper {
-   //    border-top: solid 5px #ffcb30;
-   //    background-color: #ffffff;
-   // }
+   .comp {
+      padding: 16px;
+   }
 
-   // .form {
-   //    min-height: calc(100vh - 190px);
-   //    position: relative;
-   //    display: flex;
-   //    border: 1px solid rgba(0, 0, 0, 0.1);
-   //    overflow: hidden;
-   //    z-index: 0;
-   // }
-
-   // * :global(.mdc-drawer--modal, .mdc-drawer-scrim) {
-   //    /* This is not needed for a page-wide modal. */
-   //    position: absolute;
-   // }
-   // * :global(.app-content) {
-   //    flex: auto;
-   //    overflow: auto;
-   //    position: relative;
-   //    flex-grow: 1;
-   // }
-
-   // .section-title {
-   //    display: flex;
-   //    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-   //    height: 63px;
-   //    justify-content: space-between;
-
-   //    .n1 {
-   //       display: flex;
-   //       align-items: center;
-   //       margin: 0 8px;
-   //       h6 {
-   //          margin-left: 6px;
-   //       }
-   // //    }
-   //    .n2 {
-   //       display: flex;
-   //       align-items: center;
-   //       margin-right: 8px;
-   //    }
-   //    h6 {
-   //       margin: 0;
-   //    }
-   // }
-
-   // .main-content {
-   //    overflow: auto;
-   //    box-sizing: border-box;
-   // }
-   // .comp {
-   //    padding: 16px;
-   // }
    @media (min-width: 768px) {
       main {
          padding: 16px 24px;
