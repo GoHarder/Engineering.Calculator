@@ -3,10 +3,11 @@
    import { createEventDispatcher, onDestroy } from 'svelte';
 
    // Components
-   // import IconButton from '@smui/icon-button';
-   // import Icon from '@smui/textfield/icon/index';
    // import Drawer, { AppContent, Content, Header, Title } from '@smui/drawer';
    // import List, { Item, Text, Graphic, Separator, Subheader } from '@smui/list';
+   import { IconButton } from '../material/button';
+   import { ArrowBackIos, ArrowForwardIos, Menu, NoteAdd, Print, Save, Share } from '../material/button/icons';
+   import { AppContent, Drawer } from '../material/drawer';
 
    // Project Components
    import A from '../common/A.svelte';
@@ -23,7 +24,6 @@
    let carNo = '';
    let workbook = {};
 
-   let sideMenu;
    let menuOpen = true;
    let activeTab = 'Tab Title';
    let title = 'HW Engineering Calculator';
@@ -58,8 +58,6 @@
       domTitle = `${contract} | ${jobName} | ${carNo}`;
    }
 
-   // $: console.log(workbook);
-
    // Events
    const onHome = () => dispatch('changePage', 'Home');
    const onConfiguration = () => dispatch('changePage', 'Project');
@@ -77,12 +75,13 @@
    };
 
    const onSave = () => {
-      console.log('TODO: 2-26-2021 9:26 AM - hook up save button');
       save = true;
+
+      console.log('TODO: 3-19-2021 10:37 AM - have data push to the store');
 
       setTimeout(() => {
          save = false;
-      }, 250);
+      }, 5);
    };
 
    const setActiveTab = (tab) => (activeTab = tab);
@@ -109,67 +108,74 @@
          </div>
       </div>
 
-      <div class="menu">
-         <div class="button-box">
-            <div title="Share">
-               <!-- <IconButton class="material-icons" on:click={onShare}>share</IconButton> -->
-            </div>
-
-            <div title="Notes">
-               <!-- <IconButton class="material-icons" on:click={onNote}>note_add</IconButton> -->
-            </div>
-
-            <div title="Print">
-               <!-- <IconButton class="material-icons" on:click={onPrint}>print</IconButton> -->
-            </div>
-
-            <div title="Save">
-               <!-- <IconButton class="material-icons" on:click={onSave}>save</IconButton> -->
-            </div>
-         </div>
+      <div class="button-box">
+         <IconButton on:click={onShare} title="Share"><Share /></IconButton>
+         <IconButton on:click={onNote} title="Add Note"><NoteAdd /></IconButton>
+         <IconButton on:click={onPrint} title="Print"><Print /></IconButton>
+         <IconButton on:click={onSave} title="Save"><Save /></IconButton>
       </div>
    </header>
 
-   <div class="paper mdc-elevation--z3">
-      <div class="form">
-         <!-- <Drawer variant="dismissible" bind:this={sideMenu} bind:open={menuOpen}> -->
-         <!-- <Header style="background-color: #333; display: flex; justify-content: space-between;"> -->
-         <!-- <Title style="color: #ffcb30; font-weight: medium">Modules</Title> -->
-         <!-- </Header> -->
+   <section class="paper">
+      <Drawer bind:open={menuOpen}>Placeholder</Drawer>
+      <AppContent>
+         <div class="page-title">
+            <div class="box-1">
+               <IconButton on:click={() => (menuOpen = !menuOpen)} title="Navigaiton"><Menu /></IconButton>
+               <h6>{activeTab.title}</h6>
+            </div>
+            <div class="box-2">
+               <div class="border-1">
+                  <IconButton on:click={() => console.log('TODO: 2-26-2021 3:13 PM - connect previous page button')} title="Previous"><ArrowBackIos /></IconButton>
+               </div>
+               <div class="border-2">
+                  <IconButton on:click={() => console.log('TODO: 2-26-2021 3:13 PM - connect next page button')} title="Next"><ArrowForwardIos /></IconButton>
+               </div>
+            </div>
+         </div>
+      </AppContent>
+   </section>
 
-         <!-- <Content> -->
-         <!-- <List> -->
-         <!-- {#each tabs as tab} -->
-         <!-- <Item on:click={() => setActiveTab(tab)} activated={activeTab === tab}> -->
-         <!-- <Graphic class="material-icons" aria-hidden="true">{tab}</Graphic> -->
-         <!-- <Text>{tab.title}</Text> -->
-         <!-- </Item> -->
-         <!-- {/each} -->
-         <!-- </List> -->
-         <!-- </Content> -->
-         <!-- </Drawer> -->
+   <!-- <div class="paper mdc-elevation--z3"> -->
+   <!-- <div class="form"> -->
+   <!-- <Drawer variant="dismissible" bind:this={sideMenu} bind:open={menuOpen}> -->
+   <!-- <Header style="background-color: #333; display: flex; justify-content: space-between;"> -->
+   <!-- <Title style="color: #ffcb30; font-weight: medium">Modules</Title> -->
+   <!-- </Header> -->
 
-         <!-- <AppContent class="app-content"> -->
-         <!-- <div class="main-content"> -->
-         <!-- <div class="section-title"> -->
-         <!-- <div class="n1"> -->
-         <!-- <IconButton title="Menu" class="material-icons" on:click={() => (menuOpen = !menuOpen)}>menu</IconButton> -->
-         <!-- <h6>{activeTab.title}</h6> -->
-         <!-- </div> -->
+   <!-- <Content> -->
+   <!-- <List> -->
+   <!-- {#each tabs as tab} -->
+   <!-- <Item on:click={() => setActiveTab(tab)} activated={activeTab === tab}> -->
+   <!-- <Graphic class="material-icons" aria-hidden="true">{tab}</Graphic> -->
+   <!-- <Text>{tab.title}</Text> -->
+   <!-- </Item> -->
+   <!-- {/each} -->
+   <!-- </List> -->
+   <!-- </Content> -->
+   <!-- </Drawer> -->
 
-         <!-- <div class="n2"> -->
-         <!-- <IconButton title="Previous Page" class="material-icons" on:click={() => console.log('TODO: 2-26-2021 3:13 PM - connect previous page button')}> -->
-         chevron_left
-         <!-- </IconButton> -->
-         <!-- <span>|</span> -->
-         <!-- <IconButton title="Next Page" class="material-icons" on:click={() => console.log('TODO: 2-26-2021 3:13 PM - connect next page button')}> -->
-         <!-- chevron_right -->
-         <!-- </IconButton> -->
-      </div>
-   </div>
-   <div class="comp">
-      <!-- <svelte:component this={activeTab.comp} bind:workbook {save} /> -->
-   </div>
+   <!-- <AppContent class="app-content"> -->
+   <!-- <div class="main-content"> -->
+   <!-- <div class="section-title"> -->
+   <!-- <div class="n1"> -->
+   <!-- <IconButton title="Menu" class="material-icons" on:click={() => (menuOpen = !menuOpen)}>menu</IconButton> -->
+   <!-- <h6>{activeTab.title}</h6> -->
+   <!-- </div> -->
+
+   <!-- <div class="n2"> -->
+   <!-- <IconButton title="Previous Page" class="material-icons" on:click={() => console.log('TODO: 2-26-2021 3:13 PM - connect previous page button')}> -->
+   <!-- chevron_left -->
+   <!-- </IconButton> -->
+   <!-- <span>|</span> -->
+   <!-- <IconButton title="Next Page" class="material-icons" on:click={() => console.log('TODO: 2-26-2021 3:13 PM - connect next page button')}> -->
+   <!-- chevron_right -->
+   <!-- </IconButton> -->
+   <!-- </div> -->
+   <!-- </div> -->
+   <!-- <div class="comp"> -->
+   <!-- <svelte:component this={activeTab.comp} bind:workbook {save} /> -->
+   <!-- </div> -->
    <!-- </div> -->
    <!-- </AppContent> -->
    <!-- </div> -->
@@ -178,6 +184,11 @@
 
 <style lang="scss">
    @import './src/scss/vantage-theme';
+   $border-color: rgba(
+      $color: #000000,
+      $alpha: 0.12,
+   );
+
    main {
       padding: 16px;
       margin: 0 auto;
@@ -207,9 +218,47 @@
       }
    }
 
-   // .button-box {
-   //    display: flex;
-   // }
+   .paper {
+      @include vantage-border;
+      @include vantage-paper;
+      min-height: calc(100vh - 190px);
+      position: relative;
+   }
+
+   .page-title {
+      border-bottom: 1px solid $border-color;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 3px;
+      h6 {
+         font-family: Roboto, sans-serif;
+         font-size: 1.25rem;
+         line-height: 2rem;
+         font-weight: 500;
+         letter-spacing: 0.0125em;
+         display: block;
+         // margin-top: 0;
+         line-height: normal;
+         // margin-bottom: -20px;
+         margin: 0 0 0 8px;
+      }
+      .box-1,
+      .box-2 {
+         display: flex;
+         align-items: center;
+      }
+      .border {
+         &-1 {
+            border-right: 0.5px solid $border-color;
+            padding-right: 3px;
+         }
+         &-2 {
+            border-left: 0.5px solid $border-color;
+            padding-left: 3px;
+         }
+      }
+   }
 
    // .paper {
    //    border-top: solid 5px #ffcb30;

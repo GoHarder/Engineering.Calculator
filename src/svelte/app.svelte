@@ -12,7 +12,6 @@
    import Home from './components/home/Home.svelte';
    import MyAccount from './components/auth/my-account/MyAccount.svelte';
    import SignUp from './components/auth/sign-up/SignUp.svelte';
-   // import Project from './components/project-old/Project.svelte';
    import ProjectSummary from './components/project/project-summary/ProjectSummary.svelte';
    import Requirements from './components/project/requirements/Requirements.svelte';
    import CalculationModules from './components/project/calculation-modules/CalculationModules.svelte';
@@ -29,7 +28,6 @@
       Home,
       MyAccount,
       SignUp,
-      // Project,
       ProjectSummary,
       Requirements,
       CalculationModules,
@@ -59,18 +57,17 @@
             return { ok: false };
          });
 
-         // Check if response was good
          if (res.ok) {
             // Set the user data
             user = await res.json();
-            // Set the page to the home screen
 
-            if (typeof setComp === 'string') {
-               setComp = comps[setComp];
-            }
+            // Used when user updates settings
+            if (typeof setComp === 'string') setComp = comps[setComp];
 
+            // Set the page to the next screen
             comp = setComp;
 
+            // Show the page and stop the loading animation
             show = true;
             loading = false;
          }
@@ -80,19 +77,28 @@
       }
    };
 
-   const open = async (calcId) => {
+   const open = async (detail) => {
+      // Show the loading animation
       loading = true;
 
-      const res = await fetch(`/api/proj/${calcId}`).catch(() => {});
-
-      const body = await res.json();
+      // Request the server for the calculator data
+      const res = await fetch(`/api/proj/${detail.calcId}`).catch(() => {
+         return { ok: false };
+      });
 
       if (res.ok) {
+         // Get the body of the request at set it in the project store
+         const body = await res.json();
          projStore.set(body);
 
+         // Stop the loading animation
          loading = false;
+
+         // Change the page to the workbook area
+         comp = Workbook;
       } else {
-         projStore.set(undefined);
+         // TODO: 3-19-2021 10:22 AM - show user that the workbook failed to load
+         loading = false;
       }
    };
 
@@ -116,8 +122,7 @@
       if (typeof event.detail === 'string') {
          comp = comps[event.detail];
       } else {
-         // console.log(event.detail);
-
+         // If theres more instructions that just changing pages run it
          switch (event.detail.run) {
             case 'getUser':
                user = undefined;
@@ -125,8 +130,7 @@
                break;
 
             case 'open':
-               open(event.detail.calcId);
-               comp = comps[event.detail.comp];
+               open(event.detail);
                break;
          }
       }
