@@ -59,6 +59,7 @@
    const onProject = () => dispatch('changePage', 'ProjectSummary');
    const onStart = () => {
       // TODO: 3-16-2021 3:37 PM - check if there are modules selected
+      // TODO: 3-22-2021 1:55 PM - save setup
       dispatch('changePage', 'Workbook');
    };
 
@@ -232,6 +233,7 @@
       flex-wrap: wrap;
       padding: 12px 48px 0;
       justify-content: space-evenly;
+      gap: 16px;
    }
 
    .search-container {

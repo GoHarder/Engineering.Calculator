@@ -33,13 +33,12 @@
    const opened = workbook.opened.find((book) => book.userId === userId).time;
 
    // Variables
-   let menu;
    let open = false;
 
    // Events
    const onSelect = () => dispatch('select', workbook._id);
 
-   const onDelete = () => dispatch('delete', workbook._id);
+   const onDelete = () => dispatch('delete', { calcId: workbook._id, user: workbook.creator._id });
 
    const onShare = () => dispatch('share', workbook._id);
 </script>

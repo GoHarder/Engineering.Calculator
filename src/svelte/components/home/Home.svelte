@@ -7,8 +7,9 @@
    import WorkbookRow from './WorkbookRow.svelte';
    import { InputSearch } from '../material/input';
    import { Button, Label } from '../material/button';
-   import { AddCircle } from '../material/button/icons';
+   import { AddCircle, Check } from '../material/button/icons';
    import { Body, Cell, Head, Row, Table } from '../material/data-table';
+   import { Actions, Banner, Text } from '../material/banner';
 
    // Stores
    import projectStore from '../../stores/project';
@@ -18,11 +19,17 @@
    export let _id = '';
    export let firstName = '';
    export let lastName = '';
+   export let admin = false;
+
+   // Variables
+   let openBanner = false;
+   let menuError = 'Error';
 
    // Methods
    const fetchRecent = async (page) => {
       loadingStore.set(true);
-      const res = await fetch(`api/proj?id=${_id}&page=${page}`);
+      const res = await fetch(`api/proj?id=${_id}&page=${page}`).catch(() => ({ ok: false }));
+
       const body = await res.json();
 
       if (res.ok) {
@@ -37,7 +44,7 @@
 
    const fetchSearch = async (page) => {
       loadingStore.set(true);
-      const res = await fetch(`api/proj?search=${search}&page=${page}`);
+      const res = await fetch(`api/proj?search=${search}&page=${page}`).catch(() => ({ ok: false }));
       const body = await res.json();
 
       if (res.ok) {
@@ -80,9 +87,30 @@
       dispatch('changePage', { comp: 'Project', run: 'open', calcId: event.detail });
    };
 
-   const onDelete = (event) => {
-      console.log('TODO: 2-15-2021 9:47 AM - hook up delete event');
-      console.log(event);
+   const onDelete = async (event) => {
+      const { calcId, user } = event.detail;
+      loadingStore.set(true);
+
+      if (user === _id || admin) {
+         const res = await fetch(`api/proj/${calcId}`, {
+            method: 'DELETE',
+            headers: { 'Content-Type': 'application/json' },
+         }).catch(() => ({ ok: false }));
+
+         if (res.ok) {
+            loadingStore.set(false);
+            workbooks = fetchRecent(1);
+         } else {
+            const body = await res.json();
+            menuError = body.error.menu;
+            openBanner = true;
+            loadingStore.set(false);
+         }
+      } else {
+         menuError = 'You do not have permission to delete this file';
+         openBanner = true;
+         loadingStore.set(false);
+      }
    };
 
    const onShare = (event) => {
@@ -90,6 +118,25 @@
       console.log(event);
    };
 </script>
+
+<svelte:head>
+   <title>HW Engineering Calculator</title>
+</svelte:head>
+
+<Banner bind:open={openBanner} centered>
+   <Text>
+      <span style="color: #b00020;">
+         {menuError}
+      </span>
+   </Text>
+
+   <Actions>
+      <Button color="primary" class="mdc-banner__primary-action" variant="contained">
+         <Label>Ok</Label>
+         <Check />
+      </Button>
+   </Actions>
+</Banner>
 
 <main>
    <div class="title-container">

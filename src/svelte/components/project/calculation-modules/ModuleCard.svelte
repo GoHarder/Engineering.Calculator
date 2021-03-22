@@ -87,6 +87,7 @@
       align-items: center;
       justify-content: center;
       width: 165px;
+      pointer-events: none;
 
       // span {
       //    font: {

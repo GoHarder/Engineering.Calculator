@@ -89,6 +89,19 @@
       if (res.ok) {
          // Get the body of the request at set it in the project store
          const body = await res.json();
+
+         // Set new open time
+         const userSearch = body.opened.find((person) => {
+            return person.userId === user._id;
+         });
+
+         if (userSearch) {
+            userSearch.time = Date.now();
+         } else {
+            body.opened.push({ _id, time: Date.now() });
+         }
+
+         // Set the store
          projStore.set(body);
 
          // Stop the loading animation

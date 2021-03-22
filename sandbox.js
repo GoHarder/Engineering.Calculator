@@ -1,45 +1,44 @@
-const docs = [
+const aggregation = [
+   { $match: { 'opened.userId': '5ff38f7558d9411be0437ad3' } },
    {
-      model: '480',
-      limits: [
-         { maxSpeed: 500, maxLoad: 15000, tripSpeed: 625 },
-         { maxSpeed: 800, maxLoad: 13000, tripSpeed: 970 },
-      ],
-      weight: 381,
-      height: 9.75,
+      $addFields: {
+         currentUser: {
+            $filter: {
+               input: '$opened',
+               as: 'i',
+               cond: { $eq: ['$$i.userId', '5ff38f7558d9411be0437ad3'] },
+            },
+         },
+      },
    },
-
    {
-      model: '481',
-      limits: [
-         { maxSpeed: 500, maxLoad: 20000, tripSpeed: 625 },
-         { maxSpeed: 800, maxLoad: 18000, tripSpeed: 970 },
-      ],
-      weight: 403,
-      height: 9.92,
+      $lookup: {
+         from: 'users',
+         let: { creatorId: '$creator' },
+         pipeline: [
+            {
+               $match: { $expr: { $eq: ['$_id', '$$creatorId'] } },
+            },
+            { $project: { _id: 0, firstName: 1, lastName: 1 } },
+         ],
+         as: 'creator',
+      },
    },
-
+   { $unwind: '$creator' },
+   { $unwind: '$currentUser' },
+   { $sort: { 'currentUser.time': -1 } },
    {
-      model: '481-D',
-      limits: [
-         { maxSpeed: 350, maxLoad: 40000, tripSpeed: 452 },
-         { maxSpeed: 500, maxLoad: 30000, tripSpeed: 625 },
-      ],
-      weight: 780,
-      height: 19.75,
+      $project: {
+         creator: 1,
+         contract: 1,
+         jobName: 1,
+         carNo: 1,
+         customer: 1,
+         layout: 1,
+         created: 1,
+         opened: 1,
+      },
    },
-
-   {
-      model: '481-T',
-      limits: [{ maxSpeed: 400, maxLoad: 50000, tripSpeed: 510 }],
-      weight: 1174,
-      height: 29.72,
-   },
-
-   {
-      model: '540',
-      limits: [{ maxSpeed: 150, maxLoad: 20000, tripSpeed: 210 }],
-      weight: 175,
-      height: 5.125,
-   },
+   { $skip: 0 },
+   { $limit: 15 },
 ];
