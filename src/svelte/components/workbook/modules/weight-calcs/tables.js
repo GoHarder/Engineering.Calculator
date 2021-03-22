@@ -1,4 +1,5 @@
 export const maxPlatform = [
+   { capacity: 0, area: 8 },
    { capacity: 500, area: 1008 },
    { capacity: 600, area: 1195.2 },
    { capacity: 700, area: 1382.4 },

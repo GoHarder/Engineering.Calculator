@@ -60,7 +60,7 @@
 
    // Events
    const onHome = () => dispatch('changePage', 'Home');
-   const onConfiguration = () => dispatch('changePage', 'Project');
+   const onConfiguration = () => dispatch('changePage', 'ProjectSummary');
 
    const onShare = () => {
       console.log('TODO: 2-26-2021 9:23 AM - hook up share button');
