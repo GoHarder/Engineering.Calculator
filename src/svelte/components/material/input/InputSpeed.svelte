@@ -19,7 +19,6 @@
    export let value = '';
    export let variant = 'filled';
 
-   // Methods
    // Constants
    const parameters = {
       disableValidation,
@@ -34,14 +33,8 @@
       variant,
    };
 
-   // Variables
-   // Subscriptions
    // Reactive Variables
    $: metricValue = round(value * 0.00508, 4);
-
-   // Reactive Rules
-   // Events
-   // Lifecycle
 </script>
 
 <div class:metric-wrapper={metric}>

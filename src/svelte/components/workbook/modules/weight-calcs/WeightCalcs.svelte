@@ -14,18 +14,18 @@
    // Methods
    const onSave = () => {
       console.log('Saving...');
-      const { modules } = workbook;
+      // const { modules } = workbook;
 
       // Setup empty modules
-      if ('counterweight' in modules === false) modules.counterweight = {};
+      // if ('counterweight' in modules === false) modules.counterweight = {};
 
       // Save external module data
-      modules.counterweight = counterweight;
+      // modules.counterweight = counterweight;
 
       // Save internal module data
-      const module = modules.weightCalcs;
+      // const module = modules.weightCalcs;
 
-      console.log('Weight Calculations', workbook);
+      // console.log('Weight Calculations', workbook);
    };
 
    // Variables
