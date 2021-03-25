@@ -78,24 +78,19 @@
    }
    .workbook-cell {
       &.contract {
-         min-width: 100px;
-         max-width: 110px;
+         width: 103px;
       }
       &.job-name {
-         min-width: 290px;
-         max-width: 300px;
+         width: 300px;
       }
       &.car-no {
-         min-width: 70px;
-         max-width: 100px;
+         width: 100px;
       }
       &.customer {
-         min-width: 200px;
-         max-width: 220px;
+         width: 220px;
       }
       &.layout {
-         min-width: 90px;
-         max-width: 100px;
+         width: 100px;
       }
       &.date {
          display: none;

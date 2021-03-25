@@ -15,7 +15,7 @@
       padding: 5px 16px;
       position: fixed;
       width: 100%;
-      z-index: 3;
+      z-index: 20;
    }
 
    span {

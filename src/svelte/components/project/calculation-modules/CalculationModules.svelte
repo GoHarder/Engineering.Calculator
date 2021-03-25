@@ -43,6 +43,8 @@
    });
 
    // Reactive Variables
+   $: disableStart = filteredModules.filter((mod) => mod.checked).length === 0;
+
    // Reactive Rules
    $: if (search) {
       const _search = search.toUpperCase();
@@ -58,8 +60,6 @@
    const onBack = () => dispatch('changePage', 'Requirements');
    const onProject = () => dispatch('changePage', 'ProjectSummary');
    const onStart = () => {
-      // TODO: 3-16-2021 3:37 PM - check if there are modules selected
-      // TODO: 3-22-2021 1:55 PM - save setup
       dispatch('changePage', 'Workbook');
    };
 
@@ -93,14 +93,10 @@
       projectModules = filteredModules.reduce(
          (acc, nth) => {
             if (Object.keys(acc).includes(nth.module)) {
-               // console.log('already exist', nth.module);
-
                if (!nth.checked) {
                   delete acc[nth.module];
                }
             } else {
-               // console.log('does not exist', nth.module);
-
                if (nth.checked) {
                   acc[nth.module] = { module: nth.module };
                }
@@ -110,6 +106,8 @@
          },
          { ...projectModules }
       );
+
+      // console.log(projectModules);
 
       projectStore.save('modules', projectModules);
 
@@ -140,16 +138,17 @@
             </div>
 
             <div class="box n2">
-               <div class="sub-box-1">
-                  <InputSearch bind:value={search} label="Search Modules" />
-               </div>
                <div class="sub-box-2">
-                  <IconButton on:click={onSelectNone} color="secondary" title="Select None">
+                  <IconButton on:click={onSelectNone} title="Select None">
                      <RemoveDone />
                   </IconButton>
-                  <IconButton on:click={onSelectAll} color="primary" title="Select All">
+                  <IconButton on:click={onSelectAll} title="Select All">
                      <DoneAll />
                   </IconButton>
+               </div>
+
+               <div class="sub-box-1">
+                  <InputSearch bind:value={search} label="Search Modules" />
                </div>
             </div>
          </div>
@@ -168,7 +167,7 @@
          <ArrowBackIos />
          <Label>Back</Label>
       </Button>
-      <Button on:click={onStart} variant="contained">
+      <Button on:click={onStart} disabled={disableStart} variant="contained">
          <Label>Start</Label>
          <ArrowForwardIos />
       </Button>

@@ -1,4 +1,3 @@
-<!-- TODO: 3-10-2021 2:45 PM - add error trapping -->
 <script>
    import { createEventDispatcher, onDestroy } from 'svelte';
 

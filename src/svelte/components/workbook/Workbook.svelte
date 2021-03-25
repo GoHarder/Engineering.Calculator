@@ -1,29 +1,65 @@
 <script>
    import modules from './modules/modules';
-   import { createEventDispatcher, onDestroy } from 'svelte';
+   import { createEventDispatcher, onDestroy, onMount } from 'svelte';
 
    // Components
-   // import Drawer, { AppContent, Content, Header, Title } from '@smui/drawer';
-   // import List, { Item, Text, Graphic, Separator, Subheader } from '@smui/list';
-   import { IconButton } from '../material/button';
-   import { ArrowBackIos, ArrowForwardIos, Menu, NoteAdd, Print, Save, Share } from '../material/button/icons';
+   import { Button, IconButton, Label } from '../material/button';
+   import { ArrowBackIos, ArrowForwardIos, Check, Menu, NoteAdd, Print, Save, Share } from '../material/button/icons';
    import { AppContent, Drawer, Header, Item, List, Title } from '../material/drawer';
+   import { Actions, Banner, Text } from '../material/banner';
 
    // Project Components
    import A from '../common/A.svelte';
 
    // Stores
    import projectStore from '../../stores/project';
+   import loadingStore from '../../stores/loading';
+
+   // Methods
+   const saveProject = async () => {
+      loadingStore.set(true);
+
+      const method = '_id' in project ? 'PUT' : 'POST';
+
+      // TODO: 3-22-2021 3:55 PM - create a put route
+      const res = await fetch('api/proj', {
+         method,
+         body: JSON.stringify(project),
+         headers: { 'Content-Type': 'application/json' },
+      }).catch((error) => ({ ok: false, error }));
+
+      const body = await res.json();
+
+      if (res.ok) {
+         if (method === 'POST') {
+            projectStore.set(body);
+            // console.log(body);
+         } else {
+            // console.log(body);
+            projectStore.set(body);
+         }
+
+         loadingStore.set(false);
+      } else {
+         workbookError = body?.error?.workbook ?? `${res.status}: ${res.statusText}`;
+         loadingStore.set(false);
+         openBanner = true;
+      }
+   };
 
    // Constants
    const dispatch = createEventDispatcher();
 
    // Variables
+   let openBanner = false;
+   let workbookError = 'Workbook error';
+
    let contract = '';
    let jobName = '';
    let carNo = '';
    let workbook = {};
 
+   let project = undefined;
    let menuOpen = true;
    let activeTab = 'Tab Title';
    let title = 'HW Engineering Calculator';
@@ -32,10 +68,11 @@
    let save = false;
 
    // Subscriptions
+   const clearLoading = loadingStore.subscribe(() => {});
    const clearProject = projectStore.subscribe((store) => {
       // console.log('Workbook', store);
 
-      const project = { ...store };
+      project = { ...store };
 
       if (Object.keys(project).length > 1) {
          contract = project.contract;
@@ -77,7 +114,7 @@
    const onSave = () => {
       save = true;
 
-      console.log('TODO: 3-19-2021 10:37 AM - have data push to the store');
+      saveProject();
 
       setTimeout(() => {
          save = false;
@@ -87,14 +124,34 @@
    const setActiveTab = (tab) => (activeTab = tab);
 
    // Lifecycle
+   onMount(() => {
+      saveProject();
+   });
+
    onDestroy(() => {
       clearProject();
+      clearLoading();
    });
 </script>
 
 <svelte:head>
    <title>{title}</title>
 </svelte:head>
+
+<Banner bind:open={openBanner} centered>
+   <Text>
+      <span style="color: #b00020;">
+         {workbookError}
+      </span>
+   </Text>
+
+   <Actions>
+      <Button color="primary" class="mdc-banner__primary-action" variant="contained">
+         <Label>Ok</Label>
+         <Check />
+      </Button>
+   </Actions>
+</Banner>
 
 <main>
    <header>

@@ -46,20 +46,21 @@
    const seismicZoneSel = [{ text: 0 }, { text: 1 }, { text: 2 }, { text: 3 }, { text: 4 }];
    const ibcCategorySel = [{ text: 'A' }, { text: 'B' }, { text: 'C' }, { text: 'D' }, { text: 'E' }, { text: 'F' }];
    const ibcIpSel = [{ text: 1 }, { text: 1.5 }];
-   const module = 'globals';
 
    // Variables
+   let _id = undefined;
+
    // - Workbook
-   let capacity = 1;
+   let capacity = 0;
    let carRoping = 1;
-   let carSpeed = 1;
+   let carSpeed = 0;
    let code = 'ASME A17-1 2010';
    let cwtRoping = 1;
    // - Loading
    let freight = 'None';
    let type = 'Passenger';
 
-   let overallTravel = 1;
+   let overallTravel = 0;
    // - Seismic
    let seismicZone = 0;
    let ibcCategory = 'A';
@@ -160,6 +161,7 @@
             const globals = project.modules.globals;
 
             // Global data
+            _id = globals?._id;
             capacity = globals.capacity;
             carSpeed = globals.carSpeed;
             overallTravel = globals.overallTravel;
@@ -205,8 +207,11 @@
    onDestroy(() => {
       const loading = { freight, type };
       const seismic = { ibcCategory, ip, sds, useIbc, zone: seismicZone };
+      const saveData = { capacity, carRoping, carSpeed, code, cwtRoping, loading, module: 'globals', overallTravel, type, seismic };
 
-      projectStore.save('globals', { capacity, carRoping, carSpeed, code, cwtRoping, loading, module, overallTravel, type, seismic });
+      if (_id) saveData._id = _id;
+
+      projectStore.save('globals', saveData);
 
       clearProject();
    });

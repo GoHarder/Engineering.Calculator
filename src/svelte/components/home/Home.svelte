@@ -154,7 +154,7 @@
       </h6>
    </div>
 
-   <div transition:fade>
+   <div>
       <div class="search-container">
          <div class="box n1"><InputSearch bind:value={search} on:click={onSearch} label="Search Workbooks" /></div>
          <div class="box n2">
@@ -164,7 +164,7 @@
             </Button>
          </div>
       </div>
-      <div class="table" transition:fade>
+      <div class="table">
          <Table sticky>
             <Head>
                <Row header>
@@ -183,9 +183,13 @@
                {#await workbooks}
                   <Cell row colspan="20">Loading...</Cell>
                {:then workbooks}
-                  {#each workbooks as workbook (workbook._id)}
-                     <WorkbookRow userId={_id} {workbook} on:delete={onDelete} on:share={onShare} on:select={onOpen} />
-                  {/each}
+                  {#if workbooks.length !== 0}
+                     {#each workbooks as workbook (workbook._id)}
+                        <WorkbookRow userId={_id} {workbook} on:delete={onDelete} on:share={onShare} on:select={onOpen} />
+                     {/each}
+                  {:else}
+                     <Cell row colspan="20">Nothing Available...</Cell>
+                  {/if}
                {:catch error}
                   <Cell row colspan="20"><span style="color: red">{error.message}</span></Cell>
                {/await}

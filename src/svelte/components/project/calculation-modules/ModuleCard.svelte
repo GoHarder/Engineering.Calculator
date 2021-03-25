@@ -30,7 +30,6 @@
    </div>
    <div class="control">
       <span class="control-border">
-         <!-- <span>Add to workbook</span> -->
          <Checkbox bind:checked label="Add to workbook" />
       </span>
    </div>

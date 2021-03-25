@@ -42,7 +42,7 @@
 
    // Lifecycle
    onMount(() => {
-      console.log('Platform', workbook);
+      // console.log('Platform', workbook);
    });
 
    onDestroy(() => {
