@@ -26,6 +26,7 @@
    };
 
    // Constants
+   const { metric } = workbook;
    const { capacity, loading } = workbook.modules.globals;
    const { type: loadingType, freight } = loading;
 
@@ -60,7 +61,8 @@
    $: minFreightCapacity = round(tables.capacityRating.find((row) => row.class === freight).rating * cab.width * cab.depth);
 
    // - Error Checking
-   $: invalidMinFreightCapacity = loadingType === 'Freight' ? minFreightCapacity > capacity : false;
+   $: invalidMinFreightCapacity = minFreightCapacity > capacity;
+   $: invalidMaxPlatformArea = cab.area > maxPlatformAreaPlus;
 
    // Reactive Rules
    $: if (save) {
@@ -68,7 +70,7 @@
    }
 
    $: if (flooring.material.weight) {
-      flooring.weight = round(cab.width * cab.depth * flooring.material.weight);
+      flooring.weight = round((flooring.material.area === 'Interior' ? cabArea : platformArea) * flooring.material.weight);
    }
 
    // Lifecycle
@@ -89,30 +91,30 @@
 
 <fieldset>
    <legend>Globals</legend>
-   <InputWeight value={capacity} disabled label="Capacity" />
-   <Input value={`${loadingType} - ${freight}`} disabled label="Loading" />
+   <InputWeight value={capacity} display label="Capacity" {metric} />
+   <Input value={`${loadingType} - ${freight}`} display label="Loading" />
 </fieldset>
 
 <fieldset>
    <legend>Dimensions</legend>
-   <InputLength bind:value={platform.width} label="Width" />
-   <InputLength bind:value={platform.depth} label="Depth" />
-   <InputArea value={platformArea} disabled label="Area" />
+   <InputLength bind:value={platform.width} label="Width" {metric} />
+   <InputLength bind:value={platform.depth} label="Depth" {metric} />
+   <InputArea value={platformArea} disabled label="Area" {metric} />
 </fieldset>
 
 <fieldset>
    <legend>Cab Information</legend>
-   <InputLength bind:value={cab.height} label="Height" />
-   <InputLength bind:value={cab.width} disableValidation helperText="Platform doesn't meet min freight capacity" invalid={invalidMinFreightCapacity} label="Interior Width" />
-   <InputLength bind:value={cab.depth} disableValidation helperText="Platform doesn't meet min freight capacity" invalid={invalidMinFreightCapacity} label="Interior Depth" />
-   <InputArea value={cabArea} disabled label="Interior Area" />
+   <InputLength bind:value={cab.height} label="Height" {metric} />
+   <InputLength bind:value={cab.width} label="Interior Width" {metric} />
+   <InputLength bind:value={cab.depth} label="Interior Depth" {metric} />
+   <InputArea value={cabArea} disabled label="Interior Area" {metric} />
 
    <fieldset>
       <legend>Flooring</legend>
-      <InputPressure bind:value={flooring.material.weight} label="Material Weight" />
-      <InputLength bind:value={flooring.material.thickness} label="Material Thickness" />
-      <Select bind:value={flooring.material.area} label="Material Area" options={options.platformMaterialArea} />
-      <InputWeight bind:value={flooring.weight} disabled={flooring.material.weight} label="Total Weight" />
+      <InputPressure bind:value={flooring.material.weight} label="Material Weight" {metric} />
+      <InputLength bind:value={flooring.material.thickness} label="Material Thickness" {metric} />
+      <Select bind:value={flooring.material.area} label="Material Area" {metric} options={options.platformMaterialArea} />
+      <InputWeight bind:value={flooring.weight} disabled={flooring.material.weight} label="Total Weight" {metric} />
    </fieldset>
 </fieldset>
 
@@ -120,11 +122,11 @@
    <legend>Code Requirements</legend>
 
    {#if loadingType === 'Passenger'}
-      <InputArea value={maxPlatformArea} disabled label="Max Inside Platform Area" />
-      <InputArea value={maxPlatformAreaPlus} disabled label="Max Inside Platform Area + 5%" />
+      <InputArea value={maxPlatformArea} disabled label="Max Inside Platform Area" {metric} />
+      <InputArea value={maxPlatformAreaPlus} disabled label="Max Inside Platform Area + 5%" {metric} />
    {/if}
 
    {#if freight !== 'None'}
-      <InputWeight value={minFreightCapacity} disabled label="Min. Freight Capacity" />
+      <InputWeight value={minFreightCapacity} display label="Min. Freight Capacity" {metric} />
    {/if}
 </fieldset>

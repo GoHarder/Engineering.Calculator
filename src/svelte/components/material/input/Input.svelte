@@ -2,9 +2,16 @@
    import { onDestroy, onMount } from 'svelte';
    import { MDCTextField } from '@material/textfield';
 
+   // Components
+   import Email from './input-lib/Email.svelte';
+   import Number from './input-lib/Number.svelte';
+   import Password from './input-lib/Password.svelte';
+   import Text from './input-lib/Text.svelte';
+
    // Parameters
    export let disabled = false;
    export let disableValidation = false;
+   export let display = false;
    export let invalid = undefined;
    export let label = '';
    export let list = '';
@@ -23,6 +30,7 @@
 
    // Constants
    const parameters = {
+      display,
       list,
       max,
       maxLength,
@@ -32,6 +40,15 @@
       step,
    };
 
+   const comps = {
+      email: Email,
+      number: Number,
+      password: Password,
+      text: Text,
+   };
+
+   const comp = comps[type];
+
    // Variables
    let bind1 = undefined;
    let bind2 = undefined;
@@ -40,7 +57,8 @@
    // Reactive Variables
    $: labelClass = [
       'mdc-text-field',
-      variant === 'filled' ? 'mdc-text-field--filled' : 'mdc-text-field--outlined',
+      display ? 'mdc-text-field--display' : '',
+      `mdc-text-field--${variant}`,
       $$slots.leadingIcon ? 'mdc-text-field--with-leading-icon' : '',
       $$slots.trailingIcon ? 'mdc-text-field--with-trailing-icon' : '',
    ].join(' ');
@@ -52,10 +70,6 @@
    }
 
    // Events
-   const onChange = (event) => {
-      value = event.target.value;
-   };
-
    const onFocus = (event) => event.target.select();
 
    // Lifecycle
@@ -108,15 +122,7 @@
       {#if prefix}
          <span class="mdc-text-field__affix mdc-text-field__affix--prefix">{prefix}</span>
       {/if}
-
-      {#if type === 'text'}
-         <input class="mdc-text-field__input" bind:value on:focus={onFocus} {...parameters} />
-      {:else if type === 'number'}
-         <input class="mdc-text-field__input" bind:value on:focus={onFocus} on:change {...parameters} type="number" />
-      {:else}
-         <input class="mdc-text-field__input" on:change={onChange} on:focus={onFocus} {...parameters} {type} {value} />
-      {/if}
-
+      <svelte:component this={comp} bind:value on:focus={onFocus} on:change {...parameters} />
       <slot name="trailingIcon" />
       {#if suffix}
          <span class="mdc-text-field__affix mdc-text-field__affix--suffix">{suffix}</span>
@@ -172,6 +178,18 @@
 
       padding: 0 8px; // 0 16px
       width: 100%;
+
+      &.mdc-text-field--display {
+         @include textfield.fill-color(rgba($color: #000000, $alpha: 0));
+         // @include textfield.bottom-line-color(rgba($color: #000000, $alpha: 0.02));
+         // @include textfield.line-ripple-color(rgba($color: #000000, $alpha: 0.02));
+         pointer-events: none;
+
+         .mdc-text-field__ripple {
+            display: none;
+         }
+      }
+
       + .mdc-text-feild-helper-line {
          padding: 0 8px;
       }
