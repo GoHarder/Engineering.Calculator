@@ -273,13 +273,7 @@
 
    @media (min-width: 1100px) {
       .search-container {
-         max-width: 1070px;
-      }
-   }
-
-   @media (min-width: 1200px) {
-      .search-container {
-         max-width: 1170px;
+         max-width: 930px;
       }
    }
 </style>

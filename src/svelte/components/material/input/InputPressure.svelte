@@ -16,7 +16,7 @@
    export let min = 0;
    export let required = false;
    export let step = 0.01;
-   export let value = ''; // in²
+   export let value = ''; // lb/in²
    export let variant = 'filled';
 
    // Constants
@@ -28,30 +28,30 @@
       min,
       required,
       step,
-      suffix: 'ft²',
+      suffix: 'lb/ft²',
       type: 'number',
       variant,
    };
 
    // Variables
-   let squareFeet = 0;
+   let psf = 0;
 
    // Reactive Variables
-   $: metricValue = round(value * 0.00064516, 4);
+   $: metricValue = round(value * 4.88242764, 4);
 
    // Reactive Rules
    $: if (value) {
-      squareFeet = round(value / 144, 2);
+      psf = round(value * 144, 2);
    }
 
    // Events
    const onChange = (event) => {
-      value = round(event.target.valueAsNumber * 144, 4);
+      value = round(event.target.valueAsNumber / 144, 4);
    };
 </script>
 
 <div class:metric-wrapper={metric}>
-   <Input bind:disabled bind:invalid value={squareFeet} on:change={onChange} {...parameters}>
+   <Input bind:disabled bind:invalid value={psf} on:change={onChange} {...parameters}>
       <span slot="helperText">
          {#if helperText}
             <HelperText validation>{helperText}</HelperText>
@@ -60,6 +60,6 @@
    </Input>
 
    {#if metric}
-      <span class="metric-value">{`(${metricValue} m²)`}</span>
+      <span class="metric-value">{`(${metricValue} kg/m²)`}</span>
    {/if}
 </div>

@@ -33,17 +33,17 @@
       if (res.ok) {
          if (method === 'POST') {
             projectStore.set(body);
-            // console.log(body);
          } else {
-            // console.log(body);
             projectStore.set(body);
          }
 
          loadingStore.set(false);
+         save = false;
       } else {
          workbookError = body?.error?.workbook ?? `${res.status}: ${res.statusText}`;
          loadingStore.set(false);
          openBanner = true;
+         save = false;
       }
    };
 
@@ -87,12 +87,9 @@
    });
 
    // Reactive Rules
-   $: if (jobName && carNo) {
-      title = `${jobName} | ${carNo}`;
-   }
-
    $: if (contract && jobName && carNo) {
       domTitle = `${contract} | ${jobName} | ${carNo}`;
+      title = domTitle;
    }
 
    // Events
@@ -113,12 +110,6 @@
 
    const onSave = () => {
       save = true;
-
-      saveProject();
-
-      setTimeout(() => {
-         save = false;
-      }, 5);
    };
 
    const setActiveTab = (tab) => (activeTab = tab);
@@ -214,7 +205,7 @@
             </div>
          </div>
          <div class="comp">
-            <svelte:component this={activeTab.comp} bind:workbook {save} />
+            <svelte:component this={activeTab.comp} bind:workbook {save} {saveProject} />
          </div>
       </AppContent>
    </section>
