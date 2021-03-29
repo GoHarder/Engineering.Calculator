@@ -1,6 +1,7 @@
 <script>
    // Parameters
    export let display = false;
+   export let invalid = false;
    export let list = '';
    export let max = undefined;
    export let maxLength = undefined;
@@ -21,16 +22,17 @@
       step,
    };
 
-   const displayValue = value;
+   // Variables
+   let input = undefined;
 
-   // Events
-   const onChange = () => {
-      value = displayValue;
-   };
+   // Reactive Rules
+   if (display && invalid) {
+      console.log(input);
+   }
 </script>
 
 {#if display}
-   <input class="mdc-text-field__input display" bind:value on:focus on:change={onChange} tabindex="-1" type="number" {...parameters} />
+   <input class="mdc-text-field__input" bind:this={input} {value} tabindex="-1" type="number" />
 {:else}
    <input class="mdc-text-field__input" bind:value on:focus on:change type="number" {...parameters} />
 {/if}

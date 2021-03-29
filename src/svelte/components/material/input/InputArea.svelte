@@ -7,6 +7,7 @@
    // Properties
    export let disabled = false;
    export let disableValidation = false;
+   export let display = false;
    export let helperText = '';
    export let invalid = false;
    export let label = '';
@@ -22,6 +23,7 @@
    // Constants
    const parameters = {
       disableValidation,
+      display,
       label,
       list,
       max,

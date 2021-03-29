@@ -5,6 +5,7 @@
    import Input from './Input.svelte';
 
    // Properties
+   export let calc = 0;
    export let disabled = false;
    export let disableValidation = false;
    export let display = false;
@@ -15,6 +16,7 @@
    export let max = undefined;
    export let metric = false;
    export let min = 0;
+   export let reset = false;
    export let required = false;
    export let step = 1;
    export let value = '';
@@ -29,6 +31,7 @@
       list,
       max,
       min,
+      reset,
       required,
       step,
       suffix: 'lb',
@@ -38,10 +41,17 @@
 
    // Reactive Variables
    $: metricValue = round(value * 0.453592, 1);
+
+   $: canReset = value !== calc;
+
+   // Events
+   const onClick = () => {
+      value = calc;
+   };
 </script>
 
 <div class:metric-wrapper={metric}>
-   <Input bind:disabled bind:invalid bind:value {...parameters}>
+   <Input bind:disabled bind:invalid bind:value on:click={onClick} {canReset} {...parameters}>
       <span slot="helperText">
          {#if helperText}
             <HelperText validation>{helperText}</HelperText>

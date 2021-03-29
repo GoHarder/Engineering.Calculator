@@ -21,6 +21,8 @@
    export let minLength = undefined;
    export let pattern = undefined;
    export let prefix = '';
+   export let reset = false;
+   export let canReset = false;
    export let required = false;
    export let step = undefined;
    export let suffix = '';
@@ -31,6 +33,7 @@
    // Constants
    const parameters = {
       display,
+      invalid,
       list,
       max,
       maxLength,
@@ -59,7 +62,7 @@
       'mdc-text-field',
       display ? 'mdc-text-field--display' : '',
       `mdc-text-field--${variant}`,
-      $$slots.leadingIcon ? 'mdc-text-field--with-leading-icon' : '',
+      $$slots.leadingIcon || reset ? 'mdc-text-field--with-leading-icon' : '',
       $$slots.trailingIcon ? 'mdc-text-field--with-trailing-icon' : '',
    ].join(' ');
 
@@ -118,7 +121,17 @@
    <label bind:this={bind1} class={labelClass} for="input">
       <span class="mdc-text-field__ripple" />
       <span class="mdc-floating-label">{label}</span>
-      <slot name="leadingIcon" />
+
+      {#if reset}
+         {#if canReset}
+            <i on:click class="material-icons mdc-text-field__icon mdc-text-field__icon--leading" title="Reset To Calculation" tabindex="0" role="button"> replay </i>
+         {:else}
+            <i class="material-icons mdc-text-field__icon mdc-text-field__icon--leading"> create </i>
+         {/if}
+      {:else}
+         <slot name="leadingIcon" />
+      {/if}
+
       {#if prefix}
          <span class="mdc-text-field__affix mdc-text-field__affix--prefix">{prefix}</span>
       {/if}

@@ -1,0 +1,16 @@
+// Door Width is both doors
+Door Width = ( Door 1 Feet + Door 1 Inches / 12 ) + ( Door 2 Feet + Door 2 Inches / 12 )
+
+Estimated Cab Weight = IF(
+   Capacity < 3501,
+   ( Estimated Cab Perimeter - Door Width ) * 7.21 * Cab Height,
+   ( Estimated Cab Perimeter - Door Width ) * 8.9 * Cab Height
+)
+
+Estimated Ceiling Weight = Platform Width * Platform Depth * 4.64
+
+Estimated Hand Rail Weight = ( Platform Width + Platform Depth * 2  ) * 2.5
+
+Estimated Cove Light Weight = ( Platform Width + Platform Depth * 2  ) * 5
+
+Estimated Door Weight = Door Width * 86

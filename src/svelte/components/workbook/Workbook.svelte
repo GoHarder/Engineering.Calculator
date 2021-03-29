@@ -88,7 +88,7 @@
 
    // Reactive Rules
    $: if (contract && jobName && carNo) {
-      domTitle = `${contract} | ${jobName} | ${carNo}`;
+      domTitle = `${contract} - ${jobName} - ${carNo}`;
       title = domTitle;
    }
 
@@ -260,6 +260,10 @@
       align-items: center;
       justify-content: space-between;
       padding: 3px;
+      position: sticky;
+      top: 0px;
+      background-color: #ffffff;
+      z-index: 2;
       h6 {
          font-family: Roboto, sans-serif;
          font-size: 1.25rem;
