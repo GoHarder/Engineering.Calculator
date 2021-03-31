@@ -1,8 +1,8 @@
 <script>
    // Components
-   import { round } from './round.js';
+   import { round } from '../lib/round.js';
    import HelperText from './HelperText.svelte';
-   import Input from './Input.svelte';
+   import Input from './input/Input.svelte';
 
    // Properties
    export let calc = 0;

@@ -2,7 +2,7 @@
    // Svelte Imports
    import { createEventDispatcher } from 'svelte';
 
-   import Input from './Input.svelte';
+   import Input from './input/Input.svelte';
    import Icon from './Icon.svelte';
 
    // Parameters

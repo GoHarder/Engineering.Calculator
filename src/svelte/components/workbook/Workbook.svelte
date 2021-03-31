@@ -21,7 +21,6 @@
 
       const method = '_id' in project ? 'PUT' : 'POST';
 
-      // TODO: 3-22-2021 3:55 PM - create a put route
       const res = await fetch('api/proj', {
          method,
          body: JSON.stringify(project),

@@ -1,12 +1,13 @@
 <script>
    // Components
-   import { round, floor } from './round.js';
+   import { round, floor } from '../lib/round.js';
    import HelperText from './HelperText.svelte';
-   import Input from './Input.svelte';
+   import Input from './input/Input.svelte';
 
    // Properties
    export let disabled = false;
    export let disableValidation = false;
+   export let display = false;
    export let helperText = '';
    export let invalid = false;
    export let label = '';
@@ -23,6 +24,7 @@
    // Constants
    const parameters1 = {
       disableValidation,
+      display,
       label,
       list,
       max,
@@ -36,6 +38,7 @@
 
    const parameters2 = {
       disableValidation,
+      display,
       label: '',
       list,
       max: 12,

@@ -1,5 +1,5 @@
 import HelperText from './HelperText.svelte';
-import Input from './Input.svelte';
+import Input from './input/Input.svelte';
 import InputArea from './InputArea.svelte';
 import InputIcon from './Icon.svelte';
 import InputLength from './InputLength.svelte';

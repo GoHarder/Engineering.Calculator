@@ -3,10 +3,10 @@
    import { MDCTextField } from '@material/textfield';
 
    // Components
-   import Email from './input-lib/Email.svelte';
-   import Number from './input-lib/Number.svelte';
-   import Password from './input-lib/Password.svelte';
-   import Text from './input-lib/Text.svelte';
+   import Email from './Email.svelte';
+   import Number from './Number.svelte';
+   import Password from './Password.svelte';
+   import Text from './Text.svelte';
 
    // Parameters
    export let disabled = false;

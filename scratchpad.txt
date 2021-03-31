@@ -1,16 +1,81 @@
-// Door Width is both doors
-Door Width = ( Door 1 Feet + Door 1 Inches / 12 ) + ( Door 2 Feet + Door 2 Inches / 12 )
+unknown1 = ( platformWidthIn * capacity ) / 300000
 
-Estimated Cab Weight = IF(
-   Capacity < 3501,
-   ( Estimated Cab Perimeter - Door Width ) * 7.21 * Cab Height,
-   ( Estimated Cab Perimeter - Door Width ) * 8.9 * Cab Height
+unknown2 = IF(
+   unknown1 <= 0.58,
+   4.9,
+   IF(
+      AND(
+         0.58 < unknown1,
+         unknown1 <= 0.84
+      ),
+      7.2,
+      IF(
+         AND(
+            0.84 < unknown1,
+            unknown1 <= 1.1
+         ),
+         9.4,
+         IF(
+            AND(
+                1.1 < unknown1,
+                unknown1 <= 1.5
+               ),
+               9.8,
+               12.8
+            )
+         )
+      )
+   )
+
+unknown3 = IF(
+   unknown1 <= 0.58,
+   7.2,
+   IF(
+      AND(
+         0.58 < unknown1,
+         unknown1 <= 0.84
+      ),
+      9.4,
+      IF(
+         AND(
+            0.84 < unknown1,
+            unknown1 <= 1.1
+         ),
+         9.8,
+         IF(
+            AND(
+               1.1 < unknown1,
+               unknown1 <= 1.5
+            ),
+            12.8,
+            0
+         )
+      )
+   )
 )
 
-Estimated Ceiling Weight = Platform Width * Platform Depth * 4.64
+unknown4 = IF(
+   AND(
+      Loading = Passenger,
+      platformDepthFt <= 8
+   ),
+   unknown2,
+   IF(
+      AND(
+         Loading = Passenger w/A,
+         platformDepthFt <= 8
+      ),
+      unknown2,
+      IF(
+         platformDepthFt > 8,
+         unknown3,
+         unknown2
+      )
+   )
+)
 
-Estimated Hand Rail Weight = ( Platform Width + Platform Depth * 2  ) * 2.5
-
-Estimated Cove Light Weight = ( Platform Width + Platform Depth * 2  ) * 5
-
-Estimated Door Weight = Door Width * 86
+platformThicknessIn = IF(
+   unknown4 < 9.8,
+   3,
+   4
+)
