@@ -148,7 +148,9 @@
 <fieldset class="properties">
    <legend>Properties</legend>
 
-   <Select bind:value={platform.material} label="Material" options={options.platformMaterial} />
+   <div class="input-bump">
+      <Select bind:value={platform.material} label="Material" options={options.platformMaterial} />
+   </div>
 
    <div class="input-bump">
       <InputLength bind:value={platform.width} label="Width" {metric} />

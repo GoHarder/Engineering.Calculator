@@ -39,6 +39,7 @@
          loadingStore.set(false);
          save = false;
       } else {
+         console.log(body.error.workbook);
          workbookError = body?.error?.workbook ?? `${res.status}: ${res.statusText}`;
          loadingStore.set(false);
          openBanner = true;
