@@ -1,3 +1,5 @@
+import { round } from '../round';
+
 export const maxPlatform = [
    { capacity: 0, area: 8 },
    { capacity: 500, area: 1008 },
@@ -37,10 +39,22 @@ export const capacityRating = [
    { class: 'C3', rating: 0.347222 },
 ];
 
-// FIXME: 4-02-2021 2:38 PM - stringer formulas are wrong
-export const load = [
+export const frontChannelFormulas = [
    {
-      type: ['None', 'A'],
-      fX: 0,
+      category: ['None', 'A'],
+      sectionModulus: (load, length) => round((load * length) / 112000, 2),
+      momentOfInertia: (load, length, elasticModulus) => round((960 * load * length ** 2) / (192 * elasticModulus), 1),
+   },
+   {
+      category: ['B-Auto', 'B-Truck'],
+      sectionModulus: (load, length) => round((load * (length - 60)) / 28000, 2),
+      momentOfInertia: (load, length, elasticModulus) =>
+         round((960 * load * ((length - 60) / 2) * (3 * length ** 2 - 4 * ((length - 60) / 2) ** 2)) / (24 * elasticModulus * length), 1),
+   },
+   {
+      category: ['C1', 'C2', 'C3'],
+      sectionModulus: (load, length) => round((load * (length - 30)) / 28000, 2),
+      momentOfInertia: (load, length, elasticModulus) =>
+         round((960 * load * ((length - 30) / 2) * (3 * length ** 2 - 4 * ((length - 30) / 2) ** 2)) / (24 * elasticModulus * length), 1),
    },
 ];

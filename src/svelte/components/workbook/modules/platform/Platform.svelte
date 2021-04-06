@@ -1,5 +1,5 @@
 <script>
-   import { onMount, onDestroy } from 'svelte';
+   import { onDestroy } from 'svelte';
    import { fade } from 'svelte/transition';
    import { round } from '../../../material/lib/round';
    import * as tables from './tables';
@@ -19,29 +19,24 @@
 
    // Methods
    const onSave = () => {
-      console.log('Saving...');
-
-      const saveData = {
-         properties: platform,
-         cab,
-         doors: {
-            qty: doorQty,
-            door1,
-         },
-      };
-
-      saveData.properties.material = platformMaterial;
-      saveData.doors.door1.weight = door1Weight;
-      saveData.cab.weight = cabWeight;
-
-      if (doorQty === 2) {
-         saveData.doors.door2 = door2;
-         saveData.doors.door2.weight = door2Weight;
-      }
-
-      workbook.modules.platform = { ...workbook.modules.platform, ...saveData };
-
-      saveProject();
+      // console.log('Saving...');
+      // const saveData = {
+      //    properties: platform,
+      //    cab,
+      //    doors: {
+      //       qty: doorQty,
+      //       door1,
+      //    },
+      // };
+      // saveData.properties.material = platformMaterial;
+      // saveData.doors.door1.weight = door1Weight;
+      // saveData.cab.weight = cabWeight;
+      // if (doorQty === 2) {
+      //    saveData.doors.door2 = door2;
+      //    saveData.doors.door2.weight = door2Weight;
+      // }
+      // workbook.modules.platform = { ...workbook.modules.platform, ...saveData };
+      // saveProject();
    };
 
    // Constants
@@ -70,9 +65,12 @@
    let platformWidth = module?.properties.width ?? 0;
 
    let platformSteel = module?.properties.steel ?? {
+      backChannel: undefined,
+      frontChannel: undefined,
+      hasSillChannel: false,
       type: 'ASTM A36',
       sideChannel: undefined,
-      sillChannel: false,
+      sillChannel: undefined,
       split: false,
       stringer: undefined,
    };
@@ -161,16 +159,6 @@
    // $: console.log(platformSteel);
 
    // Lifecycle
-   // onMount(() => {
-   // console.log('Platform', workbook);
-   // const { platform: module } = workbook.modules;
-   // Set object variables
-   // if (module?.properties) platform = module.properties;
-   // if (module?.cab) cab = module.cab;
-   // if (module?.doors?.door1) door1 = module.doors.door1;
-   // if (module?.doors?.door2) door2 = module.doors.door2;
-   // });
-
    onDestroy(() => {
       onSave();
    });

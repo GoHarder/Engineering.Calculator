@@ -1,9 +1,23 @@
-isolatedMomentOfInertia = ROUND(
-   ( 960 * channelLoad * ( channelLength ^ 2 ) ) / ( 192 * modulusOfElasticity )
-   ,3
+momentOfInertiaA = round(
+    960 * load *  length ** 2  /  192 * elasticModulus,
+   1
 )
 
-unIsolatedMomentOfInertia = ROUND(
-   ( channelLoad * ( MAX( frontToRail , backToRail ) ^ 3 ) ) / ( 66 * modulusOfElasticity * ( channelLength / 960 ) )
-   ,3
+
+
+momentOfInertiaB = round(
+   960*load*((length-60)/2)*((3*(length ** 2))-(4*(((length-60)/2) ** 2)))/(24*elasticModulus*length),
+   1
+) 
+
+momentOfInertiaB = round(
+   960 * load * (( length - 60 ) / 2) * (( 3 * length ** 2) - ( 4 * ((length - 60) / 2) ** 2 )) / ( 24 * elasticModulus * length),
+   1
+) 
+
+
+
+momentOfInertiaC = round(
+   960 * load * (( length - 30 ) / 2) * (( 3 * length ** 2) - ( 4 * ((length - 30) / 2) ** 2)) / (24 * elasticModulus * length),
+   1
 )

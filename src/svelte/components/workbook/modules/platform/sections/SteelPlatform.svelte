@@ -1,9 +1,10 @@
+<!-- TODO: 4-06-2021 3:50 PM - calculate weight -->
 <script>
    import * as options from '../options';
    import * as tables from '../tables';
 
    // Components
-   //   import { Input, InputArea, InputLength, InputWeight } from '../../../../material/input';
+   import { Input, InputArea, InputLength, InputWeight } from '../../../../material/input';
    import { Select } from '../../../../material/select';
    import { Checkbox } from '../../../../material/checkbox';
    import { round } from '../../round';
@@ -21,10 +22,11 @@
    export let platformWidth = 0;
 
    // Methods
-   const getdb = async (stringerSectionModulus, stringerMomentOfIntertia) => {
+   const getdb = async (stringerSectionModulus, stringerMomentOfIntertia, frontChannelSectionModulus, frontChannelMomentOfIntertia) => {
       let steel = {
          material: platformSteel.type,
          stringer: { sectionModulus: stringerSectionModulus, momentOfInertia: stringerMomentOfIntertia },
+         frontChannel: { sectionModulus: frontChannelSectionModulus, momentOfInertia: frontChannelMomentOfIntertia },
       };
 
       const res = await fetch(`api/engineering/platform?material=Steel&steel=${JSON.stringify(steel)}`, {
@@ -56,11 +58,10 @@
    let disableSplit = false;
    let db = undefined;
 
-   $: console.log(db);
-
    // - Steel Options
    let stringerOptions = [{ text: 'Loading...' }];
-   let sideChannelOptions = [{ text: 'Loading...' }];
+   let sideChannelOptions = undefined;
+   let frontChannelOptions = [{ text: 'Loading...' }];
 
    // Reactive Variables
    $: platformBackToRail = round(platformDepth - platformFrontToRail, 4);
@@ -70,16 +71,29 @@
    $: isolatedStringerSectionModulus = round((channelLoad * platformDepth) / 112000, 2);
    $: unIsolatedStringerSectionModulus = round((Math.max(platformFrontToRail, platformBackToRail) * 13 * channelLoad) / (64 * 14000), 2);
    $: stringerSectionModulus = ['None', 'A'].includes(freight) && platformIsolation ? isolatedStringerSectionModulus : unIsolatedStringerSectionModulus;
-   $: isolatedStringerMomentOfIntertia = round((960 * channelLoad * platformDepth ** 2) / (192 * elasticModulus), 3);
-   $: unIsolatedStringerMomentOfIntertia = round((channelLoad * Math.max(platformFrontToRail, platformBackToRail) ** 3) / (66 * elasticModulus * (platformDepth / 960)), 3);
-   $: stringerMomentOfIntertia = ['None', 'A'].includes(freight) && platformIsolation ? isolatedStringerMomentOfIntertia : unIsolatedStringerMomentOfIntertia;
+   $: isolatedStringerMomentOfInertia = round((960 * channelLoad * platformDepth ** 2) / (192 * elasticModulus), 1);
+   $: unIsolatedStringerMomentOfInertia = round((channelLoad * Math.max(platformFrontToRail, platformBackToRail) ** 3) / (66 * elasticModulus * (platformDepth / 960)), 1);
+   $: stringerMomentOfIntertia = ['None', 'A'].includes(freight) && platformIsolation ? isolatedStringerMomentOfInertia : unIsolatedStringerMomentOfInertia;
+
+   // - Side Channels
+   $: sideChannelValue = platformSteel?.sideChannel?.text ?? 'Loading...';
+
+   // - Front Channel
+   $: frontChannelSectionModulus = tables.frontChannelFormulas.find((row) => row.category.includes(freight)).sectionModulus(channelLoad, platformWidth);
+   $: frontChannelMomentOfInertia = tables.frontChannelFormulas.find((row) => row.category.includes(freight)).momentOfInertia(channelLoad, platformWidth, elasticModulus);
+
+   $: backChannelvalue = platformSteel?.backChannel?.text ?? 'Loading...';
 
    // Reactive Rules
-   $: getdb(stringerSectionModulus, stringerMomentOfIntertia);
+   $: getdb(stringerSectionModulus, stringerMomentOfIntertia, frontChannelSectionModulus, frontChannelMomentOfInertia);
 
    $: if (db) {
+      console.log(db);
       stringerOptions = db.stringer;
       platformSteel.stringer = stringerOptions[0];
+      sideChannelOptions = db.sideChannel;
+      frontChannelOptions = db.frontChannel;
+      platformSteel.frontChannel = frontChannelOptions[0];
    }
 
    $: switch (freight) {
@@ -107,16 +121,41 @@
       disableSplit = false;
    }
 
-   // $: console.log('Stringer Zx', stringerSectionModulus);
-   // $: console.log(isolatedStringerMomentOfIntertia);
-   // $: console.log(unIsolatedStringerMomentOfIntertia);
+   $: if (platformIsolation) {
+      platformSteel.sideChannel = sideChannelOptions.find((channel) => channel.dimensions.depth >= platformSteel.stringer.dimensions.depth);
+   } else {
+      platformSteel.sideChannel = platformSteel.stringer;
+   }
+
+   $: if (platformSteel?.sideChannel?.dimensions?.depth) {
+      platformThickness = platformSteel.sideChannel.dimensions.depth;
+   }
+
+   $: if (platformSteel.hasSillChannel) {
+      platformSteel.sillChannel = platformSteel.stringer;
+   } else {
+      platformSteel.sillChannel = undefined;
+   }
+
+   $: if (platformSteel.split || doorQty === 2) {
+      platformSteel.backChannel = platformSteel.frontChannel;
+   } else {
+      platformSteel.backChannel = platformSteel.sideChannel;
+   }
 </script>
 
 <fieldset>
    <legend>Steel</legend>
    <Select bind:value={platformSteel.type} label="Type" options={options.steelType} />
    <Checkbox bind:checked={platformSteel.split} disabled={disableSplit} label="Split" />
-   <Checkbox bind:checked={platformSteel.sillChannel} label="sillChannel" />
+   <Checkbox bind:checked={platformSteel.hasSillChannel} label="Sill Channel" />
    <Select bind:value={platformSteel.stringer} groups={channelOptionGroups} label="Stringer" options={stringerOptions} />
-   <Select bind:value={platformSteel.sideChannel} display label="SideChannels" options={sideChannelOptions} />
+   <Input value={sideChannelValue} display label="Side Channel" />
+   {#if platformSteel.hasSillChannel}
+      <Input value={platformSteel.sillChannel.text} display label="Sill Channel" />
+   {/if}
+
+   <Select bind:value={platformSteel.frontChannel} groups={channelOptionGroups} label="Front Channel" options={frontChannelOptions} />
+
+   <Input value={backChannelvalue} display label="Back Channel" />
 </fieldset>
