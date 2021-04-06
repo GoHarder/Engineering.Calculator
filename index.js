@@ -42,7 +42,7 @@ app.init = async () => {
          console.log('\x1b[34m\x1b[1m%s\x1b[0m', 'Press CTRL-C to stop\n');
       }, 0);
    } else {
-      console.log('Fuck You!');
+      console.log('\n(╯°□°)╯︵ ┻━┻\n');
    }
 };
 

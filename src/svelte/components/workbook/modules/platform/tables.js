@@ -36,3 +36,11 @@ export const capacityRating = [
    { class: 'C2', rating: 0.347222 },
    { class: 'C3', rating: 0.347222 },
 ];
+
+// FIXME: 4-02-2021 2:38 PM - stringer formulas are wrong
+export const load = [
+   {
+      type: ['None', 'A'],
+      fX: 0,
+   },
+];

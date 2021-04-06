@@ -8,6 +8,7 @@
    // Components
    import { Input, InputArea, InputLength, InputWeight } from '../../../material/input';
    import { Select } from '../../../material/select';
+   import { Checkbox } from '../../../material/checkbox';
    import SteelPlatform from './sections/SteelPlatform.svelte';
    import WoodPlatform from './sections/WoodPlatform.svelte';
 
@@ -29,7 +30,9 @@
          },
       };
 
+      saveData.properties.material = platformMaterial;
       saveData.doors.door1.weight = door1Weight;
+      saveData.cab.weight = cabWeight;
 
       if (doorQty === 2) {
          saveData.doors.door2 = door2;
@@ -46,62 +49,96 @@
    const { capacity, loading } = workbook.modules.globals;
    const { type: loadingType, freight } = loading;
    const { platform: module } = workbook.modules;
-   const comps = {
-      SteelPlatform,
-      WoodPlatform,
-   };
 
    // Variables
-   let platform = {
-      width: 0,
-      depth: 0,
-      material: 'Wood',
-      thickness: 0,
-      weight: 0,
+   // let platform = {
+   //    width: 0,
+   //    depth: 0,
+   //    frontToRail: 0,
+   //    thickness: 0,
+   //    weight: 0,
+   //    isolation: false,
+   // };
+
+   // - Platform
+   let platformDepth = module?.properties.depth ?? 0;
+   let platformIsolation = module?.properties.isolation ?? false;
+   let platformFrontToRail = module?.properties.frontToRail ?? 0;
+   let platformMaterial = module?.properties.material ?? 'Wood';
+   let platformThickness = module?.properties.thickness ?? 0;
+   let platformWeight = module?.properties.weight ?? 0;
+   let platformWidth = module?.properties.width ?? 0;
+
+   let platformSteel = module?.properties.steel ?? {
+      type: 'ASTM A36',
+      sideChannel: undefined,
+      sillChannel: false,
+      split: false,
+      stringer: undefined,
    };
 
-   let cab = {
-      height: 96,
-      width: 0,
-      depth: 0,
-   };
+   // - Cab
+   let cabDepth = module?.cab.depth ?? 0;
+   let cabHeight = module?.cab.height ?? 96;
+   let cabWidth = module?.cab.width ?? 0;
 
-   let doorQty = module?.doors?.qty ?? 1;
+   // let cab = {
+   //    height: 96,
+   //    width: 0,
+   //    depth: 0,
+   // };
 
-   let door1 = {
-      type: 'Single Speed',
-      width: 0,
-      height: 0,
-   };
+   // - Doors
+   let doorQty = module?.doors.qty ?? 1;
 
-   let door2 = {
-      type: 'Single Speed',
-      location: 'Back',
-      width: 0,
-      height: 0,
-   };
+   // -- Door 1
+   // let door1 = {
+   //    type: 'Single Speed',
+   //    width: 0,
+   //    height: 0,
+   // };
+
+   let door1Height = module?.doors.door1.height ?? 0;
+   let door1Type = module?.doors.door1.type ?? 'Single Speed';
+   let door1Width = module?.doors.door1.width ?? 0;
+
+   // -- Door 2
+   // let door2 = {
+   //    type: 'Single Speed',
+   //    location: 'Back',
+   //    width: 0,
+   //    height: 0,
+   // };
+
+   let door2Height = module?.doors?.door2?.height ?? 0;
+   let door2Location = module?.doors?.door2?.location ?? 'Back';
+   let door2Type = module?.doors?.door2?.type ?? 'Single Speed';
+   let door2Width = module?.doors?.door2?.width ?? 0;
 
    // Reactive Variables
-   $: platformArea = platform.width * platform.depth;
-   $: cabArea = cab.width * cab.depth;
+   $: comp = platformMaterial === 'Wood' ? WoodPlatform : SteelPlatform;
+
+   // - Area
+   $: platformArea = platformWidth * platformDepth;
+   $: cabArea = cabWidth * cabDepth;
 
    // - Cab Estimated Weight
    $: cabCeilingWeight = cabArea * (4.64 / 144);
-   $: cabWallArea = (cab.depth + cab.width) * 2 * cab.height;
-   $: doorArea = door1.width * door1.height + (doorQty === 2 ? door2.width * door2.height : 0);
+   $: cabWallArea = (cabDepth + cabWidth) * 2 * cabHeight;
+   $: doorArea = door1Width * door1Height + (doorQty === 2 ? door2Width * door2Height : 0);
    $: cabWallWeight = (cabWallArea - doorArea) * ((capacity <= 3500 ? 7.21 : 8.9) / 144);
-   $: handRailWeight = cab.width + cab.depth * 2 * (2.5 / 144);
-   $: coveLightWeight = cab.width + cab.depth * 2 * (5 / 144);
+   $: handRailWeight = cabWidth + cabDepth * 2 * (2.5 / 144);
+   $: coveLightWeight = cabWidth + cabDepth * 2 * (5 / 144);
 
    // -- Cab Weight with override
    $: cabWeightCalc = round(cabWallWeight + cabCeilingWeight + handRailWeight + coveLightWeight);
    $: cabWeight = cabWeightCalc;
 
    // - Door Weight with override
-   $: door1WeightCalc = door1.width * (86 / 12);
+   $: door1WeightCalc = door1Width * (86 / 12);
    $: door1Weight = door1WeightCalc;
 
-   $: door2WeightCalc = door2.width * (86 / 12);
+   $: door2WeightCalc = door2Width * (86 / 12);
    $: door2Weight = door2WeightCalc;
 
    // - Code Calculations
@@ -113,22 +150,26 @@
    $: invalidMaxPlatformArea = cabArea > maxPlatformAreaPlus;
    $: invalidMinFreightCapacity = minFreightCapacity > capacity;
 
+   // - Controlls
+   $: disableIsolation = ['None', 'A'].includes(freight) === false || platformSteel.split;
+
    // Reactive Rules
    $: if (save) {
       onSave();
    }
 
-   // Lifecycle
-   onMount(() => {
-      // console.log('Platform', workbook);
-      const { platform: module } = workbook.modules;
+   // $: console.log(platformSteel);
 
-      // Set object variables
-      if (module?.properties) platform = module.properties;
-      if (module?.cab) cab = module.cab;
-      if (module?.doors?.door1) door1 = module.doors.door1;
-      if (module?.doors?.door2) door2 = module.doors.door2;
-   });
+   // Lifecycle
+   // onMount(() => {
+   // console.log('Platform', workbook);
+   // const { platform: module } = workbook.modules;
+   // Set object variables
+   // if (module?.properties) platform = module.properties;
+   // if (module?.cab) cab = module.cab;
+   // if (module?.doors?.door1) door1 = module.doors.door1;
+   // if (module?.doors?.door2) door2 = module.doors.door2;
+   // });
 
    onDestroy(() => {
       onSave();
@@ -149,34 +190,52 @@
    <legend>Properties</legend>
 
    <div class="input-bump">
-      <Select bind:value={platform.material} label="Material" options={options.platformMaterial} />
+      <Select bind:value={platformMaterial} label="Material" options={options.platformMaterial} />
    </div>
 
    <div class="input-bump">
-      <InputLength bind:value={platform.width} label="Width" {metric} />
+      <InputLength bind:value={platformWidth} label="Width" {metric} />
    </div>
    <div class="input-bump">
-      <InputLength bind:value={platform.depth} label="Depth" {metric} />
+      <InputLength bind:value={platformDepth} label="Depth" {metric} />
    </div>
    <div class="input-bump">
-      <InputLength bind:value={platform.thickness} display label="Thickness" {metric} />
+      <InputLength bind:value={platformFrontToRail} label="Front of Platform to Rail" {metric} />
+   </div>
+   <div class="input-bump">
+      <InputLength bind:value={platformThickness} display label="Thickness" {metric} />
    </div>
    <div class="input-bump">
       <InputArea value={platformArea} display label="Area" {metric} />
    </div>
 
    <div class="input-bump">
-      <InputWeight bind:value={platform.weight} display label="Weight" {metric} />
+      <InputWeight bind:value={platformWeight} display label="Weight" {metric} />
+   </div>
+
+   <div class="input-bump">
+      <Checkbox bind:value={platformIsolation} disabled={disableIsolation} label="Isolation" />
    </div>
 </fieldset>
 
-<svelte:component this={comps[`${platform.material}Platform`]} {workbook} bind:platform />
+<svelte:component
+   this={comp}
+   bind:platformSteel
+   bind:platformThickness
+   bind:platformWeight
+   {doorQty}
+   {platformDepth}
+   {platformIsolation}
+   {platformFrontToRail}
+   {platformWidth}
+   {workbook}
+/>
 
 <fieldset>
    <legend>Cab Information</legend>
-   <InputLength bind:value={cab.height} label="Height" {metric} />
-   <InputLength bind:value={cab.width} label="Interior Width" {metric} />
-   <InputLength bind:value={cab.depth} label="Interior Depth" {metric} />
+   <InputLength bind:value={cabHeight} label="Height" {metric} />
+   <InputLength bind:value={cabWidth} label="Interior Width" {metric} />
+   <InputLength bind:value={cabDepth} label="Interior Depth" {metric} />
    <InputArea value={cabArea} display label="Interior Area" {metric} />
    <InputWeight bind:value={cabWeight} calc={cabWeightCalc} label="Weight" reset {metric} />
 
@@ -184,19 +243,19 @@
 
    <fieldset>
       <legend>Front Door</legend>
-      <Select bind:value={door1.type} label="Door Type" {metric} options={options.doorType} />
-      <InputLength bind:value={door1.width} label="Width" {metric} />
-      <InputLength bind:value={door1.height} label="Height" {metric} />
+      <Select bind:value={door1Type} label="Door Type" {metric} options={options.doorType} />
+      <InputLength bind:value={door1Width} label="Width" {metric} />
+      <InputLength bind:value={door1Height} label="Height" {metric} />
       <InputWeight bind:value={door1Weight} calc={door1WeightCalc} label="Weight" reset {metric} />
    </fieldset>
 
    {#if doorQty === 2}
       <fieldset transition:fade>
-         <legend>{`${door2.location} Door`}</legend>
-         <Select bind:value={door2.location} label="Location" {metric} options={options.doorLocation} />
-         <Select bind:value={door2.type} label="Door Type" {metric} options={options.doorType} />
-         <InputLength bind:value={door2.width} label="Width" {metric} />
-         <InputLength bind:value={door2.height} label="Height" {metric} />
+         <legend>{`${door2Location} Door`}</legend>
+         <Select bind:value={door2Location} label="Location" {metric} options={options.doorLocation} />
+         <Select bind:value={door2Type} label="Door Type" {metric} options={options.doorType} />
+         <InputLength bind:value={door2Width} label="Width" {metric} />
+         <InputLength bind:value={door2Height} label="Height" {metric} />
          <InputWeight bind:value={door2Weight} calc={door2WeightCalc} label="Weight" reset {metric} />
       </fieldset>
    {/if}

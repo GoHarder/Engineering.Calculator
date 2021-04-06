@@ -1,81 +1,9 @@
-unknown1 = ( platformWidthIn * capacity ) / 300000
-
-unknown2 = IF(
-   unknown1 <= 0.58,
-   4.9,
-   IF(
-      AND(
-         0.58 < unknown1,
-         unknown1 <= 0.84
-      ),
-      7.2,
-      IF(
-         AND(
-            0.84 < unknown1,
-            unknown1 <= 1.1
-         ),
-         9.4,
-         IF(
-            AND(
-                1.1 < unknown1,
-                unknown1 <= 1.5
-               ),
-               9.8,
-               12.8
-            )
-         )
-      )
-   )
-
-unknown3 = IF(
-   unknown1 <= 0.58,
-   7.2,
-   IF(
-      AND(
-         0.58 < unknown1,
-         unknown1 <= 0.84
-      ),
-      9.4,
-      IF(
-         AND(
-            0.84 < unknown1,
-            unknown1 <= 1.1
-         ),
-         9.8,
-         IF(
-            AND(
-               1.1 < unknown1,
-               unknown1 <= 1.5
-            ),
-            12.8,
-            0
-         )
-      )
-   )
+isolatedMomentOfInertia = ROUND(
+   ( 960 * channelLoad * ( channelLength ^ 2 ) ) / ( 192 * modulusOfElasticity )
+   ,3
 )
 
-unknown4 = IF(
-   AND(
-      Loading = Passenger,
-      platformDepthFt <= 8
-   ),
-   unknown2,
-   IF(
-      AND(
-         Loading = Passenger w/A,
-         platformDepthFt <= 8
-      ),
-      unknown2,
-      IF(
-         platformDepthFt > 8,
-         unknown3,
-         unknown2
-      )
-   )
-)
-
-platformThicknessIn = IF(
-   unknown4 < 9.8,
-   3,
-   4
+unIsolatedMomentOfInertia = ROUND(
+   ( channelLoad * ( MAX( frontToRail , backToRail ) ^ 3 ) ) / ( 66 * modulusOfElasticity * ( channelLength / 960 ) )
+   ,3
 )

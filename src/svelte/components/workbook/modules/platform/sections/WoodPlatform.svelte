@@ -3,7 +3,10 @@
 
    // Properties
    export let workbook = {};
-   export let platform = {};
+   export let platformDepth = 0;
+   export let platformThickness = 0;
+   export let platformWeight = 0;
+   export let platformWidth = 0;
 
    // Methods
    const getdb = async (sectionModulus) => {
@@ -22,33 +25,30 @@
    // Constants
    const { globals } = workbook.modules;
    const { capacity } = globals;
-   const { width } = platform;
 
    // Variables
    let db = undefined;
 
    // Reactive Rules
-   $: getdb((width * capacity) / 300000);
+   $: getdb((platformWidth * capacity) / 300000);
 
    // Reactive Rules
-   $: if (db && platform) {
-      // console.log(db);
+   $: if (db && platformWidth && platformDepth) {
       const { angle } = db;
-      const { width, depth } = platform;
 
-      platform.thickness = angle.depth;
+      platformThickness = angle.depth;
 
       // Platform weight calculations
-      const plywoodWidth = width - angle.thickness * 2;
-      const plywoodDepth = depth - angle.thickness * 2;
+      const plywoodWidth = platformWidth - angle.thickness * 2;
+      const plywoodDepth = platformDepth - angle.thickness * 2;
       const plywoodQty = angle.depth - 1;
       const plywoodWeight = round(plywoodQty * plywoodWidth * plywoodDepth * (2.046875 / 144)); // 3/4" Weight = 2.046875 lb/ft²
       const stringerQty = floor(plywoodDepth / 10.875);
       const stringerWeight = round(stringerQty * plywoodWidth * (2.7 / 12)); // 2 X 8 Weight = 2.7 lb/ft
-      const angleWeight = round(plywoodWidth * angle.weight * 2 + depth * angle.weight * 2);
+      const angleWeight = round(plywoodWidth * angle.weight * 2 + platformDepth * angle.weight * 2);
       const fireProofWeight = round(plywoodWidth * plywoodDepth * (3.125 / 144)); // 14GA Weight = 3.125 lb/ft²
 
-      platform.weight = plywoodWeight + stringerWeight + angleWeight + fireProofWeight;
+      platformWeight = plywoodWeight + stringerWeight + angleWeight + fireProofWeight;
 
       // console.groupCollapsed('Platform Debug');
       // console.group('Plywood Information');
