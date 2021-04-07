@@ -91,6 +91,7 @@ plugins[1] = new OptimizeCssAssetsPlugin({
 if (watch) {
    plugins[2] = new LiveReloadPlugin({
       options: {
+         delay: 10000,
          ignore: /node_modules/,
       },
    });
@@ -98,9 +99,9 @@ if (watch) {
 
 // File watch options
 const watchOptions = {
-   aggregateTimeout: 10000,
+   // aggregateTimeout: 1000,
    ignored: /node_modules/,
-   poll: 5000,
+   // poll: 5000,
 };
 
 // Export the settings

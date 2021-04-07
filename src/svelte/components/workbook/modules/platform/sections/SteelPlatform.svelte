@@ -4,8 +4,8 @@
    import * as tables from '../tables';
 
    // Components
-   import { Input, InputArea, InputLength, InputWeight } from '../../../../material/input';
-   import { Select } from '../../../../material/select';
+   import { Input } from '../../../../material/input';
+   import { OptGroup, Option, Select } from '../../../../material/select';
    import { Checkbox } from '../../../../material/checkbox';
    import { round } from '../../round';
 
@@ -38,20 +38,20 @@
 
       if (res.ok) {
          db = await res.json();
+         console.log(db);
+
+         stringerOptions = db.stringer;
+         sideChannelOptions = db.sideChannel;
+         frontChannelOptions = db.frontChannel;
+
+         stringerValue = stringerOptions[0].text;
+         frontChannelValue = frontChannelOptions[0].text;
       }
    };
 
    // Constants
    const { capacity, loading } = workbook.modules.globals;
    const { freight } = loading;
-   const channelOptionGroups = {
-      groupBy: 'stockStatus',
-      objs: [
-         { label: 'Stock', value: 'Stocked', options: [] },
-         { label: 'Available', value: 'Available', options: [] },
-         { label: 'Check', value: 'Check', options: [] },
-      ],
-   };
 
    // Variables
    let channelLoad = 0;
@@ -59,13 +59,24 @@
    let db = undefined;
 
    // - Steel Options
-   let stringerOptions = [{ text: 'Loading...' }];
+   let stringerValue = 'Loading...';
+   let frontChannelValue = 'Loading...';
+
+   let stringerOptions = [{ text: 'Loading...', stockStatus: 'Stocked' }];
    let sideChannelOptions = undefined;
-   let frontChannelOptions = [{ text: 'Loading...' }];
+   let frontChannelOptions = [{ text: 'Loading...', stockStatus: 'Stocked' }];
 
    // Reactive Variables
    $: platformBackToRail = round(platformDepth - platformFrontToRail, 4);
    $: elasticModulus = options.steelType.find((type) => type.text === platformSteel.type).elasticModulus;
+
+   // - Option Groups
+   $: stringerStockOptions = stringerOptions.filter((option) => option.stockStatus === 'Stocked');
+   $: stringerAvailableOptions = stringerOptions.filter((option) => option.stockStatus === 'Available');
+   $: stringerCheckOptions = stringerOptions.filter((option) => option.stockStatus === 'Check');
+   $: frontChannelStockOptions = frontChannelOptions.filter((option) => option.stockStatus === 'Stocked');
+   $: frontChannelAvailableOptions = frontChannelOptions.filter((option) => option.stockStatus === 'Available');
+   $: frontChannelCheckOptions = frontChannelOptions.filter((option) => option.stockStatus === 'Check');
 
    // - Stringers
    $: isolatedStringerSectionModulus = round((channelLoad * platformDepth) / 112000, 2);
@@ -75,27 +86,20 @@
    $: unIsolatedStringerMomentOfInertia = round((channelLoad * Math.max(platformFrontToRail, platformBackToRail) ** 3) / (66 * elasticModulus * (platformDepth / 960)), 1);
    $: stringerMomentOfIntertia = ['None', 'A'].includes(freight) && platformIsolation ? isolatedStringerMomentOfInertia : unIsolatedStringerMomentOfInertia;
 
-   // - Side Channels
+   // - Side Channel
    $: sideChannelValue = platformSteel?.sideChannel?.text ?? 'Loading...';
 
    // - Front Channel
    $: frontChannelSectionModulus = tables.frontChannelFormulas.find((row) => row.category.includes(freight)).sectionModulus(channelLoad, platformWidth);
    $: frontChannelMomentOfInertia = tables.frontChannelFormulas.find((row) => row.category.includes(freight)).momentOfInertia(channelLoad, platformWidth, elasticModulus);
 
-   $: backChannelvalue = platformSteel?.backChannel?.text ?? 'Loading...';
+   // - Back Channel
+   $: backChannelValue = platformSteel?.backChannel?.text ?? 'Loading...';
 
    // Reactive Rules
    $: getdb(stringerSectionModulus, stringerMomentOfIntertia, frontChannelSectionModulus, frontChannelMomentOfInertia);
 
-   $: if (db) {
-      console.log(db);
-      stringerOptions = db.stringer;
-      platformSteel.stringer = stringerOptions[0];
-      sideChannelOptions = db.sideChannel;
-      frontChannelOptions = db.frontChannel;
-      platformSteel.frontChannel = frontChannelOptions[0];
-   }
-
+   // - Channel Load
    $: switch (freight) {
       case 'B-Auto':
       case 'B-Truck':
@@ -114,6 +118,7 @@
          break;
    }
 
+   // - Split platforms
    $: if (platformWidth > 92 && platformDepth > 92) {
       platformSteel.split = true;
       disableSplit = true;
@@ -121,23 +126,33 @@
       disableSplit = false;
    }
 
-   $: if (platformIsolation) {
+   // - Stringer
+   $: if (stringerValue !== 'Loading...') platformSteel.stringer = stringerOptions.find((row) => row.text === stringerValue);
+
+   // - Side Channel
+   $: if (platformIsolation && platformSteel.stringer) {
       platformSteel.sideChannel = sideChannelOptions.find((channel) => channel.dimensions.depth >= platformSteel.stringer.dimensions.depth);
    } else {
       platformSteel.sideChannel = platformSteel.stringer;
    }
 
-   $: if (platformSteel?.sideChannel?.dimensions?.depth) {
+   // - Front Channel
+   $: if (frontChannelValue !== 'Loading...') platformSteel.frontChannel = frontChannelOptions.find((row) => row.text === frontChannelValue);
+
+   // - Platform Thickness
+   $: if (platformSteel?.sideChannel?.dimensions.depth) {
       platformThickness = platformSteel.sideChannel.dimensions.depth;
    }
 
-   $: if (platformSteel.hasSillChannel) {
+   // - Sill Channel
+   $: if (platformSteel.hasSillChannel && platformSteel.stringer) {
       platformSteel.sillChannel = platformSteel.stringer;
    } else {
       platformSteel.sillChannel = undefined;
    }
 
-   $: if (platformSteel.split || doorQty === 2) {
+   // - Back Channel
+   $: if ((platformSteel.split || doorQty === 2) && platformSteel.frontChannel && platformSteel.sideChannel) {
       platformSteel.backChannel = platformSteel.frontChannel;
    } else {
       platformSteel.backChannel = platformSteel.sideChannel;
@@ -146,16 +161,52 @@
 
 <fieldset>
    <legend>Steel</legend>
-   <Select bind:value={platformSteel.type} label="Type" options={options.steelType} />
+   <Select bind:value={platformSteel.type} label="Type">
+      {#each options.steelType as { text }}
+         <Option {text} />
+      {/each}
+   </Select>
    <Checkbox bind:checked={platformSteel.split} disabled={disableSplit} label="Split" />
    <Checkbox bind:checked={platformSteel.hasSillChannel} label="Sill Channel" />
-   <Select bind:value={platformSteel.stringer} groups={channelOptionGroups} label="Stringer" options={stringerOptions} />
-   <Input value={sideChannelValue} display label="Side Channel" />
+   <Select bind:value={stringerValue} label="Stringer">
+      <OptGroup label="Stocked">
+         {#each stringerStockOptions as { text }}
+            <Option {text} />
+         {/each}
+      </OptGroup>
+      <OptGroup label="Available">
+         {#each stringerAvailableOptions as { text }}
+            <Option {text} />
+         {/each}
+      </OptGroup>
+      <OptGroup label="Check">
+         {#each stringerCheckOptions as { text }}
+            <Option {text} />
+         {/each}
+      </OptGroup>
+   </Select>
+   <Input bind:value={sideChannelValue} display label="Side Channel" />
    {#if platformSteel.hasSillChannel}
-      <Input value={platformSteel.sillChannel.text} display label="Sill Channel" />
+      <Input bind:value={platformSteel.sillChannel.text} display label="Sill Channel" />
    {/if}
 
-   <Select bind:value={platformSteel.frontChannel} groups={channelOptionGroups} label="Front Channel" options={frontChannelOptions} />
+   <Select bind:value={frontChannelValue} label="Front Channel">
+      <OptGroup label="Stocked">
+         {#each frontChannelStockOptions as { text }}
+            <Option {text} />
+         {/each}
+      </OptGroup>
+      <OptGroup label="Available">
+         {#each frontChannelAvailableOptions as { text }}
+            <Option {text} />
+         {/each}
+      </OptGroup>
+      <OptGroup label="Check">
+         {#each frontChannelCheckOptions as { text }}
+            <Option {text} />
+         {/each}
+      </OptGroup>
+   </Select>
 
-   <Input value={backChannelvalue} display label="Back Channel" />
+   <Input bind:value={backChannelValue} display label="Back Channel" />
 </fieldset>

@@ -7,7 +7,7 @@
 
    // Components
    import { Input, InputArea, InputLength, InputWeight } from '../../../material/input';
-   import { Select } from '../../../material/select';
+   import { Option, Select } from '../../../material/select';
    import { Checkbox } from '../../../material/checkbox';
    import SteelPlatform from './sections/SteelPlatform.svelte';
    import WoodPlatform from './sections/WoodPlatform.svelte';
@@ -156,7 +156,7 @@
       onSave();
    }
 
-   // $: console.log(platformSteel);
+   $: console.log(platformSteel);
 
    // Lifecycle
    onDestroy(() => {
@@ -178,7 +178,11 @@
    <legend>Properties</legend>
 
    <div class="input-bump">
-      <Select bind:value={platformMaterial} label="Material" options={options.platformMaterial} />
+      <Select bind:value={platformMaterial} label="Material">
+         {#each options.platformMaterial as { text }}
+            <Option {text} />
+         {/each}
+      </Select>
    </div>
 
    <div class="input-bump">
@@ -227,11 +231,19 @@
    <InputArea value={cabArea} display label="Interior Area" {metric} />
    <InputWeight bind:value={cabWeight} calc={cabWeightCalc} label="Weight" reset {metric} />
 
-   <Select bind:value={doorQty} label="Door Quantity" {metric} options={options.doorQty} />
+   <Select bind:value={doorQty} label="Door Quantity" {metric}>
+      {#each options.doorQty as { text }}
+         <Option {text} />
+      {/each}
+   </Select>
 
    <fieldset>
       <legend>Front Door</legend>
-      <Select bind:value={door1Type} label="Door Type" {metric} options={options.doorType} />
+      <Select bind:value={door1Type} label="Door Type" {metric}>
+         {#each options.doorType as { text }}
+            <Option {text} />
+         {/each}
+      </Select>
       <InputLength bind:value={door1Width} label="Width" {metric} />
       <InputLength bind:value={door1Height} label="Height" {metric} />
       <InputWeight bind:value={door1Weight} calc={door1WeightCalc} label="Weight" reset {metric} />
@@ -240,8 +252,16 @@
    {#if doorQty === 2}
       <fieldset transition:fade>
          <legend>{`${door2Location} Door`}</legend>
-         <Select bind:value={door2Location} label="Location" {metric} options={options.doorLocation} />
-         <Select bind:value={door2Type} label="Door Type" {metric} options={options.doorType} />
+         <Select bind:value={door2Location} label="Location" {metric}>
+            {#each options.doorLocation as { text }}
+               <Option {text} />
+            {/each}
+         </Select>
+         <Select bind:value={door2Type} label="Door Type" {metric}>
+            {#each options.doorType as { text }}
+               <Option {text} />
+            {/each}
+         </Select>
          <InputLength bind:value={door2Width} label="Width" {metric} />
          <InputLength bind:value={door2Height} label="Height" {metric} />
          <InputWeight bind:value={door2Weight} calc={door2WeightCalc} label="Weight" reset {metric} />

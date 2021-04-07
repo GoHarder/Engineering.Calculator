@@ -9,7 +9,7 @@
    import { ArrowBackIos, ArrowForwardIos } from '../../material/button/icons';
    import { HelperText, Input, InputLength, InputSpeed, InputWeight } from '../../material/input';
    import { Checkbox } from '../../material/checkbox';
-   import { Select } from '../../material/select';
+   import { Option, Select } from '../../material/select';
 
    // Stores
    import projectStore from '../../../stores/project';
@@ -246,22 +246,46 @@
                <InputLength bind:value={overallTravel} bind:invalid={overallTravelError} helperText="Invalid length" label="Overall Travel" {metric} />
             </div>
             <div class="box">
-               <Select bind:value={code} label="Governing Code" options={codeSel} selected={4} />
+               <Select bind:value={code} label="Governing Code">
+                  {#each codeSel as { text }}
+                     <Option {text} />
+                  {/each}
+               </Select>
             </div>
             <div class="box">
-               <Select bind:value={type} label="Loading Type" options={typeSel} />
+               <Select bind:value={type} label="Loading Type">
+                  {#each typeSel as { text }}
+                     <Option {text} />
+                  {/each}
+               </Select>
             </div>
             <div class="box">
-               <Select bind:value={freight} label="Freight Class" options={filteredFreightSel} />
+               <Select bind:value={freight} label="Freight Class">
+                  {#each filteredFreightSel as { text }}
+                     <Option {text} />
+                  {/each}
+               </Select>
             </div>
             <div class="box">
-               <Select bind:value={carRoping} label="Car Roping" options={ropingSel} />
+               <Select bind:value={carRoping} label="Car Roping">
+                  {#each ropingSel as { text, value }}
+                     <Option {text} {value} />
+                  {/each}
+               </Select>
             </div>
             <div class="box">
-               <Select bind:value={cwtRoping} label="Counterweight Roping" options={ropingSel} />
+               <Select bind:value={cwtRoping} label="Counterweight Roping">
+                  {#each ropingSel as { text, value }}
+                     <Option {text} {value} />
+                  {/each}
+               </Select>
             </div>
             <div class="box">
-               <Select bind:value={seismicZone} disabled={ibc && useIbc} label="Seismic Zone" options={seismicZoneSel} />
+               <Select bind:value={seismicZone} disabled={ibc && useIbc} label="Seismic Zone">
+                  {#each seismicZoneSel as { text }}
+                     <Option {text} />
+                  {/each}
+               </Select>
             </div>
          </div>
       </div>
@@ -279,12 +303,20 @@
 
                {#if useIbc}
                   <div class="box">
-                     <Select bind:value={ibcCategory} label="Seismic Design Category" options={ibcCategorySel} />
+                     <Select bind:value={ibcCategory} label="Seismic Design Category">
+                        {#each ibcCategorySel as { text }}
+                           <Option {text} />
+                        {/each}
+                     </Select>
                   </div>
 
                   {#if showIP}
                      <div class="box">
-                        <Select bind:value={ip} label="IP" options={ibcIpSel} style={4} bullet />
+                        <Select bind:value={ip} label="IP" options={ibcIpSel}>
+                           {#each ibcIpSel as { text }}
+                              <Option {text} />
+                           {/each}
+                        </Select>
                      </div>
 
                      {#if showSDS}
