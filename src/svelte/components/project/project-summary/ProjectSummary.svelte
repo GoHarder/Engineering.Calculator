@@ -65,11 +65,6 @@
 
    const onNext = () => dispatch('changePage', 'Requirements');
 
-   const onModules = () => {
-      console.log('TODO: 3-15-2021 11:09 AM - hook up modules button');
-      // dispatch('changePage', 'CalculationModules');
-   };
-
    // Lifecycle
    onDestroy(() => {
       projectStore.save('project', { carNo, contract, created, creator, customer, jobName, layout, metric, modules, opened, temp });
@@ -91,7 +86,7 @@
       <div class="tabs">
          <ProjectTab label="Project Summary" index={1} {activeTab} />
          <ProjectTab on:click={onNext} label="Requirements" index={2} {activeTab} />
-         <ProjectTab on:click={onModules} label="Calculation Modules" index={3} {activeTab} />
+         <ProjectTab label="Calculation Modules" index={3} {activeTab} />
       </div>
 
       <div class="form">

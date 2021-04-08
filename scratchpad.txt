@@ -1,23 +1,15 @@
-momentOfInertiaA = round(
-    960 * load *  length ** 2  /  192 * elasticModulus,
-   1
-)
-
-
-
-momentOfInertiaB = round(
-   960*load*((length-60)/2)*((3*(length ** 2))-(4*(((length-60)/2) ** 2)))/(24*elasticModulus*length),
-   1
-) 
-
-momentOfInertiaB = round(
-   960 * load * (( length - 60 ) / 2) * (( 3 * length ** 2) - ( 4 * ((length - 60) / 2) ** 2 )) / ( 24 * elasticModulus * length),
-   1
-) 
-
-
-
-momentOfInertiaC = round(
-   960 * load * (( length - 30 ) / 2) * (( 3 * length ** 2) - ( 4 * ((length - 30) / 2) ** 2)) / (24 * elasticModulus * length),
-   1
+stringer length = IF(
+   AND(
+      hasSillChannel = true,
+      doorQty = 1
+   ),
+   platformDepth - 3.375 - sillChannelFlangeWidth - backChanelFlangeWidth,
+   IF(
+      AND(
+         hasSillChannel = true,
+         doorQty = 2
+      ),
+      platformDepth - 7.5 - sillChannelFlangeWidth - backChanelFlangeWidth,
+      platformDepth - frontChannelFlangeWidth - backChanelFlangeWidth 
+   )
 )

@@ -17,6 +17,7 @@
    export let save = false;
    export let saveProject = undefined;
 
+   // TODO: 4-08-2021 10:40 AM - Save data to Iowa
    // Methods
    const onSave = () => {
       // console.log('Saving...');
@@ -46,15 +47,6 @@
    const { platform: module } = workbook.modules;
 
    // Variables
-   // let platform = {
-   //    width: 0,
-   //    depth: 0,
-   //    frontToRail: 0,
-   //    thickness: 0,
-   //    weight: 0,
-   //    isolation: false,
-   // };
-
    // - Platform
    let platformDepth = module?.properties.depth ?? 0;
    let platformIsolation = module?.properties.isolation ?? false;
@@ -64,50 +56,29 @@
    let platformWeight = module?.properties.weight ?? 0;
    let platformWidth = module?.properties.width ?? 0;
 
-   let platformSteel = module?.properties.steel ?? {
-      backChannel: undefined,
-      frontChannel: undefined,
-      hasSillChannel: false,
-      type: 'ASTM A36',
-      sideChannel: undefined,
-      sillChannel: undefined,
-      split: false,
-      stringer: undefined,
-   };
+   // -- Platform Steel
+   let platformSteel = 'ASTM A36';
+   let platformFloorPlate = undefined;
+   let platformFrontChannel = undefined;
+   let platformHasSillChannel = false;
+   let platformSplit = false;
+   let platformStringer = undefined;
+   let platformStringerQty = 0;
 
    // - Cab
    let cabDepth = module?.cab.depth ?? 0;
    let cabHeight = module?.cab.height ?? 96;
    let cabWidth = module?.cab.width ?? 0;
 
-   // let cab = {
-   //    height: 96,
-   //    width: 0,
-   //    depth: 0,
-   // };
-
    // - Doors
    let doorQty = module?.doors.qty ?? 1;
 
-   // -- Door 1
-   // let door1 = {
-   //    type: 'Single Speed',
-   //    width: 0,
-   //    height: 0,
-   // };
-
+   // - Door 1
    let door1Height = module?.doors.door1.height ?? 0;
    let door1Type = module?.doors.door1.type ?? 'Single Speed';
    let door1Width = module?.doors.door1.width ?? 0;
 
    // -- Door 2
-   // let door2 = {
-   //    type: 'Single Speed',
-   //    location: 'Back',
-   //    width: 0,
-   //    height: 0,
-   // };
-
    let door2Height = module?.doors?.door2?.height ?? 0;
    let door2Location = module?.doors?.door2?.location ?? 'Back';
    let door2Type = module?.doors?.door2?.type ?? 'Single Speed';
@@ -155,8 +126,6 @@
    $: if (save) {
       onSave();
    }
-
-   $: console.log(platformSteel);
 
    // Lifecycle
    onDestroy(() => {
@@ -212,7 +181,13 @@
 
 <svelte:component
    this={comp}
+   bind:platformFloorPlate
+   bind:platformFrontChannel
+   bind:platformHasSillChannel
+   bind:platformSplit
    bind:platformSteel
+   bind:platformStringer
+   bind:platformStringerQty
    bind:platformThickness
    bind:platformWeight
    {doorQty}

@@ -197,8 +197,8 @@
             const element = inputs[i];
 
             // Trips all the inputs to show the error
-            element.focus();
-            element.blur();
+            // element.focus();
+            // element.blur();
          }
       }
    };

@@ -58,3 +58,20 @@ export const frontChannelFormulas = [
          round((960 * load * ((length - 30) / 2) * (3 * length ** 2 - 4 * ((length - 30) / 2) ** 2)) / (24 * elasticModulus * length), 1),
    },
 ];
+
+export const steelPlate = [
+   { type: 'Smooth', thickness: 0.1875 },
+   { type: 'Smooth', thickness: 0.25 },
+   { type: 'Smooth', thickness: 0.3125 },
+   { type: 'Smooth', thickness: 0.375 },
+   { type: 'Smooth', thickness: 0.5 },
+   { type: 'Smooth', thickness: 0.625 },
+   { type: 'Smooth', thickness: 0.75 },
+   { type: 'Checkered', thickness: 0.1875 },
+   { type: 'Checkered', thickness: 0.25 },
+   { type: 'Checkered', thickness: 0.3125 },
+   { type: 'Checkered', thickness: 0.375 },
+   { type: 'Checkered', thickness: 0.5 },
+   { type: 'Checkered', thickness: 0.625 },
+   { type: 'Checkered', thickness: 0.75 },
+];
