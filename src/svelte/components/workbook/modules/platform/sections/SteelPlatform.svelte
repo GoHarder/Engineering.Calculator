@@ -29,56 +29,56 @@
    export let workbook = {};
 
    // Methods
-   const getdb = async (stringerSectionModulus, stringerMomentOfIntertia, frontChannelSectionModulus, frontChannelMomentOfIntertia) => {
-      let steel = {
-         material: platformSteel,
-         stringer: { sectionModulus: stringerSectionModulus, momentOfInertia: stringerMomentOfIntertia },
-         frontChannel: { sectionModulus: frontChannelSectionModulus, momentOfInertia: frontChannelMomentOfIntertia },
-      };
+   // const getdb = async (stringerSectionModulus, stringerMomentOfIntertia, frontChannelSectionModulus, frontChannelMomentOfIntertia) => {
+   //    let steel = {
+   //       material: platformSteel,
+   //       stringer: { sectionModulus: stringerSectionModulus, momentOfInertia: stringerMomentOfIntertia },
+   //       frontChannel: { sectionModulus: frontChannelSectionModulus, momentOfInertia: frontChannelMomentOfIntertia },
+   //    };
 
-      const res = await fetch(`api/engineering/platform?material=Steel&steel=${JSON.stringify(steel)}`, {
-         headers: { 'Content-Type': 'application/json' },
-      }).catch((error) => {
-         console.log(error);
-         return { ok: false };
-      });
+   //    const res = await fetch(`api/engineering/platform?material=Steel&steel=${JSON.stringify(steel)}`, {
+   //       headers: { 'Content-Type': 'application/json' },
+   //    }).catch((error) => {
+   //       console.log(error);
+   //       return { ok: false };
+   //    });
 
-      if (res.ok) {
-         db = await res.json();
-         // console.log(db);
+   //    if (res.ok) {
+   //       db = await res.json();
+   //       // console.log(db);
 
-         stringerOptions = db.stringer;
-         sideChannelOptions = db.sideChannel;
-         frontChannelOptions = db.frontChannel;
+   //       stringerOptions = db.stringer;
+   //       sideChannelOptions = db.sideChannel;
+   //       frontChannelOptions = db.frontChannel;
 
-         stringerValue = stringerOptions[0].text;
-         frontChannelValue = frontChannelOptions[0].text;
-      }
-   };
+   //       stringerValue = stringerOptions[0].text;
+   //       frontChannelValue = frontChannelOptions[0].text;
+   //    }
+   // };
 
-   const toFraction = (num) => {
-      const tens = 10 ** (num.toString().length - 2);
+   // const toFraction = (num) => {
+   //    const tens = 10 ** (num.toString().length - 2);
 
-      const gcd = (a, b) => {
-         if (!b) return a;
-         return gcd(b, a % b);
-      };
+   //    const gcd = (a, b) => {
+   //       if (!b) return a;
+   //       return gcd(b, a % b);
+   //    };
 
-      let top = tens * num;
+   //    let top = tens * num;
 
-      const split = gcd(top, tens);
+   //    const split = gcd(top, tens);
 
-      return `${top / split}/${tens / split}`;
-   };
+   //    return `${top / split}/${tens / split}`;
+   // };
 
-   const plateCalcs = (material, thickness, stringerSpacing) => {
-      return {
-         name: `${toFraction(thickness)}" ${material}`,
-         thickness,
-         varZu: round((thickness ** 2 * stringerSpacing) / 6, 2),
-         varXx: round((thickness ** 3 * stringerSpacing) / 12, 6),
-      };
-   };
+   // const plateCalcs = (material, thickness, stringerSpacing) => {
+   //    return {
+   //       name: `${toFraction(thickness)}" ${material}`,
+   //       thickness,
+   //       varZu: round((thickness ** 2 * stringerSpacing) / 6, 2),
+   //       varXx: round((thickness ** 3 * stringerSpacing) / 12, 6),
+   //    };
+   // };
 
    // Constants
    const { capacity, loading } = workbook.modules.globals;
@@ -86,24 +86,24 @@
 
    // Variables
    let load = 0;
-   let disableSplit = false;
+   // let disableSplit = false;
    let db = undefined;
-   let sillChannel = undefined;
+   // let sillChannel = undefined;
    let backChannel = undefined;
    let sideChannel = undefined;
 
    // - Steel Options
-   let stringerValue = 'Loading...';
-   let frontChannelValue = 'Loading...';
-   let floorPlateValue = '1/4" Smooth';
+   // let stringerValue = 'Loading...';
+   // let frontChannelValue = 'Loading...';
+   // let floorPlateValue = '1/4" Smooth';
 
-   let stringerOptions = [{ text: 'Loading...', stockStatus: 'Stocked' }];
-   let sideChannelOptions = undefined;
-   let frontChannelOptions = [{ text: 'Loading...', stockStatus: 'Stocked' }];
+   // let stringerOptions = [{ text: 'Loading...', stockStatus: 'Stocked' }];
+   // let sideChannelOptions = undefined;
+   // let frontChannelOptions = [{ text: 'Loading...', stockStatus: 'Stocked' }];
 
    // Reactive Variables
-   $: platformBackToRail = round(platformDepth - platformFrontToRail, 4);
-   $: elasticModulus = options.steelType.find((type) => type.text === platformSteel).elasticModulus;
+   // $: platformBackToRail = round(platformDepth - platformFrontToRail, 4);
+   // $: elasticModulus = options.steelType.find((type) => type.text === platformSteel).elasticModulus;
 
    // - Option Groups
    $: stringerStockOptions = stringerOptions.filter((option) => option.stockStatus === 'Stocked');
@@ -114,12 +114,12 @@
    $: frontChannelCheckOptions = frontChannelOptions.filter((option) => option.stockStatus === 'Check');
 
    // - Stringers
-   $: isolatedStringerSectionModulus = round((load * platformDepth) / 112000, 2);
-   $: unIsolatedStringerSectionModulus = round((Math.max(platformFrontToRail, platformBackToRail) * 13 * load) / (64 * 14000), 2);
-   $: stringerSectionModulus = ['None', 'A'].includes(freight) && platformIsolation ? isolatedStringerSectionModulus : unIsolatedStringerSectionModulus;
-   $: isolatedStringerMomentOfInertia = round((960 * load * platformDepth ** 2) / (192 * elasticModulus), 1);
-   $: unIsolatedStringerMomentOfInertia = round((load * Math.max(platformFrontToRail, platformBackToRail) ** 3) / (66 * elasticModulus * (platformDepth / 960)), 1);
-   $: stringerMomentOfIntertia = ['None', 'A'].includes(freight) && platformIsolation ? isolatedStringerMomentOfInertia : unIsolatedStringerMomentOfInertia;
+   // $: isolatedStringerSectionModulus = round((load * platformDepth) / 112000, 2);
+   // $: unIsolatedStringerSectionModulus = round((Math.max(platformFrontToRail, platformBackToRail) * 13 * load) / (64 * 14000), 2);
+   // $: stringerSectionModulus = ['None', 'A'].includes(freight) && platformIsolation ? isolatedStringerSectionModulus : unIsolatedStringerSectionModulus;
+   // $: isolatedStringerMomentOfInertia = round((960 * load * platformDepth ** 2) / (192 * elasticModulus), 1);
+   // $: unIsolatedStringerMomentOfInertia = round((load * Math.max(platformFrontToRail, platformBackToRail) ** 3) / (66 * elasticModulus * (platformDepth / 960)), 1);
+   // $: stringerMomentOfIntertia = ['None', 'A'].includes(freight) && platformIsolation ? isolatedStringerMomentOfInertia : unIsolatedStringerMomentOfInertia;
 
    $: stringerQtyCalc =
       floor((platformWidth / (platformSplit ? 2 : 1) - (sideChannel?.dimensions.flangeWidth ?? 0) * 2) / ((platformStringer?.dimensions.flangeWidth ?? 0) + 14)) *
@@ -180,31 +180,31 @@
    $: getdb(stringerSectionModulus, stringerMomentOfIntertia, frontChannelSectionModulus, frontChannelMomentOfInertia);
 
    // - Channel Load
-   $: switch (freight) {
-      case 'B-Auto':
-      case 'B-Truck':
-      case 'C1':
-      case 'C3':
-         load = capacity * 0.5;
-         break;
+   // $: switch (freight) {
+   //    case 'B-Auto':
+   //    case 'B-Truck':
+   //    case 'C1':
+   //    case 'C3':
+   //       load = capacity * 0.5;
+   //       break;
 
-      case 'C2':
-         load = capacity * 0.5 * 1.6;
-         break;
+   //    case 'C2':
+   //       load = capacity * 0.5 * 1.6;
+   //       break;
 
-      default:
-         // 'None' or 'A'
-         load = capacity * 0.3;
-         break;
-   }
+   //    default:
+   //       // 'None' or 'A'
+   //       load = capacity * 0.3;
+   //       break;
+   // }
 
    // - Split platforms
-   $: if (platformWidth > 92 && platformDepth > 92) {
-      platformSplit = true;
-      disableSplit = true;
-   } else {
-      disableSplit = false;
-   }
+   // $: if (platformWidth > 92 && platformDepth > 92) {
+   //    platformSplit = true;
+   //    disableSplit = true;
+   // } else {
+   //    disableSplit = false;
+   // }
 
    // - Stringer
    $: if (stringerValue !== 'Loading...') platformStringer = stringerOptions.find((row) => row.text === stringerValue);
@@ -225,11 +225,11 @@
    }
 
    // - Sill Channel
-   $: if (platformHasSillChannel && platformStringer) {
-      sillChannel = platformStringer;
-   } else {
-      sillChannel = undefined;
-   }
+   // $: if (platformHasSillChannel && platformStringer) {
+   //    sillChannel = platformStringer;
+   // } else {
+   //    sillChannel = undefined;
+   // }
 
    // - Back Channel
    $: if (platformFrontChannel && sideChannel) {
@@ -259,56 +259,56 @@
          <Option {text} />
       {/each}
    </Select>
-   <Checkbox bind:checked={platformSplit} disabled={disableSplit} label="Split" />
+   <!-- <Checkbox bind:checked={platformSplit} disabled={disableSplit} label="Split" /> -->
    <Checkbox bind:checked={platformHasSillChannel} label="Sill Channel" />
-   <Select bind:value={stringerValue} label="Stringer">
-      <OptGroup label="Stocked">
-         {#each stringerStockOptions as { text }}
-            <Option {text} />
-         {/each}
-      </OptGroup>
-      <OptGroup label="Available">
-         {#each stringerAvailableOptions as { text }}
-            <Option {text} />
-         {/each}
-      </OptGroup>
-      <OptGroup label="Check">
-         {#each stringerCheckOptions as { text }}
-            <Option {text} />
-         {/each}
-      </OptGroup>
-   </Select>
+   <!-- <Select bind:value={stringerValue} label="Stringer"> -->
+   <OptGroup label="Stocked">
+      {#each stringerStockOptions as { text }}
+         <Option {text} />
+      {/each}
+   </OptGroup>
+   <OptGroup label="Available">
+      {#each stringerAvailableOptions as { text }}
+         <Option {text} />
+      {/each}
+   </OptGroup>
+   <OptGroup label="Check">
+      {#each stringerCheckOptions as { text }}
+         <Option {text} />
+      {/each}
+   </OptGroup>
+   <!-- </Select> -->
 
    <Input bind:value={platformStringerQty} calc={stringerQtyCalc} label="Stringer Quantity" reset type="number" />
 
    <Input bind:value={sideChannelValue} display label="Side Channel" />
-   {#if platformHasSillChannel}
-      <Input bind:value={sillChannel.text} display label="Sill Channel" />
-   {/if}
+   <!-- {#if platformHasSillChannel} -->
+   <!-- <Input bind:value={sillChannel.text} display label="Sill Channel" /> -->
+   <!-- {/if} -->
 
-   <Select bind:value={frontChannelValue} label="Front Channel">
-      <OptGroup label="Stocked">
-         {#each frontChannelStockOptions as { text }}
-            <Option {text} />
-         {/each}
-      </OptGroup>
-      <OptGroup label="Available">
-         {#each frontChannelAvailableOptions as { text }}
-            <Option {text} />
-         {/each}
-      </OptGroup>
-      <OptGroup label="Check">
-         {#each frontChannelCheckOptions as { text }}
-            <Option {text} />
-         {/each}
-      </OptGroup>
-   </Select>
+   <!-- <Select bind:value={frontChannelValue} label="Front Channel"> -->
+   <OptGroup label="Stocked">
+      {#each frontChannelStockOptions as { text }}
+         <Option {text} />
+      {/each}
+   </OptGroup>
+   <OptGroup label="Available">
+      {#each frontChannelAvailableOptions as { text }}
+         <Option {text} />
+      {/each}
+   </OptGroup>
+   <OptGroup label="Check">
+      {#each frontChannelCheckOptions as { text }}
+         <Option {text} />
+      {/each}
+   </OptGroup>
+   <!-- </Select> -->
 
    <Input bind:value={backChannelValue} display label="Back Channel" />
 
-   <Select bind:value={floorPlateValue} label="Floor Plate">
-      {#each steelPlateOptions as { name }}
-         <Option text={name} />
-      {/each}
-   </Select>
+   <!-- <Select bind:value={floorPlateValue} label="Floor Plate"> -->
+   {#each steelPlateOptions as { name }}
+      <Option text={name} />
+   {/each}
+   <!-- </Select> -->
 </fieldset>
