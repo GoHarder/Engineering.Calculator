@@ -1,7 +1,7 @@
 <script>
    // Parameters
    export let display = false;
-   export let invalid = false;
+   // export let invalid = false;
    export let list = '';
    export let max = undefined;
    export let maxLength = undefined;
@@ -26,9 +26,9 @@
    let input = undefined;
 
    // Reactive Rules
-   if (display && invalid) {
-      console.log(input);
-   }
+   // if (display && invalid) {
+   //    console.log(input);
+   // }
 </script>
 
 {#if display}

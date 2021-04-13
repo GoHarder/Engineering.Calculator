@@ -13,6 +13,7 @@
    export let invalid = false;
    export let label = '';
    export let list = '';
+   export let override = false;
    export let max = undefined;
    export let metric = false;
    export let min = 0;
@@ -25,6 +26,7 @@
    // Methods
    // Constants
    const parameters = {
+      calc,
       disableValidation,
       display,
       label,
@@ -41,17 +43,10 @@
 
    // Reactive Variables
    $: metricValue = round(value * 0.453592, 1);
-
-   $: canReset = value !== calc;
-
-   // Events
-   const onClick = () => {
-      value = calc;
-   };
 </script>
 
 <div class:metric-wrapper={metric}>
-   <Input bind:disabled bind:invalid bind:value on:click={onClick} {canReset} {...parameters}>
+   <Input bind:disabled bind:invalid bind:override bind:value {...parameters}>
       <span slot="helperText">
          {#if helperText}
             <HelperText validation>{helperText}</HelperText>

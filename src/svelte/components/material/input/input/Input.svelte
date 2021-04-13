@@ -9,6 +9,7 @@
    import Text from './Text.svelte';
 
    // Parameters
+   export let calc = 0;
    export let disabled = false;
    export let disableValidation = false;
    export let display = false;
@@ -22,7 +23,7 @@
    export let pattern = undefined;
    export let prefix = '';
    export let reset = false;
-   export let canReset = false;
+   export let override = false;
    export let required = false;
    export let step = undefined;
    export let suffix = '';
@@ -66,6 +67,8 @@
       $$slots.trailingIcon ? 'mdc-text-field--with-trailing-icon' : '',
    ].join(' ');
 
+   $: override = value !== calc;
+
    // Reactive Rules
    $: if (TextField) {
       TextField.disabled = disabled;
@@ -74,6 +77,10 @@
 
    // Events
    const onFocus = (event) => event.target.select();
+
+   const onClick = () => {
+      override = false;
+   };
 
    // Lifecycle
    onMount(() => {
@@ -123,8 +130,10 @@
       <span class="mdc-floating-label">{label}</span>
 
       {#if reset}
-         {#if canReset}
-            <i on:click class="material-icons mdc-text-field__icon mdc-text-field__icon--leading" title="Reset To Calculation" tabindex="0" role="button"> replay </i>
+         {#if override}
+            <i on:click={onClick} class="material-icons mdc-text-field__icon mdc-text-field__icon--leading" title="Reset To Calculation" tabindex="0" role="button">
+               replay
+            </i>
          {:else}
             <i class="material-icons mdc-text-field__icon mdc-text-field__icon--leading"> create </i>
          {/if}

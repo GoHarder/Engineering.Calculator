@@ -53,4 +53,8 @@
 
    @include checkbox.core-styles;
    @include form-field.core-styles;
+
+   .mdc-checkbox {
+      @include checkbox.disabled-container-colors(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0));
+   }
 </style>

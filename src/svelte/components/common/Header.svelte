@@ -1,5 +1,6 @@
 <script>
    import { createEventDispatcher } from 'svelte';
+   import { slide } from 'svelte/transition';
 
    // Components
    import { Button, Label } from '../material/button';
@@ -69,7 +70,7 @@
 </header>
 
 {#if loading}
-   <div class="sticky">
+   <div class="sticky" transition:slide>
       <LinearProgress indeterminate />
    </div>
 {/if}
@@ -78,6 +79,7 @@
    div.sticky {
       position: sticky;
       top: 0;
+      z-index: 50;
    }
 
    header {

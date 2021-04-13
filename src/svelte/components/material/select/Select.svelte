@@ -81,6 +81,7 @@
       background-position: calc(100% - 15px) 50%, calc(100% - 10px) 50%;
       background-size: 5px 5px, 5px 5px;
       background-repeat: no-repeat;
+      cursor: pointer;
    }
 
    select:focus {

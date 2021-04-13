@@ -1,3 +1,4 @@
+<!-- TODO: 4-12-2021 11:01 AM - File is depricated -->
 <script>
    import * as options from '../options';
    import * as tables from '../tables';
@@ -90,7 +91,7 @@
    let db = undefined;
    // let sillChannel = undefined;
    let backChannel = undefined;
-   let sideChannel = undefined;
+   // let sideChannel = undefined;
 
    // - Steel Options
    // let stringerValue = 'Loading...';
@@ -121,17 +122,17 @@
    // $: unIsolatedStringerMomentOfInertia = round((load * Math.max(platformFrontToRail, platformBackToRail) ** 3) / (66 * elasticModulus * (platformDepth / 960)), 1);
    // $: stringerMomentOfIntertia = ['None', 'A'].includes(freight) && platformIsolation ? isolatedStringerMomentOfInertia : unIsolatedStringerMomentOfInertia;
 
-   $: stringerQtyCalc =
-      floor((platformWidth / (platformSplit ? 2 : 1) - (sideChannel?.dimensions.flangeWidth ?? 0) * 2) / ((platformStringer?.dimensions.flangeWidth ?? 0) + 14)) *
-      (platformSplit ? 2 : 1);
-   $: platformStringerQty = stringerQtyCalc;
+   // $: stringerQtyCalc =
+   //    floor((platformWidth / (platformSplit ? 2 : 1) - (sideChannel?.dimensions.flangeWidth ?? 0) * 2) / ((platformStringer?.dimensions.flangeWidth ?? 0) + 14)) *
+   //    (platformSplit ? 2 : 1);
+   // $: platformStringerQty = stringerQtyCalc;
 
    // - Side Channel
-   $: sideChannelValue = sideChannel?.text ?? 'Loading...';
+   // $: sideChannelValue = sideChannel?.text ?? 'Loading...';
 
    // - Front Channel
-   $: frontChannelSectionModulus = tables.frontChannelFormulas.find((row) => row.category.includes(freight)).sectionModulus(load, platformWidth);
-   $: frontChannelMomentOfInertia = tables.frontChannelFormulas.find((row) => row.category.includes(freight)).momentOfInertia(load, platformWidth, elasticModulus);
+   // $: frontChannelSectionModulus = tables.frontChannelFormulas.find((row) => row.category.includes(freight)).sectionModulus(load, platformWidth);
+   // $: frontChannelMomentOfInertia = tables.frontChannelFormulas.find((row) => row.category.includes(freight)).momentOfInertia(load, platformWidth, elasticModulus);
 
    // - Back Channel
    $: backChannelValue = backChannel?.text ?? 'Loading...';
@@ -281,7 +282,7 @@
 
    <Input bind:value={platformStringerQty} calc={stringerQtyCalc} label="Stringer Quantity" reset type="number" />
 
-   <Input bind:value={sideChannelValue} display label="Side Channel" />
+   <!-- <Input bind:value={sideChannelValue} display label="Side Channel" /> -->
    <!-- {#if platformHasSillChannel} -->
    <!-- <Input bind:value={sillChannel.text} display label="Sill Channel" /> -->
    <!-- {/if} -->

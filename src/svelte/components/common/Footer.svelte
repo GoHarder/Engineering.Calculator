@@ -1,5 +1,5 @@
 <footer>
-   <span>Hollister Whitney © 2020 | v1.1 - August 24, 2020</span>
+   <span>Hollister Whitney © 2020 | v0.1 - April 13, 2021</span>
 </footer>
 
 <style lang="scss">
