@@ -225,7 +225,7 @@
    // $: door2Weight = door2WeightCalc;
 
    // - Code Calculations
-   $: maxPlatformArea = tables.maxPlatform.reverse().find((row) => row.capacity <= capacity).area;
+   $: maxPlatformArea = tables.maxPlatform.find((row) => row.capacity <= capacity).area;
    $: maxPlatformAreaPlus = maxPlatformArea * 1.05;
    $: minFreightCapacity = round(tables.capacityRating.find((row) => row.class === freight).rating * cabArea);
 
@@ -423,6 +423,8 @@
 
    onMount(async () => {
       getSteel(platformSteel);
+
+      maxPlatformArea = tables.maxPlatform.reverse().find((row) => row.capacity <= capacity).area;
    });
 
    // Lifecycle
@@ -431,160 +433,173 @@
    });
 </script>
 
-<fieldset class="globals">
-   <legend>Globals</legend>
-   <div class="input-bump">
-      <InputWeight value={capacity} display label="Capacity" {metric} />
-   </div>
-   <div class="input-bump">
-      <Input value={`${loadingType} - ${freight}`} display label="Loading" />
-   </div>
-</fieldset>
-
-<fieldset class="properties">
-   <legend>Properties</legend>
-
-   <div class="input-bump">
-      <Select bind:value={platformMaterial} label="Material">
-         {#each options.platformMaterial as { text }}
-            <Option {text} />
-         {/each}
-      </Select>
-   </div>
-
-   <div class="input-bump">
-      <InputLength bind:value={platformWidth} label="Width" {metric} />
-   </div>
-   <div class="input-bump">
-      <InputLength bind:value={platformDepth} label="Depth" {metric} />
-   </div>
-   <div class="input-bump">
-      <InputLength bind:value={platformFrontToRail} label="Front of Platform to Rail" {metric} />
-   </div>
-   <div class="input-bump">
-      <InputLength bind:value={platformThickness} display label="Thickness" {metric} />
-   </div>
-   <div class="input-bump">
-      <InputArea value={platformArea} display label="Area" {metric} />
-   </div>
-
-   <div class="input-bump">
-      <InputWeight value={platformWeight} display label="Weight" {metric} />
-   </div>
-
-   <div class="input-bump">
-      <Checkbox bind:value={platformIsolation} disabled={disableIsolation} label="Isolation" />
-   </div>
-</fieldset>
-
-<!-- NOTE: Steel Section -->
-{#if platformMaterial === 'Steel'}
-   <fieldset transition:fade>
-      <legend>Steel</legend>
-
+<div class="container">
+   <fieldset class="fieldset-level-1 globals">
+      <legend>Globals</legend>
+      <hr />
       <div class="input-bump">
-         <Select bind:value={platformSteel} label="Type">
-            {#each options.steelType as { text }}
+         <InputWeight value={capacity} display label="Capacity" {metric} />
+      </div>
+      <div class="input-bump">
+         <Input value={`${loadingType} - ${freight}`} display label="Loading" />
+      </div>
+   </fieldset>
+</div>
+
+<div class="container">
+   <fieldset class="fieldset-level-1 properties">
+      <legend>Properties</legend>
+      <hr />
+      <div class="input-bump">
+         <Select bind:value={platformMaterial} label="Material">
+            {#each options.platformMaterial as { text }}
                <Option {text} />
             {/each}
          </Select>
       </div>
 
       <div class="input-bump">
-         <Checkbox bind:checked={platformSplit} disabled={disableSplit} label="Split" />
-         <Checkbox bind:checked={platformHasSillChannel} label="Sill Channel" />
+         <InputLength bind:value={platformWidth} label="Width" {metric} />
       </div>
-
-      <Select bind:value={platformStringer} label="Stringer">
-         {#if stringerStockOptions.length > 0}
-            <OptGroup label="Stocked">
-               {#each stringerStockOptions as { disabled, selected, name }}
-                  <Option {disabled} {selected} text={name} />
-               {/each}
-            </OptGroup>
-         {/if}
-         {#if stringerAvailableOptions.length > 0}
-            <OptGroup label="Available">
-               {#each stringerAvailableOptions as { disabled, selected, name }}
-                  <Option {disabled} {selected} text={name} />
-               {/each}
-            </OptGroup>
-         {/if}
-         {#if stringerCheckOptions.length > 0}
-            <OptGroup label="Check">
-               {#each stringerCheckOptions as { disabled, selected, name }}
-                  <Option {disabled} {selected} text={name} />
-               {/each}
-            </OptGroup>
-         {/if}
-      </Select>
-
       <div class="input-bump">
-         <Input bind:value={platformStringerQty} calc={stringerQtyCalc} label="Stringer Quantity" reset type="number" />
+         <InputLength bind:value={platformDepth} label="Depth" {metric} />
+      </div>
+      <div class="input-bump">
+         <InputLength bind:value={platformFrontToRail} label="Front of Platform to Rail" {metric} />
+      </div>
+      <div class="input-bump">
+         <InputLength bind:value={platformThickness} display label="Thickness" {metric} />
+      </div>
+      <div class="input-bump">
+         <InputArea value={platformArea} display label="Area" {metric} />
       </div>
 
       <div class="input-bump">
-         <Input bind:value={platformSideChannel} display label="Side Channel" />
+         <InputWeight value={platformWeight} display label="Weight" {metric} />
       </div>
 
-      {#if platformHasSillChannel}
+      <div class="input-bump">
+         <Checkbox bind:value={platformIsolation} disabled={disableIsolation} label="Isolation" />
+      </div>
+   </fieldset>
+
+   <!-- NOTE: Steel Section -->
+   {#if platformMaterial === 'Steel'}
+      <fieldset class="fieldset-level-1 steel" transition:fade>
+         <legend>Steel</legend>
+         <hr />
          <div class="input-bump">
-            <Input bind:value={platformSillChannel} display label="Sill Channel" />
+            <Select bind:value={platformSteel} label="Type">
+               {#each options.steelType as { text }}
+                  <Option {text} />
+               {/each}
+            </Select>
          </div>
-      {/if}
 
-      <Select bind:value={platformFrontChannel} label="Front Channel">
-         {#if frontChannelStockOptions.length > 0}
-            <OptGroup label="Stocked">
-               {#each frontChannelStockOptions as { disabled, selected, name }}
-                  <Option {disabled} {selected} text={name} />
-               {/each}
-            </OptGroup>
-         {/if}
-         {#if frontChannelAvailableOptions.length > 0}
-            <OptGroup label="Available">
-               {#each frontChannelAvailableOptions as { disabled, selected, name }}
-                  <Option {disabled} {selected} text={name} />
-               {/each}
-            </OptGroup>
-         {/if}
-         {#if frontChannelCheckOptions.length > 0}
-            <OptGroup label="Check">
-               {#each frontChannelCheckOptions as { disabled, selected, name }}
-                  <Option {disabled} {selected} text={name} />
-               {/each}
-            </OptGroup>
-         {/if}
-      </Select>
+         <div class="input-bump">
+            <Checkbox bind:checked={platformSplit} disabled={disableSplit} label="Split" />
+            <Checkbox bind:checked={platformHasSillChannel} label="Sill Channel" />
+         </div>
 
-      <div class="input-bump">
-         <Input bind:value={platformBackChannel} display label="Back Channel" />
-      </div>
+         <Select bind:value={platformStringer} label="Stringer">
+            {#if stringerStockOptions.length > 0}
+               <OptGroup label="Stocked">
+                  {#each stringerStockOptions as { disabled, selected, name }}
+                     <Option {disabled} {selected} text={name} />
+                  {/each}
+               </OptGroup>
+            {/if}
+            {#if stringerAvailableOptions.length > 0}
+               <OptGroup label="Available">
+                  {#each stringerAvailableOptions as { disabled, selected, name }}
+                     <Option {disabled} {selected} text={name} />
+                  {/each}
+               </OptGroup>
+            {/if}
+            {#if stringerCheckOptions.length > 0}
+               <OptGroup label="Check">
+                  {#each stringerCheckOptions as { disabled, selected, name }}
+                     <Option {disabled} {selected} text={name} />
+                  {/each}
+               </OptGroup>
+            {/if}
+         </Select>
 
-      <Select bind:value={platformFloorPlate} label="Floor Plate">
-         {#each floorPlateOptions as plate}
-            <Option disabled={plate.disabled} text={plate.name} />
+         <div class="input-bump">
+            <Input bind:value={platformStringerQty} calc={stringerQtyCalc} label="Stringer Quantity" reset type="number" />
+         </div>
+
+         <div class="input-bump">
+            <Input bind:value={platformSideChannel} display label="Side Channel" />
+         </div>
+
+         {#if platformHasSillChannel}
+            <div class="input-bump">
+               <Input bind:value={platformSillChannel} display label="Sill Channel" />
+            </div>
+         {/if}
+
+         <Select bind:value={platformFrontChannel} label="Front Channel">
+            {#if frontChannelStockOptions.length > 0}
+               <OptGroup label="Stocked">
+                  {#each frontChannelStockOptions as { disabled, selected, name }}
+                     <Option {disabled} {selected} text={name} />
+                  {/each}
+               </OptGroup>
+            {/if}
+            {#if frontChannelAvailableOptions.length > 0}
+               <OptGroup label="Available">
+                  {#each frontChannelAvailableOptions as { disabled, selected, name }}
+                     <Option {disabled} {selected} text={name} />
+                  {/each}
+               </OptGroup>
+            {/if}
+            {#if frontChannelCheckOptions.length > 0}
+               <OptGroup label="Check">
+                  {#each frontChannelCheckOptions as { disabled, selected, name }}
+                     <Option {disabled} {selected} text={name} />
+                  {/each}
+               </OptGroup>
+            {/if}
+         </Select>
+
+         <div class="input-bump">
+            <Input bind:value={platformBackChannel} display label="Back Channel" />
+         </div>
+
+         <Select bind:value={platformFloorPlate} label="Floor Plate">
+            {#each floorPlateOptions as plate}
+               <Option disabled={plate.disabled} text={plate.name} />
+            {/each}
+         </Select>
+      </fieldset>
+   {/if}
+</div>
+
+<div class="container">
+   <!-- <fieldset class="cab"> -->
+   <!-- <legend>Cab Information</legend> -->
+
+   <fieldset class="fieldset-level-2">
+      <legend>Cab</legend>
+      <hr />
+
+      <InputLength bind:value={cabHeight} label="Height" {metric} />
+      <InputLength bind:value={cabWidth} label="Interior Width" {metric} />
+      <InputLength bind:value={cabDepth} label="Interior Depth" {metric} />
+      <InputArea value={cabArea} display label="Interior Area" {metric} />
+      <InputWeight bind:value={cabWeight} bind:override={cabWeightOverride} calc={cabWeightCalc} label="Weight" reset {metric} />
+
+      <Select bind:value={doorQty} label="Door Quantity" {metric}>
+         {#each options.doorQty as { text }}
+            <Option {text} />
          {/each}
       </Select>
    </fieldset>
-{/if}
 
-<fieldset class="cab">
-   <legend>Cab Information</legend>
-   <InputLength bind:value={cabHeight} label="Height" {metric} />
-   <InputLength bind:value={cabWidth} label="Interior Width" {metric} />
-   <InputLength bind:value={cabDepth} label="Interior Depth" {metric} />
-   <InputArea value={cabArea} display label="Interior Area" {metric} />
-   <InputWeight bind:value={cabWeight} bind:override={cabWeightOverride} calc={cabWeightCalc} label="Weight" reset {metric} />
-
-   <Select bind:value={doorQty} label="Door Quantity" {metric}>
-      {#each options.doorQty as { text }}
-         <Option {text} />
-      {/each}
-   </Select>
-
-   <fieldset>
+   <fieldset class="fieldset-level-2">
       <legend>Front Door</legend>
+      <hr />
       <Select bind:value={door1Type} label="Door Type" {metric}>
          {#each options.doorType as { text }}
             <Option {text} />
@@ -596,8 +611,9 @@
    </fieldset>
 
    {#if doorQty === 2}
-      <fieldset transition:fade>
+      <fieldset class="fieldset-level-2" transition:fade>
          <legend>{`${door2Location} Door`}</legend>
+         <hr />
          <Select bind:value={door2Location} label="Location" {metric}>
             {#each options.doorLocation as { text }}
                <Option {text} />
@@ -613,57 +629,108 @@
          <InputWeight bind:value={door2Weight} bind:override={door2WeightOverride} calc={door2WeightCalc} label="Weight" reset {metric} />
       </fieldset>
    {/if}
-</fieldset>
+   <!-- </fieldset> -->
+</div>
 
-<fieldset class="code-requirements">
-   <legend>Code Requirements</legend>
+<div class="container">
+   <fieldset class="fieldset-level-1 code-requirements">
+      <legend>Code Requirements</legend>
+      <hr />
+      {#if loadingType === 'Passenger'}
+         <div class="input-bump">
+            <InputArea value={maxPlatformArea} display label="Max Inside Platform Area" {metric} />
+         </div>
 
-   {#if loadingType === 'Passenger'}
-      <div class="input-bump">
-         <InputArea value={maxPlatformArea} display label="Max Inside Platform Area" {metric} />
-      </div>
+         <InputArea
+            value={maxPlatformAreaPlus}
+            disableValidation
+            display
+            helperText={`Interior area exceeds max area + 5%`}
+            invalid={invalidMaxPlatformArea}
+            label="Max Inside Platform Area + 5%"
+            {metric}
+         />
+      {/if}
 
-      <InputArea
-         value={maxPlatformAreaPlus}
-         disableValidation
-         display
-         helperText={`Interior area exceeds max area + 5%`}
-         invalid={invalidMaxPlatformArea}
-         label="Max Inside Platform Area + 5%"
-         {metric}
-      />
-   {/if}
+      {#if freight !== 'None'}
+         <InputWeight
+            value={minFreightCapacity}
+            disableValidation
+            display
+            helperText="Capacity is below minimum freight capacity"
+            invalid={invalidMinFreightCapacity}
+            label="Min. Freight Capacity"
+            {metric}
+         />
+      {/if}
+   </fieldset>
+</div>
 
-   {#if freight !== 'None'}
-      <InputWeight
-         value={minFreightCapacity}
-         disableValidation
-         display
-         helperText="Capacity is below minimum freight capacity"
-         invalid={invalidMinFreightCapacity}
-         label="Min. Freight Capacity"
-         {metric}
-      />
-   {/if}
-</fieldset>
-
-<style>
-   /* .container {
+<style lang="scss">
+   @import './src/scss/vantage-theme';
+   .container {
       display: flex;
       flex-wrap: wrap;
+      align-items: flex-start;
+      // margin-bottom: 16px;
    }
 
-   .globals {
+   fieldset {
+      // margin: 0;
+      // padding: 0;
+      // padding: 2em;
+      border: none;
+      // @include vantage-border;
+      @include vantage-paper;
+      background-color: white;
+      margin: 5px;
+   }
+
+   hr {
+      clear: both;
+      border: 1px solid $mdc-theme-primary;
+   }
+
+   legend {
+      font-size: 1.05rem;
+      margin: 5px 0 10px;
+      float: left;
+      clear: right;
+      background-color: white;
+   }
+
+   .fieldset-level-1 {
       flex-basis: calc(calc(600px - 100%) * 10000);
       flex-grow: 1;
       max-width: 500px;
-      min-width: 300px;
+      min-width: 400px;
    }
 
-   .dimensions {
+   // .cab {
+   //    display: flex;
+   //    flex-wrap: wrap;
+   //    flex-shrink: 1;
+   //    align-items: flex-start;
+   //    max-width: 500px;
+   //    min-width: 400px;
+   // }
+
+   .fieldset-level-2 {
       flex-basis: calc(calc(600px - 100%) * 10000);
       flex-grow: 1;
       max-width: 500px;
-      min-width: 300px;
-   } */
+      min-width: 400px;
+   }
+
+   // @media (min-width: 1180px) {
+   //    .cab {
+   //       max-width: 1000px;
+   //    }
+   // }
+
+   // @media (min-width: 1580px) {
+   //    .cab {
+   //       max-width: 100%;
+   //    }
+   // }
 </style>

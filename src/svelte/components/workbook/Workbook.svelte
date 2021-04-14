@@ -295,6 +295,7 @@
 
    .comp {
       padding: 16px;
+      background-color: #e6e6e6;
    }
 
    @media (min-width: 768px) {

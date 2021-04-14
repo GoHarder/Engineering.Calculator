@@ -5,8 +5,8 @@
    "main": "index.js",
    "scripts": {
       "build": "webpack --mode=production",
-      "prod": "set NODE_ENV=production&& node index",
-      "staging": "node index",
+      "production": "set NODE_ENV=production&& node index",
+      "staging": "set NODE_ENV=staging&& node index",
       "start": "nodemon index --reload",
       "watch": "webpack --mode=development --watch"
    },

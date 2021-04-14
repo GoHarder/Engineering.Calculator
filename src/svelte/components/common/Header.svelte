@@ -29,7 +29,10 @@
       <div class="logo">
          <img src="public/img/vantage-logo.png" alt="Vantage Logo" />
       </div>
-      <p>Hollister-Whitney Engineering Calculator</p>
+      <p>
+         <span class="hw">Hollister-Whitney</span>
+         <span>Engineering Calculator</span>
+      </p>
    </div>
 
    {#if user}
@@ -102,6 +105,10 @@
       margin-left: 210px;
    }
 
+   .hw {
+      display: none;
+   }
+
    .logo {
       align-items: center;
       background: #ffffff;
@@ -144,5 +151,11 @@
    .right {
       display: flex;
       align-items: center;
+   }
+
+   @media (min-width: 800px) {
+      .hw {
+         display: inline;
+      }
    }
 </style>
