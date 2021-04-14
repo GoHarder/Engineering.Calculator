@@ -225,12 +225,23 @@
    // $: door2Weight = door2WeightCalc;
 
    // - Code Calculations
-   $: maxPlatformArea = tables.maxPlatform.find((row) => row.capacity <= capacity).area;
+   // $: maxPlatformArea = tables.maxPlatform.find((row) => row.capacity <= capacity).area;
+   $: maxPlatformArea = tables.maxPlatform(capacity);
    $: maxPlatformAreaPlus = maxPlatformArea * 1.05;
    $: minFreightCapacity = round(tables.capacityRating.find((row) => row.class === freight).rating * cabArea);
 
    // - Error Checking
    $: invalidMaxPlatformArea = cabArea > maxPlatformAreaPlus;
+   $: invalidStringer = (stringerChannel?.stockStatus ?? 'Stocked') !== 'Stocked';
+   $: invalidFrontChannel = (frontChannel?.stockStatus ?? 'Stocked') !== 'Stocked';
+
+   // $: console.table({
+   //    cabArea,
+   //    capacity,
+   //    maxPlatformArea,
+   //    maxPlatformAreaPlus,
+   // });
+
    $: invalidMinFreightCapacity = minFreightCapacity > capacity;
 
    // - Wood Calculations
@@ -423,8 +434,6 @@
 
    onMount(async () => {
       getSteel(platformSteel);
-
-      maxPlatformArea = tables.maxPlatform.reverse().find((row) => row.capacity <= capacity).area;
    });
 
    // Lifecycle
@@ -434,7 +443,7 @@
 </script>
 
 <div class="container">
-   <fieldset class="fieldset-level-1 globals">
+   <fieldset>
       <legend>Globals</legend>
       <hr />
       <div class="input-bump">
@@ -447,7 +456,7 @@
 </div>
 
 <div class="container">
-   <fieldset class="fieldset-level-1 properties">
+   <fieldset>
       <legend>Properties</legend>
       <hr />
       <div class="input-bump">
@@ -457,7 +466,6 @@
             {/each}
          </Select>
       </div>
-
       <div class="input-bump">
          <InputLength bind:value={platformWidth} label="Width" {metric} />
       </div>
@@ -473,11 +481,9 @@
       <div class="input-bump">
          <InputArea value={platformArea} display label="Area" {metric} />
       </div>
-
       <div class="input-bump">
          <InputWeight value={platformWeight} display label="Weight" {metric} />
       </div>
-
       <div class="input-bump">
          <Checkbox bind:value={platformIsolation} disabled={disableIsolation} label="Isolation" />
       </div>
@@ -485,7 +491,7 @@
 
    <!-- NOTE: Steel Section -->
    {#if platformMaterial === 'Steel'}
-      <fieldset class="fieldset-level-1 steel" transition:fade>
+      <fieldset transition:fade>
          <legend>Steel</legend>
          <hr />
          <div class="input-bump">
@@ -495,13 +501,12 @@
                {/each}
             </Select>
          </div>
-
          <div class="input-bump">
             <Checkbox bind:checked={platformSplit} disabled={disableSplit} label="Split" />
             <Checkbox bind:checked={platformHasSillChannel} label="Sill Channel" />
          </div>
 
-         <Select bind:value={platformStringer} label="Stringer">
+         <Select bind:value={platformStringer} disableValidation helperText="Channel isn't stocked check with purchasing" invalid={invalidStringer} label="Stringer">
             {#if stringerStockOptions.length > 0}
                <OptGroup label="Stocked">
                   {#each stringerStockOptions as { disabled, selected, name }}
@@ -524,22 +529,24 @@
                </OptGroup>
             {/if}
          </Select>
-
          <div class="input-bump">
             <Input bind:value={platformStringerQty} calc={stringerQtyCalc} label="Stringer Quantity" reset type="number" />
          </div>
-
          <div class="input-bump">
             <Input bind:value={platformSideChannel} display label="Side Channel" />
          </div>
-
          {#if platformHasSillChannel}
             <div class="input-bump">
                <Input bind:value={platformSillChannel} display label="Sill Channel" />
             </div>
          {/if}
-
-         <Select bind:value={platformFrontChannel} label="Front Channel">
+         <Select
+            bind:value={platformFrontChannel}
+            disableValidation
+            helperText="Channel isn't stocked check with purchasing"
+            invalid={invalidFrontChannel}
+            label="Front Channel"
+         >
             {#if frontChannelStockOptions.length > 0}
                <OptGroup label="Stocked">
                   {#each frontChannelStockOptions as { disabled, selected, name }}
@@ -562,78 +569,102 @@
                </OptGroup>
             {/if}
          </Select>
-
          <div class="input-bump">
             <Input bind:value={platformBackChannel} display label="Back Channel" />
          </div>
-
-         <Select bind:value={platformFloorPlate} label="Floor Plate">
-            {#each floorPlateOptions as plate}
-               <Option disabled={plate.disabled} text={plate.name} />
-            {/each}
-         </Select>
+         <div class="input-bump">
+            <Select bind:value={platformFloorPlate} label="Floor Plate">
+               {#each floorPlateOptions as plate}
+                  <Option disabled={plate.disabled} text={plate.name} />
+               {/each}
+            </Select>
+         </div>
       </fieldset>
    {/if}
 </div>
 
 <div class="container">
-   <!-- <fieldset class="cab"> -->
-   <!-- <legend>Cab Information</legend> -->
-
-   <fieldset class="fieldset-level-2">
+   <fieldset>
       <legend>Cab</legend>
       <hr />
-
-      <InputLength bind:value={cabHeight} label="Height" {metric} />
-      <InputLength bind:value={cabWidth} label="Interior Width" {metric} />
-      <InputLength bind:value={cabDepth} label="Interior Depth" {metric} />
-      <InputArea value={cabArea} display label="Interior Area" {metric} />
-      <InputWeight bind:value={cabWeight} bind:override={cabWeightOverride} calc={cabWeightCalc} label="Weight" reset {metric} />
-
-      <Select bind:value={doorQty} label="Door Quantity" {metric}>
-         {#each options.doorQty as { text }}
-            <Option {text} />
-         {/each}
-      </Select>
-   </fieldset>
-
-   <fieldset class="fieldset-level-2">
-      <legend>Front Door</legend>
-      <hr />
-      <Select bind:value={door1Type} label="Door Type" {metric}>
-         {#each options.doorType as { text }}
-            <Option {text} />
-         {/each}
-      </Select>
-      <InputLength bind:value={door1Width} label="Width" {metric} />
-      <InputLength bind:value={door1Height} label="Height" {metric} />
-      <InputWeight bind:value={door1Weight} bind:override={door1WeightOverride} calc={door1WeightCalc} label="Weight" reset {metric} />
-   </fieldset>
-
-   {#if doorQty === 2}
-      <fieldset class="fieldset-level-2" transition:fade>
-         <legend>{`${door2Location} Door`}</legend>
-         <hr />
-         <Select bind:value={door2Location} label="Location" {metric}>
-            {#each options.doorLocation as { text }}
+      <div class="input-bump">
+         <InputLength bind:value={cabHeight} label="Height" {metric} />
+      </div>
+      <div class="input-bump">
+         <InputLength bind:value={cabWidth} label="Interior Width" {metric} />
+      </div>
+      <div class="input-bump">
+         <InputLength bind:value={cabDepth} label="Interior Depth" {metric} />
+      </div>
+      <div class="input-bump">
+         <InputArea value={cabArea} display label="Interior Area" {metric} />
+      </div>
+      <div class="input-bump">
+         <InputWeight bind:value={cabWeight} bind:override={cabWeightOverride} calc={cabWeightCalc} label="Weight" reset {metric} />
+      </div>
+      <div class="input-bump">
+         <Select bind:value={doorQty} label="Door Quantity" {metric}>
+            {#each options.doorQty as { text }}
                <Option {text} />
             {/each}
          </Select>
-         <Select bind:value={door2Type} label="Door Type" {metric}>
+      </div>
+   </fieldset>
+
+   <fieldset>
+      <legend>Front Door</legend>
+      <hr />
+      <div class="input-bump">
+         <Select bind:value={door1Type} label="Door Type" {metric}>
             {#each options.doorType as { text }}
                <Option {text} />
             {/each}
          </Select>
-         <InputLength bind:value={door2Width} label="Width" {metric} />
-         <InputLength bind:value={door2Height} label="Height" {metric} />
-         <InputWeight bind:value={door2Weight} bind:override={door2WeightOverride} calc={door2WeightCalc} label="Weight" reset {metric} />
+      </div>
+      <div class="input-bump">
+         <InputLength bind:value={door1Width} label="Width" {metric} />
+      </div>
+      <div class="input-bump">
+         <InputLength bind:value={door1Height} label="Height" {metric} />
+      </div>
+      <div class="input-bump">
+         <InputWeight bind:value={door1Weight} bind:override={door1WeightOverride} calc={door1WeightCalc} label="Weight" reset {metric} />
+      </div>
+   </fieldset>
+
+   {#if doorQty === 2}
+      <fieldset transition:fade>
+         <legend>{`${door2Location} Door`}</legend>
+         <hr />
+         <div class="input-bump">
+            <Select bind:value={door2Location} label="Location" {metric}>
+               {#each options.doorLocation as { text }}
+                  <Option {text} />
+               {/each}
+            </Select>
+         </div>
+         <div class="input-bump">
+            <Select bind:value={door2Type} label="Door Type" {metric}>
+               {#each options.doorType as { text }}
+                  <Option {text} />
+               {/each}
+            </Select>
+         </div>
+         <div class="input-bump">
+            <InputLength bind:value={door2Width} label="Width" {metric} />
+         </div>
+         <div class="input-bump">
+            <InputLength bind:value={door2Height} label="Height" {metric} />
+         </div>
+         <div class="input-bump">
+            <InputWeight bind:value={door2Weight} bind:override={door2WeightOverride} calc={door2WeightCalc} label="Weight" reset {metric} />
+         </div>
       </fieldset>
    {/if}
-   <!-- </fieldset> -->
 </div>
 
 <div class="container">
-   <fieldset class="fieldset-level-1 code-requirements">
+   <fieldset>
       <legend>Code Requirements</legend>
       <hr />
       {#if loadingType === 'Passenger'}
@@ -672,18 +703,17 @@
       display: flex;
       flex-wrap: wrap;
       align-items: flex-start;
-      // margin-bottom: 16px;
    }
 
    fieldset {
-      // margin: 0;
-      // padding: 0;
-      // padding: 2em;
       border: none;
-      // @include vantage-border;
       @include vantage-paper;
       background-color: white;
       margin: 5px;
+      flex-basis: calc(calc(600px - 100%) * 10000);
+      flex-grow: 1;
+      max-width: 500px;
+      min-width: 400px;
    }
 
    hr {
@@ -699,12 +729,12 @@
       background-color: white;
    }
 
-   .fieldset-level-1 {
-      flex-basis: calc(calc(600px - 100%) * 10000);
-      flex-grow: 1;
-      max-width: 500px;
-      min-width: 400px;
-   }
+   // .fieldset-level-1 {
+   //    flex-basis: calc(calc(600px - 100%) * 10000);
+   //    flex-grow: 1;
+   //    max-width: 500px;
+   //    min-width: 400px;
+   // }
 
    // .cab {
    //    display: flex;
@@ -715,12 +745,12 @@
    //    min-width: 400px;
    // }
 
-   .fieldset-level-2 {
-      flex-basis: calc(calc(600px - 100%) * 10000);
-      flex-grow: 1;
-      max-width: 500px;
-      min-width: 400px;
-   }
+   // .fieldset-level-2 {
+   //    flex-basis: calc(calc(600px - 100%) * 10000);
+   //    flex-grow: 1;
+   //    max-width: 500px;
+   //    min-width: 400px;
+   // }
 
    // @media (min-width: 1180px) {
    //    .cab {

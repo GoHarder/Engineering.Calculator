@@ -1,7 +1,6 @@
 <script>
    // Svelte Imports
    import { createEventDispatcher } from 'svelte';
-   import { fade } from 'svelte/transition';
 
    // Project Components
    import WorkbookRow from './WorkbookRow.svelte';
@@ -32,6 +31,8 @@
 
       const body = await res.json();
 
+      // console.log(body);
+
       if (res.ok) {
          // fetchType = 'recent';
          loadingStore.set(false);
@@ -61,7 +62,7 @@
    const dispatch = createEventDispatcher();
 
    // Variables
-   let workbooks = fetchRecent(1);
+   let workbooks = undefined;
    let search = '';
    // let fetchType = '';
 

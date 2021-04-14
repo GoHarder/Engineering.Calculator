@@ -1,6 +1,6 @@
 import { round } from '../round';
 
-export const maxPlatform = [
+const maxPlatformTable = [
    { capacity: 30000, area: 33264 },
    { capacity: 25000, area: 28296 },
    { capacity: 20000, area: 23212.8 },
@@ -28,6 +28,8 @@ export const maxPlatform = [
    { capacity: 500, area: 1008 },
    { capacity: 0, area: 0 },
 ];
+
+export const maxPlatform = (capacity) => maxPlatformTable.find((row) => row.capacity <= capacity).area;
 
 export const capacityRating = [
    { class: 'None', rating: 0 },

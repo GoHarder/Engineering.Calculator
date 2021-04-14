@@ -2,14 +2,14 @@
    import { onDestroy, onMount } from 'svelte';
    import { MDCTextField } from '@material/textfield';
 
-   import { Anchor, Icon, Item, Menu, Text } from '../menu';
-
    // Components
-   import OptGroup from './OptGroup.svelte';
+   import HelperText from '../input/HelperText.svelte';
+   import { Anchor, Icon, Item, Menu, Text } from '../menu';
 
    // Parameters
    export let disabled = false;
    export let disableValidation = false;
+   export let helperText = '';
    export let invalid = false;
    export let label = '';
    export let required = false;
@@ -54,18 +54,21 @@
 <!-- TODO: 3-16-2021 8:51 AM - optional: style menu -->
 
 <!-- <Anchor> -->
-<label bind:this={bind1} class={labelClass}>
-   <span class="mdc-text-field__ripple" />
-   <span class="mdc-floating-label mdc-floating-label--float-above">{label}</span>
-   <select bind:value class="mdc-text-field__input" {...parameters} {disabled}>
-      <slot />
-      <!-- {#each options as option}
-         <option value={option.value ? option.value : option.text}>{option.text}</option>
-      {/each} -->
-   </select>
 
-   <span class="mdc-line-ripple" />
-</label>
+<div>
+   <label bind:this={bind1} class={labelClass}>
+      <span class="mdc-text-field__ripple" />
+      <span class="mdc-floating-label mdc-floating-label--float-above">{label}</span>
+      <select bind:value class="mdc-text-field__input" {...parameters} {disabled}>
+         <slot />
+      </select>
+      <span class="mdc-line-ripple" />
+   </label>
+   {#if helperText}
+      <HelperText validation>{helperText}</HelperText>
+   {/if}
+</div>
+
 <!-- <Menu bind:open> -->
 <!-- <Item on:click={() => console.log('ding')}> -->
 <!-- <Text>My Account</Text> -->
