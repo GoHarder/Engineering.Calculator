@@ -133,25 +133,28 @@
 
       <div class="form">
          <div class="search-container">
-            <div class="box n1">
+            <!-- <div class="box n1">
                <p>Select modules for your workbook</p>
+            </div> -->
+
+            <!-- <div class="box n2"> -->
+            <div class="sub-box-1">
+               <InputSearch bind:value={search} label="Search Modules" />
             </div>
 
-            <div class="box n2">
-               <div class="sub-box-2">
-                  <IconButton on:click={onSelectNone} title="Select None">
-                     <RemoveDone />
-                  </IconButton>
-                  <IconButton on:click={onSelectAll} title="Select All">
-                     <DoneAll />
-                  </IconButton>
-               </div>
-
-               <div class="sub-box-1">
-                  <InputSearch bind:value={search} label="Search Modules" />
-               </div>
+            <div class="sub-box-2">
+               <IconButton on:click={onSelectNone} title="Select None">
+                  <RemoveDone />
+               </IconButton>
+               <IconButton on:click={onSelectAll} title="Select All">
+                  <DoneAll />
+               </IconButton>
             </div>
+
+            <!-- </div> -->
          </div>
+
+         <hr />
 
          <div class="form-box">
             {#each filteredModules as { i, title, description, checked } (i)}
@@ -224,9 +227,9 @@
       height: calc(100vh - 400px);
       overflow-y: auto;
    }
-   p {
-      margin: 0 30px;
-   }
+   // p {
+   //    margin: 0 30px;
+   // }
    .form-box {
       display: flex;
       flex-wrap: wrap;
@@ -238,22 +241,35 @@
    .search-container {
       display: flex;
       align-items: center;
-      justify-content: space-between;
+      // justify-content: space-between;
+      justify-content: center;
       margin-bottom: 8px;
 
-      .box.n1 {
-         flex-grow: 1;
-      }
+      // .box.n1 {
+      //    flex-grow: 1;
+      // }
 
-      .box.n2 {
-         flex-grow: 1;
-         display: flex;
-         align-items: center;
-         gap: 8px;
-         .sub-box-1 {
-            flex-grow: 1;
-         }
-      }
+      // .box.n2 {
+      //    flex-grow: 1;
+      //    display: flex;
+      //    align-items: center;
+      //    gap: 8px;
+      //    .sub-box-1 {
+      //       flex-grow: 1;
+      //    }
+      // }
+   }
+
+   .sub-box-1 {
+      width: 500px;
+      margin: 0 10px 10px;
+   }
+   .sub-box-2 {
+      margin: 0 10px 10px;
+   }
+
+   hr {
+      border: 1px solid #e6e6e6;
    }
 
    // .box {

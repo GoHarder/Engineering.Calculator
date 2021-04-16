@@ -26,7 +26,6 @@
    // Methods
    // Constants
    const parameters = {
-      calc,
       disableValidation,
       display,
       label,
@@ -46,7 +45,7 @@
 </script>
 
 <div class:metric-wrapper={metric}>
-   <Input bind:disabled bind:invalid bind:override bind:value {...parameters}>
+   <Input bind:disabled bind:calc bind:invalid bind:override bind:value {...parameters}>
       <span slot="helperText">
          {#if helperText}
             <HelperText validation>{helperText}</HelperText>

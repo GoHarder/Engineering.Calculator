@@ -1,7 +1,7 @@
 <script>
    import { onDestroy, onMount } from 'svelte';
    import { fade } from 'svelte/transition';
-   import { floor, round } from '../../../material/lib/round';
+   import { floor, round } from '../round';
    import * as tables from './tables';
    import * as options from './options';
 
@@ -184,17 +184,17 @@
    let doorQty = module?.doors?.qty ?? 1;
 
    // - Door 1
-   let door1Height = module?.doors?.door1?.height ?? 0;
+   let door1Height = module?.doors?.door1?.height ?? 84;
    let door1Type = module?.doors?.door1?.type ?? 'Single Speed';
-   let door1Width = module?.doors?.door1?.width ?? 0;
+   let door1Width = module?.doors?.door1?.width ?? 54;
    let door1Weight = module?.doors?.door1?.weight ?? 0;
    let door1WeightOverride = module?.doors?.door1?.weightOverride ?? false;
 
    // -- Door 2
-   let door2Height = module?.doors?.door2?.height ?? 0;
+   let door2Height = module?.doors?.door2?.height ?? 84;
    let door2Location = module?.doors?.door2?.location ?? 'Back';
    let door2Type = module?.doors?.door2?.type ?? 'Single Speed';
-   let door2Width = module?.doors?.door2?.width ?? 0;
+   let door2Width = module?.doors?.door2?.width ?? 54;
    let door2Weight = module?.doors?.door2?.weight ?? 0;
    let door2WeightOverride = module?.doors?.door2?.weightOverride ?? false;
 
@@ -212,20 +212,12 @@
 
    // -- Cab Weight with override
    $: cabWeightCalc = round(cabWallWeight + cabCeilingWeight + handRailWeight + coveLightWeight);
-   $: if (!cabWeightOverride) cabWeight = cabWeightCalc;
-   // $: cabWeight = cabWeightCalc;
 
    // - Door Weight with override
-   $: door1WeightCalc = door1Width * (86 / 12);
-   $: if (!door1WeightOverride) cabWeight = door1WeightCalc;
-   // $: door1Weight = door1WeightCalc;
-
-   $: door2WeightCalc = door2Width * (86 / 12);
-   $: if (!door2WeightOverride) cabWeight = door2WeightCalc;
-   // $: door2Weight = door2WeightCalc;
+   $: door1WeightCalc = round(door1Width * (86 / 12));
+   $: door2WeightCalc = round(door2Width * (86 / 12));
 
    // - Code Calculations
-   // $: maxPlatformArea = tables.maxPlatform.find((row) => row.capacity <= capacity).area;
    $: maxPlatformArea = tables.maxPlatform(capacity);
    $: maxPlatformAreaPlus = maxPlatformArea * 1.05;
    $: minFreightCapacity = round(tables.capacityRating.find((row) => row.class === freight).rating * cabArea);
@@ -234,13 +226,6 @@
    $: invalidMaxPlatformArea = cabArea > maxPlatformAreaPlus;
    $: invalidStringer = (stringerChannel?.stockStatus ?? 'Stocked') !== 'Stocked';
    $: invalidFrontChannel = (frontChannel?.stockStatus ?? 'Stocked') !== 'Stocked';
-
-   // $: console.table({
-   //    cabArea,
-   //    capacity,
-   //    maxPlatformArea,
-   //    maxPlatformAreaPlus,
-   // });
 
    $: invalidMinFreightCapacity = minFreightCapacity > capacity;
 
@@ -277,8 +262,6 @@
    $: stringerQtyCalc =
       floor((platformWidth / (platformSplit ? 2 : 1) - (sideChannel?.dimensions?.flangeWidth ?? 0) * 2) / ((stringerChannel?.dimensions?.flangeWidth ?? 0) + 14)) *
       (platformSplit ? 2 : 1);
-   $: if (!platformStringerQtyOverride) platformStringerQty = stringerQtyCalc;
-   // $: platformStringerQty = stringerQtyCalc;
 
    // --- Length And Weight
    $: stringerLength =
@@ -364,15 +347,6 @@
          return row;
       });
 
-   // $: console.table({
-   //    stringerChannel,
-   //    sideChannel,
-   //    sillChannel,
-   //    frontChannel,
-   //    backChannel,
-   //    floorPlate,
-   // });
-
    // Reactive Rules
    $: if (save) {
       onSave();
@@ -450,7 +424,7 @@
          <InputWeight value={capacity} display label="Capacity" {metric} />
       </div>
       <div class="input-bump">
-         <Input value={`${loadingType} - ${freight}`} display label="Loading" />
+         <Input value={`${loadingType}${freight !== 'None' ? ` ${freight}` : ''}`} display label="Loading" />
       </div>
    </fieldset>
 </div>
@@ -530,7 +504,7 @@
             {/if}
          </Select>
          <div class="input-bump">
-            <Input bind:value={platformStringerQty} calc={stringerQtyCalc} label="Stringer Quantity" reset type="number" />
+            <Input bind:value={platformStringerQty} bind:override={platformStringerQtyOverride} calc={stringerQtyCalc} label="Stringer Quantity" reset type="number" />
          </div>
          <div class="input-bump">
             <Input bind:value={platformSideChannel} display label="Side Channel" />
@@ -600,7 +574,7 @@
          <InputArea value={cabArea} display label="Interior Area" {metric} />
       </div>
       <div class="input-bump">
-         <InputWeight bind:value={cabWeight} bind:override={cabWeightOverride} calc={cabWeightCalc} label="Weight" reset {metric} />
+         <InputWeight bind:value={cabWeight} bind:override={cabWeightOverride} bind:calc={cabWeightCalc} label="Weight" reset {metric} />
       </div>
       <div class="input-bump">
          <Select bind:value={doorQty} label="Door Quantity" {metric}>
@@ -706,61 +680,9 @@
    }
 
    fieldset {
-      border: none;
-      @include vantage-paper;
-      background-color: white;
-      margin: 5px;
       flex-basis: calc(calc(600px - 100%) * 10000);
       flex-grow: 1;
       max-width: 500px;
       min-width: 400px;
    }
-
-   hr {
-      clear: both;
-      border: 1px solid $mdc-theme-primary;
-   }
-
-   legend {
-      font-size: 1.05rem;
-      margin: 5px 0 10px;
-      float: left;
-      clear: right;
-      background-color: white;
-   }
-
-   // .fieldset-level-1 {
-   //    flex-basis: calc(calc(600px - 100%) * 10000);
-   //    flex-grow: 1;
-   //    max-width: 500px;
-   //    min-width: 400px;
-   // }
-
-   // .cab {
-   //    display: flex;
-   //    flex-wrap: wrap;
-   //    flex-shrink: 1;
-   //    align-items: flex-start;
-   //    max-width: 500px;
-   //    min-width: 400px;
-   // }
-
-   // .fieldset-level-2 {
-   //    flex-basis: calc(calc(600px - 100%) * 10000);
-   //    flex-grow: 1;
-   //    max-width: 500px;
-   //    min-width: 400px;
-   // }
-
-   // @media (min-width: 1180px) {
-   //    .cab {
-   //       max-width: 1000px;
-   //    }
-   // }
-
-   // @media (min-width: 1580px) {
-   //    .cab {
-   //       max-width: 100%;
-   //    }
-   // }
 </style>

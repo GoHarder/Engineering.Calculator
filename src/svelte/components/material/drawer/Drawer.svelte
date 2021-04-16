@@ -5,6 +5,7 @@
    // Properties
    export let open = false;
    export let variant = 'dismissible';
+   export let selectedIndex = 0;
 
    // Constants
    const asideClass = ['mdc-drawer', `mdc-drawer--${variant}`].join(' ').trim();
@@ -16,6 +17,11 @@
    // Reactive Rules
    $: if (Drawer) {
       Drawer.open = open;
+   }
+
+   $: if (Drawer && `${selectedIndex}`) {
+      Drawer.list.selectedIndex = selectedIndex;
+      // console.log(Drawer.list);
    }
 
    // Lifecycle

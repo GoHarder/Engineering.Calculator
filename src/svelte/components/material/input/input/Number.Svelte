@@ -34,5 +34,5 @@
 {#if display}
    <input class="mdc-text-field__input" bind:this={input} {value} tabindex="-1" type="number" />
 {:else}
-   <input class="mdc-text-field__input" bind:value on:focus on:change type="number" {...parameters} />
+   <input class="mdc-text-field__input" bind:value on:focus on:change on:blur type="number" {...parameters} />
 {/if}

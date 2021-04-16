@@ -5,6 +5,7 @@
 
    // export let value = false;
    export let color = 'default';
+   export let disabled = false;
    export let toggle = false;
    export let title = '';
 
@@ -33,7 +34,7 @@
    });
 </script>
 
-<button bind:this={bind} {title} on:click class={buttonClass}>
+<button bind:this={bind} {title} on:click {disabled} class={buttonClass}>
    <slot />
 </button>
 

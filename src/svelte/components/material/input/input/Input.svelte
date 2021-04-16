@@ -67,7 +67,7 @@
       $$slots.trailingIcon ? 'mdc-text-field--with-trailing-icon' : '',
    ].join(' ');
 
-   $: override = value !== calc;
+   // $: override = value !== calc;
 
    // Reactive Rules
    $: if (TextField) {
@@ -75,8 +75,14 @@
       TextField.valid = !invalid;
    }
 
+   $: if (!override && reset) value = calc;
+
    // Events
    const onFocus = (event) => event.target.select();
+
+   const onBlur = () => {
+      if (value !== calc) override = true;
+   };
 
    const onClick = () => {
       override = false;
@@ -144,7 +150,7 @@
       {#if prefix}
          <span class="mdc-text-field__affix mdc-text-field__affix--prefix">{prefix}</span>
       {/if}
-      <svelte:component this={comp} bind:value on:focus={onFocus} on:change {...parameters} />
+      <svelte:component this={comp} bind:value on:focus={onFocus} on:change on:blur={onBlur} {...parameters} />
       <slot name="trailingIcon" />
       {#if suffix}
          <span class="mdc-text-field__affix mdc-text-field__affix--suffix">{suffix}</span>

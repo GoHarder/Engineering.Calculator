@@ -1,15 +1,7 @@
-stringer length = IF(
-   AND(
-      hasSillChannel = true,
-      doorQty = 1
-   ),
-   platformDepth - 3.375 - sillChannelFlangeWidth - backChanelFlangeWidth,
-   IF(
-      AND(
-         hasSillChannel = true,
-         doorQty = 2
-      ),
-      platformDepth - 7.5 - sillChannelFlangeWidth - backChanelFlangeWidth,
-      platformDepth - frontChannelFlangeWidth - backChanelFlangeWidth 
-   )
-)
+'C7X9.8',
+'MC6X12.0',
+'MC8X18.7',
+'MC8X22.8',
+'MC10X28.5',
+'MC12X31',
+'MC12X50',

@@ -9,11 +9,12 @@ import Login from './Login.svelte';
 import MailOutline from './MailOutline.svelte';
 import Menu from './Menu.svelte';
 import MoreVert from './MoreVert.svelte';
-import NoteAdd from './NoteAdd.svelte';
+import Note from './Note.svelte';
+
 import Print from './Print.svelte';
 import RemoveDone from './RemoveDone.svelte';
 import Replay from './Replay.svelte';
 import Save from './Save.svelte';
 import Share from './Share.svelte';
 
-export { AddCircle, ArrowBackIos, ArrowDropDown, ArrowForwardIos, Check, Close, DoneAll, Login, MailOutline, Menu, MoreVert, NoteAdd, Print, RemoveDone, Replay, Save, Share };
+export { AddCircle, ArrowBackIos, ArrowDropDown, ArrowForwardIos, Check, Close, DoneAll, Login, MailOutline, Menu, MoreVert, Note, Print, RemoveDone, Replay, Save, Share };

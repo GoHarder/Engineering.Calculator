@@ -4,7 +4,7 @@
 
    // Components
    import { Button, IconButton, Label } from '../material/button';
-   import { ArrowBackIos, ArrowForwardIos, Check, Menu, NoteAdd, Print, Save, Share } from '../material/button/icons';
+   import { ArrowBackIos, ArrowForwardIos, Check, Menu, Note, Print, Save, Share } from '../material/button/icons';
    import { AppContent, Drawer, Header, Item, List, Title } from '../material/drawer';
    import { Actions, Banner, Text } from '../material/banner';
 
@@ -61,7 +61,7 @@
 
    let project = undefined;
    let menuOpen = true;
-   let activeTab = 'Tab Title';
+   let activeTab = undefined;
    let title = 'HW Engineering Calculator';
    let domTitle = 'Workbook';
    let tabs = [];
@@ -70,8 +70,6 @@
    // Subscriptions
    const clearLoading = loadingStore.subscribe(() => {});
    const clearProject = projectStore.subscribe((store) => {
-      // console.log('Workbook', store);
-
       project = { ...store };
 
       if (Object.keys(project).length > 1) {
@@ -82,9 +80,14 @@
 
          // Setup tabs
          tabs = modules.filter((mod) => Object.keys(project.modules).includes(mod.module));
-         activeTab = tabs[0];
+
+         if (!activeTab) activeTab = tabs[0];
       }
    });
+
+   // Reactive Variables
+   $: disablePrevious = activeTab.i === 0;
+   $: disableNext = activeTab.i + 1 === tabs.length;
 
    // Reactive Rules
    $: if (contract && jobName && carNo) {
@@ -108,15 +111,32 @@
       console.log('TODO: 2-26-2021 9:25 AM - hook up print button');
    };
 
-   const onSave = () => {
-      save = true;
-   };
+   const onSave = () => (save = true);
 
    const setActiveTab = (tab) => (activeTab = tab);
+
+   const onPrevious = () => (activeTab = tabs[activeTab.i - 1]);
+
+   const onNext = () => (activeTab = tabs[activeTab.i + 1]);
+
+   const onKeydown = (event) => {
+      switch (event.keyCode) {
+         case 39:
+            if (!disableNext) onNext();
+            break;
+         case 37:
+            if (!disablePrevious) onPrevious();
+            break;
+         // default:
+         //    console.log(event.keyCode);
+         //    break;
+      }
+   };
 
    // Lifecycle
    onMount(() => {
       saveProject();
+      // console.log(workbook); NOTE: 4-16-2021 11:27 AM - Turn this on for mongodb people
    });
 
    onDestroy(() => {
@@ -128,6 +148,8 @@
 <svelte:head>
    <title>{title}</title>
 </svelte:head>
+
+<svelte:window on:keydown={onKeydown} />
 
 <Banner bind:open={openBanner} centered>
    <Text>
@@ -156,13 +178,13 @@
          </div>
       </div>
       <div class="button-box">
-         <IconButton on:click={onShare} title="Share">
+         <IconButton on:click={onShare} disabled={true} title="Share">
             <Share />
          </IconButton>
-         <IconButton on:click={onNote} title="Add Note">
-            <NoteAdd />
+         <IconButton on:click={onNote} disabled={true} title="Notes">
+            <Note />
          </IconButton>
-         <IconButton on:click={onPrint} title="Print">
+         <IconButton on:click={onPrint} disabled={true} title="Print">
             <Print />
          </IconButton>
          <IconButton on:click={onSave} title="Save">
@@ -171,7 +193,7 @@
       </div>
    </header>
    <section class="paper">
-      <Drawer bind:open={menuOpen}>
+      <Drawer bind:open={menuOpen} selectedIndex={activeTab.i}>
          <Header>
             <Title>Modules</Title>
          </Header>
@@ -193,12 +215,12 @@
             </div>
             <div class="box-2">
                <div class="border-1">
-                  <IconButton on:click={() => console.log('TODO: 2-26-2021 3:13 PM - connect previous page button')} title="Previous">
+                  <IconButton on:click={onPrevious} disabled={disablePrevious} title="Previous">
                      <ArrowBackIos />
                   </IconButton>
                </div>
                <div class="border-2">
-                  <IconButton on:click={() => console.log('TODO: 2-26-2021 3:13 PM - connect next page button')} title="Next">
+                  <IconButton on:click={onNext} disabled={disableNext} title="Next">
                      <ArrowForwardIos />
                   </IconButton>
                </div>
@@ -296,6 +318,7 @@
    .comp {
       padding: 16px;
       background-color: #e6e6e6;
+      min-height: 727px;
    }
 
    @media (min-width: 768px) {
