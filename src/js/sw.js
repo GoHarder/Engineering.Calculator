@@ -1,5 +1,5 @@
 const version = 1;
-const static = `static v${version}`;
+const staticCache = `static v${version}`;
 
 const shell = [
    '/',
@@ -11,7 +11,7 @@ const shell = [
 
 self.addEventListener('install', (event) => {
    event.waitUntil(
-      caches.open(static).then((cache) => {
+      caches.open(staticCache).then((cache) => {
          cache.addAll(shell);
       })
    );

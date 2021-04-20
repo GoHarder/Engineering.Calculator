@@ -119,19 +119,7 @@
 
    const onNext = () => (activeTab = tabs[activeTab.i + 1]);
 
-   const onKeydown = (event) => {
-      switch (event.keyCode) {
-         case 39:
-            if (!disableNext) onNext();
-            break;
-         case 37:
-            if (!disablePrevious) onPrevious();
-            break;
-         // default:
-         //    console.log(event.keyCode);
-         //    break;
-      }
-   };
+   const onChangePage = (event) => dispatch('changePage', event.detail);
 
    // Lifecycle
    onMount(() => {
@@ -149,7 +137,7 @@
    <title>{title}</title>
 </svelte:head>
 
-<svelte:window on:keydown={onKeydown} />
+<!-- <svelte:window on:keydown={onKeydown} /> -->
 
 <Banner bind:open={openBanner} centered>
    <Text>
@@ -227,7 +215,7 @@
             </div>
          </div>
          <div class="comp">
-            <svelte:component this={activeTab.comp} bind:workbook {save} {saveProject} />
+            <svelte:component this={activeTab.comp} bind:workbook on:changePage={onChangePage} {save} {saveProject} />
          </div>
       </AppContent>
    </section>

@@ -1,14 +1,12 @@
 <script>
-   import { onMount } from 'svelte';
+   // Properties
+   export { className as class };
 
    // Variables
-   let nav = undefined;
+   let className = '';
 
-   // Events
-   onMount(() => {
-      const span = nav.querySelector('span');
-      span.classList.add('mdc-list-item--activated');
-   });
+   // Reactive Variables
+   $: navClass = ['mdc-list', className].join(' ').trim();
 </script>
 
-<nav bind:this={nav} class="mdc-list"><slot /></nav>
+<nav class={navClass}><slot /></nav>

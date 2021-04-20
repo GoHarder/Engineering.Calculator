@@ -1,5 +1,5 @@
 <script>
-   import { onDestroy, onMount } from 'svelte';
+   import { createEventDispatcher, onDestroy, onMount } from 'svelte';
    import { fade } from 'svelte/transition';
    import { floor, round } from '../round';
    import * as tables from './tables';
@@ -9,6 +9,8 @@
    import { Input, InputArea, InputLength, InputWeight } from '../../../material/input';
    import { OptGroup, Option, Select } from '../../../material/select';
    import { Checkbox } from '../../../material/checkbox';
+   import { IconButton } from '../../../material/button';
+   import { Link } from '../../../material/button/icons';
 
    // Properties
    export let workbook = {};
@@ -20,7 +22,7 @@
       // console.log('Saving...');
 
       const saveData = {
-         platform: {
+         properties: {
             depth: platformDepth,
             isolation: platformIsolation,
             frontToRail: platformFrontToRail,
@@ -68,7 +70,7 @@
          weightOverride: door2WeightOverride,
       };
 
-      if (saveData.platform.material === 'Steel') saveData.platform = { ...saveData.platform, ...steel };
+      if (saveData.properties.material === 'Steel') saveData.properties = { ...saveData.properties, ...steel };
       if (saveData.doors.qty === 2) saveData.doors.door2 = door2;
 
       workbook.modules.platform = { ...workbook.modules.platform, ...saveData };
@@ -136,6 +138,8 @@
    const getChannel = (name) => channel.find((row) => row.name === name);
 
    // Constants
+   const dispatch = createEventDispatcher();
+
    const { metric } = workbook;
    const { capacity, loading } = workbook.modules.globals;
    const { type: loadingType, freight } = loading;
@@ -146,23 +150,23 @@
    let channel = undefined;
 
    // - Platform
-   let platformDepth = module?.platform?.depth ?? 0;
-   let platformIsolation = module?.platform?.isolation ?? false;
-   let platformFrontToRail = module?.platform?.frontToRail ?? 0;
-   let platformMaterial = module?.platform?.material ?? 'Wood';
-   let platformThickness = module?.platform?.thickness ?? 0;
-   let platformWeight = module?.platform?.weight ?? 0;
-   let platformWidth = module?.platform?.width ?? 0;
+   let platformDepth = module?.properties?.depth ?? 0;
+   let platformIsolation = module?.properties?.isolation ?? false;
+   let platformFrontToRail = module?.properties?.frontToRail ?? 0;
+   let platformMaterial = module?.properties?.material ?? 'Wood';
+   let platformThickness = module?.properties?.thickness ?? 0;
+   let platformWeight = module?.properties?.weight ?? 0;
+   let platformWidth = module?.properties?.width ?? 0;
 
    // -- Saved Platform Steel
-   let platformSteel = module?.platform?.steel ?? 'ASTM A36';
-   let platformFloorPlate = module?.platform?.floorPlate ?? undefined;
-   let platformFrontChannel = module?.platform?.frontChannel ?? undefined;
-   let platformHasSillChannel = module?.platform?.hasSillChannel ?? false;
-   let platformSplit = module?.platform?.split ?? false;
-   let platformStringer = module?.platform?.stringer ?? undefined;
-   let platformStringerQty = module?.platform?.stringerQty ?? 0;
-   let platformStringerQtyOverride = module?.platform?.stringerQtyOverride ?? false;
+   let platformSteel = module?.properties?.steel ?? 'ASTM A36';
+   let platformFloorPlate = module?.properties?.floorPlate ?? undefined;
+   let platformFrontChannel = module?.properties?.frontChannel ?? undefined;
+   let platformHasSillChannel = module?.properties?.hasSillChannel ?? false;
+   let platformSplit = module?.properties?.split ?? false;
+   let platformStringer = module?.properties?.stringer ?? undefined;
+   let platformStringerQty = module?.properties?.stringerQty ?? 0;
+   let platformStringerQtyOverride = module?.properties?.stringerQtyOverride ?? false;
 
    // -- Calculated Platform Steel
    let load = steelLoad(freight);
@@ -324,7 +328,7 @@
       1
    ); // 3% hardware
 
-   // - Controlls
+   // - Controls
    $: disableIsolation = ['None', 'A'].includes(freight) === false || platformSplit;
 
    // - Steel
@@ -420,11 +424,17 @@
    <fieldset>
       <legend>Globals</legend>
       <hr />
-      <div class="input-bump">
+      <div class="input-bump link">
          <InputWeight value={capacity} display label="Capacity" {metric} />
+         <IconButton on:click={() => dispatch('changePage', 'Requirements')}>
+            <Link />
+         </IconButton>
       </div>
-      <div class="input-bump">
+      <div class="input-bump link">
          <Input value={`${loadingType}${freight !== 'None' ? ` ${freight}` : ''}`} display label="Loading" />
+         <IconButton on:click={() => dispatch('changePage', 'Requirements')}>
+            <Link />
+         </IconButton>
       </div>
    </fieldset>
 </div>

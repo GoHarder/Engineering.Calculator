@@ -13,7 +13,7 @@ const watch = process.argv.includes('--watch');
 // The entry files to process
 const entry = {
    app: ['./src/scss/style.scss', './src/js/app.js'],
-   sw: './src/js/sw.js',
+   sw: ['./src/js/sw.js'],
 };
 
 // The file it compiles to
@@ -26,6 +26,18 @@ const output = {
 const rules = [];
 
 rules[0] = {
+   test: /\.js$/,
+   exclude: /node_modules/,
+   use: {
+      loader: 'babel-loader',
+      options: {
+         presets: ['@babel/preset-env'],
+         plugins: ['@babel/plugin-transform-runtime'],
+      },
+   },
+};
+
+rules[1] = {
    test: /\.(html|svelte)$/,
    use: {
       loader: 'svelte-loader',
@@ -53,7 +65,7 @@ rules[0] = {
    },
 };
 
-rules[1] = {
+rules[2] = {
    test: /\.(sa|sc|c)ss$/,
    use: [
       'style-loader',

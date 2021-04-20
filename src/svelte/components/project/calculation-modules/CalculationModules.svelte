@@ -98,7 +98,7 @@
                }
             } else {
                if (nth.checked) {
-                  acc[nth.module] = { module: nth.module };
+                  acc[nth.module] = {};
                }
             }
 
@@ -106,8 +106,6 @@
          },
          { ...projectModules }
       );
-
-      // console.log(projectModules);
 
       projectStore.save('modules', projectModules);
 

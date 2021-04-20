@@ -1,7 +1,32 @@
-'C7X9.8',
-'MC6X12.0',
-'MC8X18.7',
-'MC8X22.8',
-'MC10X28.5',
-'MC12X31',
-'MC12X50',
+{
+"carNo": "1",
+"contract": "4197777",
+"created": "2021-04-19T16:33:14.488Z",
+"creator": "6021a01118d2e8d3db09cf27",
+"customer": "Otis Elevator Company",
+"jobName": "Space X Cape Canaveral",
+"layout": "L-8089",
+"metric": false,
+"modules": {
+"globals": {
+"capacity": 6000,
+"carRoping": 1,
+"carSpeed": 350,
+"code": "ASME A17-1 2010",
+"cwtRoping": 1,
+"loading": [Object],
+"module": "globals",
+"overallTravel": 2136,
+"type": "Passenger",
+"seismic": [Object]
+    },
+"platform": { module: "platform" }
+  },
+"opened": [
+    {
+"userId": "6021a01118d2e8d3db09cf27",
+"time": "2021-04-19T16:33:14.488Z"
+    }
+  ],
+"temp": false
+}

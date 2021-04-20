@@ -17,6 +17,14 @@ body {
 
 .input-bump {
    margin-bottom: 19px;
+   &.link {
+      div {
+         flex-grow: 1;
+      }
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+   }
 }
 
 fieldset {
