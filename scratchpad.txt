@@ -1,32 +1,210 @@
-{
-"carNo": "1",
-"contract": "4197777",
-"created": "2021-04-19T16:33:14.488Z",
-"creator": "6021a01118d2e8d3db09cf27",
-"customer": "Otis Elevator Company",
-"jobName": "Space X Cape Canaveral",
-"layout": "L-8089",
-"metric": false,
-"modules": {
-"globals": {
-"capacity": 6000,
-"carRoping": 1,
-"carSpeed": 350,
-"code": "ASME A17-1 2010",
-"cwtRoping": 1,
-"loading": [Object],
-"module": "globals",
-"overallTravel": 2136,
-"type": "Passenger",
-"seismic": [Object]
-    },
-"platform": { module: "platform" }
-  },
-"opened": [
-    {
-"userId": "6021a01118d2e8d3db09cf27",
-"time": "2021-04-19T16:33:14.488Z"
-    }
-  ],
-"temp": false
-}
+[
+   {
+      "name": "331-064",
+      "diameter": 15.75,
+      "rimWidth": 4.25,
+      "hubWidth": 4,
+      "minRimWidth": 4.25,
+      "shippingWeight": 94.93,
+      "shaftDiameter": 2.922,
+      "bearingBore": 5.118,
+      "_uses": [
+         "deflector",
+         "car",
+         "counterweight",
+         "overhead"
+      ]
+   },
+   {
+      "name": "331-065",
+      "diameter": 15.75,
+      "rimWidth": 5.5,
+      "hubWidth": 5,
+      "minRimWidth": 5.5,
+      "shippingWeight": 135.9,
+      "shaftDiameter": 3.439,
+      "bearingBore": 6.298,
+      "_uses": [
+         "deflector",
+         "car",
+         "counterweight",
+         "overhead"
+      ]
+   },
+   {
+      "name": "331-009",
+      "diameter": 20,
+      "rimWidth": 6.5,
+      "hubWidth": 6.5,
+      "minRimWidth": 5,
+      "shippingWeight": 235.3,
+      "shaftDiameter": 3.439,
+      "bearingBore": 6.298,
+      "_uses": [
+         "deflector",
+         "car",
+         "counterweight",
+         "overhead"
+      ]
+   },
+   {
+      "name": "331-092",
+      "diameter": 25,
+      "rimWidth": 6.5,
+      "hubWidth": 6.5,
+      "minRimWidth": 5,
+      "shippingWeight": 321.7,
+      "shaftDiameter": 3.439,
+      "bearingBore": 6.298,
+      "_uses": [
+         "deflector",
+         "car",
+         "counterweight",
+         "overhead"
+      ]
+   },
+   {
+      "name": "331-093",
+      "diameter": 25,
+      "rimWidth": 8.5,
+      "hubWidth": 6.5,
+      "minRimWidth": 5,
+      "shippingWeight": 355.68,
+      "shaftDiameter": 4.495,
+      "bearingBore": 6.298,
+      "_uses": [
+         "deflector",
+         "car",
+         "counterweight",
+         "overhead"
+      ]
+   },
+   {
+      "name": "331-088",
+      "diameter": 26,
+      "rimWidth": 10,
+      "hubWidth": 9,
+      "minRimWidth": 9,
+      "shippingWeight": 423.72,
+      "shaftDiameter": 3.439,
+      "bearingBore": 7.871,
+      "_uses": [
+         "deflector",
+         "car",
+         "counterweight",
+         "overhead"
+      ]
+   },
+   {
+      "name": "331-091",
+      "diameter": 30,
+      "rimWidth": 8.5,
+      "hubWidth": 6.5,
+      "minRimWidth": 5,
+      "shippingWeight": 447.46,
+      "shaftDiameter": 4.999,
+      "bearingBore": 6.298,
+      "_uses": [
+         "deflector",
+         "car",
+         "counterweight",
+         "overhead"
+      ]
+   },
+   {
+      "name": "331-133",
+      "diameter": 25,
+      "rimWidth": 8.5,
+      "hubWidth": 8.5,
+      "minRimWidth": 8.5,
+      "shippingWeight": 656.472,
+      "shaftDiameter": 4.999,
+      "bearingBore": 8.856,
+      "_uses": [
+         "deflector",
+         "car",
+         "counterweight",
+         "overhead"
+      ]
+   },
+   {
+      "name": "331-134",
+      "diameter": 25,
+      "rimWidth": 10,
+      "hubWidth": 10,
+      "minRimWidth": 10,
+      "shippingWeight": 701.816,
+      "shaftDiameter": 4.999,
+      "bearingBore": 8.856,
+      "_uses": [
+         "deflector",
+         "car",
+         "counterweight",
+         "overhead"
+      ]
+   },
+   {
+      "name": "331-136",
+      "diameter": 30,
+      "rimWidth": 8.5,
+      "hubWidth": 8.5,
+      "minRimWidth": 8.5,
+      "shippingWeight": 807.622,
+      "shaftDiameter": 4.999,
+      "bearingBore": 8.856,
+      "_uses": [
+         "deflector",
+         "car",
+         "counterweight",
+         "overhead"
+      ]
+   },
+   {
+      "name": "331-137",
+      "diameter": 30,
+      "rimWidth": 10,
+      "hubWidth": 10,
+      "minRimWidth": 10,
+      "shippingWeight": 859.421,
+      "shaftDiameter": 4.999,
+      "bearingBore": 8.856,
+      "_uses": [
+         "deflector",
+         "car",
+         "counterweight",
+         "overhead"
+      ]
+   },
+   {
+      "name": "331-139",
+      "diameter": 36,
+      "rimWidth": 8.5,
+      "hubWidth": 8.5,
+      "minRimWidth": 8.5,
+      "shippingWeight": 1021.26,
+      "shaftDiameter": 4.999,
+      "bearingBore": 8.856,
+      "_uses": [
+         "deflector",
+         "car",
+         "counterweight",
+         "overhead"
+      ]
+   },
+   {
+      "name": "331-140",
+      "diameter": 36,
+      "rimWidth": 10,
+      "hubWidth": 10,
+      "minRimWidth": 10,
+      "shippingWeight": 1087.343,
+      "shaftDiameter": 4.999,
+      "bearingBore": 8.856,
+      "_uses": [
+         "deflector",
+         "car",
+         "counterweight",
+         "overhead"
+      ]
+   }
+]

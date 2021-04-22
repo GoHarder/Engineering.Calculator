@@ -1,7 +1,7 @@
 <script>
    import { createEventDispatcher, onDestroy, onMount } from 'svelte';
    import { fade } from 'svelte/transition';
-   import { floor, round } from '../round';
+   import { ceil, floor, round } from '../round';
    import * as tables from './tables';
    import * as options from './options';
 
@@ -264,7 +264,7 @@
 
    // --- Stringer Quantity and Override
    $: stringerQtyCalc =
-      floor((platformWidth / (platformSplit ? 2 : 1) - (sideChannel?.dimensions?.flangeWidth ?? 0) * 2) / ((stringerChannel?.dimensions?.flangeWidth ?? 0) + 14)) *
+      ceil((platformWidth / (platformSplit ? 2 : 1) - (sideChannel?.dimensions?.flangeWidth ?? 0) * 2) / ((stringerChannel?.dimensions?.flangeWidth ?? 0) + 14)) *
       (platformSplit ? 2 : 1);
 
    // --- Length And Weight

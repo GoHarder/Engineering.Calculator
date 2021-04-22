@@ -5,6 +5,7 @@
    import Input from './input/Input.svelte';
 
    // Properties
+   export let calc = 0;
    export let disabled = false;
    export let disableValidation = false;
    export let display = false;
@@ -12,9 +13,11 @@
    export let invalid = false;
    export let label = '';
    export let list = '';
+   export let override = false;
    export let max = undefined;
    export let metric = false;
    export let min = 0;
+   export let reset = false;
    export let required = false;
    export let step = 1;
    export let value = '';
@@ -29,6 +32,7 @@
       list,
       max,
       min,
+      reset,
       required,
       step,
       suffix: 'ft',
@@ -64,6 +68,8 @@
       inches = round(value % 12, 4);
    }
 
+   $: if (!override && reset) value = calc;
+
    // Events
    const onFeet = (event) => {
       value = round(event.target.valueAsNumber * 12 + inches, 4);
@@ -77,14 +83,14 @@
 </script>
 
 <div class="split" class:metric-wrapper={metric}>
-   <Input bind:disabled bind:invalid on:change={onFeet} value={feet} {...parameters1}>
+   <Input bind:disabled bind:invalid bind:override on:change={onFeet} value={feet} {...parameters1}>
       <span slot="helperText">
          {#if helperText}
             <HelperText validation>{helperText}</HelperText>
          {/if}
       </span>
    </Input>
-   <Input bind:disabled bind:invalid on:change={onInches} value={inches} {...parameters2} />
+   <Input bind:disabled bind:invalid bind:override on:change={onInches} value={inches} {...parameters2} />
 
    {#if metric}
       <span class="metric-value">{`(${metricValue} m)`}</span>

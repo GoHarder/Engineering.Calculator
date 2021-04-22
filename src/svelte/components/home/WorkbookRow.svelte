@@ -54,28 +54,37 @@
    <Cell class="workbook-cell owner" on:click={onSelect} title={creator}>
       <Chip>{initials}</Chip>
    </Cell>
-
-   <Anchor>
-      <IconButton on:click={() => (open = !open)}>
-         <MoreVert />
-      </IconButton>
-      <Menu bind:open corner="top-right">
-         <Item on:click={onShare}>
-            <Icon>share</Icon>
-            <Text>Share</Text>
-         </Item>
-         <Item on:click={onDelete}>
-            <Icon>delete</Icon>
-            <Text>Delete</Text>
-         </Item>
-      </Menu>
-   </Anchor>
+   <div class="menu">
+      <Anchor>
+         <IconButton on:click={() => (open = !open)}>
+            <MoreVert />
+         </IconButton>
+         <Menu bind:open corner="top-right">
+            <Item on:click={onShare}>
+               <Icon>share</Icon>
+               <Text>Share</Text>
+            </Item>
+            <Item on:click={onDelete}>
+               <Icon>delete</Icon>
+               <Text>Delete</Text>
+            </Item>
+         </Menu>
+      </Anchor>
+   </div>
 </Row>
 
 <style lang="scss" global>
    .workbook-row {
       cursor: pointer;
    }
+   .menu {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 52px;
+      width: 52px;
+   }
+
    .workbook-cell {
       &.contract {
          width: 103px;

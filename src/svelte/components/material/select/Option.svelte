@@ -1,12 +1,13 @@
 <script>
    // Properties
+   export let disabled = false;
+   export let hidden = false;
+   export let selected = false;
    export let text = '';
    export let value = text;
-   export let disabled = false;
-   export let selected = false;
 </script>
 
-<option {disabled} {selected} {value}>{text}</option>
+<option {disabled} {hidden} {selected} {value}>{text}</option>
 
 <style>
    option:disabled {

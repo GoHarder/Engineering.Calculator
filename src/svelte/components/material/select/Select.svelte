@@ -1,5 +1,5 @@
 <script>
-   import { onDestroy, onMount } from 'svelte';
+   import { afterUpdate, onDestroy, onMount } from 'svelte';
    import { MDCTextField } from '@material/textfield';
 
    // Components
@@ -13,7 +13,7 @@
    export let invalid = false;
    export let label = '';
    export let required = false;
-   export let value = ' ';
+   export let value = '';
    export let variant = 'filled';
 
    // Constants
@@ -27,8 +27,9 @@
    };
 
    // Variables
-   let bind1;
+   let _label;
    let TextField;
+   let askSelect = false;
 
    // Reactive Variables
    $: labelClass = ['mdc-text-field', variant === 'filled' ? 'mdc-text-field--filled' : 'mdc-text-field--outlined'].join(' ');
@@ -41,9 +42,19 @@
 
    // Lifecycle
    onMount(() => {
-      TextField = new MDCTextField(bind1);
+      TextField = new MDCTextField(_label);
       TextField.required = required;
       TextField.useNativeValidation = !disableValidation;
+   });
+
+   afterUpdate(() => {
+      askSelect = true;
+
+      const options = _label.querySelectorAll('option');
+
+      options.forEach((option) => {
+         if (!option.disabled && option.value === `${value}`) askSelect = false;
+      });
    });
 
    onDestroy(() => {
@@ -56,10 +67,13 @@
 <!-- <Anchor> -->
 
 <div>
-   <label bind:this={bind1} class={labelClass}>
+   <label bind:this={_label} class={labelClass}>
       <span class="mdc-text-field__ripple" />
       <span class="mdc-floating-label mdc-floating-label--float-above">{label}</span>
       <select bind:value class="mdc-text-field__input" {...parameters} {disabled}>
+         {#if !value || askSelect}
+            <option value=" " disabled hidden selected>Select</option>
+         {/if}
          <slot />
       </select>
       <span class="mdc-line-ripple" />
