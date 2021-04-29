@@ -44,18 +44,18 @@ export const capacityRating = [
 export const frontChannelFormulas = [
    {
       category: ['None', 'A'],
-      sectionModulus: (load, length) => round((load * length) / 112000, 2),
+      sectionModulus: (load, length, ratio) => round((load * length) / (14000 * 8 * ratio), 2),
       momentOfInertia: (load, length, elasticModulus) => round((960 * load * length ** 2) / (192 * elasticModulus), 1),
    },
    {
       category: ['B-Auto', 'B-Truck'],
-      sectionModulus: (load, length) => round((load * (length - 60)) / 28000, 2),
+      sectionModulus: (load, length, ratio) => round((load * (length - 60)) / (14000 * 2 * ratio), 2),
       momentOfInertia: (load, length, elasticModulus) =>
          round((960 * load * ((length - 60) / 2) * (3 * length ** 2 - 4 * ((length - 60) / 2) ** 2)) / (24 * elasticModulus * length), 1),
    },
    {
       category: ['C1', 'C2', 'C3'],
-      sectionModulus: (load, length) => round((load * (length - 30)) / 28000, 2),
+      sectionModulus: (load, length, ratio) => round((load * (length - 30)) / (14000 * 2 * ratio), 2),
       momentOfInertia: (load, length, elasticModulus) =>
          round((960 * load * ((length - 30) / 2) * (3 * length ** 2 - 4 * ((length - 30) / 2) ** 2)) / (24 * elasticModulus * length), 1),
    },

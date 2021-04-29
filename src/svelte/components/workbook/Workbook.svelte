@@ -121,10 +121,11 @@
 
    const onChangePage = (event) => dispatch('changePage', event.detail);
 
+   const onChangeModule = (event) => (activeTab = tabs.find((tab) => tab.module === event.detail));
+
    // Lifecycle
    onMount(() => {
       saveProject();
-      // console.log(workbook); NOTE: 4-16-2021 11:27 AM - Turn this on for mongodb people
    });
 
    onDestroy(() => {
@@ -215,7 +216,7 @@
             </div>
          </div>
          <div class="comp">
-            <svelte:component this={activeTab.comp} bind:workbook on:changePage={onChangePage} {save} {saveProject} />
+            <svelte:component this={activeTab.comp} bind:workbook on:changePage={onChangePage} on:changeModule={onChangeModule} {save} {saveProject} />
          </div>
       </AppContent>
    </section>

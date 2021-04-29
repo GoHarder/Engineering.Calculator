@@ -47,6 +47,10 @@
                weight: door1Weight,
                weightOverride: door1WeightOverride,
             },
+            toeGuard1: {
+               weight: toeGuard1Weight,
+               override: toeGuard1WeightOverride,
+            },
          },
       };
 
@@ -70,8 +74,14 @@
          weightOverride: door2WeightOverride,
       };
 
+      const toeGuard2 = {
+         weight: toeGuard2Weight,
+         override: toeGuard2WeightOverride,
+      };
+
       if (saveData.properties.material === 'Steel') saveData.properties = { ...saveData.properties, ...steel };
       if (saveData.doors.qty === 2) saveData.doors.door2 = door2;
+      if (saveData.doors.qty === 2) saveData.doors.toeGuard2 = toeGuard2;
 
       workbook.modules.platform = { ...workbook.modules.platform, ...saveData };
       saveProject();
@@ -137,6 +147,18 @@
 
    const getChannel = (name) => channel.find((row) => row.name === name);
 
+   const getToeGuardWeight = (doorWidth) => {
+      const toeGuardWidth = doorWidth - 4;
+      const toeGuardQty = toeGuardWidth > 78 ? 2 : 1;
+      const width = toeGuardWidth / toeGuardQty;
+      const braceQty = width <= 56 ? 3 : 4;
+      const braceWeight = 19.12 * braceQty * toeGuardQty;
+      const mountingweight = 4.41 * braceQty * toeGuardQty;
+      const sheetWeight = 0.1617 * toeGuardWidth;
+
+      return round(braceWeight + mountingweight + sheetWeight, 2);
+   };
+
    // Constants
    const dispatch = createEventDispatcher();
 
@@ -187,12 +209,14 @@
    // - Doors
    let doorQty = module?.doors?.qty ?? 1;
 
-   // - Door 1
+   // -- Door 1
    let door1Height = module?.doors?.door1?.height ?? 84;
    let door1Type = module?.doors?.door1?.type ?? 'Single Speed';
    let door1Width = module?.doors?.door1?.width ?? 54;
    let door1Weight = module?.doors?.door1?.weight ?? 0;
    let door1WeightOverride = module?.doors?.door1?.weightOverride ?? false;
+   let toeGuard1Weight = 0;
+   let toeGuard1WeightOverride = false;
 
    // -- Door 2
    let door2Height = module?.doors?.door2?.height ?? 84;
@@ -201,6 +225,8 @@
    let door2Width = module?.doors?.door2?.width ?? 54;
    let door2Weight = module?.doors?.door2?.weight ?? 0;
    let door2WeightOverride = module?.doors?.door2?.weightOverride ?? false;
+   let toeGuard2Weight = 0;
+   let toeGuard2WeightOverride = false;
 
    // - Area
    $: platformArea = platformWidth * platformDepth;
@@ -220,6 +246,10 @@
    // - Door Weight with override
    $: door1WeightCalc = round(door1Width * (86 / 12));
    $: door2WeightCalc = round(door2Width * (86 / 12));
+
+   // - Toe Guard weight
+   $: toeGuard1WeightCalc = getToeGuardWeight(door1Width);
+   $: toeGuard2WeightCalc = getToeGuardWeight(door2Width);
 
    // - Code Calculations
    $: maxPlatformArea = tables.maxPlatform(capacity);
@@ -251,12 +281,18 @@
    $: woodPlatformWeight = plywoodWeight + stringerWeight + angleWeight + fireProofWeight;
 
    // - Steel Calculations
+   // NOTE: 4-29-2021 10:07 AM - ASME Table 2.15.10.1 load tables
+
    $: platformBackToRail = round(platformDepth - platformFrontToRail, 4);
    $: elasticModulus = options.steelType.find((type) => type.text === platformSteel).elasticModulus;
+   $: tensileStrength = options.steelType.find((type) => type.text === platformSteel).tensileStrength;
+   $: tensileStrengthRatio = round(tensileStrength / 58, 3);
+
+   $: console.log(tensileStrengthRatio);
 
    // -- Stringers
-   $: isolatedStringerSectionModulus = round((load * platformDepth) / 112000, 2);
-   $: unIsolatedStringerSectionModulus = round((Math.max(platformFrontToRail, platformBackToRail) * 13 * load) / (64 * 14000), 2);
+   $: isolatedStringerSectionModulus = round((load * platformDepth) / (8 * 17000 * tensileStrengthRatio), 2);
+   $: unIsolatedStringerSectionModulus = round((Math.max(platformFrontToRail, platformBackToRail) * 13 * load) / (64 * 17000 * tensileStrengthRatio), 2);
    $: stringerSectionModulus = ['None', 'A'].includes(freight) && platformIsolation ? isolatedStringerSectionModulus : unIsolatedStringerSectionModulus;
    $: isolatedStringerMomentOfInertia = round((960 * load * platformDepth ** 2) / (192 * elasticModulus), 2);
    $: unIsolatedStringerMomentOfInertia = round((load * Math.max(platformFrontToRail, platformBackToRail) ** 3) / (66 * elasticModulus * (platformDepth / 960)), 2);
@@ -294,7 +330,7 @@
    $: sillChannelWeight = sillChannelLength * (sillChannel?.properties?.weight ?? 0);
 
    // -- Front Channel
-   $: frontChannelSectionModulus = tables.frontChannelFormulas.find((row) => row.category.includes(freight)).sectionModulus(load, platformWidth);
+   $: frontChannelSectionModulus = tables.frontChannelFormulas.find((row) => row.category.includes(freight)).sectionModulus(load, platformWidth, tensileStrengthRatio);
    $: frontChannelMomentOfInertia = tables.frontChannelFormulas.find((row) => row.category.includes(freight)).momentOfInertia(load, platformWidth, elasticModulus);
 
    // --- Length And Weight
@@ -343,7 +379,7 @@
    $: floorPlateOptions = tables.steelPlate
       .map((row) => plateCalcs(row.type, row.thickness, floorPlateSpace))
       .map((row) => {
-         const stressCheck = 14000 > ((load / 2) * floorPlateSpace) / (8 * row.varZu);
+         const stressCheck = 14000 * tensileStrengthRatio > ((load / 2) * floorPlateSpace) / (8 * row.varZu);
          const deflectionCheck = round(platformDepth / 1666, 3) > round(((load / 2) * floorPlateSpace ** 3) / (192 * row.varXx * elasticModulus), 3);
 
          row.disabled = !(stressCheck && deflectionCheck);
@@ -352,9 +388,7 @@
       });
 
    // Reactive Rules
-   $: if (save) {
-      onSave();
-   }
+   $: if (save) onSave();
 
    $: if (platformMaterial === 'Wood') {
       setTimeout(() => {
@@ -513,6 +547,7 @@
                </OptGroup>
             {/if}
          </Select>
+
          <div class="input-bump">
             <Input bind:value={platformStringerQty} bind:override={platformStringerQtyOverride} calc={stringerQtyCalc} label="Stringer Quantity" reset type="number" />
          </div>
@@ -520,7 +555,7 @@
             <Input bind:value={platformSideChannel} display label="Side Channel" />
          </div>
          {#if platformHasSillChannel}
-            <div class="input-bump">
+            <div class="input-bump" transition:fade>
                <Input bind:value={platformSillChannel} display label="Sill Channel" />
             </div>
          {/if}
@@ -614,6 +649,9 @@
       <div class="input-bump">
          <InputWeight bind:value={door1Weight} bind:override={door1WeightOverride} calc={door1WeightCalc} label="Weight" reset {metric} />
       </div>
+      <div class="input-bump">
+         <InputWeight bind:value={toeGuard1Weight} bind:override={toeGuard1WeightOverride} calc={toeGuard1WeightCalc} label="Toe Guard Weight" reset step={0.01} {metric} />
+      </div>
    </fieldset>
 
    {#if doorQty === 2}
@@ -642,6 +680,9 @@
          </div>
          <div class="input-bump">
             <InputWeight bind:value={door2Weight} bind:override={door2WeightOverride} calc={door2WeightCalc} label="Weight" reset {metric} />
+         </div>
+         <div class="input-bump">
+            <InputWeight bind:value={toeGuard2Weight} bind:override={toeGuard2WeightOverride} calc={toeGuard2WeightCalc} label="Toe Guard Weight" reset step={0.01} {metric} />
          </div>
       </fieldset>
    {/if}

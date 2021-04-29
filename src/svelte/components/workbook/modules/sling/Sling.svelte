@@ -4,7 +4,7 @@
    import { floor, round } from '../round';
    import * as tables from './tables';
    import * as options from './options';
-   import * as shared from '../shared';
+   import { inherit } from '../inherit';
 
    // Properties
    export let workbook = {};
@@ -12,8 +12,8 @@
    export let saveProject = undefined;
 
    // Components
-   import { Input, InputLength, InputSpeed, InputWeight } from '../../../material/input';
-   import { OptGroup, Option, Select } from '../../../material/select';
+   import { Input, InputLength, InputPressure, InputSpeed, InputWeight } from '../../../material/input';
+   import { Option, Select } from '../../../material/select';
    import { Checkbox } from '../../../material/checkbox';
    import { IconButton } from '../../../material/button';
    import { Link } from '../../../material/button/icons';
@@ -23,6 +23,13 @@
       const saveData = {
          car: {
             railSize: carRailSize,
+         },
+         finFloor: {
+            area: finFloorArea,
+            weight: finFloorWeight,
+            weightOverride: finFloorWeightOverride,
+            materialWeight: finFloorMaterialWeight,
+            thickness: finFloorThickness,
          },
          safety: {
             model: safetyModel,
@@ -86,7 +93,7 @@
       return options;
    };
 
-   const getShoe = (model, options) => options.find((shoe) => shoe.name === model);
+   const getShoe = (model, options) => options?.find((shoe) => shoe.name === model);
 
    const getSafetyOptions = (safeties, railSize) => {
       let options = [{ name: 'Other', railSizes: tables.railSize }];
@@ -103,7 +110,7 @@
       return options;
    };
 
-   const getSafety = (model, options) => options.find((safety) => safety.name === model);
+   const getSafety = (model, options) => options?.find((safety) => safety.name === model);
 
    const getSheaveOptions = (sheaves = [], qty, diameter, pitch) => {
       let options = [];
@@ -123,14 +130,21 @@
       return options;
    };
 
-   const getSheave = (model, options) => options.find((sheave) => sheave.name === model);
+   const getSheave = (model, options) => options?.find((sheave) => sheave.name === model);
+
+   const getFinFloorWeight = (area, materialWeight) => {
+      const platformArea = platformWidth * platformDepth;
+      const cabArea = cabWidth * cabDepth;
+
+      return round((area === 'Inside Cab' ? cabArea : platformArea) * materialWeight);
+   };
 
    // Constants
    const dispatch = createEventDispatcher();
    const { metric, modules } = workbook;
    const { capacity, carRoping, carSpeed } = modules.globals;
    const { sling: module } = workbook.modules;
-   // console.log(workbook.modules);
+   console.log(workbook.modules);
 
    // Variables
 
@@ -139,9 +153,12 @@
 
    let carRailSize = module?.car?.railSize ?? '15#';
    let carDBG = 0;
+   let carTopWeight = 150;
+   let miscEquipmentWeight = 200;
+   let doorOperator = 150;
 
    let stilesBackToBack = 0;
-   let underBeamHeight = 20;
+   let underBeamHeight = 114;
 
    let safetyModel = module?.safety?.model ?? '';
    let safetyHeight = module?.safety?.height ?? 0;
@@ -164,34 +181,120 @@
    let plywoodQty = 0;
    let plywoodThickness = 0.25;
 
+   let finFloorArea = module?.finFloor?.area ?? 'Inside Cab';
+   let finFloorWeight = module?.finFloor?.weight ?? 0;
+   let finFloorWeightOverride = module?.finFloor?.weightOverride ?? false;
+   let finFloorMaterialWeight = module?.finFloor?.materialWeight ?? 0;
+   let finFloorThickness = module?.finFloor?.thickness ?? 0.25;
+
+   let platformDepth = inherit(modules, 'platform.platformDepth', 'value') ?? 0;
+   let platformIsolation = inherit(modules, 'platform.platformIsolation', 'value') ?? false;
+   let platformThickness = inherit(modules, 'platform.platformThickness', 'value') ?? 0;
+   let platformWeight = inherit(modules, 'platform.platformWeight', 'value') ?? 0;
+   let platformWidth = inherit(modules, 'platform.platformWidth', 'value') ?? 0;
+
+   let platformThicknessLink = inherit(modules, 'platform.platformThickness', 'module');
+   let platformWeightLink = inherit(modules, 'platform.platformWeight', 'module');
+
+   let cabDepth = inherit(modules, 'platform.cabDepth', 'value') ?? 0;
+   let cabWeight = inherit(modules, 'platform.cabWeight', 'value') ?? 0;
+   let cabWidth = inherit(modules, 'platform.cabWidth', 'value') ?? 0;
+
+   let door1Weight = inherit(modules, 'platform.door1Weight', 'value') ?? 0;
+   let door2Weight = inherit(modules, 'platform.door2Weight', 'value') ?? 0;
+
+   let toeGuard1Weight = inherit(modules, 'platform.toeGuard1Weight', 'value') ?? 0;
+   let toeGuard2Weight = inherit(modules, 'platform.toeGuard2Weight', 'value') ?? 0;
+
    // - Database Information
    let shoes = undefined;
    let safeties = undefined;
    let sheaves = undefined;
 
    // Reactive Variables
-   $: shoe = getShoe(shoeModel, shoeOptions);
-   $: safety = getSafety(safetyModel, safetyOptions);
-   $: sheave = getSheave(sheaveModel, sheaveOptions);
+   $: shoe = getShoe(shoeModel, shoes);
+   $: safety = getSafety(safetyModel, safeties);
+   $: sheave = getSheave(sheaveModel, sheaves);
+   $: plywoodWeight = round(platformWidth * platformDepth * plywoodThickness * plywoodQty * 0.02083, 2); // 1" plywood weight = 3 lbs per square foot
+   $: isolationWeight = round((platformDepth - 3) * 0.55 + platformWidth * 0.34167, 2);
 
+   $: slingDimH =
+      shoeHeight * 2 +
+      (railLock ? 2.5 : 0) +
+      underBeamHeight +
+      finFloorThickness +
+      plywoodThickness * plywoodQty +
+      platformThickness +
+      (platformIsolation ? 2 : 0) +
+      safetyHeight;
+
+   // $: console.table({
+   //    shoes: shoeHeight,
+   //    railLock: railLock ? 2.5 : 0,
+   //    topShoePlate: undefined,
+   //    topBeamHeight: undefined,
+   //    underBeamHeight,
+   //    finFloorThickness,
+   //    plywoodThickness: plywoodThickness * plywoodQty,
+   //    platformThickness,
+   //    platformIsolation: platformIsolation ? 2 : 0,
+   //    bottomChannel: undefined,
+   //    safetyHeight,
+   //    bottomShoePlate: undefined,
+   //    total: slingDimH,
+   // });
+
+   $: carWeight =
+      platformWeight +
+      toeGuard1Weight +
+      toeGuard2Weight +
+      cabWeight +
+      shoeWeight * 4 +
+      carTopWeight +
+      miscEquipmentWeight +
+      safetyWeight +
+      door1Weight +
+      door2Weight +
+      doorOperator +
+      finFloorWeight +
+      plywoodWeight +
+      isolationWeight;
+
+   $: console.table({
+      platform: platformWeight,
+      toeGuards: toeGuard1Weight + toeGuard1Weight,
+      cab: cabWeight,
+      shoes: shoeWeight,
+      shoePlates: undefined,
+      railLock: railLock ? 108 : 0,
+      carTop: carTopWeight,
+      miscEquipment: miscEquipmentWeight,
+      safety: safetyWeight,
+      doors: door1Weight + door2Weight,
+      doorOperator,
+      finshedFlooring: finFloorWeight,
+      plywood: plywoodWeight,
+      isolation: isolationWeight,
+      balanceWeights: undefined,
+      compChainHitch: undefined,
+      sheaves: undefined,
+      miscWeight: undefined,
+   });
+
+   // - Overrideable
    $: ropePitchCalc = ropeSize + 0.25;
+   $: finFloorWeightCalc = getFinFloorWeight(finFloorArea, finFloorMaterialWeight);
 
    // - Controls
    $: shoeOptions = getShoeOptions(shoes, carRailSize);
    $: safetyOptions = getSafetyOptions(safeties, carRailSize);
    $: sheaveOptions = getSheaveOptions(sheaves, ropeQty, ropeSize, ropePitch);
 
-   // NOTE: 4-20-2021 2:03 PM - test of variable ineritance
-   // console.log(shared.platformThickness(modules, 'value'));
-   // console.log(shared.platformThickness(modules, 'module'));
-
    // Reactive Rules
-   $: if (save) {
-      onSave();
-   }
+   $: if (save) onSave();
 
    $: if (shoe && shoeModel !== 'Other') {
-      shoeHeight = shoe.height;
+      shoeHeight = shoe.railContactHeight;
       shoeWeight = shoe.weight;
    }
 
@@ -212,10 +315,6 @@
    onDestroy(() => {
       onSave();
    });
-
-   // $: console.log(sheaveOptions);
-   // $: console.log(sheave);
-   // $: console.log(sheaveModel);
 </script>
 
 <fieldset>
@@ -292,7 +391,6 @@
             {/each}
          </Select>
       </div>
-
       <div class="input-bump">
          <Select bind:value={sheaveLocation} label="Mounting">
             {#each options.sheaveLocation as { text }}
@@ -349,6 +447,24 @@
 <fieldset>
    <legend>Finished Flooring</legend>
    <hr />
+   {#if !finFloorWeightOverride}
+      <div class="input-bump" transition:fade>
+         <InputLength bind:value={finFloorThickness} label="Thickness" {metric} />
+      </div>
+      <div class="input-bump" transition:fade>
+         <InputPressure bind:value={finFloorMaterialWeight} label="Material Weight" {metric} />
+      </div>
+      <div class="input-bump" transition:fade>
+         <Select bind:value={finFloorArea} label="Area">
+            {#each options.finFloorArea as { text }}
+               <Option {text} />
+            {/each}
+         </Select>
+      </div>
+   {/if}
+   <div class="input-bump">
+      <InputWeight bind:value={finFloorWeight} bind:override={finFloorWeightOverride} calc={finFloorWeightCalc} label="Weight" reset />
+   </div>
 </fieldset>
 
 <fieldset>
@@ -357,7 +473,6 @@
    <div class="input-bump">
       <Input bind:value={plywoodQty} label="Layers" type="number" />
    </div>
-
    {#if plywoodQty > 0}
       <div class="input-bump" transition:fade>
          <Select bind:value={plywoodThickness} label="Thickness">
@@ -366,7 +481,32 @@
             {/each}
          </Select>
       </div>
+      <div class="input-bump" transition:fade>
+         <InputWeight bind:value={plywoodWeight} display label="Weight" step={0.01} {metric} />
+      </div>
    {/if}
+</fieldset>
+
+<fieldset>
+   <legend>Platform</legend>
+   <hr />
+   <div class="input-bump link">
+      <InputLength bind:value={platformThickness} display={!platformThicknessLink} label="Thickness" {metric} />
+      {#if platformThicknessLink}
+         <IconButton on:click={() => dispatch('changeModule', platformThicknessLink)}>
+            <Link />
+         </IconButton>
+      {/if}
+   </div>
+
+   <div class="input-bump link">
+      <InputWeight bind:value={platformWeight} display={!platformWeightLink} label="Weight" step={0.01} {metric} />
+      {#if platformWeightLink}
+         <IconButton on:click={() => dispatch('changeModule', platformWeightLink)}>
+            <Link />
+         </IconButton>
+      {/if}
+   </div>
 </fieldset>
 
 <fieldset>

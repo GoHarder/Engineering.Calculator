@@ -1,6 +1,6 @@
 /**
- * @module round
- * A module for various rounding operations.
+ * @module math
+ * A module for various math operations.
  */
 
 /**
@@ -23,3 +23,9 @@ export const floor = (value, decimals = 0) => Number(Math.floor(value + 'e' + de
  * @param {number} decimals The number of decimals to round to
  */
 export const ceil = (value, decimals = 0) => Number(Math.ceil(value + 'e' + decimals) + 'e-' + decimals);
+
+/**
+ * Returns the sine of a number.
+ * @param {number} deg The angle in degrees
+ */
+export const sin = (deg) => Math.sin((deg * Math.PI) / 180);

@@ -25,3 +25,5 @@ export const plywoodThickness = [
    { text: '5/8"', value: 0.625 },
    { text: '3/4"', value: 0.75 },
 ];
+
+export const finFloorArea = [{ text: 'Inside Cab' }, { text: 'Full Platform' }];

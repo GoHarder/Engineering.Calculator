@@ -1,210 +1,41 @@
-[
-   {
-      "name": "331-064",
-      "diameter": 15.75,
-      "rimWidth": 4.25,
-      "hubWidth": 4,
-      "minRimWidth": 4.25,
-      "shippingWeight": 94.93,
-      "shaftDiameter": 2.922,
-      "bearingBore": 5.118,
-      "_uses": [
-         "deflector",
-         "car",
-         "counterweight",
-         "overhead"
-      ]
-   },
-   {
-      "name": "331-065",
-      "diameter": 15.75,
-      "rimWidth": 5.5,
-      "hubWidth": 5,
-      "minRimWidth": 5.5,
-      "shippingWeight": 135.9,
-      "shaftDiameter": 3.439,
-      "bearingBore": 6.298,
-      "_uses": [
-         "deflector",
-         "car",
-         "counterweight",
-         "overhead"
-      ]
-   },
-   {
-      "name": "331-009",
-      "diameter": 20,
-      "rimWidth": 6.5,
-      "hubWidth": 6.5,
-      "minRimWidth": 5,
-      "shippingWeight": 235.3,
-      "shaftDiameter": 3.439,
-      "bearingBore": 6.298,
-      "_uses": [
-         "deflector",
-         "car",
-         "counterweight",
-         "overhead"
-      ]
-   },
-   {
-      "name": "331-092",
-      "diameter": 25,
-      "rimWidth": 6.5,
-      "hubWidth": 6.5,
-      "minRimWidth": 5,
-      "shippingWeight": 321.7,
-      "shaftDiameter": 3.439,
-      "bearingBore": 6.298,
-      "_uses": [
-         "deflector",
-         "car",
-         "counterweight",
-         "overhead"
-      ]
-   },
-   {
-      "name": "331-093",
-      "diameter": 25,
-      "rimWidth": 8.5,
-      "hubWidth": 6.5,
-      "minRimWidth": 5,
-      "shippingWeight": 355.68,
-      "shaftDiameter": 4.495,
-      "bearingBore": 6.298,
-      "_uses": [
-         "deflector",
-         "car",
-         "counterweight",
-         "overhead"
-      ]
-   },
-   {
-      "name": "331-088",
-      "diameter": 26,
-      "rimWidth": 10,
-      "hubWidth": 9,
-      "minRimWidth": 9,
-      "shippingWeight": 423.72,
-      "shaftDiameter": 3.439,
-      "bearingBore": 7.871,
-      "_uses": [
-         "deflector",
-         "car",
-         "counterweight",
-         "overhead"
-      ]
-   },
-   {
-      "name": "331-091",
-      "diameter": 30,
-      "rimWidth": 8.5,
-      "hubWidth": 6.5,
-      "minRimWidth": 5,
-      "shippingWeight": 447.46,
-      "shaftDiameter": 4.999,
-      "bearingBore": 6.298,
-      "_uses": [
-         "deflector",
-         "car",
-         "counterweight",
-         "overhead"
-      ]
-   },
-   {
-      "name": "331-133",
-      "diameter": 25,
-      "rimWidth": 8.5,
-      "hubWidth": 8.5,
-      "minRimWidth": 8.5,
-      "shippingWeight": 656.472,
-      "shaftDiameter": 4.999,
-      "bearingBore": 8.856,
-      "_uses": [
-         "deflector",
-         "car",
-         "counterweight",
-         "overhead"
-      ]
-   },
-   {
-      "name": "331-134",
-      "diameter": 25,
-      "rimWidth": 10,
-      "hubWidth": 10,
-      "minRimWidth": 10,
-      "shippingWeight": 701.816,
-      "shaftDiameter": 4.999,
-      "bearingBore": 8.856,
-      "_uses": [
-         "deflector",
-         "car",
-         "counterweight",
-         "overhead"
-      ]
-   },
-   {
-      "name": "331-136",
-      "diameter": 30,
-      "rimWidth": 8.5,
-      "hubWidth": 8.5,
-      "minRimWidth": 8.5,
-      "shippingWeight": 807.622,
-      "shaftDiameter": 4.999,
-      "bearingBore": 8.856,
-      "_uses": [
-         "deflector",
-         "car",
-         "counterweight",
-         "overhead"
-      ]
-   },
-   {
-      "name": "331-137",
-      "diameter": 30,
-      "rimWidth": 10,
-      "hubWidth": 10,
-      "minRimWidth": 10,
-      "shippingWeight": 859.421,
-      "shaftDiameter": 4.999,
-      "bearingBore": 8.856,
-      "_uses": [
-         "deflector",
-         "car",
-         "counterweight",
-         "overhead"
-      ]
-   },
-   {
-      "name": "331-139",
-      "diameter": 36,
-      "rimWidth": 8.5,
-      "hubWidth": 8.5,
-      "minRimWidth": 8.5,
-      "shippingWeight": 1021.26,
-      "shaftDiameter": 4.999,
-      "bearingBore": 8.856,
-      "_uses": [
-         "deflector",
-         "car",
-         "counterweight",
-         "overhead"
-      ]
-   },
-   {
-      "name": "331-140",
-      "diameter": 36,
-      "rimWidth": 10,
-      "hubWidth": 10,
-      "minRimWidth": 10,
-      "shippingWeight": 1087.343,
-      "shaftDiameter": 4.999,
-      "bearingBore": 8.856,
-      "_uses": [
-         "deflector",
-         "car",
-         "counterweight",
-         "overhead"
-      ]
+// turning moment
+
+if (['None', 'A'].includes(freight)) {
+   (capacity * cabWidth) / 8;
+} else {
+   if (['C1', 'C2', 'C3'].includes(freight)) {
+      (capacity * cabWidth) / 4;
+   } else {
+      if ((capacity * cabWidth) / 8 > capacity * (cabWidth / 2 - 48) && ['B-Auto', 'B-Truck'].includes(freight)) {
+         return (capacity * cabWidth) / 8;
+      } else {
+         if ((capacity * cabWidth) / 8 <= capacity * (cabWidth / 2 - 48) && ['B-Auto', 'B-Truck'].includes(freight)) {
+            return capacity * (cabWidth / 2 - 48);
+         } else {
+            throw new Error('Something went wrong');
+         }
+      }
    }
-]
+}
+
+switch (freight) {
+   case 'B-Auto':
+   case 'B-Truck':
+      if ((capacity * cabWidth) / 8 > capacity * (cabWidth / 2 - 48)) {
+         (capacity * cabWidth) / 8;
+      } else {
+         capacity * (cabWidth / 2 - 48);
+      }
+      break;
+
+   case 'C1':
+   case 'C2':
+   case 'C3':
+      (capacity * cabWidth) / 4;
+      break;
+
+   default:
+      // 'None' 'A'
+      (capacity * cabWidth) / 8;
+      break;
+}
