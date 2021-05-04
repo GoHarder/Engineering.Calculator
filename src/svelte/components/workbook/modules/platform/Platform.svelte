@@ -228,6 +228,8 @@
    let toeGuard2Weight = 0;
    let toeGuard2WeightOverride = false;
 
+   // Reactive Variables
+
    // - Area
    $: platformArea = platformWidth * platformDepth;
    $: cabArea = cabWidth * cabDepth;
@@ -266,17 +268,17 @@
    // - Wood Calculations
    $: woodPlatformAngle = angle?.find((row) => {
       const sectionModulus = (platformWidth * capacity) / 300000;
-      return row.properties.modulusX >= sectionModulus;
+      return row.modulusX >= sectionModulus;
    });
 
-   $: woodPlatformThickness = woodPlatformAngle?.dimensions.depth ?? 0;
-   $: plywoodWidth = platformWidth - (woodPlatformAngle?.dimensions.thickness ?? 0) * 2;
-   $: plywoodDepth = platformDepth - (woodPlatformAngle?.dimensions.thickness ?? 0) * 2;
-   $: plywoodQty = woodPlatformAngle?.dimensions.depth - 1;
+   $: woodPlatformThickness = woodPlatformAngle?.depth ?? 0;
+   $: plywoodWidth = platformWidth - (woodPlatformAngle?.thickness ?? 0) * 2;
+   $: plywoodDepth = platformDepth - (woodPlatformAngle?.thickness ?? 0) * 2;
+   $: plywoodQty = woodPlatformAngle?.depth - 1;
    $: plywoodWeight = round(plywoodQty * plywoodWidth * plywoodDepth * (2.046875 / 144)); // 3/4" Weight = 2.046875 lb/ft²
    $: woodStringerQty = floor(plywoodDepth / 10.875);
    $: stringerWeight = round(woodStringerQty * plywoodWidth * (2.7 / 12)); // 2 X 8 Weight = 2.7 lb/ft
-   $: angleWeight = round(plywoodWidth * (woodPlatformAngle?.properties.weight ?? 0) * 2 + platformDepth * (woodPlatformAngle?.properties.weight ?? 0) * 2);
+   $: angleWeight = round(plywoodWidth * (woodPlatformAngle?.weight ?? 0) * 2 + platformDepth * (woodPlatformAngle?.weight ?? 0) * 2);
    $: fireProofWeight = round(plywoodWidth * plywoodDepth * (3.125 / 144)); // 14GA Weight = 3.125 lb/ft²
    $: woodPlatformWeight = plywoodWeight + stringerWeight + angleWeight + fireProofWeight;
 
@@ -288,8 +290,6 @@
    $: tensileStrength = options.steelType.find((type) => type.text === platformSteel).tensileStrength;
    $: tensileStrengthRatio = round(tensileStrength / 58, 3);
 
-   $: console.log(tensileStrengthRatio);
-
    // -- Stringers
    $: isolatedStringerSectionModulus = round((load * platformDepth) / (8 * 17000 * tensileStrengthRatio), 2);
    $: unIsolatedStringerSectionModulus = round((Math.max(platformFrontToRail, platformBackToRail) * 13 * load) / (64 * 17000 * tensileStrengthRatio), 2);
@@ -300,65 +300,63 @@
 
    // --- Stringer Quantity and Override
    $: stringerQtyCalc =
-      ceil((platformWidth / (platformSplit ? 2 : 1) - (sideChannel?.dimensions?.flangeWidth ?? 0) * 2) / ((stringerChannel?.dimensions?.flangeWidth ?? 0) + 14)) *
-      (platformSplit ? 2 : 1);
+      ceil((platformWidth / (platformSplit ? 2 : 1) - (sideChannel?.flangeWidth ?? 0) * 2) / ((stringerChannel?.flangeWidth ?? 0) + 14)) * (platformSplit ? 2 : 1);
 
    // --- Length And Weight
    $: stringerLength =
       platformDepth -
-      ((sillChannel?.dimensions?.flangeWidth ?? 0) * doorQty +
-         (platformHasSillChannel ? 3.375 : frontChannel?.dimensions?.flangeWidth ?? 0) +
-         (platformHasSillChannel && doorQty === 2 ? 3.375 : backChannel?.dimensions?.flangeWidth ?? 0));
+      ((sillChannel?.flangeWidth ?? 0) * doorQty +
+         (platformHasSillChannel ? 3.375 : frontChannel?.flangeWidth ?? 0) +
+         (platformHasSillChannel && doorQty === 2 ? 3.375 : backChannel?.flangeWidth ?? 0));
 
-   $: stringerWeight = round(stringerLength * (stringerChannel?.properties?.weight ?? 0) * platformStringerQty, 2);
+   $: stringerWeight = round(stringerLength * (stringerChannel?.weight ?? 0) * platformStringerQty, 2);
 
    // -- Side Channel
    $: sideChannelOptions = channel?.filter((row) => ['MC4X13.8', 'MC6X12', 'MC8X18.7'].includes(row.name)) ?? [];
-   $: sideChannel = platformIsolation ? sideChannelOptions.find((channel) => channel.dimensions.depth >= stringerChannel.dimensions.depth) : stringerChannel;
+   $: sideChannel = platformIsolation ? sideChannelOptions.find((channel) => channel.depth >= stringerChannel.depth) : stringerChannel;
    $: platformSideChannel = sideChannel?.name ?? ' ';
 
    // --- Length And Weight
-   $: sideChannelLength = platformDepth - (frontChannel?.properties?.flangeWidth ?? 0) + (backChannel?.dimensions?.flangeWidth ?? 0);
-   $: sideChannelWeight = sideChannelLength * (platformSplit ? 4 : 2) * (sideChannel?.properties?.weight ?? 0);
+   $: sideChannelLength = platformDepth - (frontChannel?.flangeWidth ?? 0) + (backChannel?.flangeWidth ?? 0);
+   $: sideChannelWeight = sideChannelLength * (platformSplit ? 4 : 2) * (sideChannel?.weight ?? 0);
 
    // -- Sill Channel
    $: sillChannel = platformHasSillChannel && stringerChannel ? stringerChannel : undefined;
    $: platformSillChannel = sillChannel?.name ?? ' ';
 
    // --- Length And Weight
-   $: sillChannelLength = platformWidth - (sideChannel?.dimensions?.flangeWidth ?? 0) * 2;
-   $: sillChannelWeight = sillChannelLength * (sillChannel?.properties?.weight ?? 0);
+   $: sillChannelLength = platformWidth - (sideChannel?.flangeWidth ?? 0) * 2;
+   $: sillChannelWeight = sillChannelLength * (sillChannel?.weight ?? 0);
 
    // -- Front Channel
    $: frontChannelSectionModulus = tables.frontChannelFormulas.find((row) => row.category.includes(freight)).sectionModulus(load, platformWidth, tensileStrengthRatio);
    $: frontChannelMomentOfInertia = tables.frontChannelFormulas.find((row) => row.category.includes(freight)).momentOfInertia(load, platformWidth, elasticModulus);
 
    // --- Length And Weight
-   $: frontChannelWeight = platformWidth * (frontChannel?.properties?.weight ?? 0);
+   $: frontChannelWeight = platformWidth * (frontChannel?.weight ?? 0);
 
    // -- Back Channel
    $: backChannel = platformSplit || doorQty === 2 ? frontChannel : sideChannel;
    $: platformBackChannel = backChannel?.name ?? ' ';
 
    // --- Length And Weight
-   $: backChannelWeight = platformWidth * (backChannel?.properties?.weight ?? 0);
+   $: backChannelWeight = platformWidth * (backChannel?.weight ?? 0);
 
    // -- Floor Plate
    $: floorPlateSpace = round(
-      (platformWidth - ((sideChannel?.dimensions?.flangeWidth ?? 0) * (platformSplit ? 4 : 2) + (stringerChannel?.dimensions?.flangeWidth ?? 0) * platformStringerQty)) /
-         (platformStringerQty + 1),
+      (platformWidth - ((sideChannel?.flangeWidth ?? 0) * (platformSplit ? 4 : 2) + (stringerChannel?.flangeWidth ?? 0) * platformStringerQty)) / (platformStringerQty + 1),
       4
    );
 
    // Splice Plate
-   $: splicePlateWeight = platformSplit ? 48 * (frontChannel?.dimensions.depth - 3) * 2.55 * 2 : 0;
+   $: splicePlateWeight = platformSplit ? 48 * (frontChannel?.depth - 3) * 2.55 * 2 : 0;
 
    // --- Length And Weight
    $: floorPlateLength = platformDepth - (platformHasSillChannel ? 3.5 * doorQty : 0);
    $: floorPlateWeight = (floorPlate?.thickness ?? 0) * platformWidth * floorPlateLength * 0.283;
 
    // -- Steel Totals
-   $: steelPlatformThickness = (sideChannel?.dimensions?.depth ?? 0) + (floorPlate?.thickness ?? 0);
+   $: steelPlatformThickness = (sideChannel?.depth ?? 0) + (floorPlate?.thickness ?? 0);
    $: steelPlatformWeight = round(
       (frontChannelWeight + backChannelWeight + sideChannelWeight + floorPlateWeight + splicePlateWeight + sillChannelWeight + stringerWeight) * 1.03,
       1
@@ -415,7 +413,7 @@
             name: row.name,
             stockStatus: row.stockStatus,
             selected: row.name === platformStringer,
-            disabled: (row.properties.modulusX >= stringerSectionModulus && row.properties.inertiaX >= stringerMomentOfInertia) === false,
+            disabled: (row.modulusX >= stringerSectionModulus && row.inertiaX >= stringerMomentOfInertia) === false,
          });
       });
 
@@ -430,7 +428,7 @@
             name: row.name,
             stockStatus: row.stockStatus,
             selected: row.name === platformFrontChannel,
-            disabled: (row.properties.modulusX >= frontChannelSectionModulus && row.properties.inertiaX >= frontChannelMomentOfInertia) === false,
+            disabled: (row.modulusX >= frontChannelSectionModulus && row.inertiaX >= frontChannelMomentOfInertia) === false,
          });
       });
 
