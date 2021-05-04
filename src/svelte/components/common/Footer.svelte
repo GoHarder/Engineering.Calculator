@@ -1,5 +1,9 @@
+<script>
+   import project from '../../../../package.json';
+</script>
+
 <footer>
-   <span>Hollister Whitney © 2020 | v0.1 - April 13, 2021</span>
+   <span>{`Hollister Whitney © 2020 | V ${project.version} - ${project.releaseDate}`}</span>
 </footer>
 
 <style lang="scss">
