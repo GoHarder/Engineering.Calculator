@@ -5,8 +5,10 @@
    // Components
    import { Button, IconButton, Label } from '../material/button';
    import { ArrowBackIos, ArrowForwardIos, Check, Menu, Note, Print, Save, Share } from '../material/button/icons';
-   import { AppContent, Drawer, Header, Item, List, Title } from '../material/drawer';
-   import { Actions, Banner, Text } from '../material/banner';
+   import { AppContent, Drawer, Header, Item, List, Title as DrawerTitle } from '../material/drawer';
+   import { Actions as BannerActions, Banner, Text } from '../material/banner';
+   import { Actions as DialogActions, Content, Dialog, Title as DialogTitle } from '../material/dialog';
+   import { Radio } from '../material/radio';
 
    // Project Components
    import A from '../common/A.svelte';
@@ -15,11 +17,15 @@
    import projectStore from '../../stores/project';
    import loadingStore from '../../stores/loading';
 
+   // Properties
+   export let _id = '';
+
    // Methods
    const saveProject = async () => {
       loadingStore.set(true);
 
       const method = '_id' in project ? 'PUT' : 'POST';
+      project._type = 'save';
 
       const res = await fetch('api/proj', {
          method,
@@ -66,6 +72,10 @@
    let domTitle = 'Workbook';
    let tabs = [];
    let save = false;
+   let openShareDialog = false;
+   let userList = [];
+   let shareId = '';
+   let shareUser = '';
 
    // Subscriptions
    const clearLoading = loadingStore.subscribe(() => {});
@@ -99,8 +109,45 @@
    const onHome = () => dispatch('changePage', 'Home');
    const onConfiguration = () => dispatch('changePage', 'ProjectSummary');
 
-   const onShare = () => {
-      console.log('TODO: 2-26-2021 9:23 AM - hook up share button');
+   const onShareDialog = async () => {
+      loadingStore.set(true);
+      const res = await fetch(`api/users/all`).catch(() => ({ ok: false }));
+
+      if (res.ok) {
+         const body = await res.json();
+         userList = body.filter((user) => user._id !== _id);
+         loadingStore.set(false);
+         openShareDialog = true;
+         return body;
+      } else {
+         loadingStore.set(false);
+         throw new Error('text');
+      }
+   };
+
+   const onShare = async () => {
+      loadingStore.set(true);
+
+      const payload = JSON.stringify({
+         _type: 'share',
+         calcId: project._id,
+         userId: shareUser,
+         email: userList.find((user) => user._id === shareUser).email,
+      });
+
+      const res = await fetch('api/proj', {
+         method: 'PUT',
+         body: payload,
+         headers: { 'Content-Type': 'application/json' },
+      }).catch((error) => ({ ok: false, error }));
+
+      if (res.ok) {
+         loadingStore.set(false);
+         openShareDialog = false;
+      } else {
+         loadingStore.set(false);
+         throw new Error('text');
+      }
    };
 
    const onNote = () => {
@@ -138,8 +185,6 @@
    <title>{title}</title>
 </svelte:head>
 
-<!-- <svelte:window on:keydown={onKeydown} /> -->
-
 <Banner bind:open={openBanner} centered>
    <Text>
       <span style="color: #b00020;">
@@ -147,13 +192,33 @@
       </span>
    </Text>
 
-   <Actions>
+   <BannerActions>
       <Button color="primary" class="mdc-banner__primary-action" variant="contained">
          <Label>Ok</Label>
          <Check />
       </Button>
-   </Actions>
+   </BannerActions>
 </Banner>
+
+<Dialog bind:open={openShareDialog}>
+   <DialogTitle>Select user to share workbook</DialogTitle>
+
+   <Content>
+      {#each userList as { firstName, lastName, _id }}
+         <div>
+            <Radio label={`${firstName} ${lastName}`} bind:group={shareUser} value={_id} />
+         </div>
+      {/each}
+   </Content>
+   <DialogActions>
+      <Button on:click={() => (openShareDialog = false)} class="mdc-dialog__button" color="secondary" variant="outlined">
+         <Label>Cancel</Label>
+      </Button>
+      <Button on:click={onShare} disabled={!shareUser} class="mdc-dialog__button" variant="contained">
+         <Label>Ok</Label>
+      </Button>
+   </DialogActions>
+</Dialog>
 
 <main>
    <header>
@@ -167,7 +232,7 @@
          </div>
       </div>
       <div class="button-box">
-         <IconButton on:click={onShare} disabled={true} title="Share">
+         <IconButton on:click={onShareDialog} title="Share">
             <Share />
          </IconButton>
          <IconButton on:click={onNote} disabled={true} title="Notes">
@@ -184,7 +249,7 @@
    <section class="paper">
       <Drawer bind:open={menuOpen} selectedIndex={activeTab.i}>
          <Header>
-            <Title>Modules</Title>
+            <DrawerTitle>Modules</DrawerTitle>
          </Header>
          <List>
             {#each tabs as tab}

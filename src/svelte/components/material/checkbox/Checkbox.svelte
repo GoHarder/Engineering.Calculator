@@ -1,5 +1,5 @@
 <script>
-   import { onMount } from 'svelte';
+   import { onDestroy, onMount } from 'svelte';
    import { MDCFormField } from '@material/form-field';
    import { MDCCheckbox } from '@material/checkbox';
 
@@ -11,21 +11,26 @@
    // Variables
    let bind1;
    let bind2;
-   let checkbox = undefined;
-   let formFeild = undefined;
+   let Checkbox = undefined;
+   let FormField = undefined;
 
    // Reactive Rules
-   $: if (checkbox) {
-      checkbox.disabled = disabled;
+   $: if (Checkbox) {
+      Checkbox.disabled = disabled;
    }
 
    // Lifecycle
    onMount(() => {
-      checkbox = new MDCCheckbox(bind1);
-      formFeild = new MDCFormField(bind2);
+      Checkbox = new MDCCheckbox(bind1);
+      FormField = new MDCFormField(bind2);
 
-      formFeild.input = checkbox;
-      checkbox.value = value;
+      FormField.input = Checkbox;
+      Checkbox.value = value;
+   });
+
+   onDestroy(() => {
+      Checkbox.destroy();
+      FormField.destroy();
    });
 </script>
 

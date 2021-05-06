@@ -183,8 +183,6 @@
       };
 
       if (shoePlates) {
-         console.log(shoe, mounting);
-
          const plate = [...shoePlates].find((plate) => plate.shoes.includes(shoe));
          const mountsTo = plate?.mountsTo.find((nth) => nth.products.includes(mounting));
          const variant = mountsTo?.variants.find((nth) => nth.railSizes.includes(railSize));
@@ -252,6 +250,7 @@
    let finFloorMaterialWeight = module?.finFloor?.materialWeight ?? 0;
    let finFloorThickness = module?.finFloor?.thickness ?? 0.25;
 
+   // - Inherited Variables
    let platformDepth = inherit(modules, 'platform.platformDepth', 'value') ?? 0;
    let platformIsolation = inherit(modules, 'platform.platformIsolation', 'value') ?? false;
    let platformThickness = inherit(modules, 'platform.platformThickness', 'value') ?? 0;
@@ -286,7 +285,6 @@
    $: shoe = getShoe(shoeModel, shoes);
    $: safety = getSafety(safetyModel, safeties);
    $: sheave = getSheave(sheaveModel, sheaves);
-   $: stileChannel = getChannel(slingStile, stileChannels);
    $: topShoePlate = getShoePlate(shoePlates, shoeModel, slingModel, carRailSize);
    $: bottomShoePlate = getShoePlate(shoePlates, shoeModel, safetyModel, carRailSize);
 
@@ -297,7 +295,26 @@
    $: stileSectionModulusY = round((turningMoment * underBeamHeight) / (4 * slingDimH * 14000), 2);
    $: stileMomentOfInertia = round((turningMoment * underBeamHeight ** 3) / (18 * modulusOfElasticity * slingDimH), 2);
    $: slingStile = options.slingModel.find((model) => model.text === slingModel).stile;
+   $: stileChannel = getChannel(slingStile, stileChannels);
+   $: stileLength = underBeamHeight + platformThickness;
 
+   /* slingDimH debug log
+    * $: console.table({
+    *    shoes: shoeHeight * 2,
+    *    railLock: railLock ? 2.5 : 0,
+    *    topShoePlate: topShoePlate.thickness,
+    *    topChannel: undefined,
+    *    underBeamHeight,
+    *    finFloorThickness,
+    *    plywoodThickness: plywoodThickness * plywoodQty,
+    *    platformThickness,
+    *    platformIsolation: platformIsolation ? 2 : 0,
+    *    bottomChannel: undefined,
+    *    safetyHeight,
+    *    bottomShoePlate: bottomShoePlate.thickness,
+    *    total: slingDimH,
+    * });
+    */
    $: slingDimH =
       shoeHeight * 2 +
       (railLock ? 2.5 : 0) +
@@ -310,37 +327,21 @@
       safetyHeight +
       bottomShoePlate.thickness;
 
-   $: console.table({
-      shoes: shoeHeight * 2,
-      railLock: railLock ? 2.5 : 0,
-      topShoePlate: topShoePlate.thickness,
-      topChannel: undefined,
-      underBeamHeight,
-      finFloorThickness,
-      plywoodThickness: plywoodThickness * plywoodQty,
-      platformThickness,
-      platformIsolation: platformIsolation ? 2 : 0,
-      bottomChannel: undefined,
-      safetyHeight,
-      bottomShoePlate: bottomShoePlate.thickness,
-      total: slingDimH,
-   });
-
-   // $: carWeight =
-   //    platformWeight +
-   //    toeGuard1Weight +`
-   //    toeGuard2Weight +
-   //    cabWeight +
-   //    shoeWeight * 4 +
-   //    carTopWeight +
-   //    miscEquipmentWeight +
-   //    safetyWeight +
-   //    door1Weight +
-   //    door2Weight +
-   //    doorOperator +
-   //    finFloorWeight +
-   //    plywoodWeight +
-   //    isolationWeight;
+   $: carWeight =
+      platformWeight +
+      toeGuard1Weight +
+      toeGuard2Weight +
+      cabWeight +
+      shoeWeight * 4 +
+      carTopWeight +
+      miscEquipmentWeight +
+      safetyWeight +
+      door1Weight +
+      door2Weight +
+      doorOperator +
+      finFloorWeight +
+      plywoodWeight +
+      isolationWeight;
 
    // $: console.table({
    //    platform: platformWeight,

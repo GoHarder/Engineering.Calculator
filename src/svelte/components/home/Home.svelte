@@ -8,7 +8,9 @@
    import { Button, Label } from '../material/button';
    import { AddCircle, Check } from '../material/button/icons';
    import { Body, Cell, Head, Row, Table } from '../material/data-table';
-   import { Actions, Banner, Text } from '../material/banner';
+   import { Actions as BannerActions, Banner, Text } from '../material/banner';
+   import { Actions as DialogActions, Content, Dialog, Title } from '../material/dialog';
+   import { Radio } from '../material/radio';
 
    // Stores
    import projectStore from '../../stores/project';
@@ -23,6 +25,11 @@
    // Variables
    let openBanner = false;
    let menuError = 'Error';
+   let openDeleteDialog = false;
+   let openShareDialog = false;
+   let userList = [];
+   let shareId = '';
+   let shareUser = '';
 
    // Methods
    const fetchRecent = async (page) => {
@@ -88,6 +95,8 @@
       dispatch('changePage', { comp: 'Project', run: 'open', calcId: event.detail });
    };
 
+   const onDeleteDialog = () => (openDeleteDialog = true);
+
    const onDelete = async (event) => {
       const { calcId, user } = event.detail;
       loadingStore.set(true);
@@ -114,9 +123,46 @@
       }
    };
 
-   const onShare = (event) => {
-      console.log('TODO: 2-15-2021 9:48 AM - hook up share event');
-      console.log(event);
+   const onShareDialog = async (event) => {
+      loadingStore.set(true);
+      const res = await fetch(`api/users/all`).catch(() => ({ ok: false }));
+
+      if (res.ok) {
+         const body = await res.json();
+         userList = body.filter((user) => user._id !== _id);
+         shareId = event.detail;
+         loadingStore.set(false);
+         openShareDialog = true;
+         return body;
+      } else {
+         loadingStore.set(false);
+         throw new Error('text');
+      }
+   };
+
+   const onShare = async () => {
+      loadingStore.set(true);
+
+      const payload = JSON.stringify({
+         _type: 'share',
+         calcId: shareId,
+         userId: shareUser,
+         email: userList.find((user) => user._id === shareUser).email,
+      });
+
+      const res = await fetch('api/proj', {
+         method: 'PUT',
+         body: payload,
+         headers: { 'Content-Type': 'application/json' },
+      }).catch((error) => ({ ok: false, error }));
+
+      if (res.ok) {
+         loadingStore.set(false);
+         openShareDialog = false;
+      } else {
+         loadingStore.set(false);
+         throw new Error('text');
+      }
    };
 </script>
 
@@ -131,13 +177,45 @@
       </span>
    </Text>
 
-   <Actions>
+   <BannerActions>
       <Button color="primary" class="mdc-banner__primary-action" variant="contained">
          <Label>Ok</Label>
          <Check />
       </Button>
-   </Actions>
+   </BannerActions>
 </Banner>
+
+<Dialog bind:open={openDeleteDialog}>
+   <Content>Delete workbook?</Content>
+   <DialogActions>
+      <Button on:click={() => (openDeleteDialog = false)} class="mdc-dialog__button" color="secondary" variant="outlined">
+         <Label>Cancel</Label>
+      </Button>
+      <Button on:click={onDelete} disabled={!shareUser} class="mdc-dialog__button" variant="contained">
+         <Label>Ok</Label>
+      </Button>
+   </DialogActions>
+</Dialog>
+
+<Dialog bind:open={openShareDialog}>
+   <Title>Select user to share workbook</Title>
+
+   <Content>
+      {#each userList as { firstName, lastName, _id }}
+         <div>
+            <Radio label={`${firstName} ${lastName}`} bind:group={shareUser} value={_id} />
+         </div>
+      {/each}
+   </Content>
+   <DialogActions>
+      <Button on:click={() => (openShareDialog = false)} class="mdc-dialog__button" color="secondary" variant="outlined">
+         <Label>Cancel</Label>
+      </Button>
+      <Button on:click={onShare} disabled={!shareUser} class="mdc-dialog__button" variant="contained">
+         <Label>Ok</Label>
+      </Button>
+   </DialogActions>
+</Dialog>
 
 <main>
    <div class="title-container">
@@ -186,7 +264,7 @@
                {:then workbooks}
                   {#if workbooks.length !== 0}
                      {#each workbooks as workbook (workbook._id)}
-                        <WorkbookRow userId={_id} {workbook} on:delete={onDelete} on:share={onShare} on:select={onOpen} />
+                        <WorkbookRow userId={_id} {workbook} on:delete={onDeleteDialog} on:share={onShareDialog} on:select={onOpen} />
                      {/each}
                   {:else}
                      <Cell row colspan="20">Nothing Available...</Cell>
