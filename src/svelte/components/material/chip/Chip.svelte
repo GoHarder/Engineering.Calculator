@@ -1,13 +1,14 @@
 <script>
    // Parameters
    export { className as class };
+   export let title = '';
 
    // Variables
    let className = '';
    let divClass = ['mdc-chip', className].join(' ');
 </script>
 
-<div class={divClass} role="row">
+<div class={divClass} role="row" {title}>
    <div class="mdc-chip__ripple" />
    <span role="gridcell">
       <span role="button" tabindex="0" class="mdc-chip__primary-action">

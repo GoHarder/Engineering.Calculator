@@ -98,7 +98,7 @@
          if (userSearch) {
             userSearch.time = Date.now();
          } else {
-            body.opened.push({ _id, time: Date.now() });
+            body.opened.push({ userId: user._id, time: Date.now() });
          }
 
          // Set the store

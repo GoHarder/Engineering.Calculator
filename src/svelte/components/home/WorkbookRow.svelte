@@ -30,7 +30,7 @@
    const dispatch = createEventDispatcher();
    const creator = `${workbook.creator.firstName} ${workbook.creator.lastName}`;
    const initials = creator.replace(/(\b[a-zA-Z])[a-zA-Z]* ?/g, '$1');
-   const opened = workbook.opened.find((book) => book.userId === userId).time;
+   const opened = workbook.opened.find((book) => book.userId === userId)?.time;
 
    // Variables
    let open = false;
