@@ -115,8 +115,6 @@
 </script>
 
 <Dialog bind:open={openDialog}>
-   <DialogTitle>Select user to share workbook</DialogTitle>
-
    <Content>
       <Select bind:value={noteContext} label="Tag">
          {#each contextOptions as { text }}
