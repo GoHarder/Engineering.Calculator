@@ -67,7 +67,7 @@
 
    // Lifecycle
    onDestroy(() => {
-      projectStore.save('project', { carNo, contract, created, creator, customer, jobName, layout, metric, modules, opened, temp });
+      projectStore.save('project', { carNo, contract, created, creator, customer, jobName, layout, metric, modules, opened, temp, notes: [] });
 
       clearProject();
    });
@@ -122,48 +122,6 @@
          <ArrowForwardIos />
       </Button>
    </div>
-
-   <!-- <div class="main"> -->
-   <!-- <Paper class="project-paper" elevation={3} square> -->
-   <!-- <div class="tabs"> -->
-   <!-- <ProjectTab label="Project Summary" index={1} {activeTab} on:switch={onSwitchTab} /> -->
-   <!-- <ProjectTab label="Requirements" index={2} {activeTab} on:switch={onSwitchTab} /> -->
-   <!-- <ProjectTab label="Calculation Modules" index={3} {activeTab} on:switch={onSwitchTab} /> -->
-   <!-- </div> -->
-   <!-- <div class="form"> -->
-   <!-- <svelte:component this={comp} creator={_id} /> -->
-   <!-- </div> -->
-   <!-- </Paper> -->
-   <!-- <div class="spacer"> -->
-
-   <!-- <Paper class="project-paper" elevation={3} square> -->
-   <!-- <div class="buttons"> -->
-   <!-- <div> -->
-   <!-- {#if activeTab !== 1} -->
-   <!-- <Button on:click={() => activeTab--} class="text-transform-none" variant="raised"> -->
-   <!-- <BtnIcon class="material-icons">arrow_back_ios</BtnIcon> -->
-   <!-- <Label>Back</Label> -->
-   <!-- </Button> -->
-   <!-- {/if} -->
-
-   <!-- {#if activeTab !== 3} -->
-   <!-- <Button on:click={() => activeTab++} class="text-transform-none" color="secondary" variant="raised"> -->
-   <!-- <Label>Next</Label> -->
-   <!-- <BtnIcon class="material-icons">arrow_forward_ios</BtnIcon> -->
-   <!-- </Button> -->
-   <!-- {/if} -->
-
-   <!-- {#if activeTab === 3} -->
-   <!-- <Button on:click={onStart} class="text-transform-none" color="secondary" variant="raised"> -->
-   <!-- <Label>Start</Label> -->
-   <!-- <BtnIcon class="material-icons">arrow_forward_ios</BtnIcon> -->
-   <!-- </Button> -->
-   <!-- {/if} -->
-   <!-- </div> -->
-   <!-- </div> -->
-   <!-- </Paper> -->
-   <!-- </div> -->
-   <!-- </div> -->
 </main>
 
 <style lang="scss">

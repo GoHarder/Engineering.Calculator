@@ -4,6 +4,7 @@ import ArrowDropDown from './ArrowDropDown.svelte';
 import ArrowForwardIos from './ArrowForwardIos.svelte';
 import Check from './Check.svelte';
 import Close from './Close.svelte';
+import Delete from './Delete.svelte';
 import DoneAll from './DoneAll.svelte';
 import Link from './Link.svelte';
 import Login from './Login.svelte';
@@ -24,6 +25,7 @@ export {
    ArrowForwardIos,
    Check,
    Close,
+   Delete,
    DoneAll,
    Link,
    Login,

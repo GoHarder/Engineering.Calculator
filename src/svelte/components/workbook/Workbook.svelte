@@ -3,6 +3,7 @@
    import { createEventDispatcher, onDestroy, onMount } from 'svelte';
 
    // Components
+   import NotesMenu from './notes/NotesMenu.svelte';
    import { Button, IconButton, Label } from '../material/button';
    import { ArrowBackIos, ArrowForwardIos, Check, Menu, Note, Print, Save, Share } from '../material/button/icons';
    import { AppContent, Drawer, Header, Item, List, Title as DrawerTitle } from '../material/drawer';
@@ -19,6 +20,8 @@
 
    // Properties
    export let _id = '';
+   export let firstName = '';
+   export let lastName = '';
 
    // Methods
    const saveProject = async () => {
@@ -73,8 +76,8 @@
    let tabs = [];
    let save = false;
    let openShareDialog = false;
+   let openNotesMenu = false;
    let userList = [];
-   let shareId = '';
    let shareUser = '';
 
    // Subscriptions
@@ -150,9 +153,7 @@
       }
    };
 
-   const onNote = () => {
-      console.log('TODO: 2-26-2021 9:24 AM - hook up note button');
-   };
+   const onNote = () => (openNotesMenu = true);
 
    const onPrint = () => {
       console.log('TODO: 2-26-2021 9:25 AM - hook up print button');
@@ -220,6 +221,8 @@
    </DialogActions>
 </Dialog>
 
+<NotesMenu bind:open={openNotesMenu} {workbook} {firstName} {lastName} />
+
 <main>
    <header>
       <div>
@@ -235,7 +238,7 @@
          <IconButton on:click={onShareDialog} title="Share">
             <Share />
          </IconButton>
-         <IconButton on:click={onNote} disabled={true} title="Notes">
+         <IconButton on:click={onNote} title="Notes">
             <Note />
          </IconButton>
          <IconButton on:click={onPrint} disabled={true} title="Print">
