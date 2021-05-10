@@ -22,6 +22,11 @@
       z-index: 20;
    }
 
+   @media print {
+      footer {
+         display: none;
+      }
+   }
    span {
       font-size: 0.75rem;
       font-weight: 400;

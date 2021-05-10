@@ -156,7 +156,8 @@
    const onNote = () => (openNotesMenu = true);
 
    const onPrint = () => {
-      console.log('TODO: 2-26-2021 9:25 AM - hook up print button');
+      // console.log('TODO: 2-26-2021 9:25 AM - hook up print button');
+      dispatch('changePage', 'Print');
    };
 
    const onSave = () => (save = true);
@@ -241,7 +242,7 @@
          <IconButton on:click={onNote} title="Notes">
             <Note />
          </IconButton>
-         <IconButton on:click={onPrint} disabled={true} title="Print">
+         <IconButton on:click={onPrint} title="Print">
             <Print />
          </IconButton>
          <IconButton on:click={onSave} title="Save">

@@ -16,6 +16,7 @@
    import Requirements from './components/project/requirements/Requirements.svelte';
    import CalculationModules from './components/project/calculation-modules/CalculationModules.svelte';
    import Workbook from './components/workbook/Workbook.svelte';
+   import Print from './components/print/Print.svelte';
 
    // Stores
    import tokenStore from './stores/token';
@@ -32,6 +33,7 @@
       Requirements,
       CalculationModules,
       Workbook,
+      Print,
    };
 
    // Variables

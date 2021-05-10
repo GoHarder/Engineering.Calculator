@@ -101,6 +101,12 @@
       z-index: 3;
    }
 
+   @media print {
+      header {
+         display: none;
+      }
+   }
+
    .box {
       margin-left: 210px;
    }
