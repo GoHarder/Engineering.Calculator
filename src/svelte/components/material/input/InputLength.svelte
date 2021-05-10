@@ -68,6 +68,11 @@
       inches = round(value % 12, 4);
    }
 
+   // $: if (label === 'Back to Back of Stiles') {
+   //    console.log(value, feet, inches);
+   //    console.log(override);
+   // }
+
    $: if (!override && reset) value = calc;
 
    // Events
@@ -83,7 +88,7 @@
 </script>
 
 <div class="split" class:metric-wrapper={metric}>
-   <Input bind:disabled bind:invalid bind:override on:change={onFeet} value={feet} {...parameters1}>
+   <Input bind:disabled bind:invalid bind:override on:change={onFeet} value={feet} calc={feet} {...parameters1}>
       <span slot="helperText">
          {#if helperText}
             <HelperText validation>{helperText}</HelperText>

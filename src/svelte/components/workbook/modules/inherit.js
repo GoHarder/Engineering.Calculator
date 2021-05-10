@@ -29,6 +29,7 @@ const lib = {
       door2Weight: [{ module: 'platform', value: 'modules?.platform?.doors?.door2?.weight' }],
       platformDepth: [{ module: 'platform', value: 'modules?.platform?.properties?.depth' }],
       platformIsolation: [{ module: 'platform', value: 'modules?.platform?.properties?.isolation' }],
+      platformIsolationWeight: [{ module: 'platform', value: 'modules?.platform?.properties?.isolationWeight' }],
       platformThickness: [{ module: 'platform', value: 'modules?.platform?.properties?.thickness' }],
       platformWeight: [{ module: 'platform', value: 'modules?.platform?.properties?.weight' }],
       platformWidth: [{ module: 'platform', value: 'modules?.platform?.properties?.width' }],

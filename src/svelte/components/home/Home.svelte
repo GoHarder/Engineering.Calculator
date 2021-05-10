@@ -30,6 +30,8 @@
    let userList = [];
    let shareId = '';
    let shareUser = '';
+   let calcId = '';
+   let user = '';
 
    // Methods
    const fetchRecent = async (page) => {
@@ -95,11 +97,18 @@
       dispatch('changePage', { comp: 'Project', run: 'open', calcId: event.detail });
    };
 
-   const onDeleteDialog = () => (openDeleteDialog = true);
+   const onDeleteDialog = (event) => {
+      calcId = event.detail.calcId;
+      user = event.detail.user;
+
+      openDeleteDialog = true;
+   };
 
    const onDelete = async (event) => {
-      const { calcId, user } = event.detail;
+      // const { calcId, user } = event.detail;
       loadingStore.set(true);
+
+      // console.log(event);
 
       if (user === _id || admin) {
          const res = await fetch(`api/proj/${calcId}`, {
@@ -110,11 +119,15 @@
          if (res.ok) {
             loadingStore.set(false);
             workbooks = fetchRecent(1);
+            calcId = '';
+            user = '';
+            openDeleteDialog = false;
          } else {
             const body = await res.json();
             menuError = body.error.menu;
             openBanner = true;
             loadingStore.set(false);
+            openDeleteDialog = false;
          }
       } else {
          menuError = 'You do not have permission to delete this file';
@@ -191,7 +204,7 @@
       <Button on:click={() => (openDeleteDialog = false)} class="mdc-dialog__button" color="secondary" variant="outlined">
          <Label>Cancel</Label>
       </Button>
-      <Button on:click={onDelete} disabled={!shareUser} class="mdc-dialog__button" variant="contained">
+      <Button on:click={onDelete} class="mdc-dialog__button" variant="contained">
          <Label>Ok</Label>
       </Button>
    </DialogActions>

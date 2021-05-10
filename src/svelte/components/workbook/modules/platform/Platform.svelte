@@ -25,6 +25,7 @@
          properties: {
             depth: platformDepth,
             isolation: platformIsolation,
+            isolationWeight: platformIsolationWeight,
             frontToRail: platformFrontToRail,
             material: platformMaterial,
             thickness: platformThickness,
@@ -174,6 +175,7 @@
    // - Platform
    let platformDepth = module?.properties?.depth ?? 0;
    let platformIsolation = module?.properties?.isolation ?? false;
+   let platformIsolationWeight = module?.properties?.isolationWeight ?? 0;
    let platformFrontToRail = module?.properties?.frontToRail ?? 0;
    let platformMaterial = module?.properties?.material ?? 'Wood';
    let platformThickness = module?.properties?.thickness ?? 0;
@@ -252,6 +254,9 @@
    // - Toe Guard weight
    $: toeGuard1WeightCalc = getToeGuardWeight(door1Width);
    $: toeGuard2WeightCalc = getToeGuardWeight(door2Width);
+
+   // Isolation Weight
+   $: platformIsolationWeight = platformIsolation ? round((platformDepth - 3) * 0.55 + platformWidth * 0.34167, 2) : 0;
 
    // - Code Calculations
    $: maxPlatformArea = tables.maxPlatform(capacity);

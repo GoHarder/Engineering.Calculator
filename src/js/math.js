@@ -25,6 +25,13 @@ export const floor = (value, decimals = 0) => Number(Math.floor(value + 'e' + de
 export const ceil = (value, decimals = 0) => Number(Math.ceil(value + 'e' + decimals) + 'e-' + decimals);
 
 /**
+ * Rounds a number to the nearest increment
+ * @param {number} value The value to round
+ * @param {number} increment The number to round to
+ */
+export const roundInc = (value, increment = 0.0625) => round(Math.round(value / increment) * increment, 4);
+
+/**
  * Returns the sine of a number.
  * @param {number} deg The angle in degrees
  */

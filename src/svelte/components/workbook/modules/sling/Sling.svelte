@@ -1,7 +1,7 @@
 <script>
    import { createEventDispatcher, onDestroy, onMount } from 'svelte';
    import { fade } from 'svelte/transition';
-   import { floor, round } from '../round';
+   import { floor, round, roundInc } from '../round';
    import * as tables from './tables';
    import * as options from './options';
    import { inherit } from '../inherit';
@@ -24,6 +24,7 @@
          properties: {
             underBeamHeight,
             stilesBackToBack,
+            stilesBackToBackOverride,
             model: slingModel,
          },
          car: {
@@ -77,7 +78,9 @@
          shoePlates = [...body.shoePlates];
          safeties = [...body.safety];
          sheaves = [...body.sheaves];
+         topChannels = [...body.topChannels];
          stileChannels = [...body.stiles];
+         bottomChannels = [...body.bottomChannels];
       } else {
          console.log(res);
       }
@@ -196,6 +199,26 @@
       return output;
    };
 
+   const getChannelOptions = (channels, sectionModulus) => {
+      const selections = [];
+      // console.log(sectionModulus, channels);
+
+      if (channels) {
+         channels.forEach((channel) => {
+            // console.log('channel', channel.modulusX);
+            // console.log('required', sectionModulus);
+            // console.log('test', channel.modulusX < sectionModulus);
+
+            selections.push({
+               text: channel.name,
+               disabled: channel.modulusX < sectionModulus,
+            });
+         });
+      }
+
+      return selections;
+   };
+
    // Constants
    const dispatch = createEventDispatcher();
    const { metric, modules } = workbook;
@@ -203,7 +226,7 @@
    const { freight } = loading;
    const { sling: module } = workbook.modules;
    const modulusOfElasticity = 29000000;
-   console.log(workbook.modules);
+   // console.log(workbook.modules);
 
    // Variables
 
@@ -211,7 +234,7 @@
    // rail Lock weight: 108, height: 2.5
 
    let carRailSize = module?.car?.railSize ?? '15#';
-   let carDBG = 0;
+   let carDBG = 75;
    let carTopWeight = 150;
    let miscEquipmentWeight = 200;
    let doorOperator = 150;
@@ -220,7 +243,8 @@
    let slingModel = module?.properties?.model ?? '7T';
    let slingTopChannel = undefined;
    let slingBottomChannel = undefined;
-   let stilesBackToBack = module?.properties?.stilesBackToBack ?? 0;
+   let stilesBackToBack = module?.properties?.stilesBackToBack ?? carDBG - 3;
+   let stilesBackToBackOverride = false;
    let underBeamHeight = module?.properties?.underBeamHeight ?? 114;
 
    let safetyModel = module?.safety?.model ?? '';
@@ -240,6 +264,7 @@
    let sheaveLocation = 'Overslung';
    let sheaveQty = carRoping === 1 ? 0 : 1;
    let sheaveChannels = false;
+   let topChannelEndToSheave = 0;
 
    let plywoodQty = 0;
    let plywoodThickness = 0.25;
@@ -253,6 +278,7 @@
    // - Inherited Variables
    let platformDepth = inherit(modules, 'platform.platformDepth', 'value') ?? 0;
    let platformIsolation = inherit(modules, 'platform.platformIsolation', 'value') ?? false;
+   let platformIsolationWeight = inherit(modules, 'platform.platformIsolationWeight', 'value') ?? false;
    let platformThickness = inherit(modules, 'platform.platformThickness', 'value') ?? 0;
    let platformWeight = inherit(modules, 'platform.platformWeight', 'value') ?? 0;
    let platformWidth = inherit(modules, 'platform.platformWidth', 'value') ?? 0;
@@ -275,7 +301,9 @@
    let shoePlates = undefined;
    let safeties = undefined;
    let sheaves = undefined;
+   let topChannels = undefined;
    let stileChannels = undefined;
+   let bottomChannels = undefined;
 
    let turningMoment = 0;
 
@@ -289,45 +317,74 @@
    $: bottomShoePlate = getShoePlate(shoePlates, shoeModel, safetyModel, carRailSize);
 
    $: plywoodWeight = round(platformWidth * platformDepth * plywoodThickness * plywoodQty * 0.02083, 2); // 1" plywood weight = 3 lbs per square foot
-   $: isolationWeight = round((platformDepth - 3) * 0.55 + platformWidth * 0.34167, 2);
 
    // - Stiles
+   $: stileChannel = getChannel(slingStile, stileChannels);
    $: stileSectionModulusY = round((turningMoment * underBeamHeight) / (4 * slingDimH * 14000), 2);
    $: stileMomentOfInertia = round((turningMoment * underBeamHeight ** 3) / (18 * modulusOfElasticity * slingDimH), 2);
    $: slingStile = options.slingModel.find((model) => model.text === slingModel).stile;
-   $: stileChannel = getChannel(slingStile, stileChannels);
    $: stileLength = underBeamHeight + platformThickness;
+   $: stileWeight = (stileChannel?.weight ?? 0) * stileLength * 2;
 
-   /* slingDimH debug log
-    * $: console.table({
-    *    shoes: shoeHeight * 2,
-    *    railLock: railLock ? 2.5 : 0,
-    *    topShoePlate: topShoePlate.thickness,
-    *    topChannel: undefined,
-    *    underBeamHeight,
-    *    finFloorThickness,
-    *    plywoodThickness: plywoodThickness * plywoodQty,
-    *    platformThickness,
-    *    platformIsolation: platformIsolation ? 2 : 0,
-    *    bottomChannel: undefined,
-    *    safetyHeight,
-    *    bottomShoePlate: bottomShoePlate.thickness,
-    *    total: slingDimH,
-    * });
-    */
-   $: slingDimH =
+   // - Top Channel
+   $: topChannel = getChannel(slingTopChannel, topChannels);
+   $: topChannelLength = stilesBackToBack + (stileChannel?.flangeWidth ?? 0) * 2;
+   $: topChannelLoadPoints = sheaveQty === 2 && sheaveChannels === false && sheaveLocation === 'Overslung' ? 2 : 1;
+   $: topChannelSectionModulus =
+      topChannelLoadPoints === 1 ? round((0.5 * overallWeight * topChannelLength) / (4 * 14000), 2) : round((0.5 * ((overallWeight / 2) * topChannelEndToSheave)) / 14000);
+   $: topChannelWeight = (topChannel?.weight ?? 0) * topChannelLength * 2;
+
+   // $: console.table({
+   //    Zu: topChannelSectionModulus,
+   // });
+
+   // - Bottom Channel
+   $: bottomChannel = getChannel(slingBottomChannel, bottomChannels);
+   $: bottomChannelLength = stilesBackToBack + (stileChannel?.flangeWidth ?? 0) * 2;
+   $: bottomChannelWeight = (bottomChannel?.weight ?? 0) * bottomChannelLength * 2;
+
+   //  slingDimH debug log
+   // $: console.table({
+   //    shoes: shoeHeight * 2,
+   //    railLock: railLock ? 2.5 : 0,
+   //    topShoePlate: topShoePlate.thickness,
+   //    topChannel: topChannel?.depth ?? 0,
+   //    underBeamHeight,
+   //    finFloorThickness,
+   //    plywoodThickness: plywoodThickness * plywoodQty,
+   //    platformThickness,
+   //    platformIsolation: platformIsolation ? 2 : 0,
+   //    bottomChannel: bottomChannel?.depth ?? 0,
+   //    safetyHeight,
+   //    bottomShoePlate: bottomShoePlate.thickness,
+   //    total: slingDimH,
+   // });
+
+   $: slingDimH = roundInc(
       shoeHeight * 2 +
-      (railLock ? 2.5 : 0) +
-      topShoePlate.thickness +
-      underBeamHeight +
-      finFloorThickness +
-      plywoodThickness * plywoodQty +
-      platformThickness +
-      (platformIsolation ? 2 : 0) +
-      safetyHeight +
-      bottomShoePlate.thickness;
+         (railLock ? 2.5 : 0) +
+         topShoePlate.thickness +
+         (topChannel?.depth ?? 0) +
+         underBeamHeight +
+         finFloorThickness +
+         plywoodThickness * plywoodQty +
+         platformThickness +
+         (platformIsolation ? 2 : 0) +
+         (bottomChannel?.depth ?? 0) +
+         safetyHeight +
+         bottomShoePlate.thickness
+   );
+
+   // $: console.table({
+   //    topChannel: topChannelWeight,
+   //    stile: stileWeight,
+   //    bottomChannel: bottomChannelWeight,
+   // });
+
+   $: slingWeight = topChannelWeight + stileWeight + bottomChannelWeight;
 
    $: carWeight =
+      slingWeight +
       platformWeight +
       toeGuard1Weight +
       toeGuard2Weight +
@@ -341,7 +398,9 @@
       doorOperator +
       finFloorWeight +
       plywoodWeight +
-      isolationWeight;
+      platformIsolationWeight;
+
+   $: overallWeight = carWeight + capacity;
 
    // $: console.table({
    //    platform: platformWeight,
@@ -357,7 +416,7 @@
    //    doorOperator,
    //    finshedFlooring: finFloorWeight,
    //    plywood: plywoodWeight,
-   //    isolation: isolationWeight,
+   //    isolation: platformIsolationWeight,
    //    balanceWeights: undefined,
    //    compChainHitch: undefined,
    //    sheaves: undefined,
@@ -367,12 +426,16 @@
    // - Overrideable
    $: ropePitchCalc = ropeSize + 0.25;
    $: finFloorWeightCalc = getFinFloorWeight(finFloorArea, finFloorMaterialWeight);
+   $: stilesBackToBackCalc = carDBG - 3;
+   // $: console.log(carDBG);
 
    // - Controls
    $: shoeOptions = getShoeOptions(shoes, carRailSize);
    $: safetyOptions = getSafetyOptions(safeties, carRailSize);
    $: sheaveOptions = getSheaveOptions(sheaves, ropeQty, ropeSize, ropePitch);
    $: slingModelOptions = getModelOptions(stileChannels, stileSectionModulusY, stileMomentOfInertia, compensation);
+   $: topChannelOptions = getChannelOptions(topChannels, topChannelSectionModulus);
+   $: bottomChannelOptions = getChannelOptions(bottomChannels, topChannelSectionModulus); // FIXME: 5-10-2021 12:49 PM - update section modulus
 
    // Reactive Rules
    $: if (save) onSave();
@@ -469,8 +532,9 @@
       <InputLength bind:value={carDBG} label="D.B.G." {metric} />
    </div>
    <div class="input-bump">
-      <InputLength bind:value={stilesBackToBack} label="Back to Back of Stiles" {metric} />
+      <InputLength bind:value={stilesBackToBack} bind:override={stilesBackToBackOverride} bind:calc={stilesBackToBackCalc} label="Back to Back of Stiles" reset {metric} />
    </div>
+
    <div class="input-bump">
       <InputLength bind:value={underBeamHeight} label="Under Beam Height" {metric} />
    </div>
@@ -534,7 +598,23 @@
    <legend>Steel</legend>
    <hr />
    <div class="input-bump">
+      <Select bind:value={slingTopChannel} label="Top Channels">
+         {#each topChannelOptions as { text, disabled }}
+            <Option {text} {disabled} />
+         {/each}
+      </Select>
+   </div>
+
+   <div class="input-bump">
       <Input bind:value={slingStile} display label="Stiles" />
+   </div>
+
+   <div class="input-bump">
+      <Select bind:value={slingBottomChannel} label="Bottom Channels">
+         {#each bottomChannelOptions as { text, disabled }}
+            <Option {text} {disabled} />
+         {/each}
+      </Select>
    </div>
 </fieldset>
 
