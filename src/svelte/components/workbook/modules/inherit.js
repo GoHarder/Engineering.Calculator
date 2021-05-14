@@ -25,6 +25,7 @@ const lib = {
       cabDepth: [{ module: 'platform', value: 'modules?.platform?.cab?.depth' }],
       cabWeight: [{ module: 'platform', value: 'modules?.platform?.cab?.weight' }],
       cabWidth: [{ module: 'platform', value: 'modules?.platform?.cab?.width' }],
+      cornerPost: [{ module: 'platform', value: 'modules?.platform?.properties?.cornerPost' }],
       door1Weight: [{ module: 'platform', value: 'modules?.platform?.doors?.door1?.weight' }],
       door2Weight: [{ module: 'platform', value: 'modules?.platform?.doors?.door2?.weight' }],
       platformDepth: [{ module: 'platform', value: 'modules?.platform?.properties?.depth' }],

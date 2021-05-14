@@ -1,7 +1,7 @@
 <script>
    import { createEventDispatcher, onDestroy, onMount } from 'svelte';
    import { fade } from 'svelte/transition';
-   import { ceil, floor, round } from '../round';
+   import { floor, round } from '../round';
    import * as tables from './tables';
    import * as options from './options';
 
@@ -31,6 +31,7 @@
             thickness: platformThickness,
             weight: platformWeight,
             width: platformWidth,
+            cornerPost,
          },
          cab: {
             depth: cabDepth,
@@ -231,6 +232,7 @@
    let toeGuard2WeightOverride = false;
 
    // Reactive Variables
+   $: cornerPost = doorQty === 2 && door2Location !== 'Back';
 
    // - Area
    $: platformArea = platformWidth * platformDepth;
@@ -305,7 +307,7 @@
 
    // --- Stringer Quantity and Override
    $: stringerQtyCalc =
-      ceil((platformWidth / (platformSplit ? 2 : 1) - (sideChannel?.flangeWidth ?? 0) * 2) / ((stringerChannel?.flangeWidth ?? 0) + 14)) * (platformSplit ? 2 : 1);
+      floor((platformWidth / (platformSplit ? 2 : 1) - (sideChannel?.flangeWidth ?? 0) * 2) / ((stringerChannel?.flangeWidth ?? 0) + 14)) * (platformSplit ? 2 : 1);
 
    // --- Length And Weight
    $: stringerLength =
@@ -447,11 +449,11 @@
       disableSplit = false;
    }
 
-   onMount(async () => {
+   // Lifecycle
+   onMount(() => {
       getSteel(platformSteel);
    });
 
-   // Lifecycle
    onDestroy(() => {
       onSave();
    });
