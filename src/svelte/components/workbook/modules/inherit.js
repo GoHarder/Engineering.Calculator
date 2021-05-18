@@ -22,6 +22,7 @@ export const inherit = (modules, search, data) => {
 
 const lib = {
    platform: {
+      apta: [{ module: 'platform', value: 'modules?.platform?.apta' }],
       cabDepth: [{ module: 'platform', value: 'modules?.platform?.cab?.depth' }],
       cabWeight: [{ module: 'platform', value: 'modules?.platform?.cab?.weight' }],
       cabWidth: [{ module: 'platform', value: 'modules?.platform?.cab?.width' }],

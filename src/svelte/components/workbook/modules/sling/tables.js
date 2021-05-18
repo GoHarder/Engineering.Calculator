@@ -1,4 +1,4 @@
-const cornerPostBraceSteel = [
+export const cornerPostBraceSteel = [
    {
       name: 'MC6X12',
       weight: 1,
@@ -18,5 +18,24 @@ const cornerPostBraceSteel = [
    {
       name: 'W10X45',
       weight: 3.75,
+   },
+];
+
+export const plateMounting = [
+   {
+      name: 'C4X5.4',
+      weight: 0.45,
+   },
+   {
+      name: 'C6X8.2',
+      weight: 0.6833,
+   },
+   {
+      name: 'C8X11.5',
+      weight: 0.9583,
+   },
+   {
+      name: 'L2X2X1/4',
+      weight: 0.2658,
    },
 ];

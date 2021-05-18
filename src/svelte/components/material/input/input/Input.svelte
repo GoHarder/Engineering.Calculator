@@ -13,6 +13,7 @@
    export let disabled = false;
    export let disableValidation = false;
    export let display = false;
+   export let focused = false;
    export let invalid = undefined;
    export let label = '';
    export let list = '';
@@ -82,10 +83,14 @@
    $: if (!override && reset) value = calc;
 
    // Events
-   const onFocus = (event) => event.target.select();
+   const onFocus = (event) => {
+      event.target.select();
+      focused = true;
+   };
 
    const onBlur = () => {
       if (value !== calc) override = true;
+      focused = false;
    };
 
    const onClick = () => {

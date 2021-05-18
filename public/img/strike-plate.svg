@@ -1,0 +1,1456 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="287.5997"
+   height="265.18332"
+   viewBox="0 0 287.5997 265.18332"
+   version="1.1"
+   id="svg1282"
+   sodipodi:docname="strike-plate.svg"
+   inkscape:version="1.0.1 (3bc2e813f5, 2020-09-07)">
+  <metadata
+     id="metadata1288">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title>Produce by Acme CAD Converter</dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <defs
+     id="defs1286" />
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="1858"
+     inkscape:window-height="1057"
+     id="namedview1284"
+     showgrid="false"
+     lock-margins="true"
+     fit-margin-top="10"
+     fit-margin-left="10"
+     fit-margin-right="10"
+     fit-margin-bottom="10"
+     inkscape:zoom="10.68"
+     inkscape:cx="89.396368"
+     inkscape:cy="197.46385"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg1282"
+     inkscape:document-rotation="0" />
+  <title
+     id="title650">Produce by Acme CAD Converter</title>
+  <desc
+     id="desc652">Produce by Acme CAD Converter</desc>
+  <polyline
+     points="289.89,349.4 289.89,352.71"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline654"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="304.33,352.71 304.33,349.4"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline656"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="289.89,349.4 304.33,349.4"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline658"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="318.76,349.4 318.76,352.71"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline660"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="333.2,352.71 333.2,349.4"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline662"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="318.76,349.4 333.2,349.4"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline664"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="293.2,345.52 293.16,345.52 293.12,345.52 293.09,345.53 293.05,345.53 293.01,345.53 292.97,345.54 292.93,345.54 292.89,345.55 292.85,345.55 292.81,345.56 292.77,345.57 292.73,345.58 292.69,345.59 292.65,345.6 292.61,345.61 292.57,345.62 292.53,345.63 292.49,345.65 292.45,345.66 292.41,345.68 292.37,345.69 292.33,345.71 292.29,345.73 292.25,345.75 292.21,345.77 292.16,345.79 292.12,345.81 292.08,345.83 292.03,345.85 291.99,345.88 291.94,345.9 291.9,345.93"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline674"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="293.2,345.52 292.6,345.52"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline676"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="302.32,345.93 302.28,345.9 302.23,345.88 302.19,345.85 302.14,345.83 302.1,345.81 302.06,345.79 302.02,345.77 301.97,345.75 301.93,345.73 301.89,345.71 301.85,345.69 301.81,345.68 301.77,345.66 301.73,345.65 301.69,345.63 301.65,345.62 301.61,345.61 301.57,345.6 301.53,345.59 301.49,345.58 301.45,345.57 301.41,345.56 301.37,345.55 301.33,345.55 301.29,345.54 301.25,345.54 301.21,345.53 301.18,345.53 301.14,345.53 301.1,345.52 301.06,345.52 301.02,345.52"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline678"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="301.62,345.52 301.02,345.52"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline680"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="297.11,345.52 297.03,345.52 296.95,345.52 296.88,345.53 296.8,345.53 296.72,345.53 296.64,345.54 296.56,345.54 296.49,345.55 296.41,345.55 296.33,345.56 296.25,345.57 296.17,345.58 296.09,345.59 296.01,345.6 295.94,345.61 295.86,345.62 295.78,345.63 295.7,345.65 295.61,345.66 295.53,345.68 295.45,345.69 295.37,345.71 295.29,345.73 295.2,345.75 295.12,345.77 295.03,345.79 294.95,345.81 294.86,345.83 294.77,345.85 294.68,345.88 294.6,345.9 294.51,345.93"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline682"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="297.11,345.52 293.2,345.52"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline684"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="294.51,345.93 294.46,345.9 294.42,345.88 294.37,345.85 294.33,345.83 294.28,345.81 294.24,345.79 294.2,345.77 294.16,345.75 294.12,345.73 294.07,345.71 294.03,345.69 293.99,345.68 293.95,345.66 293.91,345.65 293.87,345.63 293.83,345.62 293.79,345.61 293.75,345.6 293.71,345.59 293.67,345.58 293.63,345.57 293.59,345.56 293.55,345.55 293.51,345.55 293.48,345.54 293.44,345.54 293.4,345.53 293.36,345.53 293.32,345.53 293.28,345.52 293.24,345.52 293.2,345.52"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline686"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="301.02,345.52 300.98,345.52 300.94,345.52 300.9,345.53 300.86,345.53 300.82,345.53 300.78,345.54 300.75,345.54 300.71,345.55 300.67,345.55 300.63,345.56 300.59,345.57 300.55,345.58 300.51,345.59 300.47,345.6 300.43,345.61 300.39,345.62 300.35,345.63 300.31,345.65 300.27,345.66 300.23,345.68 300.19,345.69 300.15,345.71 300.11,345.73 300.06,345.75 300.02,345.77 299.98,345.79 299.94,345.81 299.89,345.83 299.85,345.85 299.81,345.88 299.76,345.9 299.72,345.93"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline688"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="301.02,345.52 297.11,345.52"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline690"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="299.72,345.93 299.63,345.9 299.54,345.88 299.45,345.85 299.36,345.83 299.28,345.81 299.19,345.79 299.1,345.77 299.02,345.75 298.94,345.73 298.85,345.71 298.77,345.69 298.69,345.68 298.61,345.66 298.53,345.65 298.45,345.63 298.37,345.62 298.29,345.61 298.21,345.6 298.13,345.59 298.05,345.58 297.97,345.57 297.89,345.56 297.81,345.55 297.74,345.55 297.66,345.54 297.58,345.54 297.5,345.53 297.42,345.53 297.35,345.53 297.27,345.52 297.19,345.52 297.11,345.52"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline692"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="292.6,345.52 291.9,345.93"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline694"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="301.62,345.52 302.32,345.93"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline696"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="294.51,349.01 294.51,345.93"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline698"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="297.11,349.01 294.51,349.01"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline700"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="299.72,349.01 297.11,349.01"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline702"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="299.72,349.01 299.72,345.93"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline704"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="291.9,349.01 291.9,345.93"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline706"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="293.2,349.01 291.9,349.01"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline708"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="294.51,349.01 293.2,349.01"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline710"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="301.02,349.01 299.72,349.01"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline712"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="302.32,349.01 301.02,349.01"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline714"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="302.32,349.01 302.32,345.93"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline716"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="301.62,349.4 292.6,349.4"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline718"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="301.62,349.01 301.62,349.4"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline720"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="292.6,349.01 292.6,349.4"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline722"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="300.12,349.4 300.12,349.4"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline724"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="294.1,349.4 294.1,349.4"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline728"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="322.07,345.52 322.03,345.52 321.99,345.52 321.95,345.53 321.91,345.53 321.87,345.53 321.84,345.54 321.8,345.54 321.76,345.55 321.72,345.55 321.68,345.56 321.64,345.57 321.6,345.58 321.56,345.59 321.52,345.6 321.48,345.61 321.44,345.62 321.4,345.63 321.36,345.65 321.32,345.66 321.28,345.68 321.24,345.69 321.2,345.71 321.16,345.73 321.12,345.75 321.07,345.77 321.03,345.79 320.99,345.81 320.94,345.83 320.9,345.85 320.86,345.88 320.81,345.9 320.77,345.93"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline740"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="322.07,345.52 321.47,345.52"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline742"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="331.19,345.93 331.14,345.9 331.1,345.88 331.06,345.85 331.01,345.83 330.97,345.81 330.93,345.79 330.88,345.77 330.84,345.75 330.8,345.73 330.76,345.71 330.72,345.69 330.68,345.68 330.64,345.66 330.59,345.65 330.55,345.63 330.51,345.62 330.47,345.61 330.43,345.6 330.4,345.59 330.36,345.58 330.32,345.57 330.28,345.56 330.24,345.55 330.2,345.55 330.16,345.54 330.12,345.54 330.08,345.53 330.04,345.53 330,345.53 329.97,345.52 329.93,345.52 329.89,345.52"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline744"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="330.49,345.52 329.89,345.52"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline746"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="325.98,345.52 325.9,345.52 325.82,345.52 325.74,345.53 325.67,345.53 325.59,345.53 325.51,345.54 325.43,345.54 325.35,345.55 325.28,345.55 325.2,345.56 325.12,345.57 325.04,345.58 324.96,345.59 324.88,345.6 324.8,345.61 324.72,345.62 324.64,345.63 324.56,345.65 324.48,345.66 324.4,345.68 324.32,345.69 324.24,345.71 324.15,345.73 324.07,345.75 323.99,345.77 323.9,345.79 323.81,345.81 323.73,345.83 323.64,345.85 323.55,345.88 323.46,345.9 323.37,345.93"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline748"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="325.98,345.52 322.07,345.52"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline750"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="323.37,345.93 323.33,345.9 323.28,345.88 323.24,345.85 323.2,345.83 323.15,345.81 323.11,345.79 323.07,345.77 323.02,345.75 322.98,345.73 322.94,345.71 322.9,345.69 322.86,345.68 322.82,345.66 322.78,345.65 322.74,345.63 322.7,345.62 322.66,345.61 322.62,345.6 322.58,345.59 322.54,345.58 322.5,345.57 322.46,345.56 322.42,345.55 322.38,345.55 322.34,345.54 322.3,345.54 322.27,345.53 322.23,345.53 322.19,345.53 322.15,345.52 322.11,345.52 322.07,345.52"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline752"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="329.89,345.52 329.85,345.52 329.81,345.52 329.77,345.53 329.73,345.53 329.69,345.53 329.65,345.54 329.61,345.54 329.57,345.55 329.54,345.55 329.5,345.56 329.46,345.57 329.42,345.58 329.38,345.59 329.34,345.6 329.3,345.61 329.26,345.62 329.22,345.63 329.18,345.65 329.14,345.66 329.1,345.68 329.06,345.69 329.02,345.71 328.97,345.73 328.93,345.75 328.89,345.77 328.85,345.79 328.8,345.81 328.76,345.83 328.72,345.85 328.67,345.88 328.63,345.9 328.58,345.93"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline754"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="329.89,345.52 325.98,345.52"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline756"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="328.58,345.93 328.49,345.9 328.4,345.88 328.32,345.85 328.23,345.83 328.14,345.81 328.06,345.79 327.97,345.77 327.89,345.75 327.8,345.73 327.72,345.71 327.64,345.69 327.56,345.68 327.48,345.66 327.39,345.65 327.31,345.63 327.23,345.62 327.15,345.61 327.07,345.6 327,345.59 326.92,345.58 326.84,345.57 326.76,345.56 326.68,345.55 326.6,345.55 326.53,345.54 326.45,345.54 326.37,345.53 326.29,345.53 326.21,345.53 326.14,345.52 326.06,345.52 325.98,345.52"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline758"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="321.47,345.52 320.77,345.93"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline760"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="330.49,345.52 331.19,345.93"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline762"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="323.37,349.01 323.37,345.93"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline764"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="325.98,349.01 323.37,349.01"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline766"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="328.58,349.01 325.98,349.01"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline768"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="328.58,349.01 328.58,345.93"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline770"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="320.77,349.01 320.77,345.93"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline772"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="322.07,349.01 320.77,349.01"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline774"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="323.37,349.01 322.07,349.01"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline776"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="329.89,349.01 328.58,349.01"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline778"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="331.19,349.01 329.89,349.01"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline780"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="331.19,349.01 331.19,345.93"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline782"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="330.49,349.4 321.47,349.4"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline784"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="330.49,349.01 330.49,349.4"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline786"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="321.47,349.01 321.47,349.4"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline788"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="328.99,349.4 328.99,349.4"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline790"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="322.97,349.4 322.97,349.4"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline794"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="413.78,365.07 413.78,355.44"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline798"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="471.52,365.07 413.78,365.07"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline800"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="471.52,355.44 471.52,365.07"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline802"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="440.85,341.01 444.46,341.01"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline804"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="445.06,341.61 440.25,341.61"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline806"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="444.46,341.01 445.06,341.61"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline808"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="440.85,341.01 440.25,341.61"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline810"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="440.57,367.85 440.64,367.87 440.71,367.89 440.78,367.91 440.85,367.93 440.92,367.95 440.99,367.97 441.06,367.98 441.13,368 441.19,368.01 441.26,368.03 441.32,368.04 441.39,368.05 441.46,368.06 441.52,368.08 441.58,368.09 441.65,368.1 441.78,368.12 441.9,368.13 442.03,368.14 442.15,368.16 442.28,368.16 442.4,368.17 442.53,368.17 442.65,368.18"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline812"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="439.53,368.18 439.59,368.17 439.65,368.17 439.71,368.16 439.78,368.16 439.84,368.14 439.9,368.13 439.97,368.12 440.03,368.1 440.09,368.08 440.16,368.05 440.22,368.03 440.26,368.01 440.29,368 440.32,367.98 440.36,367.97 440.39,367.95 440.43,367.93 440.46,367.91 440.5,367.89 440.53,367.87 440.57,367.85"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline814"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="439.53,368.18 442.65,368.18"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline816"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="439.04,368.18 439.53,368.18"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline818"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="438.49,367.85 438.52,367.87 438.56,367.89 438.59,367.91 438.63,367.93 438.66,367.95 438.7,367.97 438.73,367.98 438.76,368 438.8,368.01 438.83,368.03 438.9,368.05 438.96,368.08 439.03,368.1 439.09,368.12 439.15,368.13 439.21,368.14 439.28,368.16 439.34,368.16 439.4,368.17 439.46,368.17 439.53,368.18"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline820"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="444.74,367.85 444.77,367.87 444.81,367.89 444.84,367.91 444.88,367.93 444.91,367.95 444.95,367.97 444.98,367.98 445.01,368 445.05,368.01 445.08,368.03 445.15,368.05 445.21,368.08 445.28,368.1 445.34,368.12 445.4,368.13 445.46,368.14 445.53,368.16 445.59,368.16 445.65,368.17 445.71,368.17 445.78,368.18"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline822"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="442.65,368.18 442.78,368.17 442.9,368.17 443.03,368.16 443.15,368.16 443.28,368.14 443.4,368.13 443.53,368.12 443.66,368.1 443.72,368.09 443.78,368.08 443.85,368.06 443.91,368.05 443.98,368.04 444.05,368.03 444.11,368.01 444.18,368 444.25,367.98 444.31,367.97 444.38,367.95 444.45,367.93 444.52,367.91 444.59,367.89 444.66,367.87 444.74,367.85"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline824"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="442.65,368.18 445.78,368.18"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline826"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="445.78,368.18 445.84,368.17 445.9,368.17 445.96,368.16 446.03,368.16 446.09,368.14 446.15,368.13 446.22,368.12 446.28,368.1 446.34,368.08 446.41,368.05 446.47,368.03 446.51,368.01 446.54,368 446.57,367.98 446.61,367.97 446.64,367.95 446.68,367.93 446.71,367.91 446.75,367.89 446.78,367.87 446.82,367.85"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline828"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="445.78,368.18 446.26,368.18"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline830"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="439.04,368.18 438.49,367.85"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline832"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="446.26,368.18 446.82,367.85"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline834"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="438.49,365.38 438.49,367.85"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline836"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="440.57,365.38 440.57,367.85"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline838"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="439.53,365.38 440.57,365.38"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline840"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="438.49,365.38 439.53,365.38"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline842"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="442.65,365.38 444.74,365.38"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline844"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="444.74,365.38 445.78,365.38"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline846"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="440.57,365.38 442.65,365.38"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline848"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="445.78,365.38 446.82,365.38"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline850"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="446.82,365.38 446.82,367.85"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline852"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="444.74,365.38 444.74,367.85"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline854"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="440.25,343.56 440.25,341.61"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline856"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="445.06,343.56 445.06,341.61"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline858"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="439.04,365.38 439.04,365.07"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline860"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="446.26,365.38 446.26,365.07"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline862"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="436.64,349.48 436.64,352.41"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline864"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="448.67,352.41 448.67,349.48"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline866"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="436.64,349.48 448.67,349.48"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline868"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="437.66,348.97 447.65,348.97"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline870"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="447.65,348.97 447.73,349.01 447.76,349.09"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline872"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="437.54,349.09 437.58,349.01 437.66,348.97"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline874"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="447.76,349.09 447.76,349.48"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline876"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="437.54,349.09 437.54,349.48"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline878"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="446.81,347.91 446.81,347.89 446.81,347.88 446.81,347.87 446.8,347.86 446.8,347.84 446.79,347.83 446.78,347.82 446.77,347.81 446.76,347.8 446.75,347.79 446.74,347.79 446.73,347.78 446.72,347.78 446.7,347.77 446.69,347.77 446.67,347.77"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline880"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="438.61,347.77 446.67,347.77"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline882"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="446.67,348.97 446.69,348.97 446.7,348.97 446.72,348.97 446.73,348.96 446.74,348.96 446.75,348.95 446.76,348.94 446.77,348.93 446.78,348.92 446.79,348.91 446.8,348.9 446.8,348.89 446.81,348.88 446.81,348.86 446.81,348.85 446.81,348.84"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline884"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="438.47,347.91 438.51,347.81 438.61,347.77"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline886"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="438.61,348.97 438.51,348.93 438.47,348.84"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline888"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="446.81,347.91 446.81,348.84"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline890"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="438.47,347.91 438.47,348.84"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline892"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="440.57,347.45 440.64,347.47 440.71,347.49 440.77,347.51 440.84,347.52 440.91,347.54 440.97,347.56 441.1,347.59 441.24,347.62 441.36,347.64 441.49,347.67 441.62,347.69 441.75,347.71 441.88,347.72 442,347.74 442.13,347.75 442.26,347.76 442.39,347.77 442.46,347.77 442.52,347.77 442.59,347.77 442.65,347.77"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline894"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="439.53,347.77 439.56,347.77 439.59,347.77 439.66,347.77 439.72,347.76 439.79,347.75 439.85,347.74 439.91,347.72 439.98,347.71 440.04,347.69 440.11,347.67 440.17,347.64 440.24,347.62 440.3,347.59 440.37,347.56 440.43,347.52 440.5,347.49 440.57,347.45"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline896"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="444.74,347.45 444.8,347.49 444.87,347.52 444.94,347.56 445,347.59 445.07,347.62 445.13,347.64 445.2,347.67 445.26,347.69 445.33,347.71 445.39,347.72 445.45,347.74 445.52,347.75 445.58,347.76 445.65,347.77 445.71,347.77 445.74,347.77 445.78,347.77"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline898"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="442.65,347.77 442.72,347.77 442.78,347.77 442.85,347.77 442.91,347.77 443.04,347.76 443.17,347.75 443.3,347.74 443.43,347.72 443.55,347.71 443.68,347.69 443.81,347.67 443.94,347.64 444.07,347.62 444.2,347.59 444.33,347.56 444.4,347.54 444.46,347.52 444.53,347.51 444.6,347.49 444.67,347.47 444.74,347.45"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline900"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="445.78,347.77 445.81,347.77 445.84,347.77 445.91,347.77 445.97,347.76 446.04,347.75 446.1,347.74 446.16,347.72 446.23,347.71 446.29,347.69 446.36,347.67 446.42,347.64 446.49,347.62 446.55,347.59 446.62,347.56 446.68,347.52 446.75,347.49 446.82,347.45"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline902"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="438.49,347.45 438.55,347.49 438.62,347.52 438.69,347.56 438.75,347.59 438.82,347.62 438.88,347.64 438.95,347.67 439.01,347.69 439.08,347.71 439.14,347.72 439.2,347.74 439.27,347.75 439.33,347.76 439.4,347.77 439.46,347.77 439.49,347.77 439.53,347.77"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline904"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="444.74,343.88 444.67,343.86 444.6,343.85 444.53,343.83 444.46,343.81 444.4,343.79 444.33,343.78 444.2,343.74 444.07,343.72 443.94,343.69 443.81,343.67 443.68,343.64 443.55,343.63 443.43,343.61 443.3,343.59 443.17,343.58 443.04,343.57 442.91,343.57 442.85,343.56 442.78,343.56 442.72,343.56 442.65,343.56"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline906"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="445.78,343.56 445.74,343.56 445.71,343.56 445.65,343.57 445.58,343.57 445.52,343.58 445.45,343.59 445.39,343.61 445.33,343.63 445.26,343.64 445.2,343.67 445.13,343.69 445.07,343.72 445,343.74 444.94,343.78 444.87,343.81 444.8,343.85 444.74,343.88"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline908"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="445.78,343.56 442.65,343.56"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline910"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="440.57,343.88 440.5,343.85 440.43,343.81 440.37,343.78 440.3,343.74 440.24,343.72 440.17,343.69 440.11,343.67 440.04,343.64 439.98,343.63 439.91,343.61 439.85,343.59 439.79,343.58 439.72,343.57 439.66,343.57 439.59,343.56 439.56,343.56 439.53,343.56"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline912"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="442.65,343.56 442.59,343.56 442.52,343.56 442.46,343.56 442.39,343.57 442.26,343.57 442.13,343.58 442,343.59 441.88,343.61 441.75,343.63 441.62,343.64 441.49,343.67 441.36,343.69 441.24,343.72 441.1,343.74 440.97,343.78 440.91,343.79 440.84,343.81 440.77,343.83 440.71,343.85 440.64,343.86 440.57,343.88"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline914"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="442.65,343.56 439.53,343.56"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline916"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="439.53,343.56 439.49,343.56 439.46,343.56 439.4,343.57 439.33,343.57 439.27,343.58 439.2,343.59 439.14,343.61 439.08,343.63 439.01,343.64 438.95,343.67 438.88,343.69 438.82,343.72 438.75,343.74 438.69,343.78 438.62,343.81 438.55,343.85 438.49,343.88"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline918"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="439.53,343.56 439.04,343.56"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline920"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="446.26,343.56 445.78,343.56"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline922"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="446.82,343.88 446.75,343.85 446.68,343.81 446.62,343.78 446.55,343.74 446.49,343.72 446.42,343.69 446.36,343.67 446.29,343.64 446.23,343.63 446.16,343.61 446.1,343.59 446.04,343.58 445.97,343.57 445.91,343.57 445.84,343.56 445.81,343.56 445.78,343.56"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline924"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="446.26,347.77 446.82,347.45"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline926"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="439.04,347.77 438.49,347.45"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline928"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="439.04,343.56 438.49,343.88"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline930"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="446.26,343.56 446.82,343.88"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline932"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="438.49,347.45 438.49,343.88"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline934"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="446.82,347.45 446.82,343.88"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline936"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="444.74,347.45 444.74,343.88"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline938"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="440.57,343.88 440.57,347.45"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline940"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="494.7,335.44 507.54,348.09"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline942"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="507.54,348.09 509.87,350.38"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline944"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="509.87,350.38 512.7,353.17"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline946"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="513.87,354.31 512.7,353.17"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline948"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="513.87,354.31 515.02,355.44"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline950"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="518.02,313.52 494.7,335.44"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline952"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="519.11,291.6 518.02,313.52"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline954"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="513.38,285.82 519.11,291.6"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline956"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="506.07,278.46 507.2,279.6"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline958"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="508.33,280.74 507.2,279.6"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline960"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="508.33,280.74 511.1,283.53"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline962"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="511.1,283.53 513.38,285.82"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline964"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="259.82,348.09 259.82,285.82"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline966"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="259.82,285.82 259.82,283.53"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline968"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="259.82,283.53 259.82,280.74"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline970"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="259.82,279.6 259.82,280.74"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline972"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="506.07,278.46 259.82,278.46"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline974"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="259.82,279.6 259.82,278.46"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline976"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="259.82,350.38 259.82,348.09"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline978"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="259.82,353.17 259.82,350.38"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline980"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="259.82,353.17 259.82,354.31"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline982"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="259.82,355.44 259.82,354.31"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline984"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="515.02,355.44 259.82,355.44"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline986"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="265.64,293.2 265.73,293.2 265.82,293.2 265.91,293.2 265.99,293.2 266.08,293.2 266.16,293.2 266.33,293.2 266.5,293.2 266.67,293.2 266.83,293.2 266.99,293.2 267.15,293.2 267.31,293.2 267.62,293.2 267.93,293.2 268.24,293.2"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline988"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="264.33,295.45 264.49,295.18 264.65,294.91 264.8,294.64 264.88,294.5 264.96,294.37 265.04,294.23 265.12,294.09 265.21,293.94 265.29,293.8 265.37,293.65 265.42,293.58 265.46,293.5 265.5,293.43 265.55,293.35 265.59,293.27 265.64,293.2"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline990"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="268.24,293.2 267.08,293.35 265.99,293.8 265.05,294.52 264.33,295.45"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline992"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="264.33,299.97 264.18,299.7 264.02,299.43 263.87,299.15 263.79,299.02 263.71,298.88 263.63,298.74 263.55,298.6 263.46,298.46 263.38,298.31 263.3,298.17 263.25,298.09 263.21,298.02 263.17,297.94 263.12,297.86 263.08,297.79 263.03,297.71"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline994"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="264.33,295.45 263.88,296.54 263.73,297.71 263.88,298.88 264.33,299.97"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline996"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="263.03,297.71 263.08,297.63 263.12,297.55 263.17,297.48 263.21,297.4 263.25,297.33 263.3,297.25 263.38,297.11 263.46,296.96 263.55,296.82 263.63,296.68 263.71,296.54 263.79,296.4 263.87,296.27 264.02,295.99 264.18,295.72 264.33,295.45"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline998"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="270.85,293.2 270.89,293.27 270.94,293.35 270.98,293.43 271.03,293.5 271.07,293.58 271.11,293.65 271.2,293.8 271.28,293.94 271.36,294.09 271.44,294.23 271.52,294.37 271.6,294.5 271.68,294.64 271.84,294.91 272,295.18 272.15,295.45"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline1000"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="268.24,293.2 268.56,293.2 268.87,293.2 269.18,293.2 269.34,293.2 269.5,293.2 269.66,293.2 269.82,293.2 269.99,293.2 270.15,293.2 270.32,293.2 270.41,293.2 270.49,293.2 270.58,293.2 270.67,293.2 270.76,293.2 270.85,293.2"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline1002"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="272.15,295.45 271.43,294.52 270.5,293.8 269.41,293.35 268.24,293.2"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline1004"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="273.45,297.71 273.41,297.79 273.36,297.86 273.32,297.94 273.28,298.02 273.23,298.09 273.19,298.17 273.11,298.31 273.02,298.46 272.94,298.6 272.86,298.74 272.78,298.88 272.7,299.02 272.62,299.15 272.46,299.43 272.31,299.7 272.15,299.97"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline1006"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="272.15,295.45 272.31,295.72 272.46,295.99 272.62,296.27 272.7,296.4 272.78,296.54 272.86,296.68 272.94,296.82 273.02,296.96 273.11,297.11 273.19,297.25 273.23,297.33 273.28,297.4 273.32,297.48 273.36,297.55 273.41,297.63 273.45,297.71"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline1008"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="272.15,299.97 272.6,298.88 272.76,297.71 272.6,296.54 272.15,295.45"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline1010"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="268.24,302.22 267.93,302.22 267.62,302.22 267.31,302.22 267.15,302.22 266.99,302.22 266.83,302.22 266.67,302.22 266.5,302.22 266.33,302.22 266.16,302.22 266.08,302.22 265.99,302.22 265.91,302.22 265.82,302.22 265.73,302.22 265.64,302.22"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline1012"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="264.33,299.97 265.05,300.9 265.99,301.62 267.08,302.07 268.24,302.22"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline1014"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="265.64,302.22 265.59,302.14 265.55,302.07 265.5,301.99 265.46,301.92 265.42,301.84 265.37,301.77 265.29,301.62 265.21,301.48 265.12,301.33 265.04,301.19 264.96,301.05 264.88,300.92 264.8,300.78 264.65,300.51 264.49,300.24 264.33,299.97"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline1016"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="272.15,299.97 272,300.24 271.84,300.51 271.68,300.78 271.6,300.92 271.52,301.05 271.44,301.19 271.36,301.33 271.28,301.48 271.2,301.62 271.11,301.77 271.07,301.84 271.03,301.92 270.98,301.99 270.94,302.07 270.89,302.14 270.85,302.22"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline1018"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="268.24,302.22 269.41,302.07 270.5,301.62 271.43,300.9 272.15,299.97"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline1020"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="270.85,302.22 270.76,302.22 270.67,302.22 270.58,302.22 270.49,302.22 270.41,302.22 270.32,302.22 270.15,302.22 269.99,302.22 269.82,302.22 269.66,302.22 269.5,302.22 269.34,302.22 269.18,302.22 268.87,302.22 268.56,302.22 268.24,302.22"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline1022"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="289.69,293.2 289.78,293.2 289.87,293.2 289.96,293.2 290.05,293.2 290.14,293.2 290.22,293.2 290.39,293.2 290.56,293.2 290.72,293.2 290.88,293.2 291.04,293.2 291.2,293.2 291.36,293.2 291.67,293.2 291.99,293.2 292.3,293.2"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline1024"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="288.39,295.45 288.55,295.18 288.7,294.91 288.86,294.64 288.94,294.5 289.02,294.37 289.1,294.23 289.18,294.09 289.26,293.94 289.35,293.8 289.43,293.65 289.47,293.58 289.52,293.5 289.56,293.43 289.6,293.35 289.65,293.27 289.69,293.2"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline1026"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="292.3,293.2 291.13,293.35 290.04,293.8 289.11,294.52 288.39,295.45"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline1028"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="288.39,299.97 288.23,299.7 288.08,299.43 287.92,299.15 287.84,299.02 287.76,298.88 287.68,298.74 287.6,298.6 287.52,298.46 287.44,298.31 287.35,298.17 287.31,298.09 287.27,298.02 287.22,297.94 287.18,297.86 287.13,297.79 287.09,297.71"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline1030"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="288.39,295.45 287.94,296.54 287.79,297.71 287.94,298.88 288.39,299.97"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline1032"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="287.09,297.71 287.13,297.63 287.18,297.55 287.22,297.48 287.27,297.4 287.31,297.33 287.35,297.25 287.44,297.11 287.52,296.96 287.6,296.82 287.68,296.68 287.76,296.54 287.84,296.4 287.92,296.27 288.08,295.99 288.23,295.72 288.39,295.45"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline1034"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="294.91,293.2 294.95,293.27 294.99,293.35 295.04,293.43 295.08,293.5 295.13,293.58 295.17,293.65 295.25,293.8 295.34,293.94 295.42,294.09 295.5,294.23 295.58,294.37 295.66,294.5 295.74,294.64 295.9,294.91 296.05,295.18 296.21,295.45"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline1036"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="292.3,293.2 292.61,293.2 292.92,293.2 293.24,293.2 293.4,293.2 293.55,293.2 293.72,293.2 293.88,293.2 294.04,293.2 294.21,293.2 294.38,293.2 294.46,293.2 294.55,293.2 294.64,293.2 294.73,293.2 294.82,293.2 294.91,293.2"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline1038"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="296.21,295.45 295.49,294.52 294.56,293.8 293.47,293.35 292.3,293.2"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline1040"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="297.51,297.71 297.47,297.79 297.42,297.86 297.38,297.94 297.33,298.02 297.29,298.09 297.25,298.17 297.16,298.31 297.08,298.46 297,298.6 296.92,298.74 296.84,298.88 296.76,299.02 296.68,299.15 296.52,299.43 296.36,299.7 296.21,299.97"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline1042"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="296.21,295.45 296.36,295.72 296.52,295.99 296.68,296.27 296.76,296.4 296.84,296.54 296.92,296.68 297,296.82 297.08,296.96 297.16,297.11 297.25,297.25 297.29,297.33 297.33,297.4 297.38,297.48 297.42,297.55 297.47,297.63 297.51,297.71"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline1044"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="296.21,299.97 296.66,298.88 296.81,297.71 296.66,296.54 296.21,295.45"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline1046"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="292.3,302.22 291.99,302.22 291.67,302.22 291.36,302.22 291.2,302.22 291.04,302.22 290.88,302.22 290.72,302.22 290.56,302.22 290.39,302.22 290.22,302.22 290.14,302.22 290.05,302.22 289.96,302.22 289.87,302.22 289.78,302.22 289.69,302.22"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline1048"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="288.39,299.97 289.11,300.9 290.04,301.62 291.13,302.07 292.3,302.22"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline1050"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="289.69,302.22 289.65,302.14 289.6,302.07 289.56,301.99 289.52,301.92 289.47,301.84 289.43,301.77 289.35,301.62 289.26,301.48 289.18,301.33 289.1,301.19 289.02,301.05 288.94,300.92 288.86,300.78 288.7,300.51 288.55,300.24 288.39,299.97"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline1052"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="296.21,299.97 296.05,300.24 295.9,300.51 295.74,300.78 295.66,300.92 295.58,301.05 295.5,301.19 295.42,301.33 295.34,301.48 295.25,301.62 295.17,301.77 295.13,301.84 295.08,301.92 295.04,301.99 294.99,302.07 294.95,302.14 294.91,302.22"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline1054"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="292.3,302.22 293.47,302.07 294.56,301.62 295.49,300.9 296.21,299.97"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline1056"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="294.91,302.22 294.82,302.22 294.73,302.22 294.64,302.22 294.55,302.22 294.46,302.22 294.38,302.22 294.21,302.22 294.04,302.22 293.88,302.22 293.72,302.22 293.55,302.22 293.4,302.22 293.24,302.22 292.92,302.22 292.61,302.22 292.3,302.22"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline1058"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="265.64,331.69 265.73,331.69 265.82,331.69 265.91,331.69 265.99,331.69 266.08,331.69 266.16,331.69 266.33,331.69 266.5,331.69 266.67,331.69 266.83,331.69 266.99,331.69 267.15,331.69 267.31,331.69 267.62,331.69 267.93,331.69 268.24,331.69"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline1060"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="264.33,333.94 264.49,333.67 264.65,333.4 264.8,333.13 264.88,332.99 264.96,332.86 265.04,332.72 265.12,332.58 265.21,332.43 265.29,332.29 265.37,332.14 265.42,332.07 265.46,331.99 265.5,331.92 265.55,331.84 265.59,331.76 265.64,331.69"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline1062"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="268.24,331.69 267.08,331.84 265.99,332.29 265.05,333.01 264.33,333.94"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline1064"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="264.33,338.46 264.18,338.19 264.02,337.92 263.87,337.64 263.79,337.51 263.71,337.37 263.63,337.23 263.55,337.09 263.46,336.95 263.38,336.8 263.3,336.66 263.25,336.58 263.21,336.51 263.17,336.43 263.12,336.36 263.08,336.28 263.03,336.2"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline1066"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="264.33,333.94 263.88,335.03 263.73,336.2 263.88,337.37 264.33,338.46"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline1068"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="263.03,336.2 263.08,336.12 263.12,336.04 263.17,335.97 263.21,335.89 263.25,335.82 263.3,335.74 263.38,335.6 263.46,335.45 263.55,335.31 263.63,335.17 263.71,335.03 263.79,334.89 263.87,334.76 264.02,334.48 264.18,334.21 264.33,333.94"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline1070"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="270.85,331.69 270.89,331.76 270.94,331.84 270.98,331.92 271.03,331.99 271.07,332.07 271.11,332.14 271.2,332.29 271.28,332.43 271.36,332.58 271.44,332.72 271.52,332.86 271.6,332.99 271.68,333.13 271.84,333.4 272,333.67 272.15,333.94"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline1072"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="268.24,331.69 268.56,331.69 268.87,331.69 269.18,331.69 269.34,331.69 269.5,331.69 269.66,331.69 269.82,331.69 269.99,331.69 270.15,331.69 270.32,331.69 270.41,331.69 270.49,331.69 270.58,331.69 270.67,331.69 270.76,331.69 270.85,331.69"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline1074"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="272.15,333.94 271.43,333.01 270.5,332.29 269.41,331.84 268.24,331.69"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline1076"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="273.45,336.2 273.41,336.28 273.36,336.36 273.32,336.43 273.28,336.51 273.23,336.58 273.19,336.66 273.11,336.8 273.02,336.95 272.94,337.09 272.86,337.23 272.78,337.37 272.7,337.51 272.62,337.64 272.46,337.92 272.31,338.19 272.15,338.46"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline1078"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="272.15,333.94 272.31,334.21 272.46,334.48 272.62,334.76 272.7,334.89 272.78,335.03 272.86,335.17 272.94,335.31 273.02,335.45 273.11,335.6 273.19,335.74 273.23,335.82 273.28,335.89 273.32,335.97 273.36,336.04 273.41,336.12 273.45,336.2"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline1080"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="272.15,338.46 272.6,337.37 272.76,336.2 272.6,335.03 272.15,333.94"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline1082"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="268.24,340.71 267.93,340.71 267.62,340.71 267.31,340.71 267.15,340.71 266.99,340.71 266.83,340.71 266.67,340.71 266.5,340.71 266.33,340.71 266.16,340.71 266.08,340.71 265.99,340.71 265.91,340.71 265.82,340.71 265.73,340.71 265.64,340.71"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline1084"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="264.33,338.46 265.05,339.39 265.99,340.11 267.08,340.56 268.24,340.71"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline1086"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="265.64,340.71 265.59,340.63 265.55,340.56 265.5,340.48 265.46,340.41 265.42,340.33 265.37,340.26 265.29,340.11 265.21,339.97 265.12,339.82 265.04,339.68 264.96,339.54 264.88,339.41 264.8,339.27 264.65,339 264.49,338.73 264.33,338.46"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline1088"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="272.15,338.46 272,338.73 271.84,339 271.68,339.27 271.6,339.41 271.52,339.54 271.44,339.68 271.36,339.82 271.28,339.97 271.2,340.11 271.11,340.26 271.07,340.33 271.03,340.41 270.98,340.48 270.94,340.56 270.89,340.63 270.85,340.71"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline1090"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="268.24,340.71 269.41,340.56 270.5,340.11 271.43,339.39 272.15,338.46"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline1092"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="270.85,340.71 270.76,340.71 270.67,340.71 270.58,340.71 270.49,340.71 270.41,340.71 270.32,340.71 270.15,340.71 269.99,340.71 269.82,340.71 269.66,340.71 269.5,340.71 269.34,340.71 269.18,340.71 268.87,340.71 268.56,340.71 268.24,340.71"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline1094"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="289.69,331.69 289.78,331.69 289.87,331.69 289.96,331.69 290.05,331.69 290.14,331.69 290.22,331.69 290.39,331.69 290.56,331.69 290.72,331.69 290.88,331.69 291.04,331.69 291.2,331.69 291.36,331.69 291.67,331.69 291.99,331.69 292.3,331.69"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline1096"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="288.39,333.94 288.55,333.67 288.7,333.4 288.86,333.13 288.94,332.99 289.02,332.86 289.1,332.72 289.18,332.58 289.26,332.43 289.35,332.29 289.43,332.14 289.47,332.07 289.52,331.99 289.56,331.92 289.6,331.84 289.65,331.76 289.69,331.69"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline1098"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="292.3,331.69 291.13,331.84 290.04,332.29 289.11,333.01 288.39,333.94"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline1100"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="288.39,338.46 288.23,338.19 288.08,337.92 287.92,337.64 287.84,337.51 287.76,337.37 287.68,337.23 287.6,337.09 287.52,336.95 287.44,336.8 287.35,336.66 287.31,336.58 287.27,336.51 287.22,336.43 287.18,336.36 287.13,336.28 287.09,336.2"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline1102"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="288.39,333.94 287.94,335.03 287.79,336.2 287.94,337.37 288.39,338.46"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline1104"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="287.09,336.2 287.13,336.12 287.18,336.04 287.22,335.97 287.27,335.89 287.31,335.82 287.35,335.74 287.44,335.6 287.52,335.45 287.6,335.31 287.68,335.17 287.76,335.03 287.84,334.89 287.92,334.76 288.08,334.48 288.23,334.21 288.39,333.94"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline1106"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="294.91,331.69 294.95,331.76 294.99,331.84 295.04,331.92 295.08,331.99 295.13,332.07 295.17,332.14 295.25,332.29 295.34,332.43 295.42,332.58 295.5,332.72 295.58,332.86 295.66,332.99 295.74,333.13 295.9,333.4 296.05,333.67 296.21,333.94"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline1108"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="292.3,331.69 292.61,331.69 292.92,331.69 293.24,331.69 293.4,331.69 293.55,331.69 293.72,331.69 293.88,331.69 294.04,331.69 294.21,331.69 294.38,331.69 294.46,331.69 294.55,331.69 294.64,331.69 294.73,331.69 294.82,331.69 294.91,331.69"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline1110"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="296.21,333.94 295.49,333.01 294.56,332.29 293.47,331.84 292.3,331.69"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline1112"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="297.51,336.2 297.47,336.28 297.42,336.36 297.38,336.43 297.33,336.51 297.29,336.58 297.25,336.66 297.16,336.8 297.08,336.95 297,337.09 296.92,337.23 296.84,337.37 296.76,337.51 296.68,337.64 296.52,337.92 296.36,338.19 296.21,338.46"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline1114"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="296.21,333.94 296.36,334.21 296.52,334.48 296.68,334.76 296.76,334.89 296.84,335.03 296.92,335.17 297,335.31 297.08,335.45 297.16,335.6 297.25,335.74 297.29,335.82 297.33,335.89 297.38,335.97 297.42,336.04 297.47,336.12 297.51,336.2"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline1116"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="296.21,338.46 296.66,337.37 296.81,336.2 296.66,335.03 296.21,333.94"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline1118"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="292.3,340.71 291.99,340.71 291.67,340.71 291.36,340.71 291.2,340.71 291.04,340.71 290.88,340.71 290.72,340.71 290.56,340.71 290.39,340.71 290.22,340.71 290.14,340.71 290.05,340.71 289.96,340.71 289.87,340.71 289.78,340.71 289.69,340.71"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline1120"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="288.39,338.46 289.11,339.39 290.04,340.11 291.13,340.56 292.3,340.71"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline1122"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="289.69,340.71 289.65,340.63 289.6,340.56 289.56,340.48 289.52,340.41 289.47,340.33 289.43,340.26 289.35,340.11 289.26,339.97 289.18,339.82 289.1,339.68 289.02,339.54 288.94,339.41 288.86,339.27 288.7,339 288.55,338.73 288.39,338.46"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline1124"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="296.21,338.46 296.05,338.73 295.9,339 295.74,339.27 295.66,339.41 295.58,339.54 295.5,339.68 295.42,339.82 295.34,339.97 295.25,340.11 295.17,340.26 295.13,340.33 295.08,340.41 295.04,340.48 294.99,340.56 294.95,340.63 294.91,340.71"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline1126"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="292.3,340.71 293.47,340.56 294.56,340.11 295.49,339.39 296.21,338.46"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline1128"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="294.91,340.71 294.82,340.71 294.73,340.71 294.64,340.71 294.55,340.71 294.46,340.71 294.38,340.71 294.21,340.71 294.04,340.71 293.88,340.71 293.72,340.71 293.55,340.71 293.4,340.71 293.24,340.71 292.92,340.71 292.61,340.71 292.3,340.71"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline1130"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="260.16,165.98 262.91,167.76"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline1132"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="262.91,167.76 280.27,166.51"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline1134"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="260.16,278.46 260.16,165.98"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline1136"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="280.27,166.51 280.27,278.46"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline1138"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="505.48,230.35 510.79,247.76"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline1140"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="510.79,247.76 503.76,259.22"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline1142"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="287.49,259.22 503.76,259.22"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline1144"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="287.49,230.35 287.49,259.22"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline1146"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="505.48,230.35 287.49,230.35"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline1148"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="312.75,273.65 293.5,273.65"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline1150"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="312.75,276.06 312.75,273.65"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline1152"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="293.5,273.65 293.5,276.06"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline1154"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="318.76,259.22 318.59,261.51 318.09,263.75 317.27,265.89 316.14,267.89 314.72,269.71 313.06,271.29 311.19,272.62 309.14,273.65"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline1156"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="297.11,273.65 295.06,272.62 293.19,271.29 291.53,269.71 290.11,267.89 288.98,265.89 288.16,263.75 287.66,261.51 287.49,259.22"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline1158"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="282.68,239.97 280.27,239.97"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline1160"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="282.68,276.06 282.68,239.97"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline1162"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="318.76,276.06 282.68,276.06"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline1164"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="318.76,278.46 318.76,276.06"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline1166"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="280.27,278.46 318.76,278.46"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline1168"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="280.27,239.97 280.27,278.46"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline1170"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="376.18,378.39 348.23,375.96"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline1172"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="396.59,410.88 397.46,408.05 397.99,405.14 398.15,402.18 397.94,399.23 397.38,396.33 396.46,393.51 395.21,390.83 393.64,388.33 391.77,386.04 389.63,383.99 387.26,382.22 384.69,380.76 381.96,379.62 379.1,378.83 376.18,378.39"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline1174"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="252.01,365.07 348.23,365.07"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline1176"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="348.23,365.07 348.23,355.44"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline1178"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="252.01,355.44 348.23,355.44"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline1180"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="252.01,365.07 252.01,355.44"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline1182"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="252.01,372.43 252.01,410.88"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline1184"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="348.23,372.43 348.23,410.88"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline1186"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="252.01,365.07 252.01,366.2"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline1188"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="348.23,365.07 348.23,366.2"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline1190"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="252.01,367.35 252.01,366.2"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline1192"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="348.23,367.35 348.23,366.2"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline1194"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="252.01,367.35 252.01,370.13"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline1196"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="348.23,367.35 348.23,370.13"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline1198"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="252.01,370.13 252.01,372.43"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline1200"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="348.23,370.13 348.23,372.43"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline1202"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="345.93,210.17 353.63,198.62"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline1250"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="345.93,198.62 353.63,210.17"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline1252"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="269.29,204.4 259.82,204.4"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline1254"
+     transform="translate(-241.76,-155.77013)" />
+  <path
+     d="m 27.53,50.519872 v -3.79 l -9.47,1.9 z"
+     fill-rule="evenodd"
+     fill="#000000"
+     id="path1256" />
+  <polyline
+     points="269.29,202.5 259.82,204.4"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline1258"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="259.82,204.4 269.29,206.29"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline1260"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="269.29,206.29 269.29,202.5"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline1262"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="433.18,204.4 442.65,204.4"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline1264"
+     transform="translate(-241.76,-155.77013)" />
+  <path
+     d="m 191.42,50.519872 9.47,-1.89 -9.47,-1.9 z"
+     fill-rule="evenodd"
+     fill="#000000"
+     id="path1266" />
+  <polyline
+     points="433.18,206.29 442.65,204.4"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline1268"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="442.65,204.4 433.18,202.5"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline1270"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="433.18,202.5 433.18,206.29"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline1272"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="269.29,204.4 342.83,204.4"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline1274"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="359.65,204.4 433.18,204.4"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline1276"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="259.82,272.45 259.82,192.37"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline1278"
+     transform="translate(-241.76,-155.77013)" />
+  <polyline
+     points="442.65,335 442.65,192.37"
+     style="fill:none;stroke:#000000;stroke-width:0.5"
+     id="polyline1280"
+     transform="translate(-241.76,-155.77013)" />
+</svg>

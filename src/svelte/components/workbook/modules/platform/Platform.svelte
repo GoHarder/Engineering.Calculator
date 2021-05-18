@@ -1,6 +1,6 @@
 <script>
    import { createEventDispatcher, onDestroy, onMount } from 'svelte';
-   import { fade } from 'svelte/transition';
+   import { fade, slide } from 'svelte/transition';
    import { floor, round } from '../round';
    import * as tables from './tables';
    import * as options from './options';
@@ -19,9 +19,8 @@
 
    // Methods
    const onSave = () => {
-      // console.log('Saving...');
-
       const saveData = {
+         apta,
          properties: {
             depth: platformDepth,
             isolation: platformIsolation,
@@ -130,23 +129,6 @@
       };
    };
 
-   const steelLoad = (freightClass) => {
-      switch (freightClass) {
-         case 'B-Auto':
-         case 'B-Truck':
-         case 'C1':
-         case 'C3':
-            return capacity * 0.5;
-
-         case 'C2':
-            return capacity * 0.5 * 1.6;
-
-         default:
-            // 'None' or 'A'
-            return capacity * 0.3;
-      }
-   };
-
    const getChannel = (name) => channel.find((row) => row.name === name);
 
    const getToeGuardWeight = (doorWidth) => {
@@ -174,6 +156,7 @@
    let channel = undefined;
 
    // - Platform
+   let apta = module?.apta ?? false;
    let platformDepth = module?.properties?.depth ?? 0;
    let platformIsolation = module?.properties?.isolation ?? false;
    let platformIsolationWeight = module?.properties?.isolationWeight ?? 0;
@@ -194,7 +177,7 @@
    let platformStringerQtyOverride = module?.properties?.stringerQtyOverride ?? false;
 
    // -- Calculated Platform Steel
-   let load = steelLoad(freight);
+   let load = 0;
    let disableSplit = false;
    let stringerChannel = undefined;
    let frontChannel = undefined;
@@ -242,7 +225,7 @@
    $: cabCeilingWeight = cabArea * (4.64 / 144);
    $: cabWallArea = (cabDepth + cabWidth) * 2 * cabHeight;
    $: doorArea = door1Width * door1Height + (doorQty === 2 ? door2Width * door2Height : 0);
-   $: cabWallWeight = (cabWallArea - doorArea) * ((capacity <= 3500 ? 7.21 : 8.9) / 144);
+   $: cabWallWeight = (cabWallArea - doorArea) * ((designCapacity <= 3500 ? 7.21 : 8.9) / 144);
    $: handRailWeight = cabWidth + cabDepth * 2 * (2.5 / 144);
    $: coveLightWeight = cabWidth + cabDepth * 2 * (5 / 144);
 
@@ -261,20 +244,21 @@
    $: platformIsolationWeight = platformIsolation ? round((platformDepth - 3) * 0.55 + platformWidth * 0.34167, 2) : 0;
 
    // - Code Calculations
-   $: maxPlatformArea = tables.maxPlatform(capacity);
+   $: maxPlatformArea = tables.maxPlatform(designCapacity);
    $: maxPlatformAreaPlus = maxPlatformArea * 1.05;
    $: minFreightCapacity = round(tables.capacityRating.find((row) => row.class === freight).rating * cabArea);
+   $: designCapacity = capacity * (apta ? 1.5 : 1);
 
    // - Error Checking
    $: invalidMaxPlatformArea = cabArea > maxPlatformAreaPlus;
    $: invalidStringer = (stringerChannel?.stockStatus ?? 'Stocked') !== 'Stocked';
    $: invalidFrontChannel = (frontChannel?.stockStatus ?? 'Stocked') !== 'Stocked';
 
-   $: invalidMinFreightCapacity = minFreightCapacity > capacity;
+   $: invalidMinFreightCapacity = minFreightCapacity > designCapacity;
 
    // - Wood Calculations
    $: woodPlatformAngle = angle?.find((row) => {
-      const sectionModulus = (platformWidth * capacity) / 300000;
+      const sectionModulus = (platformWidth * designCapacity) / 300000;
       return row.modulusX >= sectionModulus;
    });
 
@@ -287,7 +271,7 @@
    $: stringerWeight = round(woodStringerQty * plywoodWidth * (2.7 / 12)); // 2 X 8 Weight = 2.7 lb/ft
    $: angleWeight = round(plywoodWidth * (woodPlatformAngle?.weight ?? 0) * 2 + platformDepth * (woodPlatformAngle?.weight ?? 0) * 2);
    $: fireProofWeight = round(plywoodWidth * plywoodDepth * (3.125 / 144)); // 14GA Weight = 3.125 lb/ft²
-   $: woodPlatformWeight = plywoodWeight + stringerWeight + angleWeight + fireProofWeight;
+   $: woodPlatformWeight = round(plywoodWeight + stringerWeight + angleWeight + fireProofWeight, 1);
 
    // - Steel Calculations
    // NOTE: 4-29-2021 10:07 AM - ASME Table 2.15.10.1 load tables
@@ -394,6 +378,20 @@
 
    // Reactive Rules
    $: if (save) onSave();
+
+   $: switch (freight) {
+      case 'B-Auto':
+      case 'B-Truck':
+      case 'C1':
+      case 'C3':
+         load = designCapacity * 0.5;
+
+      case 'C2':
+         load = designCapacity * 0.5 * 1.6;
+
+      default:
+         load = designCapacity * 0.3;
+   }
 
    $: if (platformMaterial === 'Wood') {
       setTimeout(() => {
@@ -508,11 +506,11 @@
          <InputWeight value={platformWeight} display label="Weight" {metric} />
       </div>
       <div class="input-bump">
-         <Checkbox bind:value={platformIsolation} disabled={disableIsolation} label="Isolation" />
+         <Checkbox bind:checked={platformIsolation} disabled={disableIsolation} label="Isolation" />
+         <Checkbox bind:checked={apta} label="APTA" />
       </div>
    </fieldset>
 
-   <!-- NOTE: Steel Section -->
    {#if platformMaterial === 'Steel'}
       <fieldset transition:fade>
          <legend>Steel</legend>
@@ -560,7 +558,7 @@
             <Input bind:value={platformSideChannel} display label="Side Channel" />
          </div>
          {#if platformHasSillChannel}
-            <div class="input-bump" transition:fade>
+            <div class="input-bump" transition:slide>
                <Input bind:value={platformSillChannel} display label="Sill Channel" />
             </div>
          {/if}
@@ -728,7 +726,6 @@
 </div>
 
 <style lang="scss">
-   @import './src/scss/vantage-theme';
    .container {
       display: flex;
       flex-wrap: wrap;

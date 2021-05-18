@@ -9,6 +9,7 @@
    export let disabled = false;
    export let disableValidation = false;
    export let display = false;
+   export let focused = false;
    export let helperText = '';
    export let invalid = false;
    export let label = '';
@@ -57,12 +58,22 @@
    // Variables
    let feet = 0;
    let inches = 0;
+   let feetFocused = false;
+   let inchFocused = false;
 
    // Subscriptions
    // Reactive Variables
    $: metricValue = round(value * 0.0254, 2);
 
    // Reactive Rules
+   $: if (feetFocused || inchFocused) {
+      focused = feetFocused || inchFocused;
+   } else {
+      setTimeout(() => {
+         focused = feetFocused || inchFocused;
+      }, 0.25);
+   }
+
    $: if (value) {
       feet = floor(value / 12);
       inches = round(value % 12, 4);
@@ -88,14 +99,14 @@
 </script>
 
 <div class="split" class:metric-wrapper={metric}>
-   <Input bind:disabled bind:invalid bind:override on:change={onFeet} value={feet} calc={feet} {...parameters1}>
+   <Input bind:disabled bind:invalid bind:override bind:focused={feetFocused} on:change={onFeet} value={feet} calc={feet} {...parameters1}>
       <span slot="helperText">
          {#if helperText}
             <HelperText validation>{helperText}</HelperText>
          {/if}
       </span>
    </Input>
-   <Input bind:disabled bind:invalid bind:override on:change={onInches} value={inches} {...parameters2} />
+   <Input bind:disabled bind:invalid bind:override bind:focused={inchFocused} on:change={onInches} value={inches} {...parameters2} />
 
    {#if metric}
       <span class="metric-value">{`(${metricValue} m)`}</span>

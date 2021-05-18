@@ -28,6 +28,8 @@
       { text: 'ASME A17-1 2013', ibc: true },
       { text: 'ASME A17-1 2012', ibc: false },
       { text: 'ASME A17-1 2010', ibc: false },
+      { text: 'ASME A17-1 2005S', ibc: false },
+      { text: 'ASME A17-1 2000', ibc: false },
    ];
    const typeSel = [{ text: 'Passenger' }, { text: 'Freight' }];
    const freightSel = [

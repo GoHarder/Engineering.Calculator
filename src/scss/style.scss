@@ -25,6 +25,10 @@ body {
       justify-content: space-between;
       align-items: baseline;
    }
+   &.align {
+      display: flex;
+      align-items: center;
+   }
 }
 
 fieldset {
