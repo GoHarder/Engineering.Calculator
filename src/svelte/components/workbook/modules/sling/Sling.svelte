@@ -535,7 +535,8 @@
          (compensation === 'Chain' ? 50 : 0) +
          (sheaveConfig === 'P-U' ? outerSheaveMountingWeight : 0) +
          (sheaveConfig === 'D-U' ? diagonalUnderslungSteelWeight : 0) +
-         (slingModel === '6TS-TD-LD' ? 29.11 : 0)(slingModel === '8TS-TD-LD' ? 278.639 : 0)) *
+         (slingModel === '6TS-TD-LD' ? 29.11 : 0) +
+         (slingModel === '8TS-TD-LD' ? 278.639 : 0)) *
          1.03,
       2
    );
