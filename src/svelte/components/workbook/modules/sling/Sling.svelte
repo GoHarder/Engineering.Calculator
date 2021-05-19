@@ -32,6 +32,11 @@
             bottomChannel: slingBottomChannel,
             sheaveChannel: slingSheaveChannel,
             sheaveChannelLength: slingSheaveChannelLength,
+            channelSpacerLength: slingChannelSpacerLength,
+            safetyBlockUp: slingSafetyBlockUp,
+            safetyBlockUpLength: slingSafetyBlockUpLength,
+            bufferBlockUp: slingBufferBlockUp,
+            bufferBlockUpLength: slingBufferBlockUpLength,
             cornerPostSteel,
             compensation,
             strikePlateQty,
@@ -118,6 +123,7 @@
          topChannels = [...body.topChannels];
          bottomChannels = [...body.bottomChannels];
          sheaveChannels = [...body.sheaveChannels];
+         otherChannels = [...body.otherChannels];
 
          shoes = [...body.shoes];
          shoePlates = [...body.shoePlates];
@@ -204,6 +210,23 @@
          });
          return array;
       }, []);
+
+      selections = selections.reduce(
+         (object, channel) => {
+            object[channel.stockStatus.toLowerCase()].push(channel);
+
+            return object;
+         },
+         { stocked: [], available: [], check: [] }
+      );
+
+      return selections;
+   };
+
+   const getChannelSort = (channels) => {
+      let selections = [];
+
+      if (channels) selections = [...channels];
 
       selections = selections.reduce(
          (object, channel) => {
@@ -321,6 +344,11 @@
    let slingBottomChannel = module?.properties?.bottomChannel ?? undefined;
    let slingSheaveChannel = module?.properties?.sheaveChannel ?? undefined;
    let slingSheaveChannelLength = module?.properties?.sheaveChannelLength ?? 0;
+   let slingChannelSpacerLength = module?.properties?.channelSpacerLength ?? 0;
+   let slingSafetyBlockUp = module?.properties?.safetyBlockUp ?? undefined;
+   let slingSafetyBlockUpLength = module?.properties?.safetyBlockUpLength ?? 0;
+   let slingBufferBlockUp = module?.properties?.bufferBlockUp ?? undefined;
+   let slingBufferBlockUpLength = module?.properties?.bufferBlockUpLength ?? 0;
    let cornerPostSteel = module?.properties?.cornerPostSteel ?? undefined;
 
    let stilesBackToBack = module?.properties?.stilesBackToBack ?? carDBG - 3;
@@ -401,6 +429,7 @@
    let topChannels = undefined;
    let bottomChannels = undefined;
    let sheaveChannels = undefined;
+   let otherChannels = undefined;
 
    // - Updated By Rules
    let turningMoment = 0;
@@ -415,9 +444,7 @@
    let strikePlateOffsetFocused = false;
    let sheaveOffsetFocused = false;
    let sheaveOffsetImage = '';
-   let showSheaveChannelLength = true;
    let sheaveChannelLabel = '';
-   let showOuterSheaveMounting = false;
 
    // Reactive Variables
    $: model = getFromArray(slingModel, slingModels);
@@ -447,7 +474,8 @@
          platformThickness +
          (platformIsolation ? 2 : 0) +
          (bottomChannel?.depth ?? 0) +
-         (sheaveConfig === 'P-U' ? sheaveChannel?.depth ?? 0 : 0)
+         (sheaveConfig === 'P-U' ? sheaveChannel?.depth ?? 0 : 0) +
+         (sheaveConfig === 'D-U' ? bufferBlockUpChannel?.depth ?? 0 : 0)
    );
    $: stileWeight = (stileChannel?.weight ?? 0) * stileLength * 2;
 
@@ -482,6 +510,15 @@
    $: outerSheaveMountingWeight =
       outerSheaveMounting === 'Channel' ? outerSheaveChannelWeight : reinforcementPlate1Weight + supoortPlate + reinforcementPlate2Weight + plateMountingWeight;
 
+   // - Diagonal Underslung Steel
+   $: channelSpacerWeight = slingChannelSpacerLength * (bottomChannel?.weight ?? 0) * 2;
+   $: safetyBlockUpChannel = getFromArray(slingSafetyBlockUp, otherChannels);
+   $: safetyBlockUpWeight = slingSafetyBlockUpLength * (safetyBlockUpChannel?.weight ?? 0) * 2;
+   $: bufferBlockUpChannel = getFromArray(slingBufferBlockUp, otherChannels);
+   $: bufferBlockUpWeight = slingBufferBlockUpLength * (bufferBlockUpChannel?.weight ?? 0) * 2;
+
+   $: diagonalUnderslungSteelWeight = channelSpacerWeight + safetyBlockUpWeight + bufferBlockUpWeight;
+
    // - Overall
    $: slingDimH = roundInc(shoeHeight * 2 + (railLock ? 2.5 : 0) + topShoePlate.thickness + stileLength + safetyHeight + bottomShoePlate.thickness);
 
@@ -495,7 +532,10 @@
          (gusset?.weight ?? 0) * 4 +
          (strikePlate?.weight ?? 0) * strikePlateQty +
          (carRoping === 1 ? 28 : 0) +
-         (sheaveConfig === 'P-U' ? outerSheaveMountingWeight : 0)) *
+         (compensation === 'Chain' ? 50 : 0) +
+         (sheaveConfig === 'P-U' ? outerSheaveMountingWeight : 0) +
+         (sheaveConfig === 'D-U' ? diagonalUnderslungSteelWeight : 0) +
+         (slingModel === '6TS-TD-LD' ? 29.11 : 0)(slingModel === '8TS-TD-LD' ? 278.639 : 0)) *
          1.03,
       2
    );
@@ -531,6 +571,7 @@
    $: topChannelOptions = getChannelOptions(topChannels, topChannelSectionModulus);
    $: bottomChannelOptions = getChannelOptions(bottomChannels, bottomChannelSectionModulus);
    $: sheaveChannelOptions = getChannelOptions(sheaveChannels, sheaveChannelSectionModulus);
+   $: otherChannelOptions = getChannelSort(otherChannels);
 
    $: shoeOptions = getShoeOptions(shoes, carRailSize);
    $: safetyOptions = getSafetyOptions(safeties, carRailSize);
@@ -551,13 +592,9 @@
 
    $: if (sheaveConfig === 'P-U') {
       slingSheaveChannelLength = bottomChannelLength;
-      showSheaveChannelLength = false;
-      showOuterSheaveMounting = true;
       sheaveChannelLabel = 'Inner Sheave / Safety Channel';
    } else {
-      showSheaveChannelLength = true;
       sheaveChannelLabel = 'Sheave Channels';
-      showOuterSheaveMounting = false;
    }
 
    $: switch (sheaveConfig) {
@@ -790,6 +827,7 @@
             {/each}
          </Select>
       </div>
+
       {#if shoeModel === 'Other'}
          <div class="input-bump" transition:slide>
             <InputWeight bind:value={shoeWeight} label="Weight per Shoe" {metric} />
@@ -806,6 +844,7 @@
             {/each}
          </Select>
       </div>
+
       {#if safetyModel === 'Other'}
          <div class="input-bump" transition:slide>
             <InputWeight bind:value={safetyWeight} label="Safety Weight" step={0.01} {metric} />
@@ -816,48 +855,50 @@
       {/if}
    </fieldset>
 
-   <fieldset>
-      <legend>Finished Flooring</legend>
-      <hr />
-      {#if !finFloorWeightOverride}
+   <div class="sub-container">
+      <fieldset>
+         <legend>Finished Flooring</legend>
+         <hr />
          <div class="input-bump" transition:slide>
             <InputLength bind:value={finFloorThickness} label="Thickness" {metric} />
          </div>
-         <div class="input-bump" transition:slide>
-            <InputPressure bind:value={finFloorMaterialWeight} label="Material Weight" {metric} />
+         {#if !finFloorWeightOverride}
+            <div class="input-bump" transition:slide>
+               <InputPressure bind:value={finFloorMaterialWeight} label="Material Weight" {metric} />
+            </div>
+            <div class="input-bump" transition:slide>
+               <Select bind:value={finFloorArea} label="Area">
+                  {#each options.finFloorArea as { text }}
+                     <Option {text} />
+                  {/each}
+               </Select>
+            </div>
+         {/if}
+         <div class="input-bump">
+            <InputWeight bind:value={finFloorWeight} bind:override={finFloorWeightOverride} calc={finFloorWeightCalc} label="Weight" reset />
          </div>
-         <div class="input-bump" transition:slide>
-            <Select bind:value={finFloorArea} label="Area">
-               {#each options.finFloorArea as { text }}
-                  <Option {text} />
-               {/each}
-            </Select>
-         </div>
-      {/if}
-      <div class="input-bump">
-         <InputWeight bind:value={finFloorWeight} bind:override={finFloorWeightOverride} calc={finFloorWeightCalc} label="Weight" reset />
-      </div>
-   </fieldset>
+      </fieldset>
 
-   <fieldset>
-      <legend>Plywood</legend>
-      <hr />
-      <div class="input-bump">
-         <Input bind:value={plywoodQty} label="Layers" type="number" />
-      </div>
-      {#if plywoodQty > 0}
-         <div class="input-bump" transition:slide>
-            <Select bind:value={plywoodThickness} label="Thickness">
-               {#each options.plywoodThickness as { text, value }}
-                  <Option {text} {value} />
-               {/each}
-            </Select>
+      <fieldset>
+         <legend>Plywood</legend>
+         <hr />
+         <div class="input-bump">
+            <Input bind:value={plywoodQty} label="Layers" type="number" />
          </div>
-         <div class="input-bump" transition:slide>
-            <InputWeight bind:value={plywoodWeight} display label="Weight" step={0.01} {metric} />
-         </div>
-      {/if}
-   </fieldset>
+         {#if plywoodQty > 0}
+            <div class="input-bump" transition:slide>
+               <Select bind:value={plywoodThickness} label="Thickness">
+                  {#each options.plywoodThickness as { text, value }}
+                     <Option {text} {value} />
+                  {/each}
+               </Select>
+            </div>
+            <div class="input-bump" transition:slide>
+               <InputWeight bind:value={plywoodWeight} display label="Weight" step={0.01} {metric} />
+            </div>
+         {/if}
+      </fieldset>
+   </div>
 </div>
 
 <div class="container">
@@ -997,39 +1038,33 @@
                {#if sheaveChannelOptions.stocked.length > 0}
                   <OptGroup label="Stocked">
                      {#each sheaveChannelOptions.stocked as { disabled, text }}
-                        <Option {disabled} {text} selected={slingBottomChannel === text} />
+                        <Option {disabled} {text} selected={slingSheaveChannel === text} />
                      {/each}
                   </OptGroup>
                {/if}
                {#if sheaveChannelOptions.available.length > 0}
                   <OptGroup label="Available">
                      {#each sheaveChannelOptions.available as { disabled, text }}
-                        <Option {disabled} {text} selected={slingBottomChannel === text} />
+                        <Option {disabled} {text} selected={slingSheaveChannel === text} />
                      {/each}
                   </OptGroup>
                {/if}
                {#if sheaveChannelOptions.check.length > 0}
                   <OptGroup label="Check">
                      {#each sheaveChannelOptions.check as { disabled, text }}
-                        <Option {disabled} {text} selected={slingBottomChannel === text} />
+                        <Option {disabled} {text} selected={slingSheaveChannel === text} />
                      {/each}
                   </OptGroup>
                {/if}
             </Select>
          </div>
-         {#if showSheaveChannelLength}
-            <div class="input-bump" transition:slide>
-               <InputLength bind:value={slingSheaveChannelLength} label="Sheave Channel Length" {metric} />
-            </div>
-         {/if}
-         {#if showOuterSheaveMounting}
+         {#if sheaveConfig === 'P-U'}
             <div class="input-bump" transition:slide>
                <Select bind:value={outerSheaveMounting} label="Outer Sheave Mounting">
                   <Option text={'Support Plate'} />
                   <Option text={'Channel'} />
                </Select>
             </div>
-
             {#if outerSheaveMounting !== 'Channel'}
                <div class="input-bump" transition:slide>
                   <Select bind:value={plateMounting} label="Plate Mounting">
@@ -1039,6 +1074,72 @@
                   </Select>
                </div>
             {/if}
+         {:else}
+            <div class="input-bump" transition:slide>
+               <InputLength bind:value={slingSheaveChannelLength} label="Sheave Channel Length" {metric} />
+            </div>
+         {/if}
+         {#if sheaveConfig === 'D-U'}
+            <div class="input-bump">
+               <InputLength bind:value={slingChannelSpacerLength} label="Channel Spacer Length" {metric} />
+            </div>
+            <div class="input-bump">
+               <Select bind:value={slingSafetyBlockUp} label="Safety Block Up">
+                  {#if otherChannelOptions.stocked.length > 0}
+                     <OptGroup label="Stocked">
+                        {#each otherChannelOptions.stocked as { name }}
+                           <Option text={name} selected={slingSafetyBlockUp === name} />
+                        {/each}
+                     </OptGroup>
+                  {/if}
+                  {#if otherChannelOptions.available.length > 0}
+                     <OptGroup label="Available">
+                        {#each otherChannelOptions.available as { name }}
+                           <Option text={name} selected={slingSafetyBlockUp === name} />
+                        {/each}
+                     </OptGroup>
+                  {/if}
+                  {#if otherChannelOptions.check.length > 0}
+                     <OptGroup label="Check">
+                        {#each otherChannelOptions.check as { name }}
+                           <Option text={name} selected={slingSafetyBlockUp === name} />
+                        {/each}
+                     </OptGroup>
+                  {/if}
+               </Select>
+            </div>
+            <div class="input-bump">
+               <InputLength bind:value={slingSafetyBlockUpLength} label="Safety Block Up Length" {metric} />
+            </div>
+
+            <div class="input-bump">
+               <Select bind:value={slingBufferBlockUp} label="Buffer Block Up">
+                  {#if otherChannelOptions.stocked.length > 0}
+                     <OptGroup label="Stocked">
+                        {#each otherChannelOptions.stocked as { name }}
+                           <Option text={name} selected={slingBufferBlockUp === name} />
+                        {/each}
+                     </OptGroup>
+                  {/if}
+                  {#if otherChannelOptions.available.length > 0}
+                     <OptGroup label="Available">
+                        {#each otherChannelOptions.available as { name }}
+                           <Option text={name} selected={slingBufferBlockUp === name} />
+                        {/each}
+                     </OptGroup>
+                  {/if}
+                  {#if otherChannelOptions.check.length > 0}
+                     <OptGroup label="Check">
+                        {#each otherChannelOptions.check as { name }}
+                           <Option text={name} selected={slingBufferBlockUp === name} />
+                        {/each}
+                     </OptGroup>
+                  {/if}
+               </Select>
+            </div>
+            <div class="input-bump">
+               <InputLength bind:value={slingBufferBlockUpLength} label="Buffer Block Up Length" {metric} />
+            </div>
          {/if}
       {/if}
       {#if !cornerPost}
@@ -1072,9 +1173,20 @@
    }
 
    fieldset {
-      flex-basis: calc(calc(600px - 100%) * 10000);
+      flex-basis: calc(calc(500px - 100%) * 10000);
       flex-grow: 1;
       max-width: 500px;
       min-width: 400px;
+   }
+
+   .sub-container {
+      // background-color: gray;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: flex-start;
+      flex-basis: calc(calc(800px - 100%) * 10000);
+      flex-grow: 1;
+      max-width: 1000px;
+      min-width: 410px;
    }
 </style>

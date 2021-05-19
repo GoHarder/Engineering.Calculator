@@ -304,7 +304,7 @@
 
    // -- Side Channel
    $: sideChannelOptions = channel?.filter((row) => ['MC4X13.8', 'MC6X12', 'MC8X18.7'].includes(row.name)) ?? [];
-   $: sideChannel = platformIsolation ? sideChannelOptions.find((channel) => channel.depth >= stringerChannel.depth) : stringerChannel;
+   $: sideChannel = platformIsolation ? sideChannelOptions.find((channel) => channel.depth >= stringerChannel?.depth ?? 0) : stringerChannel;
    $: platformSideChannel = sideChannel?.name ?? ' ';
 
    // --- Length And Weight
