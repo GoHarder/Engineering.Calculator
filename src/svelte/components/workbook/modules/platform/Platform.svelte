@@ -201,8 +201,8 @@
    let door1Width = module?.doors?.door1?.width ?? 54;
    let door1Weight = module?.doors?.door1?.weight ?? 0;
    let door1WeightOverride = module?.doors?.door1?.weightOverride ?? false;
-   let toeGuard1Weight = 0;
-   let toeGuard1WeightOverride = false;
+   let toeGuard1Weight = module?.doors?.toeGuard1?.weight ?? 0;
+   let toeGuard1WeightOverride = module?.doors?.toeGuard1?.override ?? false;
 
    // -- Door 2
    let door2Height = module?.doors?.door2?.height ?? 84;
@@ -211,8 +211,8 @@
    let door2Width = module?.doors?.door2?.width ?? 54;
    let door2Weight = module?.doors?.door2?.weight ?? 0;
    let door2WeightOverride = module?.doors?.door2?.weightOverride ?? false;
-   let toeGuard2Weight = 0;
-   let toeGuard2WeightOverride = false;
+   let toeGuard2Weight = module?.doors?.toeGuard2?.weight ?? 0;
+   let toeGuard2WeightOverride = module?.doors?.toeGuard2?.override ?? false;
 
    // Reactive Variables
    $: cornerPost = doorQty === 2 && door2Location !== 'Back';

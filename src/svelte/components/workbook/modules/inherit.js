@@ -30,6 +30,7 @@ const lib = {
       door1Weight: [{ module: 'platform', value: 'modules?.platform?.doors?.door1?.weight' }],
       door2Weight: [{ module: 'platform', value: 'modules?.platform?.doors?.door2?.weight' }],
       platformDepth: [{ module: 'platform', value: 'modules?.platform?.properties?.depth' }],
+      platformFrontToRail: [{ module: 'platform', value: 'modules?.platform?.properties?.frontToRail' }],
       platformIsolation: [{ module: 'platform', value: 'modules?.platform?.properties?.isolation' }],
       platformIsolationWeight: [{ module: 'platform', value: 'modules?.platform?.properties?.isolationWeight' }],
       platformThickness: [{ module: 'platform', value: 'modules?.platform?.properties?.thickness' }],

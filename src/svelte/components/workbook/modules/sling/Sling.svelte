@@ -45,12 +45,14 @@
             braceQtyOverride,
             outerSheaveMounting,
             plateMounting,
+            platformFrontToBalance,
          },
          equipment: {
             carTopWeight,
             doorOperatorWeight,
             miscEquipmentWeight,
             balanceWeight,
+            balanceWeightOverride,
             safety: {
                model: safetyModel,
             },
@@ -329,7 +331,7 @@
    const { freight, type } = loading;
    const { sling: module } = workbook.modules;
    const modulusOfElasticity = 29000000;
-   console.log(workbook.modules);
+   // console.log(workbook.modules);
 
    // Variables
 
@@ -366,6 +368,7 @@
    let miscEquipmentWeight = module?.equipment?.miscEquipmentWeight ?? 200;
    let doorOperatorWeight = module?.equipment?.doorOperatorWeight ?? 150;
    let balanceWeight = module?.equipment?.balanceWeight ?? 0;
+   let balanceWeightOverride = module?.equipment?.balanceWeightOverride ?? false;
 
    let safetyModel = module?.equipment?.safety?.model ?? '';
    let safetyHeight = module?.equipment?.safety?.height ?? 0;
@@ -395,6 +398,8 @@
    let finFloorMaterialWeight = module?.finFloor?.materialWeight ?? 0;
    let finFloorThickness = module?.finFloor?.thickness ?? 0.25;
 
+   let platformFrontToBalance = module?.properties?.platformFrontToBalance ?? 0;
+
    // - Inherited Variables
    let apta = inherit(modules, 'platform.apta', 'value') ?? false;
    let platformDepth = inherit(modules, 'platform.platformDepth', 'value') ?? 0;
@@ -403,6 +408,7 @@
    let platformThickness = inherit(modules, 'platform.platformThickness', 'value') ?? 0;
    let platformWeight = inherit(modules, 'platform.platformWeight', 'value') ?? 0;
    let platformWidth = inherit(modules, 'platform.platformWidth', 'value') ?? 0;
+   let platformFrontToRail = inherit(modules, 'platform.platformFrontToRail', 'value') ?? 0;
 
    let cornerPost = inherit(modules, 'platform.cornerPost', 'value');
 
@@ -440,11 +446,14 @@
    let bottomChannelSectionModulus = 0;
    let sheaveChannelSectionModulus = 0;
 
+   let balanceWeightCalc = 0;
+
    // - Dom
    let strikePlateOffsetFocused = false;
    let sheaveOffsetFocused = false;
    let sheaveOffsetImage = '';
    let sheaveChannelLabel = '';
+   let balanceWeightError = false;
 
    // Reactive Variables
    $: model = getFromArray(slingModel, slingModels);
@@ -518,6 +527,41 @@
    $: bufferBlockUpWeight = slingBufferBlockUpLength * (bufferBlockUpChannel?.weight ?? 0) * 2;
 
    $: diagonalUnderslungSteelWeight = channelSpacerWeight + safetyBlockUpWeight + bufferBlockUpWeight;
+
+   // - Balance Weights
+   $: rowBalanceWeight = (platformWidth - 4) * 3.9;
+   $: slingMomentWeight = slingWeight - (sheaveConfig === 'P-U' ? outerSheaveMountingWeight : 0) + shoeWeight * 4 + safetyWeight;
+   $: distributedWeight =
+      platformWeight + cabWeight + carTopWeight + miscEquipmentWeight + finFloorWeight + plywoodWeight + platformIsolationWeight + (sheave?.weight ?? 0) * sheaveQty;
+
+   // Σfy = 0 for beam equilibrium in the Y direction
+   // R1 = Reaction at front of platform
+   // R2 = Reaction at back of the platform
+
+   // Gather each of the moments
+   $: distributedMoment = round(distributedWeight * (platformDepth / 2), 2);
+   $: slingMoment = round(slingMomentWeight * platformFrontToRail, 2);
+   $: sheaveMountingMoment = (sheaveConfig === 'P-U' ? outerSheaveMountingWeight : 0) * ((sheave?.rimWidth ?? 0) / 2 + 1 + platformFrontToBalance);
+   $: door1Moment = (doorOperatorWeight / carRoping + door1Weight) * 9;
+   $: door2Moment = (doorOperatorWeight / 2 + door2Weight) * (platformDepth - 9);
+   // Toe guard 1 is at R1 so weight * 0 = 0
+   $: toeGuard2Moment = toeGuard2Weight * platformDepth;
+   $: totalMoments = distributedMoment + slingMoment + sheaveMountingMoment + door1Moment + door2Moment + toeGuard2Moment;
+
+   // Assume R1 = 0 Then solve for R2
+   // R2 = Σfy / platformDepth
+   // R1 = Total weight - R2
+   $: R2 = round(totalMoments / platformDepth, 2);
+   $: R1 = round(carWeight - R2, 2);
+   $: platformBackToBalance = platformDepth - platformFrontToBalance;
+
+   // Calculate for torque for each end weight * length
+   $: TM1 = R1 * platformFrontToBalance;
+   $: TM2 = R2 * platformBackToBalance;
+   // Cancel each moment out (positive number means its leaning forward)
+   $: totalTorque = round(TM1 - TM2, 2);
+   $: balanceChannelLength = totalTorque > 0 ? platformBackToBalance - (door2Weight ? 9.625 : 4.125) : platformFrontToBalance - 9.625;
+   $: requiredBalanceWeight = round(Math.abs(totalTorque) / balanceChannelLength);
 
    // - Overall
    $: slingDimH = roundInc(shoeHeight * 2 + (railLock ? 2.5 : 0) + topShoePlate.thickness + stileLength + safetyHeight + bottomShoePlate.thickness);
@@ -596,6 +640,25 @@
       sheaveChannelLabel = 'Inner Sheave / Safety Channel';
    } else {
       sheaveChannelLabel = 'Sheave Channels';
+      platformFrontToBalance = platformFrontToRail;
+   }
+
+   $: if (!cornerPost) {
+      console.table({
+         rowBalanceWeight,
+         requiredBalanceWeight,
+      });
+
+      if (requiredBalanceWeight < rowBalanceWeight) {
+         balanceWeightCalc = rowBalanceWeight;
+         balanceWeightError = false;
+      } else if (requiredBalanceWeight < rowBalanceWeight * 2) {
+         balanceWeightCalc = round(rowBalanceWeight * 2, 2);
+         balanceWeightError = false;
+      } else {
+         balanceWeightCalc = requiredBalanceWeight;
+         balanceWeightError = true;
+      }
    }
 
    $: switch (sheaveConfig) {
@@ -811,8 +874,19 @@
       <div class="input-bump">
          <InputWeight bind:value={miscEquipmentWeight} label="Misc. Equipment Weight" {metric} />
       </div>
+
+      <InputWeight
+         bind:invalid={balanceWeightError}
+         bind:value={balanceWeight}
+         bind:override={balanceWeightOverride}
+         calc={balanceWeightCalc}
+         helperText={`Max Balance Weights ${round(rowBalanceWeight * 2, 2)}lbs`}
+         label="Balance Weight"
+         reset
+      />
+
       <div class="input-bump">
-         <InputWeight bind:value={balanceWeight} label="Balance Weight" {metric} />
+         <Input value={floor(balanceWeight / rowBalanceWeight)} display label="Balance Weight Rows" type="number" />
       </div>
 
       {#if ['12#', '15#'].includes(carRailSize)}
@@ -941,6 +1015,12 @@
       <div class="input-bump">
          <InputLength bind:value={underBeamHeight} label="Under Beam Height" {metric} />
       </div>
+
+      {#if sheaveConfig === 'P-U'}
+         <div class="input-bump" transition:slide>
+            <InputLength bind:value={platformFrontToBalance} label="Front of Platform To Sheaves" {metric} />
+         </div>
+      {/if}
 
       <div class="input-bump">
          <Select bind:value={compensation} label="Compensation">
