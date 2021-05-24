@@ -13,6 +13,7 @@
    export let firstName = '';
    export let lastName = '';
    export let workbook = undefined;
+   export let saveProject = undefined;
 
    // Methods
    const getContextOptions = (workbook) => {
@@ -58,6 +59,7 @@
    const onClose = () => {
       workbook.notes = notes;
       open = false;
+      saveProject();
    };
 
    const onAddNote = () => {

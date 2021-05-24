@@ -644,10 +644,10 @@
    }
 
    $: if (!cornerPost) {
-      console.table({
-         rowBalanceWeight,
-         requiredBalanceWeight,
-      });
+      // console.table({
+      //    rowBalanceWeight,
+      //    requiredBalanceWeight,
+      // });
 
       if (requiredBalanceWeight < rowBalanceWeight) {
          balanceWeightCalc = rowBalanceWeight;
