@@ -209,7 +209,7 @@
    onDestroy(() => {
       const loading = { freight, type };
       const seismic = { ibcCategory, ip, sds, useIbc, zone: seismicZone };
-      const saveData = { capacity, carRoping, carSpeed, code, cwtRoping, loading, module: 'globals', overallTravel, type, seismic };
+      const saveData = { capacity, carRoping, carSpeed, code, cwtRoping, loading, overallTravel, type, seismic };
 
       if (_id) saveData._id = _id;
 

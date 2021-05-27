@@ -1,4 +1,4 @@
-import { round } from '../round';
+import { round } from '../js/math';
 
 const maxPlatformTable = [
    { capacity: 30000, area: 33264 },

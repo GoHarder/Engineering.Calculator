@@ -1,7 +1,7 @@
 <script>
    import { createEventDispatcher, onDestroy, onMount } from 'svelte';
    import { fade, slide } from 'svelte/transition';
-   import { floor, round } from '../round';
+   import { floor, round } from '../js/math';
    import * as tables from './tables';
    import * as options from './options';
 
@@ -233,8 +233,8 @@
    $: cabWeightCalc = round(cabWallWeight + cabCeilingWeight + handRailWeight + coveLightWeight);
 
    // - Door Weight with override
-   $: door1WeightCalc = round(door1Width * (86 / 12));
-   $: door2WeightCalc = round(door2Width * (86 / 12));
+   $: door1WeightCalc = round(door1Width * 7.167);
+   $: door2WeightCalc = round(door2Width * 7.167);
 
    // - Toe Guard weight
    $: toeGuard1WeightCalc = getToeGuardWeight(door1Width);

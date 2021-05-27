@@ -1,10 +1,13 @@
 <script>
    import { createEventDispatcher, onDestroy, onMount } from 'svelte';
    import { slide } from 'svelte/transition';
-   import { ceil, floor, round, roundInc } from '../round';
+
+   import { ceil, floor, round, roundInc } from '../js/math';
+   import { inherit } from '../inherit';
+   import { getFromArray } from '../common';
+
    import * as tables from './tables';
    import * as options from './options';
-   import { inherit } from '../inherit';
 
    // Properties
    export let workbook = {};
@@ -12,13 +15,14 @@
    export let saveProject = undefined;
 
    // Components
+   import InputImage from '../../common/InputImage.svelte';
+   import SelectShoe from '../../common/SelectShoe.svelte';
+
    import { Input, InputLength, InputPressure, InputSpeed, InputWeight } from '../../../material/input';
    import { Option, OptGroup, Select } from '../../../material/select';
    import { Checkbox } from '../../../material/checkbox';
    import { IconButton } from '../../../material/button';
    import { Link } from '../../../material/button/icons';
-   import InputImage from '../../common/InputImage.svelte';
-
    // Methods
    const onSave = () => {
       let saveData = {
@@ -63,6 +67,7 @@
          car: {
             dbg: carDBG,
             railSize: carRailSize,
+            weight: carWeight,
          },
          plywood: {
             qty: plywoodQty,
@@ -111,7 +116,7 @@
    };
 
    const getEngineeringData = async (capacity, carSpeed) => {
-      const res = await fetch(`api/engineering/sling?capacity=${capacity}&carSpeed=${carSpeed}&roping=${carRoping}`, {
+      const res = await fetch(`api/engineering/sling?capacity=${capacity}&carSpeed=${carSpeed}`, {
          headers: { 'Content-Type': 'application/json' },
       }).catch((error) => {
          console.log(error);
@@ -135,8 +140,6 @@
          console.log(res);
       }
    };
-
-   const getFromArray = (name, data) => data?.find((row) => row.name === name);
 
    const modulusAtCen = (load, dist, maxStress) => round(0.5 * ((load * dist) / (4 * maxStress)), 2);
 
@@ -244,25 +247,6 @@
 
    // - Products
 
-   const getShoeOptions = (shoes, railSize) => {
-      const railSizes = options.railSize.map((size) => size.text);
-
-      let selections = [{ name: 'Other', railSizes, height: 0, weight: 0 }];
-
-      if (shoes) selections = [...shoes, ...selections];
-
-      selections = selections.map((shoe) => {
-         return {
-            text: shoe.name,
-            valid: shoe.railSizes.includes(railSize),
-         };
-      });
-
-      selections = selections.filter((shoe) => (shoe.text === '371-CS' && !shoe.valid) === false);
-
-      return selections;
-   };
-
    const getSafetyOptions = (safeties, railSize) => {
       const railSizes = options.railSize.map((size) => size.text);
       let selections = [{ name: 'Other', railSizes }];
@@ -331,7 +315,6 @@
    const { freight, type } = loading;
    const { sling: module } = workbook.modules;
    const modulusOfElasticity = 29000000;
-   // console.log(workbook.modules);
 
    // Variables
 
@@ -437,6 +420,9 @@
    let sheaveChannels = undefined;
    let otherChannels = undefined;
 
+   // - Parts
+   let shoe;
+
    // - Updated By Rules
    let turningMoment = 0;
    let braceQtyCalc = 4;
@@ -453,7 +439,6 @@
    let sheaveOffsetFocused = false;
    let sheaveOffsetImage = '';
    let sheaveChannelLabel = '';
-   let balanceWeightError = false;
 
    // Reactive Variables
    $: model = getFromArray(slingModel, slingModels);
@@ -461,7 +446,7 @@
    $: designCapacity = capacity * (apta ? 1.5 : 1);
 
    // - Parts
-   $: shoe = getFromArray(shoeModel, shoes);
+
    $: safety = getFromArray(safetyModel, safeties);
    $: sheave = getFromArray(sheaveModel, sheaves);
    $: topShoePlate = getShoePlate(shoePlates, shoeModel, slingModel, carRailSize);
@@ -529,7 +514,11 @@
    $: diagonalUnderslungSteelWeight = channelSpacerWeight + safetyBlockUpWeight + bufferBlockUpWeight;
 
    // - Balance Weights
-   $: rowBalanceWeight = (platformWidth - 4) * 3.9;
+   $: balanceChannelLength = roundInc(platformWidth - (platformIsolation ? 4 : 1));
+   $: balanceChannelWeight = round(balanceChannelLength * 0.9, 2);
+   $: balanceWeightMountLength = roundInc(balanceChannelLength - 1.9375);
+   $: balanceWeightQty = floor(balanceWeightMountLength / 3);
+   $: rowBalanceWeight = round(balanceChannelWeight + balanceWeightQty * 9, 2);
    $: slingMomentWeight = slingWeight - (sheaveConfig === 'P-U' ? outerSheaveMountingWeight : 0) + shoeWeight * 4 + safetyWeight;
    $: distributedWeight =
       platformWeight + cabWeight + carTopWeight + miscEquipmentWeight + finFloorWeight + plywoodWeight + platformIsolationWeight + (sheave?.weight ?? 0) * sheaveQty;
@@ -552,7 +541,7 @@
    // R2 = Σfy / platformDepth
    // R1 = Total weight - R2
    $: R2 = round(totalMoments / platformDepth, 2);
-   $: R1 = round(carWeight - R2, 2);
+   $: R1 = round(carNoBalanceWeight - R2, 2);
    $: platformBackToBalance = platformDepth - platformFrontToBalance;
 
    // Calculate for torque for each end weight * length
@@ -560,8 +549,9 @@
    $: TM2 = R2 * platformBackToBalance;
    // Cancel each moment out (positive number means its leaning forward)
    $: totalTorque = round(TM1 - TM2, 2);
-   $: balanceChannelLength = totalTorque > 0 ? platformBackToBalance - (door2Weight ? 9.625 : 4.125) : platformFrontToBalance - 9.625;
-   $: requiredBalanceWeight = round(Math.abs(totalTorque) / balanceChannelLength);
+   $: balanceChannelLocation = totalTorque > 0 ? platformBackToBalance - (door2Weight ? 9.625 : 4.125) : platformFrontToBalance - 9.625;
+   $: requiredBalanceWeight = round(Math.abs(totalTorque) / balanceChannelLocation);
+   $: balanceWeightError = balanceWeight > round(rowBalanceWeight * 2, 2);
 
    // - Overall
    $: slingDimH = roundInc(shoeHeight * 2 + (railLock ? 2.5 : 0) + topShoePlate.thickness + stileLength + safetyHeight + bottomShoePlate.thickness);
@@ -585,23 +575,27 @@
       2
    );
 
-   $: carWeight =
+   $: carNoBalanceWeight = round(
       slingWeight +
-      platformWeight +
-      toeGuard1Weight +
-      toeGuard2Weight +
-      cabWeight +
-      shoeWeight * 4 +
-      carTopWeight +
-      miscEquipmentWeight +
-      safetyWeight +
-      door1Weight +
-      door2Weight +
-      doorOperatorWeight +
-      finFloorWeight +
-      plywoodWeight +
-      platformIsolationWeight +
-      (sheave?.weight ?? 0) * sheaveQty;
+         platformWeight +
+         toeGuard1Weight +
+         toeGuard2Weight +
+         cabWeight +
+         shoeWeight * 4 +
+         carTopWeight +
+         miscEquipmentWeight +
+         safetyWeight +
+         door1Weight +
+         door2Weight +
+         doorOperatorWeight +
+         finFloorWeight +
+         plywoodWeight +
+         platformIsolationWeight +
+         (sheave?.weight ?? 0) * sheaveQty,
+      2
+   );
+
+   $: carWeight = round(carNoBalanceWeight + balanceWeight, 2);
 
    $: overallWeight = carWeight + designCapacity;
 
@@ -618,17 +612,12 @@
    $: sheaveChannelOptions = getChannelOptions(sheaveChannels, sheaveChannelSectionModulus);
    $: otherChannelOptions = getChannelSort(otherChannels);
 
-   $: shoeOptions = getShoeOptions(shoes, carRailSize);
+   // $: shoeOptions = getShoeOptions(shoes, carRailSize);
    $: safetyOptions = getSafetyOptions(safeties, carRailSize);
    $: sheaveOptions = getSheaveOptions(sheaves, ropeQty, ropeSize, ropePitch);
 
    // Reactive Rules
    $: if (save) onSave();
-
-   $: if (shoe && shoeModel !== 'Other') {
-      shoeHeight = shoe.railContactHeight;
-      shoeWeight = shoe.weight;
-   }
 
    $: if (safety && safetyModel !== 'Other') {
       safetyHeight = safety.height;
@@ -644,27 +633,19 @@
    }
 
    $: if (!cornerPost) {
-      // console.table({
-      //    rowBalanceWeight,
-      //    requiredBalanceWeight,
-      // });
-
       if (requiredBalanceWeight < rowBalanceWeight) {
-         balanceWeightCalc = rowBalanceWeight;
-         balanceWeightError = false;
+         balanceWeightCalc = round(rowBalanceWeight, 2);
       } else if (requiredBalanceWeight < rowBalanceWeight * 2) {
          balanceWeightCalc = round(rowBalanceWeight * 2, 2);
-         balanceWeightError = false;
       } else {
-         balanceWeightCalc = requiredBalanceWeight;
-         balanceWeightError = true;
+         balanceWeightCalc = round(requiredBalanceWeight, 2);
       }
    }
 
    $: switch (sheaveConfig) {
       case 'P-O':
          sheaveOffsetImage = '/public/img/sheave-offset-1.svg';
-         topChannelSectionModulus = sheaveQty === 1 ? modulusAtCen(overallWeight, topChannelLength, 14000) : modulusAtEdgeOffset(overallWeight, sheaveOffset, 14000);
+         topChannelSectionModulus = sheaveQty > 1 ? modulusAtEdgeOffset(overallWeight, sheaveOffset, 14000) : modulusAtCen(overallWeight, topChannelLength, 14000);
          bottomChannelSectionModulus =
             strikePlateQty === 1 ? modulusAtCen(overallWeight, bottomChannelLength, 13750) : modulusAtEdgeOffset(overallWeight, strikePlateOffset, 13750);
          sheaveChannelSectionModulus = 0;
@@ -883,6 +864,8 @@
          helperText={`Max Balance Weights ${round(rowBalanceWeight * 2, 2)}lbs`}
          label="Balance Weight"
          reset
+         step={0.01}
+         {metric}
       />
 
       <div class="input-bump">
@@ -895,22 +878,7 @@
          </div>
       {/if}
 
-      <div class="input-bump">
-         <Select bind:value={shoeModel} label="Shoe Model">
-            {#each shoeOptions as { text, valid } (text)}
-               <Option {text} disabled={!valid} selected={shoeModel === text} />
-            {/each}
-         </Select>
-      </div>
-
-      {#if shoeModel === 'Other'}
-         <div class="input-bump" transition:slide>
-            <InputWeight bind:value={shoeWeight} label="Weight per Shoe" {metric} />
-         </div>
-         <div class="input-bump" transition:slide>
-            <InputLength bind:value={shoeHeight} label="Shoe Height" {metric} />
-         </div>
-      {/if}
+      <SelectShoe bind:shoe bind:shoeHeight bind:shoeModel bind:shoeWeight {metric} railSize={carRailSize} {shoes} />
 
       <div class="input-bump">
          <Select bind:value={safetyModel} label="Safety Model">
@@ -928,6 +896,10 @@
             <InputLength bind:value={safetyHeight} label="Safety Height" {metric} />
          </div>
       {/if}
+
+      <div class="input-bump link">
+         <InputWeight value={carWeight} display label="Car Weight" {metric} />
+      </div>
    </fieldset>
 
    <div class="sub-container">
@@ -1261,7 +1233,6 @@
    }
 
    .sub-container {
-      // background-color: gray;
       display: flex;
       flex-wrap: wrap;
       align-items: flex-start;

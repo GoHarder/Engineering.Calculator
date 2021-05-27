@@ -39,4 +39,8 @@ const lib = {
       toeGuard1Weight: [{ module: 'platform', value: 'modules?.platform?.doors?.toeGuard1?.weight' }],
       toeGuard2Weight: [{ module: 'platform', value: 'modules?.platform?.doors?.toeGuard2?.weight' }],
    },
+   sling: {
+      carWeight: [{ module: 'sling', value: 'modules?.sling?.car?.weight' }],
+      compensation: [{ module: 'sling', value: 'modules?.sling?.properties?.compensation' }],
+   },
 };

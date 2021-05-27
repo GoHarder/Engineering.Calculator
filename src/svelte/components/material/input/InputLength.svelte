@@ -1,6 +1,9 @@
 <script>
-   // Components
+   import { onMount } from 'svelte';
+   import { slide } from 'svelte/transition';
    import { round, floor } from '../lib/round.js';
+
+   // Components
    import HelperText from './HelperText.svelte';
    import Input from './input/Input.svelte';
 
@@ -30,7 +33,6 @@
       disableValidation,
       display,
       label,
-      list,
       max,
       min,
       reset,
@@ -45,7 +47,6 @@
       disableValidation,
       display,
       label: '',
-      list,
       max: 12,
       min,
       required,
@@ -60,6 +61,7 @@
    let inches = 0;
    let feetFocused = false;
    let inchFocused = false;
+   let options = [];
 
    // Subscriptions
    // Reactive Variables
@@ -79,11 +81,6 @@
       inches = round(value % 12, 4);
    }
 
-   // $: if (label === 'Back to Back of Stiles') {
-   //    console.log(value, feet, inches);
-   //    console.log(override);
-   // }
-
    $: if (!override && reset) value = calc;
 
    // Events
@@ -96,9 +93,15 @@
    };
 
    // Lifecycle
+   onMount(() => {
+      const optionSearch = document?.getElementById(list)?.querySelectorAll('option') ?? [];
+      const data = [];
+      optionSearch.forEach((option) => data.push({ text: option.text, value: parseFloat(option.value) }));
+      options = data;
+   });
 </script>
 
-<div class="split" class:metric-wrapper={metric}>
+<div class="split mdc-menu-surface--anchor" class:metric-wrapper={metric}>
    <Input bind:disabled bind:invalid bind:override bind:focused={feetFocused} on:change={onFeet} value={feet} calc={feet} {...parameters1}>
       <span slot="helperText">
          {#if helperText}
@@ -108,7 +111,27 @@
    </Input>
    <Input bind:disabled bind:invalid bind:override bind:focused={inchFocused} on:change={onInches} value={inches} {...parameters2} />
 
+   {#if list && focused}
+      <div class="mdc-menu mdc-menu-surface mdc-menu-surface-custom mdc-menu-surface--open" in:slide out:slide={{ delay: 250 }}>
+         <ul class="mdc-list" tabindex="-1">
+            {#each options as option (option.text)}
+               <li class="mdc-list-item" on:click={() => (value = option.value)}>
+                  <span class="mdc-list-item__ripple" />
+                  <span class="mdc-list-item__text">{option.text}</span>
+               </li>
+            {/each}
+         </ul>
+      </div>
+   {/if}
+
    {#if metric}
       <span class="metric-value">{`(${metricValue} m)`}</span>
    {/if}
 </div>
+
+<style lang="scss" global>
+   .mdc-menu-surface-custom {
+      top: 100%;
+      right: 0;
+   }
+</style>

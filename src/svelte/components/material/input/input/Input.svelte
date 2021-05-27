@@ -68,12 +68,6 @@
       $$slots.trailingIcon ? 'mdc-text-field--with-trailing-icon' : '',
    ].join(' ');
 
-   // $: if (label === 'Back to Back of Stiles') {
-   //    console.log(value);
-   // }
-
-   // $: override = value !== calc;
-
    // Reactive Rules
    $: if (TextField) {
       TextField.disabled = disabled;
