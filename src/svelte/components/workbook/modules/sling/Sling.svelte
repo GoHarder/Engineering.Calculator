@@ -4,24 +4,24 @@
 
    import { ceil, floor, round, roundInc } from '../js/math';
    import { inherit } from '../inherit';
-   import { getFromArray } from '../common';
+   import { getFromArray } from '../js/functions';
 
    import * as tables from './tables';
    import * as options from './options';
+
+   // Components
+   import { InputImage, SelectSafety, SelectShoe, SteelOptions } from '../../common';
+   import { Input, InputLength, InputPressure, InputSpeed, InputWeight } from '../../../material/input';
+   import { Option, Select } from '../../../material/select';
+   import { Checkbox } from '../../../material/checkbox';
+   import { IconButton } from '../../../material/button';
+   import { Link } from '../../../material/button/icons';
 
    // Properties
    export let workbook = {};
    export let save = false;
    export let saveProject = undefined;
 
-   // Components
-   import { InputImage, SelectSafety, SelectShoe } from '../../common';
-
-   import { Input, InputLength, InputPressure, InputSpeed, InputWeight } from '../../../material/input';
-   import { Option, OptGroup, Select } from '../../../material/select';
-   import { Checkbox } from '../../../material/checkbox';
-   import { IconButton } from '../../../material/button';
-   import { Link } from '../../../material/button/icons';
    // Methods
    const onSave = () => {
       let saveData = {
@@ -189,15 +189,6 @@
          return array;
       }, []);
 
-      selections = selections.reduce(
-         (object, channel) => {
-            object[channel.stockStatus.toLowerCase()].push(channel);
-
-            return object;
-         },
-         { stocked: [], available: [], check: [] }
-      );
-
       return selections;
    };
 
@@ -214,32 +205,6 @@
          });
          return array;
       }, []);
-
-      selections = selections.reduce(
-         (object, channel) => {
-            object[channel.stockStatus.toLowerCase()].push(channel);
-
-            return object;
-         },
-         { stocked: [], available: [], check: [] }
-      );
-
-      return selections;
-   };
-
-   const getChannelSort = (channels) => {
-      let selections = [];
-
-      if (channels) selections = [...channels];
-
-      selections = selections.reduce(
-         (object, channel) => {
-            object[channel.stockStatus.toLowerCase()].push(channel);
-
-            return object;
-         },
-         { stocked: [], available: [], check: [] }
-      );
 
       return selections;
    };
@@ -593,7 +558,7 @@
    $: topChannelOptions = getChannelOptions(topChannels, topChannelSectionModulus);
    $: bottomChannelOptions = getChannelOptions(bottomChannels, bottomChannelSectionModulus);
    $: sheaveChannelOptions = getChannelOptions(sheaveChannels, sheaveChannelSectionModulus);
-   $: otherChannelOptions = getChannelSort(otherChannels);
+   $: otherChannelOptions = getChannelOptions(otherChannels, 0);
    $: sheaveOptions = getSheaveOptions(sheaves, ropeQty, ropeSize, ropePitch);
 
    // Reactive Rules
@@ -710,24 +675,28 @@
       <fieldset>
          <legend>Globals</legend>
          <hr />
+
          <div class="input-bump link">
             <InputWeight value={capacity} display label="Capacity" {metric} />
             <IconButton on:click={() => dispatch('changePage', 'Requirements')}>
                <Link />
             </IconButton>
          </div>
+
          <div class="input-bump link">
             <InputSpeed value={carSpeed} display label="Car Speed" {metric} />
             <IconButton on:click={() => dispatch('changePage', 'Requirements')}>
                <Link />
             </IconButton>
          </div>
+
          <div class="input-bump link">
             <Input value={`${type}${freight !== 'None' ? ` ${freight}` : ''}`} display label="Loading" />
             <IconButton on:click={() => dispatch('changePage', 'Requirements')}>
                <Link />
             </IconButton>
          </div>
+
          <div class="input-bump link">
             <Input value={`${carRoping}:1`} display label="Roping" />
             <IconButton on:click={() => dispatch('changePage', 'Requirements')}>
@@ -740,16 +709,20 @@
    <fieldset>
       <legend>Platform</legend>
       <hr />
+
       <div class="input-bump link">
          <InputLength bind:value={platformThickness} display={platformThicknessLink} label="Thickness" {metric} />
+
          {#if platformThicknessLink}
             <IconButton on:click={() => dispatch('changeModule', platformThicknessLink)}>
                <Link />
             </IconButton>
          {/if}
       </div>
+
       <div class="input-bump link">
          <InputWeight bind:value={platformWeight} display={platformWeightLink} label="Weight" step={0.01} {metric} />
+
          {#if platformWeightLink}
             <IconButton on:click={() => dispatch('changeModule', platformWeightLink)}>
                <Link />
@@ -764,9 +737,11 @@
       <fieldset>
          <legend>Ropes</legend>
          <hr />
+
          <div class="input-bump">
             <Input bind:value={ropeQty} label="Quantity" type="number" />
          </div>
+
          <div class="input-bump">
             <Select bind:value={ropeSize} label="Size">
                {#each options.ropeSize as { text, value }}
@@ -774,6 +749,7 @@
                {/each}
             </Select>
          </div>
+
          <div class="input-bump">
             <InputLength bind:value={ropePitch} bind:override={ropePitchOverride} bind:calc={ropePitchCalc} label="Pitch" reset {metric} />
          </div>
@@ -782,9 +758,11 @@
       <fieldset>
          <legend>Sheaves</legend>
          <hr />
+
          <div class="input-bump">
             <Input bind:value={sheaveQty} label="Quantity" type="number" />
          </div>
+
          <div class="input-bump">
             <Select bind:value={sheaveModel} label="Model">
                {#each sheaveOptions as { value, text, valid } (value)}
@@ -792,6 +770,7 @@
                {/each}
             </Select>
          </div>
+
          {#if sheaveQty > 1}
             <div class="input-bump" transition:slide>
                <Select bind:value={sheaveArrangement} label="Arrangement">
@@ -821,12 +800,15 @@
    <fieldset>
       <legend>Equipment</legend>
       <hr />
+
       <div class="input-bump">
          <InputWeight bind:value={carTopWeight} label="Car Top Weight" {metric} />
       </div>
+
       <div class="input-bump">
          <InputWeight bind:value={doorOperatorWeight} label="Door Operator Weight" {metric} />
       </div>
+
       <div class="input-bump">
          <InputWeight bind:value={miscEquipmentWeight} label="Misc. Equipment Weight" {metric} />
       </div>
@@ -866,13 +848,16 @@
       <fieldset>
          <legend>Finished Flooring</legend>
          <hr />
+
          <div class="input-bump" transition:slide>
             <InputLength bind:value={finFloorThickness} label="Thickness" {metric} />
          </div>
+
          {#if !finFloorWeightOverride}
             <div class="input-bump" transition:slide>
                <InputPressure bind:value={finFloorMaterialWeight} label="Material Weight" {metric} />
             </div>
+
             <div class="input-bump" transition:slide>
                <Select bind:value={finFloorArea} label="Area">
                   {#each options.finFloorArea as { text }}
@@ -881,6 +866,7 @@
                </Select>
             </div>
          {/if}
+
          <div class="input-bump">
             <InputWeight bind:value={finFloorWeight} bind:override={finFloorWeightOverride} calc={finFloorWeightCalc} label="Weight" reset />
          </div>
@@ -889,9 +875,11 @@
       <fieldset>
          <legend>Plywood</legend>
          <hr />
+
          <div class="input-bump">
             <Input bind:value={plywoodQty} label="Layers" type="number" />
          </div>
+
          {#if plywoodQty > 0}
             <div class="input-bump" transition:slide>
                <Select bind:value={plywoodThickness} label="Thickness">
@@ -900,6 +888,7 @@
                   {/each}
                </Select>
             </div>
+
             <div class="input-bump" transition:slide>
                <InputWeight bind:value={plywoodWeight} display label="Weight" step={0.01} {metric} />
             </div>
@@ -912,6 +901,7 @@
    <fieldset>
       <legend>Properties</legend>
       <hr />
+
       <div class="input-bump">
          <Select bind:value={slingModel} label="Model">
             {#each slingModelOptions as { disabled, text } (text)}
@@ -940,6 +930,7 @@
       <div class="input-bump">
          <InputLength bind:value={carDBG} label="D.B.G." {metric} />
       </div>
+
       <div class="input-bump">
          <InputLength bind:value={stilesBackToBack} bind:override={stilesBackToBackOverride} bind:calc={stilesBackToBackCalc} label="Back to Back of Stiles" reset {metric} />
       </div>
@@ -970,107 +961,32 @@
    <fieldset>
       <legend>Steel</legend>
       <hr />
+
       <div class="input-bump">
          <Select bind:value={slingTopChannel} label="Top Channels">
-            {#if topChannelOptions.stocked.length > 0}
-               <OptGroup label="Stocked">
-                  {#each topChannelOptions.stocked as { disabled, text }}
-                     <Option {disabled} {text} selected={slingTopChannel === text} />
-                  {/each}
-               </OptGroup>
-            {/if}
-            {#if topChannelOptions.available.length > 0}
-               <OptGroup label="Available">
-                  {#each topChannelOptions.available as { disabled, text }}
-                     <Option {disabled} {text} selected={slingTopChannel === text} />
-                  {/each}
-               </OptGroup>
-            {/if}
-            {#if topChannelOptions.check.length > 0}
-               <OptGroup label="Check">
-                  {#each topChannelOptions.check as { disabled, text }}
-                     <Option {disabled} {text} selected={slingTopChannel === text} />
-                  {/each}
-               </OptGroup>
-            {/if}
+            <SteelOptions options={topChannelOptions} selected={slingTopChannel} />
          </Select>
       </div>
+
       <div class="input-bump">
          <Select bind:value={slingStile} label="Stiles">
-            {#if stileOptions.stocked.length > 0}
-               <OptGroup label="Stocked">
-                  {#each stileOptions.stocked as { disabled, text } (text)}
-                     <Option {disabled} {text} selected={slingStile === text} />
-                  {/each}
-               </OptGroup>
-            {/if}
-            {#if stileOptions.available.length > 0}
-               <OptGroup label="Available">
-                  {#each stileOptions.available as { disabled, text } (text)}
-                     <Option {disabled} {text} selected={slingStile === text} />
-                  {/each}
-               </OptGroup>
-            {/if}
-            {#if stileOptions.check.length > 0}
-               <OptGroup label="Check">
-                  {#each stileOptions.check as { disabled, text } (text)}
-                     <Option {disabled} {text} selected={slingStile === text} />
-                  {/each}
-               </OptGroup>
-            {/if}
+            <SteelOptions options={stileOptions} selected={slingStile} />
          </Select>
       </div>
+
       <div class="input-bump">
          <Select bind:value={slingBottomChannel} label="Bottom Channels">
-            {#if bottomChannelOptions.stocked.length > 0}
-               <OptGroup label="Stocked">
-                  {#each bottomChannelOptions.stocked as { disabled, text }}
-                     <Option {disabled} {text} selected={slingBottomChannel === text} />
-                  {/each}
-               </OptGroup>
-            {/if}
-            {#if bottomChannelOptions.available.length > 0}
-               <OptGroup label="Available">
-                  {#each bottomChannelOptions.available as { disabled, text }}
-                     <Option {disabled} {text} selected={slingBottomChannel === text} />
-                  {/each}
-               </OptGroup>
-            {/if}
-            {#if bottomChannelOptions.check.length > 0}
-               <OptGroup label="Check">
-                  {#each bottomChannelOptions.check as { disabled, text }}
-                     <Option {disabled} {text} selected={slingBottomChannel === text} />
-                  {/each}
-               </OptGroup>
-            {/if}
+            <SteelOptions options={bottomChannelOptions} selected={slingBottomChannel} />
          </Select>
       </div>
+
       {#if sheaveChannelSectionModulus > 0}
          <div class="input-bump" transition:slide>
             <Select bind:value={slingSheaveChannel} label={sheaveChannelLabel}>
-               {#if sheaveChannelOptions.stocked.length > 0}
-                  <OptGroup label="Stocked">
-                     {#each sheaveChannelOptions.stocked as { disabled, text }}
-                        <Option {disabled} {text} selected={slingSheaveChannel === text} />
-                     {/each}
-                  </OptGroup>
-               {/if}
-               {#if sheaveChannelOptions.available.length > 0}
-                  <OptGroup label="Available">
-                     {#each sheaveChannelOptions.available as { disabled, text }}
-                        <Option {disabled} {text} selected={slingSheaveChannel === text} />
-                     {/each}
-                  </OptGroup>
-               {/if}
-               {#if sheaveChannelOptions.check.length > 0}
-                  <OptGroup label="Check">
-                     {#each sheaveChannelOptions.check as { disabled, text }}
-                        <Option {disabled} {text} selected={slingSheaveChannel === text} />
-                     {/each}
-                  </OptGroup>
-               {/if}
+               <SteelOptions options={sheaveChannelOptions} selected={slingSheaveChannel} />
             </Select>
          </div>
+
          {#if sheaveConfig === 'P-U'}
             <div class="input-bump" transition:slide>
                <Select bind:value={outerSheaveMounting} label="Outer Sheave Mounting">
@@ -1078,6 +994,7 @@
                   <Option text={'Channel'} />
                </Select>
             </div>
+
             {#if outerSheaveMounting !== 'Channel'}
                <div class="input-bump" transition:slide>
                   <Select bind:value={plateMounting} label="Plate Mounting">
@@ -1092,69 +1009,34 @@
                <InputLength bind:value={slingSheaveChannelLength} label="Sheave Channel Length" {metric} />
             </div>
          {/if}
+
          {#if sheaveConfig === 'D-U'}
             <div class="input-bump">
                <InputLength bind:value={slingChannelSpacerLength} label="Channel Spacer Length" {metric} />
             </div>
+
             <div class="input-bump">
                <Select bind:value={slingSafetyBlockUp} label="Safety Block Up">
-                  {#if otherChannelOptions.stocked.length > 0}
-                     <OptGroup label="Stocked">
-                        {#each otherChannelOptions.stocked as { name }}
-                           <Option text={name} selected={slingSafetyBlockUp === name} />
-                        {/each}
-                     </OptGroup>
-                  {/if}
-                  {#if otherChannelOptions.available.length > 0}
-                     <OptGroup label="Available">
-                        {#each otherChannelOptions.available as { name }}
-                           <Option text={name} selected={slingSafetyBlockUp === name} />
-                        {/each}
-                     </OptGroup>
-                  {/if}
-                  {#if otherChannelOptions.check.length > 0}
-                     <OptGroup label="Check">
-                        {#each otherChannelOptions.check as { name }}
-                           <Option text={name} selected={slingSafetyBlockUp === name} />
-                        {/each}
-                     </OptGroup>
-                  {/if}
+                  <SteelOptions options={otherChannelOptions} selected={slingSafetyBlockUp} />
                </Select>
             </div>
+
             <div class="input-bump">
                <InputLength bind:value={slingSafetyBlockUpLength} label="Safety Block Up Length" {metric} />
             </div>
 
             <div class="input-bump">
                <Select bind:value={slingBufferBlockUp} label="Buffer Block Up">
-                  {#if otherChannelOptions.stocked.length > 0}
-                     <OptGroup label="Stocked">
-                        {#each otherChannelOptions.stocked as { name }}
-                           <Option text={name} selected={slingBufferBlockUp === name} />
-                        {/each}
-                     </OptGroup>
-                  {/if}
-                  {#if otherChannelOptions.available.length > 0}
-                     <OptGroup label="Available">
-                        {#each otherChannelOptions.available as { name }}
-                           <Option text={name} selected={slingBufferBlockUp === name} />
-                        {/each}
-                     </OptGroup>
-                  {/if}
-                  {#if otherChannelOptions.check.length > 0}
-                     <OptGroup label="Check">
-                        {#each otherChannelOptions.check as { name }}
-                           <Option text={name} selected={slingBufferBlockUp === name} />
-                        {/each}
-                     </OptGroup>
-                  {/if}
+                  <SteelOptions options={otherChannelOptions} selected={slingBufferBlockUp} />
                </Select>
             </div>
+
             <div class="input-bump">
                <InputLength bind:value={slingBufferBlockUpLength} label="Buffer Block Up Length" {metric} />
             </div>
          {/if}
       {/if}
+
       {#if !cornerPost}
          <div class="input-bump">
             <Input bind:value={braceQty} bind:override={braceQtyOverride} bind:calc={braceQtyCalc} label="Brace Quantity" type="number" reset />
@@ -1166,6 +1048,7 @@
             {/each}
          </Select>
       {/if}
+
       <div class="input-bump">
          <Input bind:value={strikePlateQty} label="Strike Plate Quantity" min={1} max={10} type="number" />
       </div>
