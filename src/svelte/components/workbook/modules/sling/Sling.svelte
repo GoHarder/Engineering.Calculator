@@ -15,8 +15,7 @@
    export let saveProject = undefined;
 
    // Components
-   import InputImage from '../../common/InputImage.svelte';
-   import SelectShoe from '../../common/SelectShoe.svelte';
+   import { InputImage, SelectSafety, SelectShoe } from '../../common';
 
    import { Input, InputLength, InputPressure, InputSpeed, InputWeight } from '../../../material/input';
    import { Option, OptGroup, Select } from '../../../material/select';
@@ -247,22 +246,6 @@
 
    // - Products
 
-   const getSafetyOptions = (safeties, railSize) => {
-      const railSizes = options.railSize.map((size) => size.text);
-      let selections = [{ name: 'Other', railSizes }];
-
-      if (safeties) selections = [...safeties, ...selections];
-
-      selections = selections.map((safety) => {
-         return {
-            text: safety.name,
-            valid: safety.railSizes.includes(railSize),
-         };
-      });
-
-      return selections;
-   };
-
    const getSheaveOptions = (sheaves = [], qty, diameter, pitch) => {
       let options = [];
       const requiredWidth = round((qty - 1) * pitch + diameter + 0.625, 4);
@@ -422,6 +405,7 @@
 
    // - Parts
    let shoe;
+   let safety;
 
    // - Updated By Rules
    let turningMoment = 0;
@@ -447,7 +431,6 @@
 
    // - Parts
 
-   $: safety = getFromArray(safetyModel, safeties);
    $: sheave = getFromArray(sheaveModel, sheaves);
    $: topShoePlate = getShoePlate(shoePlates, shoeModel, slingModel, carRailSize);
    $: bottomShoePlate = getShoePlate(shoePlates, shoeModel, safetyModel, carRailSize);
@@ -611,18 +594,10 @@
    $: bottomChannelOptions = getChannelOptions(bottomChannels, bottomChannelSectionModulus);
    $: sheaveChannelOptions = getChannelOptions(sheaveChannels, sheaveChannelSectionModulus);
    $: otherChannelOptions = getChannelSort(otherChannels);
-
-   // $: shoeOptions = getShoeOptions(shoes, carRailSize);
-   $: safetyOptions = getSafetyOptions(safeties, carRailSize);
    $: sheaveOptions = getSheaveOptions(sheaves, ropeQty, ropeSize, ropePitch);
 
    // Reactive Rules
    $: if (save) onSave();
-
-   $: if (safety && safetyModel !== 'Other') {
-      safetyHeight = safety.height;
-      safetyWeight = safety.weight;
-   }
 
    $: if (sheaveConfig === 'P-U') {
       slingSheaveChannelLength = bottomChannelLength;
@@ -880,22 +855,7 @@
 
       <SelectShoe bind:shoe bind:shoeHeight bind:shoeModel bind:shoeWeight {metric} railSize={carRailSize} {shoes} />
 
-      <div class="input-bump">
-         <Select bind:value={safetyModel} label="Safety Model">
-            {#each safetyOptions as { text, valid } (text)}
-               <Option {text} disabled={!valid} selected={safetyModel === text} />
-            {/each}
-         </Select>
-      </div>
-
-      {#if safetyModel === 'Other'}
-         <div class="input-bump" transition:slide>
-            <InputWeight bind:value={safetyWeight} label="Safety Weight" step={0.01} {metric} />
-         </div>
-         <div class="input-bump" transition:slide>
-            <InputLength bind:value={safetyHeight} label="Safety Height" {metric} />
-         </div>
-      {/if}
+      <SelectSafety bind:safety bind:safetyHeight bind:safetyModel bind:safetyWeight {metric} railSize={carRailSize} {safeties} />
 
       <div class="input-bump link">
          <InputWeight value={carWeight} display label="Car Weight" {metric} />

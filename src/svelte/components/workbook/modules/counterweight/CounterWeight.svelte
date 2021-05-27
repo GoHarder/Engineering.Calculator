@@ -9,7 +9,7 @@
    import * as tables from './tables';
 
    // Components
-   import SelectShoe from '../../common/SelectShoe.svelte';
+   import { SelectSafety, SelectShoe } from '../../common';
    import { Input, InputLength, InputWeight } from '../../../material/input';
    import { Option, Select } from '../../../material/select';
    import { IconButton } from '../../../material/button';
@@ -36,7 +36,7 @@
       saveProject();
    };
 
-   const getEngineeringData = async (roping) => {
+   const getEngineeringData = async (capacity, carSpeed, roping) => {
       const res = await fetch(`api/engineering/counterweight?capacity=${capacity}&carSpeed=${carSpeed}&roping=${roping}`, {
          headers: { 'Content-Type': 'application/json' },
       }).catch((error) => {
@@ -54,6 +54,8 @@
          });
 
          cwtModels = body.models;
+         safeties = body.safeties;
+         shoes = body.shoes;
       } else {
          console.log(res);
       }
@@ -93,7 +95,7 @@
    let counterbalance = module?.properties?.counterbalance ?? 40;
    let weightWidth = module?.properties?.weightWidth ?? 8;
 
-   let safetyModel = module?.equipment?.safety?.model ?? '';
+   let safetyModel = module?.equipment?.safety?.model ?? 'None';
    let safetyHeight = module?.equipment?.safety?.height ?? 0;
    let safetyWeight = module?.equipment?.safety?.weight ?? 0;
 
@@ -117,6 +119,7 @@
 
    // - Parts
    let shoe;
+   let safety;
 
    // Reactive Variables
    $: model = getFromArray(cwtModel, cwtModels);
@@ -132,8 +135,6 @@
 
    // - Select Options
    $: modelOptions = getModelOptions(cwtModels, cwtDBG, cwtWeight, compensation);
-   $: shoeOptions = getShoeOptions(shoes, cwtRailSize);
-   $: safetyOptions = getSafetyOptions(safeties, cwtRailSize);
 
    $: console.log(model);
 
@@ -219,12 +220,5 @@
 
    <SelectShoe bind:shoe bind:shoeHeight bind:shoeModel bind:shoeWeight {metric} railSize={cwtRailSize} {shoes} />
 
-   {#if safetyModel === 'Other'}
-      <div class="input-bump" transition:slide>
-         <InputWeight bind:value={safetyWeight} label="Safety Weight" step={0.01} {metric} />
-      </div>
-      <div class="input-bump" transition:slide>
-         <InputLength bind:value={safetyHeight} label="Safety Height" {metric} />
-      </div>
-   {/if}
+   <SelectSafety bind:safety bind:safetyHeight bind:safetyModel bind:safetyWeight {metric} optional railSize={cwtRailSize} {safeties} />
 </fieldset>

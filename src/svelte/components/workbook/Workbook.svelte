@@ -4,7 +4,7 @@
 
    // Components
    import NotesMenu from './notes/NotesMenu.svelte';
-   import ButtonCounter from './common/ButtonCounter.svelte';
+   import { ButtonCounter } from './common';
    import { Button, IconButton, Label } from '../material/button';
    import { ArrowBackIos, ArrowForwardIos, Check, Menu, Note, Print, Save, Share } from '../material/button/icons';
    import { AppContent, Drawer, Header, Item, List, Title as DrawerTitle } from '../material/drawer';
