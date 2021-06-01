@@ -6,17 +6,18 @@
    import { round, roundInc } from '../js/math';
    import { getFromArray } from '../js/functions';
 
-   import { railSizes, ropeSizes } from '../js/tables';
+   import * as gTables from '../js/tables';
    import * as tables from './tables';
 
    // Components
    import { Fieldset, SelectSafety, SelectShoe } from '../../common';
    import { Input, InputLength, InputWeight } from '../../../material/input';
    import { Option, Select } from '../../../material/select';
+   import { Checkbox } from '../../../material/checkbox';
 
    // Properties
    export let workbook = {};
-
+   export let save = false;
    export let saveProject = undefined;
 
    // Methods
@@ -27,8 +28,29 @@
             dbg: cwtDBG,
             counterbalance,
             weightWidth,
+            railSize: cwtRailSize,
+            lead,
+         },
+         safety: {
+            model: safetyModel,
+         },
+         shoe: {
+            model: shoeModel,
          },
       };
+
+      const safety = {
+         height: safetyHeight,
+         weight: safetyWeight,
+      };
+
+      const shoe = {
+         height: shoeHeight,
+         weight: shoeWeight,
+      };
+
+      if (safetyModel === 'Other') saveData.safety = { ...saveData.safety, ...safety };
+      if (shoeModel === 'Other') saveData.shoe = { ...saveData.shoe, ...shoe };
 
       workbook.modules.counterweight = { ...workbook.modules.counterweight, ...saveData };
 
@@ -89,18 +111,18 @@
    // Variables
    let cwtModel = module?.properties?.model ?? '230';
    let cwtDBG = module?.properties?.dbg ?? 38.75;
-   let cwtRailSize = module?.car?.railSize ?? '8#';
-
+   let cwtRailSize = module?.properties?.railSize ?? '8#';
    let counterbalance = module?.properties?.counterbalance ?? 40;
    let weightWidth = module?.properties?.weightWidth ?? 8;
+   let lead = module?.properties?.lead ?? false;
 
-   let safetyModel = module?.equipment?.safety?.model ?? 'None';
-   let safetyHeight = module?.equipment?.safety?.height ?? 0;
-   let safetyWeight = module?.equipment?.safety?.weight ?? 0;
+   let safetyModel = module?.safety?.model ?? 'None';
+   let safetyHeight = module?.safety?.height ?? 0;
+   let safetyWeight = module?.safety?.weight ?? 0;
 
-   let shoeModel = module?.equipment?.shoe?.model ?? '';
-   let shoeHeight = module?.equipment?.shoe?.height ?? 0;
-   let shoeWeight = module?.equipment?.shoe?.weight ?? 0;
+   let shoeModel = module?.shoe?.model ?? '';
+   let shoeHeight = module?.shoe?.height ?? 0;
+   let shoeWeight = module?.shoe?.weight ?? 0;
 
    // - Inherited Variables
    let carWeight = inherit(modules, 'sling.carWeight', 'value') ?? 0;
@@ -127,15 +149,21 @@
    $: frameChannelLength = roundInc(cwtDBG + (model?.channelOffset ?? 0));
 
    $: crossheadHeight = model?.crosshead.channel.depth ?? 0;
-   $: crossheadWeight = (model?.crosshead.channel.weight ?? 0) * frameChannelLength + (model?.crosshead?.gusset?.weight ?? 0) * 2;
+   $: crossheadWeight = ((model?.crosshead.channel.weight ?? 0) * frameChannelLength + (model?.crosshead?.gusset?.weight ?? 0)) * 2;
 
-   $: plankWeight = (model?.plank.weight ?? 0) * frameChannelLength;
+   $: plankHeight = model?.plank.depth ?? 0;
+   $: plankWeight = (model?.plank.weight ?? 0) * frameChannelLength * 2;
 
    $: steelFillerWeight = model?.fillerWeight(cwtDBG, weightWidth, 0.284, 8);
    $: leadFillerWeight = model?.fillerWeight(cwtDBG, weightWidth, 0.4096, 8);
 
+   $: staticWeight = crossheadWeight + plankWeight + shoeWeight + safetyWeight;
+
    // - Select Options
    $: modelOptions = getModelOptions(cwtModels, cwtDBG, cwtWeight, compensation);
+
+   // - Reactive Rules
+   $: if (save) onSave();
 
    // Events
    const onLink = (event) => dispatch(event.detail.cmd, event.detail.location);
@@ -147,14 +175,24 @@
    });
 
    onDestroy(() => onSave());
+
+   $: if (model) console.log(model);
 </script>
 
 <Fieldset title="Globals">
    <InputWeight value={capacity} on:link={onLink} label="Capacity" link={{ cmd: 'changePage', location: 'Requirements' }} {metric} />
 
    <Input value={`${cwtRoping}:1`} on:link={onLink} label="Roping" link={{ cmd: 'changePage', location: 'Requirements' }} />
+</Fieldset>
 
+<Fieldset title="Sling">
    <InputWeight value={carWeight} on:link={onLink} label="Car Weight" link={{ cmd: 'changeModule', location: carWeightLink }} {metric} step={0.01} />
+
+   <Select bind:value={compensation} on:link={onLink} label="Compensation" link={{ cmd: 'changeModule', location: compensationLink }}>
+      {#each gTables.compensation as { name } (name)}
+         <Option text={name} />
+      {/each}
+   </Select>
 </Fieldset>
 
 <Fieldset title="Properties">
@@ -181,11 +219,14 @@
       <option value="10">10"</option>
    </datalist>
 
+   <!-- TODO: 6-01-2021 10:41 AM - Add a link to this -->
    <Select bind:value={cwtRailSize} label="Rail Size">
-      {#each railSizes as { name } (name)}
+      {#each gTables.railSizes as { name } (name)}
          <Option text={name} />
       {/each}
    </Select>
+
+   <Checkbox bind:checked={lead} label="Lead Weights" />
 
    <InputWeight value={cwtWeight} display label="Total Weight" {metric} />
 </Fieldset>
@@ -198,4 +239,6 @@
 
 <Fieldset title="Dimensions">
    <InputLength value={crossheadHeight} display label="Top Channel" {metric} />
+
+   <InputLength value={plankHeight} display label="Bottom Channel" {metric} />
 </Fieldset>

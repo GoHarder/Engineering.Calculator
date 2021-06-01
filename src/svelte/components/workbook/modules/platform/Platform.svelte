@@ -3,7 +3,7 @@
    import { slide } from 'svelte/transition';
    import { floor, round, toFractionString } from '../js/math';
    import * as tables from './tables';
-   import * as options from './options';
+   // import * as options from './options';
 
    // Components
    import { Fieldset, SteelOptions } from '../../common';
@@ -256,8 +256,8 @@
    // stringers have been updated
 
    $: platformBackToRail = round(platformDepth - platformFrontToRail, 4);
-   $: elasticModulus = options.steelType.find((type) => type.text === platformSteel).elasticModulus;
-   $: tensileStrength = options.steelType.find((type) => type.text === platformSteel).tensileStrength;
+   $: elasticModulus = tables.steelType.find((type) => type.name === platformSteel).elasticModulus;
+   $: tensileStrength = tables.steelType.find((type) => type.name === platformSteel).tensileStrength;
    $: tensileStrengthRatio = round(tensileStrength / 58, 3);
 
    // -- Stringers
@@ -435,8 +435,8 @@
 <div class="container">
    <Fieldset title="Properties">
       <Select bind:value={platformMaterial} label="Material">
-         {#each options.platformMaterial as { text }}
-            <Option {text} />
+         {#each tables.platformMaterial as { name } (name)}
+            <Option text={name} />
          {/each}
       </Select>
 
@@ -462,8 +462,8 @@
    {#if platformMaterial === 'Steel'}
       <Fieldset title="Steel">
          <Select bind:value={platformSteel} label="Type">
-            {#each options.steelType as { text }}
-               <Option {text} />
+            {#each tables.steelType as { name } (name)}
+               <Option text={name} />
             {/each}
          </Select>
 
@@ -527,16 +527,16 @@
       <InputWeight bind:value={cabWeight} bind:override={cabWeightOverride} bind:calc={cabWeightCalc} label="Weight" reset {metric} />
 
       <Select bind:value={doorQty} label="Door Quantity" {metric}>
-         {#each options.doorQty as { text }}
-            <Option {text} />
+         {#each tables.doorQty as { name } (name)}
+            <Option text={name} />
          {/each}
       </Select>
    </Fieldset>
 
    <Fieldset title="Front Door">
       <Select bind:value={door1Type} label="Door Type" {metric}>
-         {#each options.doorType as { text }}
-            <Option {text} />
+         {#each tables.doorType as { name } (name)}
+            <Option text={name} />
          {/each}
       </Select>
 
@@ -552,14 +552,14 @@
    {#if doorQty === 2}
       <Fieldset title={`${door2Location} Door`}>
          <Select bind:value={door2Location} label="Location" {metric}>
-            {#each options.doorLocation as { text }}
-               <Option {text} />
+            {#each tables.doorLocation as { name } (name)}
+               <Option text={name} />
             {/each}
          </Select>
 
          <Select bind:value={door2Type} label="Door Type" {metric}>
-            {#each options.doorType as { text }}
-               <Option {text} />
+            {#each tables.doorType as { name } (name)}
+               <Option text={name} />
             {/each}
          </Select>
 

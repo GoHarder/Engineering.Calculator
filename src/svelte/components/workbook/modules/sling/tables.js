@@ -39,3 +39,17 @@ export const plateMounting = [
       weight: 0.2658,
    },
 ];
+
+export const sheaveLocation = [{ name: 'Overslung' }, { name: 'Underslung' }];
+
+export const sheaveArrangement = [{ name: 'Parallel' }, { name: 'Diagonal' }];
+
+export const plywoodThickness = [
+   { name: '1/4"', value: 0.25 },
+   { name: '3/8"', value: 0.375 },
+   { name: '1/2"', value: 0.5 },
+   { name: '5/8"', value: 0.625 },
+   { name: '3/4"', value: 0.75 },
+];
+
+export const finFloorArea = [{ name: 'Inside Cab' }, { name: 'Full Platform' }];

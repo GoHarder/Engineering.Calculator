@@ -6,9 +6,8 @@
    import { inherit } from '../inherit';
    import { getFromArray } from '../js/functions';
 
-   import { railSizes, ropeSizes } from '../js/tables';
+   import * as gTables from '../js/tables';
    import * as tables from './tables';
-   import * as options from './options';
 
    // Components
    import { Fieldset, InputImage, SelectSafety, SelectShoe, SteelOptions } from '../../common';
@@ -696,7 +695,7 @@
          <Input bind:value={ropeQty} label="Quantity" type="number" />
 
          <Select bind:value={ropeSize} label="Size">
-            {#each ropeSizes as { name, value }}
+            {#each gTables.ropeSizes as { name, value }}
                <Option text={name} {value} />
             {/each}
          </Select>
@@ -716,14 +715,14 @@
          {#if sheaveQty > 1}
             <div transition:slide|local>
                <Select bind:value={sheaveArrangement} label="Arrangement">
-                  {#each options.sheaveArrangement as { text }}
-                     <Option {text} />
+                  {#each tables.sheaveArrangement as { name } (name)}
+                     <Option text={name} />
                   {/each}
                </Select>
 
                <Select bind:value={sheaveLocation} label="Mounting">
-                  {#each options.sheaveLocation as { text }}
-                     <Option {text} />
+                  {#each tables.sheaveLocation as { name } (name)}
+                     <Option text={name} />
                   {/each}
                </Select>
 
@@ -780,8 +779,8 @@
                <InputPressure bind:value={finFloorMaterialWeight} label="Material Weight" {metric} />
 
                <Select bind:value={finFloorArea} label="Area">
-                  {#each options.finFloorArea as { text }}
-                     <Option {text} />
+                  {#each tables.finFloorArea as { name } (name)}
+                     <Option text={name} />
                   {/each}
                </Select>
             </div>
@@ -796,8 +795,8 @@
          {#if plywoodQty > 0}
             <div transition:slide|local>
                <Select bind:value={plywoodThickness} label="Thickness">
-                  {#each options.plywoodThickness as { text, value }}
-                     <Option {text} {value} />
+                  {#each tables.plywoodThickness as { name, value } (name)}
+                     <Option text={name} {value} />
                   {/each}
                </Select>
 
@@ -819,7 +818,7 @@
       <Checkbox bind:checked={apta} on:link={onLink} link={{ cmd: 'changeModule', location: aptaLink }} label="APTA" />
 
       <Select bind:value={carRailSize} label="Rail Size">
-         {#each railSizes as { name } (name)}
+         {#each gTables.railSizes as { name } (name)}
             <Option text={name} />
          {/each}
       </Select>
@@ -837,8 +836,8 @@
       {/if}
 
       <Select bind:value={compensation} label="Compensation">
-         {#each options.compensation as { text }}
-            <Option {text} />
+         {#each gTables.compensation as { name } (name)}
+            <Option text={name} />
          {/each}
       </Select>
 

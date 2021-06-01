@@ -17,7 +17,11 @@ export const inherit = (modules, search, data) => {
       order.push(obj);
    });
 
-   return order.find((branch) => branch.module in modules)?.[data];
+   let output = order.find((branch) => branch.module in modules)?.[data];
+
+   if (data === 'module' && output) output = output.replace(/([a-z]+)/, (match) => `${match.charAt(0).toUpperCase()}${match.slice(1)}`);
+
+   return output;
 };
 
 const lib = {

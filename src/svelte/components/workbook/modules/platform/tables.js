@@ -77,3 +77,16 @@ export const steelPlate = [
    { type: 'Checkered', thickness: 0.625 },
    { type: 'Checkered', thickness: 0.75 },
 ];
+
+export const platformMaterial = [{ name: 'Wood' }, { name: 'Steel' }];
+
+export const doorLocation = [{ name: 'Back' }, { name: 'Left' }, { name: 'Right' }];
+
+export const doorQty = [{ name: 1 }, { name: 2 }];
+
+export const doorType = [{ name: 'Single Speed' }, { name: 'Two Speed' }, { name: 'Three Speed' }, { name: 'Gate' }];
+
+export const steelType = [
+   { name: 'ASTM A36', elasticModulus: 29000000, tensileStrength: 58 }, // 58ksi = 58000psi
+   { name: 'Stainless Steel', elasticModulus: 28000000, tensileStrength: 73.2 }, // 72.2ksi = 37200psi
+];

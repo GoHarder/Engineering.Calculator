@@ -24,3 +24,6 @@ export const ropeSizes = [
    { name: '16mm', value: 0.629921, weight: 0.0525 },
    { name: '18mm', value: 0.708661, weight: 0.065 },
 ];
+
+/** The different compensation types */
+export const compensation = [{ name: 'None' }, { name: 'Chain' }, { name: 'Rope' }];

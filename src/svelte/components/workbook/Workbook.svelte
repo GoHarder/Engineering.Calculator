@@ -156,10 +156,7 @@
 
    const onNote = () => (openNotesMenu = true);
 
-   const onPrint = () => {
-      // console.log('TODO: 2-26-2021 9:25 AM - hook up print button');
-      dispatch('changePage', 'Print');
-   };
+   const onPrint = () => dispatch('changePage', 'Print');
 
    const onSave = () => (save = true);
 

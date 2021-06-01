@@ -1,22 +1,28 @@
 <script>
    import { afterUpdate, onDestroy, onMount } from 'svelte';
    import { MDCTextField } from '@material/textfield';
+   import { createEventDispatcher } from 'svelte';
 
    // Components
    import HelperText from '../input/HelperText.svelte';
+   import { IconButton } from '../button';
+   import { Link } from '../button/icons';
    import { Anchor, Icon, Item, Menu, Text } from '../menu';
 
    // Parameters
    export let disabled = false;
    export let disableValidation = false;
+   export let display = false;
    export let helperText = '';
    export let invalid = false;
    export let label = '';
+   export let link = false;
    export let required = false;
    export let value = '';
    export let variant = 'filled';
 
    // Constants
+   const dispatch = createEventDispatcher();
    const parameters = {
       disabled,
       disableValidation,
@@ -32,14 +38,16 @@
    let askSelect = false;
 
    // Reactive Variables
-   $: labelClass = ['mdc-text-field', variant === 'filled' ? 'mdc-text-field--filled' : 'mdc-text-field--outlined'].join(' ');
-   $: classes = [helperText ? '' : 'bump'].join(' ');
+   $: labelClass = ['mdc-text-field', variant === 'filled' ? 'mdc-text-field--filled' : 'mdc-text-field--outlined', display ? 'mdc-text-field--display' : ''].join(' ');
+   $: classes = ['input-root', helperText ? '' : 'bump'].join(' ');
 
    // Reactive Rules
    $: if (TextField) {
       TextField.disabled = disabled;
       TextField.valid = !invalid;
    }
+
+   $: if (link?.location) display = true;
 
    // Lifecycle
    onMount(() => {
@@ -79,8 +87,15 @@
       </select>
       <span class="mdc-line-ripple" />
    </label>
+
    {#if helperText}
       <HelperText validation>{helperText}</HelperText>
+   {/if}
+
+   {#if link && link.location}
+      <IconButton on:click={() => dispatch('link', link)} title={link.location}>
+         <Link />
+      </IconButton>
    {/if}
 </div>
 
@@ -104,5 +119,9 @@
 
    select:focus {
       background-image: linear-gradient(45deg, transparent 50%, #ffcb30 50%), linear-gradient(135deg, #ffcb30 50%, transparent 50%);
+   }
+
+   .mdc-text-field--display > select {
+      background-image: none;
    }
 </style>
