@@ -1,11 +1,13 @@
 <script>
-   import { onMount } from 'svelte';
+   import { createEventDispatcher, onMount } from 'svelte';
    import { slide } from 'svelte/transition';
    import { round, floor } from '../lib/round.js';
 
    // Components
    import HelperText from './HelperText.svelte';
    import Input from './input/Input.svelte';
+   import { IconButton } from '../button';
+   import { Link } from '../button/icons';
 
    // Properties
    export let calc = 0;
@@ -16,6 +18,7 @@
    export let helperText = '';
    export let invalid = false;
    export let label = '';
+   export let link = false;
    export let list = '';
    export let override = false;
    export let max = undefined;
@@ -27,8 +30,8 @@
    export let value = '';
    export let variant = 'filled';
 
-   // Methods
    // Constants
+   const dispatch = createEventDispatcher();
    const parameters1 = {
       disableValidation,
       display,
@@ -63,9 +66,9 @@
    let inchFocused = false;
    let options = [];
 
-   // Subscriptions
    // Reactive Variables
    $: metricValue = round(value * 0.0254, 2);
+   $: classes = ['input-root', 'split', 'mdc-menu-surface--anchor', helperText ? '' : 'bump'].join(' ');
 
    // Reactive Rules
    $: if (feetFocused || inchFocused) {
@@ -82,6 +85,11 @@
    }
 
    $: if (!override && reset) value = calc;
+
+   $: if (link?.location) {
+      parameters1.display = true;
+      parameters2.display = true;
+   }
 
    // Events
    const onFeet = (event) => {
@@ -101,7 +109,7 @@
    });
 </script>
 
-<div class="split mdc-menu-surface--anchor" class:metric-wrapper={metric}>
+<div class={classes}>
    <Input bind:disabled bind:invalid bind:override bind:focused={feetFocused} on:change={onFeet} value={feet} calc={feet} {...parameters1}>
       <span slot="helperText">
          {#if helperText}
@@ -109,7 +117,13 @@
          {/if}
       </span>
    </Input>
-   <Input bind:disabled bind:invalid bind:override bind:focused={inchFocused} on:change={onInches} value={inches} {...parameters2} />
+   <Input bind:disabled bind:invalid bind:override bind:focused={inchFocused} on:change={onInches} value={inches} {...parameters2}>
+      <span slot="helperText">
+         {#if helperText}
+            <HelperText validation>{' '}</HelperText>
+         {/if}
+      </span>
+   </Input>
 
    {#if list && focused}
       <div class="mdc-menu mdc-menu-surface mdc-menu-surface-custom mdc-menu-surface--open" in:slide out:slide={{ delay: 250 }}>
@@ -126,6 +140,12 @@
 
    {#if metric}
       <span class="metric-value">{`(${metricValue} m)`}</span>
+   {/if}
+
+   {#if link && link.location}
+      <IconButton on:click={() => dispatch('link', link)} title={link.location}>
+         <Link />
+      </IconButton>
    {/if}
 </div>
 

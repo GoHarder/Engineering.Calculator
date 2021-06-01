@@ -44,20 +44,14 @@
    }
 </script>
 
-<div class="input-bump">
-   <Select bind:value={shoeModel} label="Shoe Model">
-      {#each options as { text, disabled } (text)}
-         <Option {disabled} selected={shoeModel === text} {text} />
-      {/each}
-   </Select>
-</div>
+<Select bind:value={shoeModel} label="Shoe Model">
+   {#each options as { text, disabled } (text)}
+      <Option {disabled} selected={shoeModel === text} {text} />
+   {/each}
+</Select>
 
 {#if shoeModel === 'Other'}
-   <div class="input-bump" transition:slide>
-      <InputWeight bind:value={shoeWeight} label="Weight per Shoe" {metric} />
-   </div>
+   <InputWeight bind:value={shoeWeight} label="Weight per Shoe" {metric} />
 
-   <div class="input-bump" transition:slide>
-      <InputLength bind:value={shoeHeight} label="Shoe Height" {metric} />
-   </div>
+   <InputLength bind:value={shoeHeight} label="Shoe Height" {metric} />
 {/if}

@@ -52,20 +52,14 @@
    }
 </script>
 
-<div class="input-bump">
-   <Select bind:value={safetyModel} label="Safety Model">
-      {#each options as { text, disabled } (text)}
-         <Option {disabled} selected={safetyModel === text} {text} />
-      {/each}
-   </Select>
-</div>
+<Select bind:value={safetyModel} label="Safety Model">
+   {#each options as { text, disabled } (text)}
+      <Option {disabled} selected={safetyModel === text} {text} />
+   {/each}
+</Select>
 
 {#if safetyModel === 'Other'}
-   <div class="input-bump" transition:slide>
-      <InputWeight bind:value={safetyWeight} label="Safety Weight" step={0.01} {metric} />
-   </div>
+   <InputWeight bind:value={safetyWeight} label="Safety Weight" step={0.01} {metric} />
 
-   <div class="input-bump" transition:slide>
-      <InputLength bind:value={safetyHeight} label="Safety Height" {metric} />
-   </div>
+   <InputLength bind:value={safetyHeight} label="Safety Height" {metric} />
 {/if}

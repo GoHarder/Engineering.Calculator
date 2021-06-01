@@ -50,7 +50,7 @@
    };
 </script>
 
-<div class:metric-wrapper={metric}>
+<div class="input-root bump">
    <Input bind:disabled bind:invalid value={psf} on:change={onChange} {...parameters}>
       <span slot="helperText">
          {#if helperText}

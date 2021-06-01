@@ -33,6 +33,7 @@
 
    // Reactive Variables
    $: labelClass = ['mdc-text-field', variant === 'filled' ? 'mdc-text-field--filled' : 'mdc-text-field--outlined'].join(' ');
+   $: classes = [helperText ? '' : 'bump'].join(' ');
 
    // Reactive Rules
    $: if (TextField) {
@@ -66,7 +67,7 @@
 
 <!-- <Anchor> -->
 
-<div>
+<div class={classes}>
    <label bind:this={_label} class={labelClass}>
       <span class="mdc-text-field__ripple" />
       <span class="mdc-floating-label mdc-floating-label--float-above">{label}</span>

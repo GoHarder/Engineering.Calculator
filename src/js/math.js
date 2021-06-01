@@ -36,3 +36,22 @@ export const roundInc = (value, increment = 0.0625) => round(Math.round(value / 
  * @param {number} deg The angle in degrees
  */
 export const sin = (deg) => Math.sin((deg * Math.PI) / 180);
+
+/**
+ * Converts a decimal to a string
+ * @param {number} num The number to convert to string
+ */
+export const toFractionString = (num) => {
+   const tens = 10 ** (num.toString().length - 2);
+
+   const gcd = (a, b) => {
+      if (!b) return a;
+      return gcd(b, a % b);
+   };
+
+   let top = tens * num;
+
+   const split = gcd(top, tens);
+
+   return `${top / split}/${tens / split}`;
+};

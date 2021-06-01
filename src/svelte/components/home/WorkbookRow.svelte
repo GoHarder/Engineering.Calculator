@@ -86,20 +86,22 @@
    }
 
    .workbook-cell {
+      overflow: hidden;
+
       &.contract {
-         width: 103px;
+         column-width: 103px;
       }
       &.job-name {
-         width: 300px;
+         column-width: 268px;
       }
       &.car-no {
-         width: 100px;
+         column-width: 100px;
       }
       &.customer {
-         width: 220px;
+         column-width: 220px;
       }
       &.layout {
-         width: 100px;
+         column-width: 100px;
       }
       &.date {
          display: none;

@@ -6,16 +6,15 @@
    import { inherit } from '../inherit';
    import { getFromArray } from '../js/functions';
 
+   import { railSizes, ropeSizes } from '../js/tables';
    import * as tables from './tables';
    import * as options from './options';
 
    // Components
-   import { InputImage, SelectSafety, SelectShoe, SteelOptions } from '../../common';
+   import { Fieldset, InputImage, SelectSafety, SelectShoe, SteelOptions } from '../../common';
    import { Input, InputLength, InputPressure, InputSpeed, InputWeight } from '../../../material/input';
    import { Option, Select } from '../../../material/select';
    import { Checkbox } from '../../../material/checkbox';
-   import { IconButton } from '../../../material/button';
-   import { Link } from '../../../material/button/icons';
 
    // Properties
    export let workbook = {};
@@ -255,6 +254,8 @@
 
       return round((area === 'Inside Cab' ? cabArea : platformArea) * materialWeight);
    };
+
+   const invalidChannel = (channel) => (channel?.stockStatus ?? 'Stocked') !== 'Stocked';
 
    // Constants
    const dispatch = createEventDispatcher();
@@ -660,158 +661,88 @@
       slingBottomChannel = 'MC8X21.4';
    }
 
+   // Events
+   const onLink = (event) => dispatch(event.detail.cmd, event.detail.location);
+
    // Lifecycle
    onMount(() => {
       getEngineeringData(capacity, carSpeed);
    });
 
-   onDestroy(() => {
-      onSave();
-   });
+   onDestroy(() => onSave());
 </script>
 
 <div class="container">
-   <div class="container">
-      <fieldset>
-         <legend>Globals</legend>
-         <hr />
+   <Fieldset title="Globals">
+      <InputWeight value={capacity} on:link={onLink} label="Capacity" link={{ cmd: 'changePage', location: 'Requirements' }} {metric} />
 
-         <div class="input-bump link">
-            <InputWeight value={capacity} display label="Capacity" {metric} />
-            <IconButton on:click={() => dispatch('changePage', 'Requirements')}>
-               <Link />
-            </IconButton>
-         </div>
+      <InputSpeed value={carSpeed} on:link={onLink} label="Car Speed" link={{ cmd: 'changePage', location: 'Requirements' }} {metric} />
 
-         <div class="input-bump link">
-            <InputSpeed value={carSpeed} display label="Car Speed" {metric} />
-            <IconButton on:click={() => dispatch('changePage', 'Requirements')}>
-               <Link />
-            </IconButton>
-         </div>
+      <Input value={`${type}${freight !== 'None' ? ` ${freight}` : ''}`} on:link={onLink} label="Loading" link={{ cmd: 'changePage', location: 'Requirements' }} />
 
-         <div class="input-bump link">
-            <Input value={`${type}${freight !== 'None' ? ` ${freight}` : ''}`} display label="Loading" />
-            <IconButton on:click={() => dispatch('changePage', 'Requirements')}>
-               <Link />
-            </IconButton>
-         </div>
+      <Input value={`${carRoping}:1`} on:link={onLink} label="Roping" link={{ cmd: 'changePage', location: 'Requirements' }} />
+   </Fieldset>
 
-         <div class="input-bump link">
-            <Input value={`${carRoping}:1`} display label="Roping" />
-            <IconButton on:click={() => dispatch('changePage', 'Requirements')}>
-               <Link />
-            </IconButton>
-         </div>
-      </fieldset>
-   </div>
+   <Fieldset title="Platform">
+      <InputLength bind:value={platformThickness} on:link={onLink} label="Thickness" link={{ cmd: 'changeModule', location: platformThicknessLink }} {metric} />
 
-   <fieldset>
-      <legend>Platform</legend>
-      <hr />
-
-      <div class="input-bump link">
-         <InputLength bind:value={platformThickness} display={platformThicknessLink} label="Thickness" {metric} />
-
-         {#if platformThicknessLink}
-            <IconButton on:click={() => dispatch('changeModule', platformThicknessLink)}>
-               <Link />
-            </IconButton>
-         {/if}
-      </div>
-
-      <div class="input-bump link">
-         <InputWeight bind:value={platformWeight} display={platformWeightLink} label="Weight" step={0.01} {metric} />
-
-         {#if platformWeightLink}
-            <IconButton on:click={() => dispatch('changeModule', platformWeightLink)}>
-               <Link />
-            </IconButton>
-         {/if}
-      </div>
-   </fieldset>
+      <InputWeight bind:value={platformWeight} on:link={onLink} label="Weight" link={{ cmd: 'changeModule', location: platformWeightLink }} step={0.01} {metric} />
+   </Fieldset>
 </div>
 
 {#if carRoping > 1}
    <div class="container">
-      <fieldset>
-         <legend>Ropes</legend>
-         <hr />
+      <Fieldset title="Ropes">
+         <Input bind:value={ropeQty} label="Quantity" type="number" />
 
-         <div class="input-bump">
-            <Input bind:value={ropeQty} label="Quantity" type="number" />
-         </div>
+         <Select bind:value={ropeSize} label="Size">
+            {#each ropeSizes as { name, value }}
+               <Option text={name} {value} />
+            {/each}
+         </Select>
 
-         <div class="input-bump">
-            <Select bind:value={ropeSize} label="Size">
-               {#each options.ropeSize as { text, value }}
-                  <Option {text} {value} />
-               {/each}
-            </Select>
-         </div>
+         <InputLength bind:value={ropePitch} bind:override={ropePitchOverride} bind:calc={ropePitchCalc} label="Pitch" reset {metric} />
+      </Fieldset>
 
-         <div class="input-bump">
-            <InputLength bind:value={ropePitch} bind:override={ropePitchOverride} bind:calc={ropePitchCalc} label="Pitch" reset {metric} />
-         </div>
-      </fieldset>
+      <Fieldset title="Sheaves">
+         <Input bind:value={sheaveQty} label="Quantity" type="number" />
 
-      <fieldset>
-         <legend>Sheaves</legend>
-         <hr />
-
-         <div class="input-bump">
-            <Input bind:value={sheaveQty} label="Quantity" type="number" />
-         </div>
-
-         <div class="input-bump">
-            <Select bind:value={sheaveModel} label="Model">
-               {#each sheaveOptions as { value, text, valid } (value)}
-                  <Option {value} {text} disabled={!valid} selected={sheaveModel === value} />
-               {/each}
-            </Select>
-         </div>
+         <Select bind:value={sheaveModel} label="Model">
+            {#each sheaveOptions as { value, text, valid } (value)}
+               <Option {value} {text} disabled={!valid} selected={sheaveModel === value} />
+            {/each}
+         </Select>
 
          {#if sheaveQty > 1}
-            <div class="input-bump" transition:slide>
+            <div transition:slide|local>
                <Select bind:value={sheaveArrangement} label="Arrangement">
                   {#each options.sheaveArrangement as { text }}
                      <Option {text} />
                   {/each}
                </Select>
-            </div>
 
-            <div class="input-bump" transition:slide>
                <Select bind:value={sheaveLocation} label="Mounting">
                   {#each options.sheaveLocation as { text }}
                      <Option {text} />
                   {/each}
                </Select>
-            </div>
 
-            <InputImage src={sheaveOffsetImage} alt="Strike Plate Offset" focused={strikePlateOffsetFocused}>
-               <InputLength bind:value={sheaveOffset} bind:focused={strikePlateOffsetFocused} label="Sheave Offset" {metric} />
-            </InputImage>
+               <InputImage src={sheaveOffsetImage} alt="Strike Plate Offset" focused={strikePlateOffsetFocused}>
+                  <InputLength bind:value={sheaveOffset} bind:focused={strikePlateOffsetFocused} label="Sheave Offset" {metric} />
+               </InputImage>
+            </div>
          {/if}
-      </fieldset>
+      </Fieldset>
    </div>
 {/if}
 
 <div class="container">
-   <fieldset>
-      <legend>Equipment</legend>
-      <hr />
+   <Fieldset title="Equipment">
+      <InputWeight bind:value={carTopWeight} label="Car Top Weight" {metric} />
 
-      <div class="input-bump">
-         <InputWeight bind:value={carTopWeight} label="Car Top Weight" {metric} />
-      </div>
+      <InputWeight bind:value={doorOperatorWeight} label="Door Operator Weight" {metric} />
 
-      <div class="input-bump">
-         <InputWeight bind:value={doorOperatorWeight} label="Door Operator Weight" {metric} />
-      </div>
-
-      <div class="input-bump">
-         <InputWeight bind:value={miscEquipmentWeight} label="Misc. Equipment Weight" {metric} />
-      </div>
+      <InputWeight bind:value={miscEquipmentWeight} label="Misc. Equipment Weight" {metric} />
 
       <InputWeight
          bind:invalid={balanceWeightError}
@@ -825,12 +756,10 @@
          {metric}
       />
 
-      <div class="input-bump">
-         <Input value={floor(balanceWeight / rowBalanceWeight)} display label="Balance Weight Rows" type="number" />
-      </div>
+      <Input value={floor(balanceWeight / rowBalanceWeight)} display label="Balance Weight Rows" type="number" />
 
       {#if ['12#', '15#'].includes(carRailSize)}
-         <div class="input-bump" transition:slide>
+         <div transition:slide|local>
             <Checkbox bind:checked={railLock} label="Rail Locks" />
          </div>
       {/if}
@@ -839,26 +768,17 @@
 
       <SelectSafety bind:safety bind:safetyHeight bind:safetyModel bind:safetyWeight {metric} railSize={carRailSize} {safeties} />
 
-      <div class="input-bump link">
-         <InputWeight value={carWeight} display label="Car Weight" {metric} />
-      </div>
-   </fieldset>
+      <InputWeight value={carWeight} display label="Car Weight" {metric} />
+   </Fieldset>
 
    <div class="sub-container">
-      <fieldset>
-         <legend>Finished Flooring</legend>
-         <hr />
-
-         <div class="input-bump" transition:slide>
-            <InputLength bind:value={finFloorThickness} label="Thickness" {metric} />
-         </div>
+      <Fieldset title="Finished Flooring">
+         <InputLength bind:value={finFloorThickness} label="Thickness" {metric} />
 
          {#if !finFloorWeightOverride}
-            <div class="input-bump" transition:slide>
+            <div transition:slide|local>
                <InputPressure bind:value={finFloorMaterialWeight} label="Material Weight" {metric} />
-            </div>
 
-            <div class="input-bump" transition:slide>
                <Select bind:value={finFloorArea} label="Area">
                   {#each options.finFloorArea as { text }}
                      <Option {text} />
@@ -867,198 +787,180 @@
             </div>
          {/if}
 
-         <div class="input-bump">
-            <InputWeight bind:value={finFloorWeight} bind:override={finFloorWeightOverride} calc={finFloorWeightCalc} label="Weight" reset />
-         </div>
-      </fieldset>
+         <InputWeight bind:value={finFloorWeight} bind:override={finFloorWeightOverride} calc={finFloorWeightCalc} label="Weight" reset />
+      </Fieldset>
 
-      <fieldset>
-         <legend>Plywood</legend>
-         <hr />
-
-         <div class="input-bump">
-            <Input bind:value={plywoodQty} label="Layers" type="number" />
-         </div>
+      <Fieldset title="Plywood">
+         <Input bind:value={plywoodQty} label="Layers" type="number" />
 
          {#if plywoodQty > 0}
-            <div class="input-bump" transition:slide>
+            <div transition:slide|local>
                <Select bind:value={plywoodThickness} label="Thickness">
                   {#each options.plywoodThickness as { text, value }}
                      <Option {text} {value} />
                   {/each}
                </Select>
-            </div>
 
-            <div class="input-bump" transition:slide>
                <InputWeight bind:value={plywoodWeight} display label="Weight" step={0.01} {metric} />
             </div>
          {/if}
-      </fieldset>
+      </Fieldset>
    </div>
 </div>
 
 <div class="container">
-   <fieldset>
-      <legend>Properties</legend>
-      <hr />
+   <Fieldset title="Properties">
+      <Select bind:value={slingModel} label="Model">
+         {#each slingModelOptions as { disabled, text } (text)}
+            <Option {disabled} {text} selected={slingModel === text} />
+         {/each}
+      </Select>
 
-      <div class="input-bump">
-         <Select bind:value={slingModel} label="Model">
-            {#each slingModelOptions as { disabled, text } (text)}
-               <Option {disabled} {text} selected={slingModel === text} />
-            {/each}
-         </Select>
-      </div>
+      <Checkbox bind:checked={apta} on:link={onLink} link={{ cmd: 'changeModule', location: aptaLink }} label="APTA" />
 
-      <div class="input-bump align">
-         <Checkbox bind:checked={apta} disabled={aptaLink} label="APTA" />
-         {#if aptaLink}
-            <IconButton on:click={() => dispatch('changeModule', aptaLink)}>
-               <Link />
-            </IconButton>
-         {/if}
-      </div>
+      <Select bind:value={carRailSize} label="Rail Size">
+         {#each railSizes as { name } (name)}
+            <Option text={name} />
+         {/each}
+      </Select>
 
-      <div class="input-bump">
-         <Select bind:value={carRailSize} label="Rail Size">
-            {#each options.railSize as { text }}
-               <Option {text} />
-            {/each}
-         </Select>
-      </div>
+      <InputLength bind:value={carDBG} label="D.B.G." {metric} />
 
-      <div class="input-bump">
-         <InputLength bind:value={carDBG} label="D.B.G." {metric} />
-      </div>
+      <InputLength bind:value={stilesBackToBack} bind:override={stilesBackToBackOverride} bind:calc={stilesBackToBackCalc} label="Back to Back of Stiles" reset {metric} />
 
-      <div class="input-bump">
-         <InputLength bind:value={stilesBackToBack} bind:override={stilesBackToBackOverride} bind:calc={stilesBackToBackCalc} label="Back to Back of Stiles" reset {metric} />
-      </div>
-
-      <div class="input-bump">
-         <InputLength bind:value={underBeamHeight} label="Under Beam Height" {metric} />
-      </div>
+      <InputLength bind:value={underBeamHeight} label="Under Beam Height" {metric} />
 
       {#if sheaveConfig === 'P-U'}
-         <div class="input-bump" transition:slide>
+         <div transition:slide|local>
             <InputLength bind:value={platformFrontToBalance} label="Front of Platform To Sheaves" {metric} />
          </div>
       {/if}
 
-      <div class="input-bump">
-         <Select bind:value={compensation} label="Compensation">
-            {#each options.compensation as { text }}
-               <Option {text} />
-            {/each}
-         </Select>
-      </div>
+      <Select bind:value={compensation} label="Compensation">
+         {#each options.compensation as { text }}
+            <Option {text} />
+         {/each}
+      </Select>
 
-      <div class="input-bump link">
-         <InputWeight value={slingWeight} display label="Total Weight" {metric} />
-      </div>
-   </fieldset>
+      <InputWeight value={slingWeight} display label="Total Weight" {metric} />
+   </Fieldset>
 
-   <fieldset>
-      <legend>Steel</legend>
-      <hr />
+   <Fieldset title="Steel">
+      <Select
+         bind:value={slingTopChannel}
+         disableValidation
+         helperText="Channel isn't stocked check with purchasing"
+         invalid={invalidChannel(topChannel)}
+         label="Top Channels"
+      >
+         <SteelOptions options={topChannelOptions} selected={slingTopChannel} />
+      </Select>
 
-      <div class="input-bump">
-         <Select bind:value={slingTopChannel} label="Top Channels">
-            <SteelOptions options={topChannelOptions} selected={slingTopChannel} />
-         </Select>
-      </div>
+      <Select bind:value={slingStile} disableValidation helperText="Channel isn't stocked check with purchasing" invalid={invalidChannel(stileChannel)} label="Stiles">
+         <SteelOptions options={stileOptions} selected={slingStile} />
+      </Select>
 
-      <div class="input-bump">
-         <Select bind:value={slingStile} label="Stiles">
-            <SteelOptions options={stileOptions} selected={slingStile} />
-         </Select>
-      </div>
-
-      <div class="input-bump">
-         <Select bind:value={slingBottomChannel} label="Bottom Channels">
-            <SteelOptions options={bottomChannelOptions} selected={slingBottomChannel} />
-         </Select>
-      </div>
+      <Select
+         bind:value={slingBottomChannel}
+         disableValidation
+         helperText="Channel isn't stocked check with purchasing"
+         invalid={invalidChannel(bottomChannel)}
+         label="Bottom Channels"
+      >
+         <SteelOptions options={bottomChannelOptions} selected={slingBottomChannel} />
+      </Select>
 
       {#if sheaveChannelSectionModulus > 0}
-         <div class="input-bump" transition:slide>
-            <Select bind:value={slingSheaveChannel} label={sheaveChannelLabel}>
+         <div transition:slide|local>
+            <Select
+               bind:value={slingSheaveChannel}
+               disableValidation
+               helperText="Channel isn't stocked check with purchasing"
+               invalid={invalidChannel(sheaveChannel)}
+               label={sheaveChannelLabel}
+            >
                <SteelOptions options={sheaveChannelOptions} selected={slingSheaveChannel} />
             </Select>
-         </div>
 
-         {#if sheaveConfig === 'P-U'}
-            <div class="input-bump" transition:slide>
-               <Select bind:value={outerSheaveMounting} label="Outer Sheave Mounting">
-                  <Option text={'Support Plate'} />
-                  <Option text={'Channel'} />
-               </Select>
-            </div>
-
-            {#if outerSheaveMounting !== 'Channel'}
-               <div class="input-bump" transition:slide>
-                  <Select bind:value={plateMounting} label="Plate Mounting">
-                     {#each tables.plateMounting as { name }}
-                        <Option text={name} />
-                     {/each}
+            {#if sheaveConfig === 'P-U'}
+               <div transition:slide|local>
+                  <Select bind:value={outerSheaveMounting} label="Outer Sheave Mounting">
+                     <Option text={'Support Plate'} />
+                     <Option text={'Channel'} />
                   </Select>
+
+                  {#if outerSheaveMounting !== 'Channel'}
+                     <div transition:slide|local>
+                        <Select bind:value={plateMounting} label="Plate Mounting">
+                           {#each tables.plateMounting as { name }}
+                              <Option text={name} />
+                           {/each}
+                        </Select>
+                     </div>
+                  {/if}
+               </div>
+            {:else}
+               <div transition:slide|local>
+                  <InputLength bind:value={slingSheaveChannelLength} label="Sheave Channel Length" {metric} />
                </div>
             {/if}
-         {:else}
-            <div class="input-bump" transition:slide>
-               <InputLength bind:value={slingSheaveChannelLength} label="Sheave Channel Length" {metric} />
-            </div>
-         {/if}
 
-         {#if sheaveConfig === 'D-U'}
-            <div class="input-bump">
-               <InputLength bind:value={slingChannelSpacerLength} label="Channel Spacer Length" {metric} />
-            </div>
+            {#if sheaveConfig === 'D-U'}
+               <div transition:slide|local>
+                  <InputLength bind:value={slingChannelSpacerLength} label="Channel Spacer Length" {metric} />
 
-            <div class="input-bump">
-               <Select bind:value={slingSafetyBlockUp} label="Safety Block Up">
-                  <SteelOptions options={otherChannelOptions} selected={slingSafetyBlockUp} />
-               </Select>
-            </div>
+                  <Select
+                     bind:value={slingSafetyBlockUp}
+                     disableValidation
+                     helperText="Channel isn't stocked check with purchasing"
+                     invalid={invalidChannel(safetyBlockUpChannel)}
+                     label="Safety Block Up"
+                  >
+                     <SteelOptions options={otherChannelOptions} selected={slingSafetyBlockUp} />
+                  </Select>
 
-            <div class="input-bump">
-               <InputLength bind:value={slingSafetyBlockUpLength} label="Safety Block Up Length" {metric} />
-            </div>
+                  <InputLength bind:value={slingSafetyBlockUpLength} label="Safety Block Up Length" {metric} />
 
-            <div class="input-bump">
-               <Select bind:value={slingBufferBlockUp} label="Buffer Block Up">
-                  <SteelOptions options={otherChannelOptions} selected={slingBufferBlockUp} />
-               </Select>
-            </div>
+                  <Select
+                     bind:value={slingBufferBlockUp}
+                     disableValidation
+                     helperText="Channel isn't stocked check with purchasing"
+                     invalid={invalidChannel(bufferBlockUpChannel)}
+                     label="Buffer Block Up"
+                  >
+                     <SteelOptions options={otherChannelOptions} selected={slingBufferBlockUp} />
+                  </Select>
 
-            <div class="input-bump">
-               <InputLength bind:value={slingBufferBlockUpLength} label="Buffer Block Up Length" {metric} />
-            </div>
-         {/if}
+                  <InputLength bind:value={slingBufferBlockUpLength} label="Buffer Block Up Length" {metric} />
+               </div>
+            {/if}
+         </div>
       {/if}
 
       {#if !cornerPost}
-         <div class="input-bump">
+         <div transition:slide|local>
             <Input bind:value={braceQty} bind:override={braceQtyOverride} bind:calc={braceQtyCalc} label="Brace Quantity" type="number" reset />
          </div>
       {:else}
-         <Select bind:value={cornerPostSteel} label="Brace Steel">
-            {#each tables.cornerPostBraceSteel as { name }}
-               <Option text={name} />
-            {/each}
-         </Select>
+         <div transition:slide|local>
+            <Select bind:value={cornerPostSteel} label="Brace Steel">
+               {#each tables.cornerPostBraceSteel as { name }}
+                  <Option text={name} />
+               {/each}
+            </Select>
+         </div>
       {/if}
 
-      <div class="input-bump">
-         <Input bind:value={strikePlateQty} label="Strike Plate Quantity" min={1} max={10} type="number" />
-      </div>
+      <Input bind:value={strikePlateQty} label="Strike Plate Quantity" min={1} max={10} type="number" />
 
       {#if strikePlateQty > 1}
-         <InputImage src="/public/img/strike-plate.svg" alt="Strike Plate Offset" focused={sheaveOffsetFocused}>
-            <InputLength bind:value={strikePlateOffset} bind:focused={sheaveOffsetFocused} label="Strike Plate Offset" {metric} />
-         </InputImage>
+         <div transition:slide|local>
+            <InputImage src="/public/img/strike-plate.svg" alt="Strike Plate Offset" focused={sheaveOffsetFocused}>
+               <InputLength bind:value={strikePlateOffset} bind:focused={sheaveOffsetFocused} label="Strike Plate Offset" {metric} />
+            </InputImage>
+         </div>
       {/if}
-   </fieldset>
+   </Fieldset>
 </div>
 
 <style lang="scss">
@@ -1066,13 +968,6 @@
       display: flex;
       flex-wrap: wrap;
       align-items: flex-start;
-   }
-
-   fieldset {
-      flex-basis: calc(calc(500px - 100%) * 10000);
-      flex-grow: 1;
-      max-width: 500px;
-      min-width: 400px;
    }
 
    .sub-container {

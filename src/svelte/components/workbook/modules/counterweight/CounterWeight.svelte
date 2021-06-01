@@ -1,19 +1,18 @@
 <script>
    import { createEventDispatcher, onDestroy, onMount } from 'svelte';
-   import { fade, slide } from 'svelte/transition';
+   import { slide } from 'svelte/transition';
 
    import { inherit } from '../inherit';
    import { round, roundInc } from '../js/math';
-   import { getFromArray } from '../common';
+   import { getFromArray } from '../js/functions';
 
+   import { railSizes, ropeSizes } from '../js/tables';
    import * as tables from './tables';
 
    // Components
-   import { SelectSafety, SelectShoe } from '../../common';
+   import { Fieldset, SelectSafety, SelectShoe } from '../../common';
    import { Input, InputLength, InputWeight } from '../../../material/input';
    import { Option, Select } from '../../../material/select';
-   import { IconButton } from '../../../material/button';
-   import { Link } from '../../../material/button/icons';
 
    // Properties
    export let workbook = {};
@@ -127,7 +126,9 @@
 
    $: frameChannelLength = roundInc(cwtDBG + (model?.channelOffset ?? 0));
 
+   $: crossheadHeight = model?.crosshead.channel.depth ?? 0;
    $: crossheadWeight = (model?.crosshead.channel.weight ?? 0) * frameChannelLength + (model?.crosshead?.gusset?.weight ?? 0) * 2;
+
    $: plankWeight = (model?.plank.weight ?? 0) * frameChannelLength;
 
    $: steelFillerWeight = model?.fillerWeight(cwtDBG, weightWidth, 0.284, 8);
@@ -136,7 +137,8 @@
    // - Select Options
    $: modelOptions = getModelOptions(cwtModels, cwtDBG, cwtWeight, compensation);
 
-   $: console.log(model);
+   // Events
+   const onLink = (event) => dispatch(event.detail.cmd, event.detail.location);
 
    // Lifecycle
    onMount(() => {
@@ -144,81 +146,56 @@
       console.log(workbook);
    });
 
-   onDestroy(() => {
-      onSave();
-   });
+   onDestroy(() => onSave());
 </script>
 
-<fieldset>
-   <legend>Globals</legend>
-   <hr />
-   <div class="input-bump link">
-      <InputWeight value={capacity} display label="Capacity" {metric} />
-      <IconButton on:click={() => dispatch('changePage', 'Requirements')}>
-         <Link />
-      </IconButton>
-   </div>
-   <div class="input-bump link">
-      <Input value={`${cwtRoping}:1`} display label="Roping" />
-      <IconButton on:click={() => dispatch('changePage', 'Requirements')}>
-         <Link />
-      </IconButton>
-   </div>
-   <div class="input-bump link">
-      <InputWeight bind:value={carWeight} display={carWeightLink} label="Car Weight" step={0.01} {metric} />
-      {#if carWeightLink}
-         <IconButton on:click={() => dispatch('changeModule', carWeightLink)}>
-            <Link />
-         </IconButton>
-      {/if}
-   </div>
-</fieldset>
+<Fieldset title="Globals">
+   <InputWeight value={capacity} on:link={onLink} label="Capacity" link={{ cmd: 'changePage', location: 'Requirements' }} {metric} />
 
-<fieldset>
-   <legend>Properties</legend>
-   <hr />
-   <div class="input-bump">
-      <Select bind:value={cwtModel} label="Model">
-         {#each modelOptions as { text, disabled } (text)}
-            <Option {text} {disabled} selected={cwtModel === text} />
-         {/each}
-      </Select>
-   </div>
-   <div class="input-bump">
-      <div class="input-bump">
-         <Input bind:value={counterbalance} label="Counterbalance" list="counterbalance" suffix="%" type="number" />
-      </div>
-      <datalist id="counterbalance"><option value="40" /><option value="50" /></datalist>
-   </div>
-   <div class="input-bump">
-      <div class="input-bump">
-         <InputLength bind:value={cwtDBG} label="D.B.G." list="dbg" {metric} />
-      </div>
-      <datalist id="dbg">
-         <option value="30.125">2' - 6.125"</option>
-         <option value="38.75">3' - 2.75"</option>
-         <option value="57.25">4' - 9.25"</option>
-      </datalist>
-   </div>
-   <div class="input-bump">
-      <div class="input-bump">
-         <InputLength bind:value={weightWidth} label="Filler Weight Width" list="weight-width" {metric} />
-      </div>
-      <datalist id="weight-width">
-         <option value="6">6"</option>
-         <option value="8">8"</option>
-         <option value="10">10"</option>
-      </datalist>
-   </div>
-   <div class="input-bump ">
-      <InputWeight value={cwtWeight} display label="Total Weight" {metric} />
-   </div>
-</fieldset>
+   <Input value={`${cwtRoping}:1`} on:link={onLink} label="Roping" link={{ cmd: 'changePage', location: 'Requirements' }} />
 
-<fieldset>
-   <legend>Equipment</legend>
+   <InputWeight value={carWeight} on:link={onLink} label="Car Weight" link={{ cmd: 'changeModule', location: carWeightLink }} {metric} step={0.01} />
+</Fieldset>
 
+<Fieldset title="Properties">
+   <Select bind:value={cwtModel} label="Model">
+      {#each modelOptions as { text, disabled } (text)}
+         <Option {text} {disabled} selected={cwtModel === text} />
+      {/each}
+   </Select>
+
+   <Input bind:value={counterbalance} label="Counterbalance" list="counterbalance" suffix="%" type="number" />
+   <datalist id="counterbalance"><option value="40" /><option value="50" /></datalist>
+
+   <InputLength bind:value={cwtDBG} label="D.B.G." list="dbg" {metric} />
+   <datalist id="dbg">
+      <option value="30.125">2' - 6.125"</option>
+      <option value="38.75">3' - 2.75"</option>
+      <option value="57.25">4' - 9.25"</option>
+   </datalist>
+
+   <InputLength bind:value={weightWidth} label="Filler Weight Width" list="weight-width" {metric} />
+   <datalist id="weight-width">
+      <option value="6">6"</option>
+      <option value="8">8"</option>
+      <option value="10">10"</option>
+   </datalist>
+
+   <Select bind:value={cwtRailSize} label="Rail Size">
+      {#each railSizes as { name } (name)}
+         <Option text={name} />
+      {/each}
+   </Select>
+
+   <InputWeight value={cwtWeight} display label="Total Weight" {metric} />
+</Fieldset>
+
+<Fieldset title="Equipment">
    <SelectShoe bind:shoe bind:shoeHeight bind:shoeModel bind:shoeWeight {metric} railSize={cwtRailSize} {shoes} />
 
    <SelectSafety bind:safety bind:safetyHeight bind:safetyModel bind:safetyWeight {metric} optional railSize={cwtRailSize} {safeties} />
-</fieldset>
+</Fieldset>
+
+<Fieldset title="Dimensions">
+   <InputLength value={crossheadHeight} display label="Top Channel" {metric} />
+</Fieldset>

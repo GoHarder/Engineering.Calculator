@@ -1,8 +1,12 @@
 <script>
+   import { createEventDispatcher } from 'svelte';
+
    // Components
    import { round } from '../lib/round.js';
    import HelperText from './HelperText.svelte';
    import Input from './input/Input.svelte';
+   import { IconButton } from '../button';
+   import { Link } from '../button/icons';
 
    // Properties
    export let calc = 0;
@@ -12,6 +16,7 @@
    export let helperText = '';
    export let invalid = false;
    export let label = '';
+   export let link = false;
    export let list = '';
    export let override = false;
    export let max = undefined;
@@ -23,8 +28,8 @@
    export let value = '';
    export let variant = 'filled';
 
-   // Methods
    // Constants
+   const dispatch = createEventDispatcher();
    const parameters = {
       disableValidation,
       display,
@@ -42,9 +47,13 @@
 
    // Reactive Variables
    $: metricValue = round(value * 0.453592, 1);
+   $: classes = ['input-root', helperText ? '' : 'bump'].join(' ');
+
+   // Reactive Rules
+   $: if (link?.location) parameters.display = true;
 </script>
 
-<div class:metric-wrapper={metric}>
+<div class={classes}>
    <Input bind:disabled bind:calc bind:invalid bind:override bind:value {...parameters}>
       <span slot="helperText">
          {#if helperText}
@@ -55,5 +64,11 @@
 
    {#if metric}
       <span class="metric-value">{`(${metricValue} kg)`}</span>
+   {/if}
+
+   {#if link && link.location}
+      <IconButton on:click={() => dispatch('link', link)} title={link.location}>
+         <Link />
+      </IconButton>
    {/if}
 </div>

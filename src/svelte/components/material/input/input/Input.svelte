@@ -1,5 +1,5 @@
 <script>
-   import { onDestroy, onMount } from 'svelte';
+   import { createEventDispatcher, onDestroy, onMount } from 'svelte';
    import { MDCTextField } from '@material/textfield';
 
    // Components
@@ -7,6 +7,8 @@
    import Number from './Number.svelte';
    import Password from './Password.svelte';
    import Text from './Text.svelte';
+   import { IconButton } from '../../button';
+   import { Link } from '../../button/icons';
 
    // Parameters
    export let calc = 0;
@@ -16,6 +18,7 @@
    export let focused = false;
    export let invalid = undefined;
    export let label = '';
+   export let link = false;
    export let list = '';
    export let max = undefined;
    export let maxLength = undefined;
@@ -33,6 +36,8 @@
    export let variant = 'filled';
 
    // Constants
+   const dispatch = createEventDispatcher();
+
    const parameters = {
       display,
       invalid,
@@ -68,6 +73,8 @@
       $$slots.trailingIcon ? 'mdc-text-field--with-trailing-icon' : '',
    ].join(' ');
 
+   $: classes = ['input-root', $$slots.helperText ? '' : 'bump'].join(' ');
+
    // Reactive Rules
    $: if (TextField) {
       TextField.disabled = disabled;
@@ -75,6 +82,8 @@
    }
 
    $: if (!override && reset) value = calc;
+
+   $: if (link?.location) parameters.display = true;
 
    // Events
    const onFocus = (event) => {
@@ -133,34 +142,42 @@
    });
 </script>
 
-<div bind:this={bind2} class="input-wrapper">
-   <label bind:this={bind1} class={labelClass} for="input">
-      <span class="mdc-text-field__ripple" />
-      <span class="mdc-floating-label">{label}</span>
+<div class={classes}>
+   <div bind:this={bind2} class="input-wrapper">
+      <label bind:this={bind1} class={labelClass} for="input">
+         <span class="mdc-text-field__ripple" />
+         <span class="mdc-floating-label">{label}</span>
 
-      {#if reset}
-         {#if override}
-            <i on:click={onClick} class="material-icons mdc-text-field__icon mdc-text-field__icon--leading" title="Reset To Calculation" tabindex="0" role="button">
-               replay
-            </i>
+         {#if reset}
+            {#if override}
+               <i on:click={onClick} class="material-icons mdc-text-field__icon mdc-text-field__icon--leading" title="Reset To Calculation" tabindex="0" role="button">
+                  replay
+               </i>
+            {:else}
+               <i class="material-icons mdc-text-field__icon mdc-text-field__icon--leading"> create </i>
+            {/if}
          {:else}
-            <i class="material-icons mdc-text-field__icon mdc-text-field__icon--leading"> create </i>
+            <slot name="leadingIcon" />
          {/if}
-      {:else}
-         <slot name="leadingIcon" />
-      {/if}
 
-      {#if prefix}
-         <span class="mdc-text-field__affix mdc-text-field__affix--prefix">{prefix}</span>
-      {/if}
-      <svelte:component this={comp} bind:value on:focus={onFocus} on:change on:blur={onBlur} {...parameters} />
-      <slot name="trailingIcon" />
-      {#if suffix}
-         <span class="mdc-text-field__affix mdc-text-field__affix--suffix">{suffix}</span>
-      {/if}
-      <span class="mdc-line-ripple" />
-   </label>
-   <slot name="helperText" />
+         {#if prefix}
+            <span class="mdc-text-field__affix mdc-text-field__affix--prefix">{prefix}</span>
+         {/if}
+         <svelte:component this={comp} bind:value on:focus={onFocus} on:change on:blur={onBlur} {...parameters} />
+         <slot name="trailingIcon" />
+         {#if suffix}
+            <span class="mdc-text-field__affix mdc-text-field__affix--suffix">{suffix}</span>
+         {/if}
+         <span class="mdc-line-ripple" />
+      </label>
+      <slot name="helperText" />
+   </div>
+
+   {#if link && link.location}
+      <IconButton on:click={() => dispatch('link', link)} title={link.location}>
+         <Link />
+      </IconButton>
+   {/if}
 </div>
 
 <style lang="scss" global>
@@ -177,24 +194,37 @@
 
    .split {
       display: flex;
-      .input-wrapper {
+      .input-root {
          flex-grow: 1;
-         width: 50%;
+         width: calc(50% - 50px);
+         margin-bottom: 0;
       }
 
-      &.metric-wrapper .input-wrapper {
-         width: calc(50% - 50px);
-      }
+      // &.metric-wrapper .input-wrapper {
+      //    width: calc(50% - 50px);
+      // }
    }
-   .metric-wrapper {
+   // .metric-wrapper {
+   //    display: flex;
+   //    align-items: baseline;
+
+   //    .input-wrapper {
+   //       flex-grow: 1;
+   //    }
+   // }
+
+   .input-root {
       display: flex;
       align-items: baseline;
-
+      flex-grow: 1;
       .input-wrapper {
          flex-grow: 1;
       }
    }
 
+   .bump {
+      margin-bottom: 19px;
+   }
    .metric-value {
       width: 100px;
       margin-left: 12px;

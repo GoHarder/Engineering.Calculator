@@ -186,7 +186,7 @@
       flex-grow: 1;
       max-width: 100%;
       flex-basis: 100%;
-      padding: 16px;
+      padding: 16px 16px 0;
    }
 
    @media (min-width: 786px) {

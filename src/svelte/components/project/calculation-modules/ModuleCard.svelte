@@ -30,7 +30,7 @@
    </div>
    <div class="control">
       <span class="control-border">
-         <Checkbox bind:checked label="Add to workbook" />
+         <Checkbox bind:checked label="Add to workbook" bump={false} />
       </span>
    </div>
 </div>
@@ -87,13 +87,5 @@
       justify-content: center;
       width: 165px;
       pointer-events: none;
-
-      // span {
-      //    font: {
-      //       size: 12px;
-      //       weight: bold;
-      //    }
-      //    padding-left: 16px;
-      // }
    }
 </style>

@@ -1,17 +1,15 @@
 <script>
    import { createEventDispatcher, onDestroy, onMount } from 'svelte';
-   import { fade, slide } from 'svelte/transition';
-   import { floor, round } from '../js/math';
+   import { slide } from 'svelte/transition';
+   import { floor, round, toFractionString } from '../js/math';
    import * as tables from './tables';
    import * as options from './options';
 
    // Components
-   import { SteelOptions } from '../../common';
+   import { Fieldset, SteelOptions } from '../../common';
    import { Input, InputArea, InputLength, InputWeight } from '../../../material/input';
    import { Option, Select } from '../../../material/select';
    import { Checkbox } from '../../../material/checkbox';
-   import { IconButton } from '../../../material/button';
-   import { Link } from '../../../material/button/icons';
 
    // Properties
    export let workbook = {};
@@ -106,24 +104,9 @@
       }
    };
 
-   const toFraction = (num) => {
-      const tens = 10 ** (num.toString().length - 2);
-
-      const gcd = (a, b) => {
-         if (!b) return a;
-         return gcd(b, a % b);
-      };
-
-      let top = tens * num;
-
-      const split = gcd(top, tens);
-
-      return `${top / split}/${tens / split}`;
-   };
-
    const plateCalcs = (material, thickness, stringerSpacing) => {
       return {
-         name: `${toFraction(thickness)}" ${material}`,
+         name: `${toFractionString(thickness)}" ${material}`,
          thickness,
          varZu: round((thickness ** 2 * stringerSpacing) / 6, 2),
          varXx: round((thickness ** 3 * stringerSpacing) / 12, 6),
@@ -131,6 +114,8 @@
    };
 
    const getChannel = (name) => channel.find((row) => row.name === name);
+
+   const invalidChannel = (channel) => (channel?.stockStatus ?? 'Stocked') !== 'Stocked';
 
    const getToeGuardWeight = (doorWidth) => {
       const toeGuardWidth = doorWidth - 4;
@@ -248,13 +233,6 @@
    $: maxPlatformAreaPlus = maxPlatformArea * 1.05;
    $: minFreightCapacity = round(tables.capacityRating.find((row) => row.class === freight).rating * cabArea);
    $: designCapacity = capacity * (apta ? 1.5 : 1);
-
-   // - Error Checking
-   $: invalidMaxPlatformArea = cabArea > maxPlatformAreaPlus;
-   $: invalidStringer = (stringerChannel?.stockStatus ?? 'Stocked') !== 'Stocked';
-   $: invalidFrontChannel = (frontChannel?.stockStatus ?? 'Stocked') !== 'Stocked';
-
-   $: invalidMinFreightCapacity = minFreightCapacity > designCapacity;
 
    // - Wood Calculations
    $: woodPlatformAngle = angle?.find((row) => {
@@ -437,114 +415,78 @@
       disableSplit = false;
    }
 
-   // Lifecycle
-   onMount(() => {
-      getSteel(platformSteel);
-   });
+   // Events
+   const onLink = (event) => dispatch(event.detail.cmd, event.detail.location);
 
-   onDestroy(() => {
-      onSave();
-   });
+   // Lifecycle
+   onMount(() => getSteel(platformSteel));
+
+   onDestroy(() => onSave());
 </script>
 
 <div class="container">
-   <fieldset>
-      <legend>Globals</legend>
-      <hr />
+   <Fieldset title="Globals">
+      <InputWeight value={capacity} on:link={onLink} label="Capacity" link={{ cmd: 'changePage', location: 'Requirements' }} {metric} />
 
-      <div class="input-bump link">
-         <InputWeight value={capacity} display label="Capacity" {metric} />
-
-         <IconButton on:click={() => dispatch('changePage', 'Requirements')}>
-            <Link />
-         </IconButton>
-      </div>
-
-      <div class="input-bump link">
-         <Input value={`${loadingType}${freight !== 'None' ? ` ${freight}` : ''}`} display label="Loading" />
-
-         <IconButton on:click={() => dispatch('changePage', 'Requirements')}>
-            <Link />
-         </IconButton>
-      </div>
-   </fieldset>
+      <Input value={`${loadingType}${freight !== 'None' ? ` ${freight}` : ''}`} on:link={onLink} label="Loading" link={{ cmd: 'changePage', location: 'Requirements' }} />
+   </Fieldset>
 </div>
 
 <div class="container">
-   <fieldset>
-      <legend>Properties</legend>
-      <hr />
+   <Fieldset title="Properties">
+      <Select bind:value={platformMaterial} label="Material">
+         {#each options.platformMaterial as { text }}
+            <Option {text} />
+         {/each}
+      </Select>
 
-      <div class="input-bump">
-         <Select bind:value={platformMaterial} label="Material">
-            {#each options.platformMaterial as { text }}
-               <Option {text} />
-            {/each}
-         </Select>
-      </div>
+      <InputLength bind:value={platformWidth} label="Width" {metric} />
 
-      <div class="input-bump">
-         <InputLength bind:value={platformWidth} label="Width" {metric} />
-      </div>
+      <InputLength bind:value={platformDepth} label="Depth" {metric} />
 
-      <div class="input-bump">
-         <InputLength bind:value={platformDepth} label="Depth" {metric} />
-      </div>
+      <InputLength bind:value={platformFrontToRail} label="Front of Platform to Rail" {metric} />
 
-      <div class="input-bump">
-         <InputLength bind:value={platformFrontToRail} label="Front of Platform to Rail" {metric} />
-      </div>
-
-      <div class="input-bump">
-         <InputLength bind:value={platformThickness} display label="Thickness" {metric} />
-      </div>
+      <InputLength bind:value={platformThickness} display label="Thickness" {metric} />
 
       <div class="input-bump">
          <InputArea value={platformArea} display label="Area" {metric} />
       </div>
 
-      <div class="input-bump">
-         <InputWeight value={platformWeight} display label="Weight" {metric} />
-      </div>
+      <InputWeight value={platformWeight} display label="Weight" {metric} />
 
-      <div class="input-bump">
-         <Checkbox bind:checked={platformIsolation} disabled={disableIsolation} label="Isolation" />
-         <Checkbox bind:checked={apta} label="APTA" />
-      </div>
-   </fieldset>
+      <Checkbox bind:checked={platformIsolation} disabled={disableIsolation} label="Isolation" />
+
+      <Checkbox bind:checked={apta} label="APTA" />
+   </Fieldset>
 
    {#if platformMaterial === 'Steel'}
-      <fieldset transition:fade>
-         <legend>Steel</legend>
-         <hr />
+      <Fieldset title="Steel">
+         <Select bind:value={platformSteel} label="Type">
+            {#each options.steelType as { text }}
+               <Option {text} />
+            {/each}
+         </Select>
 
-         <div class="input-bump">
-            <Select bind:value={platformSteel} label="Type">
-               {#each options.steelType as { text }}
-                  <Option {text} />
-               {/each}
-            </Select>
-         </div>
+         <Checkbox bind:checked={platformSplit} disabled={disableSplit} label="Split" />
 
-         <div class="input-bump">
-            <Checkbox bind:checked={platformSplit} disabled={disableSplit} label="Split" />
-            <Checkbox bind:checked={platformHasSillChannel} label="Sill Channel" />
-         </div>
+         <Checkbox bind:checked={platformHasSillChannel} label="Sill Channel" />
 
-         <Select bind:value={platformStringer} disableValidation helperText="Channel isn't stocked check with purchasing" invalid={invalidStringer} label="Stringer">
+         <Select
+            bind:value={platformStringer}
+            disableValidation
+            helperText="Channel isn't stocked check with purchasing"
+            invalid={invalidChannel(stringerChannel)}
+            label="Stringer"
+         >
             <SteelOptions options={stringerOptions} selected={platformStringer} />
          </Select>
 
-         <div class="input-bump">
-            <Input bind:value={platformStringerQty} bind:override={platformStringerQtyOverride} calc={stringerQtyCalc} label="Stringer Quantity" reset type="number" />
-         </div>
+         <Input bind:value={platformStringerQty} bind:override={platformStringerQtyOverride} calc={stringerQtyCalc} label="Stringer Quantity" reset type="number" />
 
-         <div class="input-bump">
-            <Input bind:value={platformSideChannel} display label="Side Channel" />
-         </div>
+         <Input bind:value={platformSideChannel} display label="Side Channel" />
 
          {#if platformHasSillChannel}
-            <div class="input-bump" transition:slide>
+            <div transition:slide|local>
                <Input bind:value={platformSillChannel} display label="Sill Channel" />
             </div>
          {/if}
@@ -553,135 +495,87 @@
             bind:value={platformFrontChannel}
             disableValidation
             helperText="Channel isn't stocked check with purchasing"
-            invalid={invalidFrontChannel}
+            invalid={invalidChannel(frontChannel)}
             label="Front Channel"
          >
             <SteelOptions options={frontChannelOptions} selected={platformFrontChannel} />
          </Select>
 
-         <div class="input-bump">
-            <Input bind:value={platformBackChannel} display label="Back Channel" />
-         </div>
+         <Input bind:value={platformBackChannel} display label="Back Channel" />
 
-         <div class="input-bump">
-            <Select bind:value={platformFloorPlate} label="Floor Plate">
-               {#each floorPlateOptions as plate}
-                  <Option disabled={plate.disabled} text={plate.name} />
-               {/each}
-            </Select>
-         </div>
-      </fieldset>
+         <Select bind:value={platformFloorPlate} label="Floor Plate">
+            {#each floorPlateOptions as plate}
+               <Option disabled={plate.disabled} text={plate.name} />
+            {/each}
+         </Select>
+      </Fieldset>
    {/if}
 </div>
 
 <div class="container">
-   <fieldset>
-      <legend>Cab</legend>
-      <hr />
+   <Fieldset title="Cab">
+      <InputLength bind:value={cabHeight} label="Height" {metric} />
 
-      <div class="input-bump">
-         <InputLength bind:value={cabHeight} label="Height" {metric} />
-      </div>
+      <InputLength bind:value={cabWidth} label="Interior Width" {metric} />
 
-      <div class="input-bump">
-         <InputLength bind:value={cabWidth} label="Interior Width" {metric} />
-      </div>
-
-      <div class="input-bump">
-         <InputLength bind:value={cabDepth} label="Interior Depth" {metric} />
-      </div>
+      <InputLength bind:value={cabDepth} label="Interior Depth" {metric} />
 
       <div class="input-bump">
          <InputArea value={cabArea} display label="Interior Area" {metric} />
       </div>
 
-      <div class="input-bump">
-         <InputWeight bind:value={cabWeight} bind:override={cabWeightOverride} bind:calc={cabWeightCalc} label="Weight" reset {metric} />
-      </div>
+      <InputWeight bind:value={cabWeight} bind:override={cabWeightOverride} bind:calc={cabWeightCalc} label="Weight" reset {metric} />
 
-      <div class="input-bump">
-         <Select bind:value={doorQty} label="Door Quantity" {metric}>
-            {#each options.doorQty as { text }}
+      <Select bind:value={doorQty} label="Door Quantity" {metric}>
+         {#each options.doorQty as { text }}
+            <Option {text} />
+         {/each}
+      </Select>
+   </Fieldset>
+
+   <Fieldset title="Front Door">
+      <Select bind:value={door1Type} label="Door Type" {metric}>
+         {#each options.doorType as { text }}
+            <Option {text} />
+         {/each}
+      </Select>
+
+      <InputLength bind:value={door1Width} label="Width" {metric} />
+
+      <InputLength bind:value={door1Height} label="Height" {metric} />
+
+      <InputWeight bind:value={door1Weight} bind:override={door1WeightOverride} calc={door1WeightCalc} label="Weight" reset {metric} />
+
+      <InputWeight bind:value={toeGuard1Weight} bind:override={toeGuard1WeightOverride} calc={toeGuard1WeightCalc} label="Toe Guard Weight" reset step={0.01} {metric} />
+   </Fieldset>
+
+   {#if doorQty === 2}
+      <Fieldset title={`${door2Location} Door`}>
+         <Select bind:value={door2Location} label="Location" {metric}>
+            {#each options.doorLocation as { text }}
                <Option {text} />
             {/each}
          </Select>
-      </div>
-   </fieldset>
 
-   <fieldset>
-      <legend>Front Door</legend>
-      <hr />
-
-      <div class="input-bump">
-         <Select bind:value={door1Type} label="Door Type" {metric}>
+         <Select bind:value={door2Type} label="Door Type" {metric}>
             {#each options.doorType as { text }}
                <Option {text} />
             {/each}
          </Select>
-      </div>
 
-      <div class="input-bump">
-         <InputLength bind:value={door1Width} label="Width" {metric} />
-      </div>
+         <InputLength bind:value={door2Width} label="Width" {metric} />
 
-      <div class="input-bump">
-         <InputLength bind:value={door1Height} label="Height" {metric} />
-      </div>
+         <InputLength bind:value={door2Height} label="Height" {metric} />
 
-      <div class="input-bump">
-         <InputWeight bind:value={door1Weight} bind:override={door1WeightOverride} calc={door1WeightCalc} label="Weight" reset {metric} />
-      </div>
+         <InputWeight bind:value={door2Weight} bind:override={door2WeightOverride} calc={door2WeightCalc} label="Weight" reset {metric} />
 
-      <div class="input-bump">
-         <InputWeight bind:value={toeGuard1Weight} bind:override={toeGuard1WeightOverride} calc={toeGuard1WeightCalc} label="Toe Guard Weight" reset step={0.01} {metric} />
-      </div>
-   </fieldset>
-
-   {#if doorQty === 2}
-      <fieldset transition:fade>
-         <legend>{`${door2Location} Door`}</legend>
-         <hr />
-
-         <div class="input-bump">
-            <Select bind:value={door2Location} label="Location" {metric}>
-               {#each options.doorLocation as { text }}
-                  <Option {text} />
-               {/each}
-            </Select>
-         </div>
-
-         <div class="input-bump">
-            <Select bind:value={door2Type} label="Door Type" {metric}>
-               {#each options.doorType as { text }}
-                  <Option {text} />
-               {/each}
-            </Select>
-         </div>
-
-         <div class="input-bump">
-            <InputLength bind:value={door2Width} label="Width" {metric} />
-         </div>
-
-         <div class="input-bump">
-            <InputLength bind:value={door2Height} label="Height" {metric} />
-         </div>
-
-         <div class="input-bump">
-            <InputWeight bind:value={door2Weight} bind:override={door2WeightOverride} calc={door2WeightCalc} label="Weight" reset {metric} />
-         </div>
-
-         <div class="input-bump">
-            <InputWeight bind:value={toeGuard2Weight} bind:override={toeGuard2WeightOverride} calc={toeGuard2WeightCalc} label="Toe Guard Weight" reset step={0.01} {metric} />
-         </div>
-      </fieldset>
+         <InputWeight bind:value={toeGuard2Weight} bind:override={toeGuard2WeightOverride} calc={toeGuard2WeightCalc} label="Toe Guard Weight" reset step={0.01} {metric} />
+      </Fieldset>
    {/if}
 </div>
 
 <div class="container">
-   <fieldset>
-      <legend>Code Requirements</legend>
-      <hr />
-
+   <Fieldset title="Code Requirements">
       {#if loadingType === 'Passenger'}
          <div class="input-bump">
             <InputArea value={maxPlatformArea} display label="Max Inside Platform Area" {metric} />
@@ -692,7 +586,7 @@
             disableValidation
             display
             helperText={`Interior area exceeds max area + 5%`}
-            invalid={invalidMaxPlatformArea}
+            invalid={cabArea > maxPlatformAreaPlus}
             label="Max Inside Platform Area + 5%"
             {metric}
          />
@@ -704,12 +598,12 @@
             disableValidation
             display
             helperText="Capacity is below minimum freight capacity"
-            invalid={invalidMinFreightCapacity}
+            invalid={minFreightCapacity > designCapacity}
             label="Min. Freight Capacity"
             {metric}
          />
       {/if}
-   </fieldset>
+   </Fieldset>
 </div>
 
 <style lang="scss">
