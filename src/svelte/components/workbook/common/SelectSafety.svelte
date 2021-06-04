@@ -31,7 +31,7 @@
       safetyWeight = safety.weight;
    }
 
-   $: if (safetyModel !== 'None') {
+   $: if (safetyModel === 'None') {
       safetyHeight = 0;
       safetyWeight = 0;
    }
@@ -59,7 +59,9 @@
 </Select>
 
 {#if safetyModel === 'Other'}
-   <InputWeight bind:value={safetyWeight} label="Safety Weight" step={0.01} {metric} />
+   <div transition:slide|local>
+      <InputWeight bind:value={safetyWeight} label="Safety Weight" step={0.01} {metric} />
 
-   <InputLength bind:value={safetyHeight} label="Safety Height" {metric} />
+      <InputLength bind:value={safetyHeight} label="Safety Height" {metric} />
+   </div>
 {/if}

@@ -612,11 +612,4 @@
       flex-wrap: wrap;
       align-items: flex-start;
    }
-
-   fieldset {
-      flex-basis: calc(calc(600px - 100%) * 10000);
-      flex-grow: 1;
-      max-width: 500px;
-      min-width: 400px;
-   }
 </style>

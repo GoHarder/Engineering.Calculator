@@ -9,6 +9,7 @@
    import Text from './Text.svelte';
    import { IconButton } from '../../button';
    import { Link } from '../../button/icons';
+   import DataList from '../../../common/DataList.svelte';
 
    // Parameters
    export let calc = 0;
@@ -38,10 +39,10 @@
    // Constants
    const dispatch = createEventDispatcher();
 
-   const parameters = {
+   $: parameters = {
       display,
       invalid,
-      list,
+      // list,
       max,
       maxLength,
       min,
@@ -73,7 +74,7 @@
       $$slots.trailingIcon ? 'mdc-text-field--with-trailing-icon' : '',
    ].join(' ');
 
-   $: classes = ['input-root', $$slots.helperText ? '' : 'bump'].join(' ');
+   $: classes = ['input-root', $$slots.helperText ? '' : 'bump', 'mdc-menu-surface--anchor'].join(' ');
 
    // Reactive Rules
    $: if (TextField) {
@@ -83,7 +84,7 @@
 
    $: if (!override && reset) value = calc;
 
-   $: if (link?.location) parameters.display = true;
+   $: if (link?.location) display = true;
 
    // Events
    const onFocus = (event) => {
@@ -99,6 +100,8 @@
    const onClick = () => {
       override = false;
    };
+
+   const onSelect = (event) => (value = event.detail);
 
    // Lifecycle
    onMount(() => {
@@ -173,6 +176,8 @@
       <slot name="helperText" />
    </div>
 
+   <DataList on:select={onSelect} {list} {focused} />
+
    {#if link && link.location}
       <IconButton on:click={() => dispatch('link', link)} title={link.location}>
          <Link />
@@ -199,19 +204,7 @@
          width: calc(50% - 50px);
          margin-bottom: 0;
       }
-
-      // &.metric-wrapper .input-wrapper {
-      //    width: calc(50% - 50px);
-      // }
    }
-   // .metric-wrapper {
-   //    display: flex;
-   //    align-items: baseline;
-
-   //    .input-wrapper {
-   //       flex-grow: 1;
-   //    }
-   // }
 
    .input-root {
       display: flex;

@@ -76,21 +76,23 @@
 <!-- <Anchor> -->
 
 <div class={classes}>
-   <label bind:this={_label} class={labelClass}>
-      <span class="mdc-text-field__ripple" />
-      <span class="mdc-floating-label mdc-floating-label--float-above">{label}</span>
-      <select bind:value class="mdc-text-field__input" {...parameters} {disabled}>
-         {#if !value || askSelect}
-            <option value=" " disabled hidden selected>Select</option>
-         {/if}
-         <slot />
-      </select>
-      <span class="mdc-line-ripple" />
-   </label>
+   <div class="input-wrapper">
+      <label bind:this={_label} class={labelClass}>
+         <span class="mdc-text-field__ripple" />
+         <span class="mdc-floating-label mdc-floating-label--float-above">{label}</span>
+         <select bind:value class="mdc-text-field__input" {...parameters} {disabled}>
+            {#if !value || askSelect}
+               <option value=" " disabled hidden selected>Select</option>
+            {/if}
+            <slot />
+         </select>
+         <span class="mdc-line-ripple" />
+      </label>
 
-   {#if helperText}
-      <HelperText validation>{helperText}</HelperText>
-   {/if}
+      {#if helperText}
+         <HelperText validation>{helperText}</HelperText>
+      {/if}
+   </div>
 
    {#if link && link.location}
       <IconButton on:click={() => dispatch('link', link)} title={link.location}>

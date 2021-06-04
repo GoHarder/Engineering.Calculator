@@ -29,6 +29,7 @@ const railNotchVolume = (railSize, thickness) => {
 };
 
 const thruHoleDiameter = (size) => eval(size.replace(/-\d{2}\sUNC/, ''));
+
 const threadedHoleDiameter = (size) => {
    const sizes = [
       { name: '1/2-13 UNC', diameter: 0.417 },
@@ -41,26 +42,6 @@ const threadedHoleDiameter = (size) => {
 
 // 7.850 g/cm^3 ASTM A36 density
 // 0.2835992 lb/in^3
-
-const plate = {
-   name: '373-022',
-   shoes: ['ELSCO E'],
-   railSizes: ['8#'],
-   mountsTo: ['540'],
-   boltQty: 2,
-   cenToShoe: 2.25,
-   railToShoe: 2.4375,
-   mountToShoe: 0,
-   shoeBoltSize: '1/2-13 UNC',
-   mountBoltSize: '5/8-11 UNC',
-   railToFront: 1.25,
-   cenToMount: 3.75,
-   railToMount: 2.75,
-   mountToMount: 3.5,
-   railToBack: 7.75,
-   width: 0.625,
-   thickness: 0.5,
-};
 
 const getVolume = (plate, shoeHoleQty, mountHoleQty, countersink) => {
    const { width, railToFront, railToBack, thickness, railSizes, shoeBoltSize, mountBoltSize } = plate;
@@ -75,7 +56,37 @@ const getVolume = (plate, shoeHoleQty, mountHoleQty, countersink) => {
 const getWeight = (plate) => {
    const volume = getVolume(plate);
 
-   return round(volume * 0.2835992, 4);
+   return round(volume * 0.2835992, 3);
 };
 
 console.log(getWeight(plate));
+
+const railData = [
+   { railSize: '6.25#', width: 1, length: 1.1875, area: 1.18373 },
+   { railSize: '8#', width: 1, length: 1.4375, area: 1.43373 },
+   { railSize: '11#', width: 1, length: 1.6875, area: 1.68373 },
+   { railSize: '12#', width: 1, length: 1.9375, area: 1.93373 },
+   { railSize: '15#', width: 1, length: 2.1875, area: 2.18373 },
+   { railSize: '18.5#', width: 1.125, length: 2.1875, area: 2.4571675 },
+   { railSize: '22.5#', width: 1.5, length: 2.1875, area: 3.27748 },
+   { railSize: '30#', width: 1.625, length: 2.4375, area: 3.9571675 },
+];
+
+const shoe = {
+   name: '377',
+   width: 7.1875,
+   baseWidth: 5.1875,
+   height: 6.97,
+   railToBack: 5.625,
+   boltQty: 4,
+   cenToMount: 1.625,
+   railToMount: 2.625,
+   mountToMount: 2,
+   boltSize: '5/8-11 UNC',
+   weight: 11.86,
+   maxCapacity: 2000,
+   maxSpeed: 300,
+   manufacturer: 'Hollister-Whitney',
+   railSizes: ['8#', '11#', '12#', '15#', '18.5#'],
+   railContactHeight: 5.344,
+};

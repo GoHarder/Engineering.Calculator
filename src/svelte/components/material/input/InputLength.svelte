@@ -1,6 +1,5 @@
 <script>
    import { createEventDispatcher, onMount } from 'svelte';
-   import { slide } from 'svelte/transition';
    import { round, floor } from '../lib/round.js';
 
    // Components
@@ -8,6 +7,7 @@
    import Input from './input/Input.svelte';
    import { IconButton } from '../button';
    import { Link } from '../button/icons';
+   import DataList from '../../common/DataList.svelte';
 
    // Properties
    export let calc = 0;
@@ -32,7 +32,19 @@
 
    // Constants
    const dispatch = createEventDispatcher();
-   const parameters1 = {
+
+   // Variables
+   let feet = 0;
+   let inches = 0;
+   let feetFocused = false;
+   let inchFocused = false;
+   let options = [];
+
+   // Reactive Variables
+   $: metricValue = round(value * 0.0254, 2);
+   $: classes = ['input-root', 'split', 'mdc-menu-surface--anchor', helperText ? '' : 'bump'].join(' ');
+
+   $: parameters1 = {
       disableValidation,
       display,
       label,
@@ -46,7 +58,7 @@
       variant,
    };
 
-   const parameters2 = {
+   $: parameters2 = {
       disableValidation,
       display,
       label: '',
@@ -58,17 +70,6 @@
       type: 'number',
       variant,
    };
-
-   // Variables
-   let feet = 0;
-   let inches = 0;
-   let feetFocused = false;
-   let inchFocused = false;
-   let options = [];
-
-   // Reactive Variables
-   $: metricValue = round(value * 0.0254, 2);
-   $: classes = ['input-root', 'split', 'mdc-menu-surface--anchor', helperText ? '' : 'bump'].join(' ');
 
    // Reactive Rules
    $: if (feetFocused || inchFocused) {
@@ -100,6 +101,8 @@
       value = round(feet * 12 + event.target.valueAsNumber, 4);
    };
 
+   const onSelect = (event) => (value = event.detail);
+
    // Lifecycle
    onMount(() => {
       const optionSearch = document?.getElementById(list)?.querySelectorAll('option') ?? [];
@@ -125,18 +128,7 @@
       </span>
    </Input>
 
-   {#if list && focused}
-      <div class="mdc-menu mdc-menu-surface mdc-menu-surface-custom mdc-menu-surface--open" in:slide out:slide={{ delay: 250 }}>
-         <ul class="mdc-list" tabindex="-1">
-            {#each options as option (option.text)}
-               <li class="mdc-list-item" on:click={() => (value = option.value)}>
-                  <span class="mdc-list-item__ripple" />
-                  <span class="mdc-list-item__text">{option.text}</span>
-               </li>
-            {/each}
-         </ul>
-      </div>
-   {/if}
+   <DataList on:select={onSelect} {list} {focused} />
 
    {#if metric}
       <span class="metric-value">{`(${metricValue} m)`}</span>
@@ -148,10 +140,3 @@
       </IconButton>
    {/if}
 </div>
-
-<style lang="scss" global>
-   .mdc-menu-surface-custom {
-      top: 100%;
-      right: 0;
-   }
-</style>

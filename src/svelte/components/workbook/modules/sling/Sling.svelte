@@ -49,6 +49,7 @@
             platformFrontToBalance,
          },
          equipment: {
+            railLock,
             carTopWeight,
             doorOperatorWeight,
             miscEquipmentWeight,
@@ -266,8 +267,6 @@
 
    // Variables
 
-   let railLock = false; // if true then two shoe plates
-
    let carRailSize = module?.car?.railSize ?? '15#';
    let carDBG = module?.car?.dbg ?? 0;
 
@@ -295,6 +294,7 @@
    let outerSheaveMounting = module?.properties?.outerSheaveMounting ?? 'Support Plate';
    let plateMounting = module?.properties?.plateMounting ?? undefined;
 
+   let railLock = module?.equipment?.railLock ?? false; // if true then two shoe plates
    let carTopWeight = module?.equipment?.carTopWeight ?? 150;
    let miscEquipmentWeight = module?.equipment?.miscEquipmentWeight ?? 200;
    let doorOperatorWeight = module?.equipment?.doorOperatorWeight ?? 150;

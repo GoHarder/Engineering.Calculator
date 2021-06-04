@@ -42,3 +42,9 @@ export const cwtModels = [
    { name: '265', modelCheck: use265Check, fillerWeight: weight230 },
    { name: '266', modelCheck: use265Check, fillerWeight: weight230 },
 ];
+
+export const blocks = [
+   { name: '230-016', height: 6, depth: 5, weight: 13.1, striker: true },
+   { name: '230-022', height: 6, depth: 6, weight: 15.62, striker: false },
+   { name: '230-014', height: 5, depth: 5, weight: 10.486, striker: false },
+];

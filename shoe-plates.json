@@ -1,0 +1,1276 @@
+[
+   {
+      "_id": {
+         "$oid": "60919eca9a970d35ac94ea6c"
+      },
+      "shoes": [
+         "377"
+      ],
+      "shoeBoltSize": "5/8-11 UNC",
+      "cenToShoe": 1.625,
+      "railToShoe": 2.625,
+      "shoeToShoe": 2,
+      "mountBoltSize": "5/8-11 UNC",
+      "mountsTo": [
+         {
+            "products": [
+               "230",
+               "231",
+               "250",
+               "251"
+            ],
+            "cenToMount": 1.625,
+            "railToMount": 2.625,
+            "mountToMount": 2,
+            "width": 5,
+            "variants": [
+               {
+                  "name": "377-032",
+                  "railSizes": [
+                     "15#"
+                  ],
+                  "railToFront": 2,
+                  "railToBack": 5.625,
+                  "thickness": 0.5,
+                  "weight": 4.958
+               },
+               {
+                  "name": "377-031",
+                  "railSizes": [
+                     "8#"
+                  ],
+                  "railToFront": 1.25,
+                  "railToBack": 5.625,
+                  "thickness": 0.5,
+                  "weight": 3.929
+               },
+               {
+                  "name": "373-015",
+                  "railSizes": [
+                     "6.25#",
+                     "11#",
+                     "12#",
+                     "18.5#",
+                     "22.5#",
+                     "30#"
+                  ],
+                  "thickness": 0.625
+               }
+            ]
+         },
+         {
+            "products": [
+               "245"
+            ],
+            "cenToMount": 2,
+            "railToMount": 3.625,
+            "mountToMount": 2,
+            "width": 6,
+            "variants": [
+               {
+                  "name": "373-015",
+                  "railSizes": [
+                     "6.25#",
+                     "8#",
+                     "11#",
+                     "12#",
+                     "15#",
+                     "18.5#",
+                     "22.5#",
+                     "30#"
+                  ],
+                  "thickness": 0.625
+               }
+            ]
+         },
+         {
+            "products": [
+               "540"
+            ],
+            "cenToMount": 3.75,
+            "railToMount": 2.5,
+            "mountToMount": 3.5,
+            "width": 9.25,
+            "variants": [
+               {
+                  "name": "373-015",
+                  "railSizes": [
+                     "6.25#",
+                     "8#",
+                     "11#",
+                     "12#",
+                     "15#",
+                     "18.5#",
+                     "22.5#",
+                     "30#"
+                  ],
+                  "thickness": 0.625
+               }
+            ]
+         },
+         {
+            "products": [
+               "480",
+               "481",
+               "481-D",
+               "481-T"
+            ],
+            "cenToMount": 4,
+            "railToMount": 2,
+            "mountToMount": 3.125,
+            "width": 10,
+            "variants": [
+               {
+                  "name": "373-015",
+                  "railSizes": [
+                     "6.25#",
+                     "8#",
+                     "11#",
+                     "12#",
+                     "15#",
+                     "18.5#",
+                     "22.5#",
+                     "30#"
+                  ],
+                  "thickness": 0.625
+               }
+            ]
+         },
+         {
+            "products": [
+               "7T",
+               "6TS"
+            ],
+            "cenToMount": 4.875,
+            "railToMount": 3.5,
+            "mountToMount": 3.125,
+            "width": 12,
+            "variants": [
+               {
+                  "name": "373-015",
+                  "railSizes": [
+                     "6.25#",
+                     "8#",
+                     "11#",
+                     "12#",
+                     "15#",
+                     "18.5#",
+                     "22.5#",
+                     "30#"
+                  ],
+                  "thickness": 0.625
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "_id": {
+         "$oid": "60919eca9a970d35ac94ea6d"
+      },
+      "shoes": [
+         "378",
+         "380",
+         "382",
+         "385",
+         "386",
+         "ELSCO A",
+         "ELSCO B",
+         "ELSCO SA-15",
+         "ELSCO SA-8",
+         "ELSCO EXP-3",
+         "ELSCO EXP-6"
+      ],
+      "shoeBoltSize": "5/8-11 UNC",
+      "cenToShoe": 2.75,
+      "railToShoe": 2.25,
+      "shoeToShoe": 3,
+      "mountBoltSize": "5/8-11 UNC",
+      "mountsTo": [
+         {
+            "products": [
+               "7T",
+               "6TS"
+            ],
+            "cenToMount": 4.875,
+            "railToMount": 3.5,
+            "mountToMount": 3.5,
+            "width": 12,
+            "variants": [
+               {
+                  "name": "378-032",
+                  "railSizes": [
+                     "15#"
+                  ],
+                  "railToFront": 2,
+                  "railToBack": 8,
+                  "thickness": 0.75,
+                  "weight": 24.56
+               }
+            ]
+         },
+         {
+            "products": [
+               "8TS"
+            ],
+            "cenToMount": 5.75,
+            "railToMount": 3.5,
+            "mountToMount": 3.5,
+            "width": 14.5,
+            "variants": [
+               {
+                  "name": "373-015",
+                  "railSizes": [
+                     "6.25#",
+                     "8#",
+                     "11#",
+                     "12#",
+                     "15#",
+                     "18.5#",
+                     "22.5#",
+                     "30#"
+                  ],
+                  "thickness": 0.75
+               }
+            ]
+         },
+         {
+            "products": [
+               "10TS"
+            ],
+            "cenToMount": 6.875,
+            "railToMount": 3.5,
+            "mountToMount": 3.5,
+            "width": 16.5,
+            "variants": [
+               {
+                  "name": "373-015",
+                  "railSizes": [
+                     "6.25#",
+                     "8#",
+                     "11#",
+                     "12#",
+                     "15#",
+                     "18.5#",
+                     "22.5#",
+                     "30#"
+                  ],
+                  "thickness": 0.75
+               }
+            ]
+         },
+         {
+            "products": [
+               "6TS-TD-LD"
+            ],
+            "cenToMount": 4.875,
+            "railToMount": 3.5,
+            "mountToMount": 3.5,
+            "width": 12,
+            "variants": [
+               {
+                  "name": "373-018-001",
+                  "railSizes": [
+                     "8#"
+                  ],
+                  "railToFront": 1.3125,
+                  "railToBack": 10.6875,
+                  "thickness": 0.75,
+                  "weight": 29.808
+               },
+               {
+                  "name": "373-018-002",
+                  "railSizes": [
+                     "12#"
+                  ],
+                  "railToFront": 1.75,
+                  "railToBack": 10.25,
+                  "thickness": 0.75,
+                  "weight": 29.715
+               },
+               {
+                  "name": "373-018-003",
+                  "railSizes": [
+                     "15#"
+                  ],
+                  "railToFront": 2,
+                  "railToBack": 10,
+                  "thickness": 0.75,
+                  "weight": 29.662
+               },
+               {
+                  "name": "373-018-004",
+                  "railSizes": [
+                     "18.5#"
+                  ],
+                  "railToFront": 2,
+                  "railToBack": 10,
+                  "thickness": 0.75,
+                  "weight": 29.545
+               }
+            ]
+         },
+         {
+            "products": [
+               "8TS-TD-LD-OH"
+            ],
+            "cenToMount": 5.875,
+            "railToMount": 3.5,
+            "mountToMount": 3.5,
+            "width": 14,
+            "variants": [
+               {
+                  "name": "373-020-004",
+                  "railSizes": [
+                     "18.5#"
+                  ],
+                  "railToFront": 2,
+                  "railToBack": 10,
+                  "thickness": 0.75,
+                  "weight": 34.708
+               },
+               {
+                  "name": "373-020-003",
+                  "railSizes": [
+                     "15#"
+                  ],
+                  "railToFront": 2,
+                  "railToBack": 10,
+                  "thickness": 0.75,
+                  "weight": 34.766
+               },
+               {
+                  "name": "373-020-002",
+                  "railSizes": [
+                     "12#"
+                  ],
+                  "railToFront": 1.75,
+                  "railToBack": 10.25,
+                  "thickness": 0.75,
+                  "weight": 34.819
+               },
+               {
+                  "name": "373-020-001",
+                  "railSizes": [
+                     "8#"
+                  ],
+                  "railToFront": 1.3125,
+                  "railToBack": 10.6875,
+                  "thickness": 0.75,
+                  "weight": 34.912
+               }
+            ]
+         },
+         {
+            "products": [
+               "540"
+            ],
+            "cenToMount": 3.75,
+            "railToMount": 2.5,
+            "mountToMount": 3.5,
+            "width": 10,
+            "variants": [
+               {
+                  "name": "373-015",
+                  "railSizes": [
+                     "6.25#",
+                     "8#",
+                     "11#",
+                     "12#",
+                     "15#",
+                     "18.5#",
+                     "22.5#",
+                     "30#"
+                  ],
+                  "thickness": 0.625
+               }
+            ]
+         },
+         {
+            "products": [
+               "480",
+               "481",
+               "481-D",
+               "481-T"
+            ],
+            "cenToMount": 4,
+            "railToMount": 2,
+            "mountToMount": 3.125,
+            "width": 10,
+            "variants": [
+               {
+                  "name": "378-033",
+                  "railSizes": [
+                     "15#"
+                  ],
+                  "railToFront": 2,
+                  "railToBack": 6.375,
+                  "thickness": 0.625,
+                  "weight": 13.9
+               }
+            ]
+         },
+         {
+            "products": [
+               "245",
+               "246"
+            ],
+            "cenToMount": 2,
+            "railToMount": 3.63,
+            "mountToMount": 2.38,
+            "width": 6,
+            "variants": [
+               {
+                  "name": "373-015",
+                  "railSizes": [
+                     "6.25#",
+                     "8#",
+                     "11#",
+                     "12#",
+                     "15#",
+                     "18.5#",
+                     "22.5#",
+                     "30#"
+                  ],
+                  "thickness": 0.625
+               }
+            ]
+         },
+         {
+            "products": [
+               "230",
+               "231",
+               "250",
+               "251"
+            ],
+            "cenToMount": 1.4375,
+            "railToMount": 2.75,
+            "mountToMount": 2,
+            "width": 5,
+            "variants": [
+               {
+                  "name": "373-015",
+                  "railSizes": [
+                     "6.25#",
+                     "8#",
+                     "11#",
+                     "12#",
+                     "15#",
+                     "18.5#",
+                     "22.5#",
+                     "30#"
+                  ],
+                  "thickness": 0.625
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "_id": {
+         "$oid": "60919eca9a970d35ac94ea6e"
+      },
+      "shoes": [
+         "ELSCO C",
+         "ELSCO D"
+      ],
+      "shoeBoltSize": "1/2-13 UNC",
+      "cenToShoe": 1.1875,
+      "railToShoe": 1.25,
+      "shoeToShoe": 2.375,
+      "mountBoltSize": "1/2-13 UNC",
+      "mountsTo": [
+         {
+            "products": [
+               "230",
+               "231",
+               "250",
+               "251"
+            ],
+            "cenToMount": 1.4375,
+            "railToMount": 2.75,
+            "mountToMount": 2,
+            "width": 6,
+            "variants": [
+               {
+                  "name": "373-021",
+                  "railSizes": [
+                     "8#"
+                  ],
+                  "railToFront": 1.25,
+                  "railToBack": 5.5,
+                  "thickness": 0.75,
+                  "weight": 7.93
+               },
+               {
+                  "name": "373-015",
+                  "railSizes": [
+                     "6.25#",
+                     "11#",
+                     "12#",
+                     "15#",
+                     "18.5#",
+                     "22.5#",
+                     "30#"
+                  ],
+                  "thickness": 0.75
+               }
+            ]
+         },
+         {
+            "products": [
+               "245"
+            ],
+            "cenToMount": 2,
+            "railToMount": 3.625,
+            "mountToMount": 2,
+            "width": 6,
+            "variants": [
+               {
+                  "name": "373-015",
+                  "railSizes": [
+                     "6.25#",
+                     "8#",
+                     "11#",
+                     "12#",
+                     "15#",
+                     "18.5#",
+                     "22.5#",
+                     "30#"
+                  ],
+                  "thickness": 0.625
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "_id": {
+         "$oid": "60919eca9a970d35ac94ea6f"
+      },
+      "shoes": [
+         "379"
+      ],
+      "shoeBoltSize": "5/8-11 UNC",
+      "cenToShoe": 1.75,
+      "railToShoe": 1.875,
+      "shoeToShoe": 2.75,
+      "mountBoltSize": "5/8-11 UNC",
+      "mountsTo": [
+         {
+            "products": [
+               "230",
+               "231",
+               "250",
+               "251"
+            ],
+            "cenToMount": 1.4375,
+            "railToMount": 2.875,
+            "mountToMount": 2.75,
+            "width": 5,
+            "variants": [
+               {
+                  "name": "373-015",
+                  "railSizes": [
+                     "6.25#",
+                     "8#",
+                     "11#",
+                     "12#",
+                     "15#",
+                     "18.5#",
+                     "22.5#",
+                     "30#"
+                  ],
+                  "thickness": 0.625
+               }
+            ]
+         },
+         {
+            "products": [
+               "245"
+            ],
+            "cenToMount": 2,
+            "railToMount": 3.625,
+            "mountToMount": 2,
+            "width": 6,
+            "variants": [
+               {
+                  "name": "373-015",
+                  "railSizes": [
+                     "6.25#",
+                     "8#",
+                     "11#",
+                     "12#",
+                     "15#",
+                     "18.5#",
+                     "22.5#",
+                     "30#"
+                  ],
+                  "thickness": 0.625
+               }
+            ]
+         },
+         {
+            "products": [
+               "7T",
+               "6TS"
+            ],
+            "cenToMount": 4.875,
+            "railToMount": 3.5,
+            "mountToMount": 3.5,
+            "width": 12,
+            "variants": [
+               {
+                  "name": "373-015",
+                  "railSizes": [
+                     "6.25#",
+                     "8#",
+                     "11#",
+                     "12#",
+                     "15#",
+                     "18.5#",
+                     "22.5#",
+                     "30#"
+                  ],
+                  "thickness": 0.75
+               }
+            ]
+         },
+         {
+            "products": [
+               "540"
+            ],
+            "cenToMount": 3.75,
+            "railToMount": 2.5,
+            "mountToMount": 3.5,
+            "width": 10,
+            "variants": [
+               {
+                  "name": "373-015",
+                  "railSizes": [
+                     "6.25#",
+                     "8#",
+                     "11#",
+                     "12#",
+                     "15#",
+                     "18.5#",
+                     "22.5#",
+                     "30#"
+                  ],
+                  "thickness": 0.625
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "_id": {
+         "$oid": "60919eca9a970d35ac94ea70"
+      },
+      "shoes": [
+         "383"
+      ],
+      "shoeBoltSize": "5/8-11 UNC",
+      "cenToShoe": 1.4375,
+      "railToShoe": 4.75,
+      "shoeToShoe": 0,
+      "mountBoltSize": "5/8-11 UNC",
+      "mountsTo": [
+         {
+            "products": [
+               "230",
+               "231",
+               "250",
+               "251"
+            ],
+            "cenToMount": 1.4375,
+            "railToMount": 4.75,
+            "mountToMount": 0,
+            "width": 5,
+            "variants": [
+               {
+                  "name": "373-015",
+                  "railSizes": [
+                     "6.25#",
+                     "8#",
+                     "11#",
+                     "12#",
+                     "15#",
+                     "18.5#",
+                     "22.5#",
+                     "30#"
+                  ],
+                  "thickness": 0.625
+               }
+            ]
+         },
+         {
+            "mountsTo": [
+               "245"
+            ],
+            "cenToMount": 2,
+            "railToMount": 3.625,
+            "mountToMount": 2,
+            "width": 6,
+            "variants": [
+               {
+                  "name": "373-015",
+                  "railSizes": [
+                     "6.25#",
+                     "8#",
+                     "11#",
+                     "12#",
+                     "15#",
+                     "18.5#",
+                     "22.5#",
+                     "30#"
+                  ],
+                  "thickness": 0.625
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "_id": {
+         "$oid": "60919eca9a970d35ac94ea71"
+      },
+      "shoes": [
+         "381"
+      ],
+      "shoeBoltSize": "3/4-10 UNC",
+      "cenToShoe": 4,
+      "railToShoe": 2.5,
+      "shoeToShoe": 3.5,
+      "mountBoltSize": "3/4-10 UNC",
+      "mountsTo": [
+         {
+            "products": [
+               "8TS"
+            ],
+            "cenToMount": 5.75,
+            "railToMount": 3.5,
+            "mountToMount": 3.5,
+            "width": 13.5,
+            "variants": [
+               {
+                  "name": "373-015",
+                  "railSizes": [
+                     "6.25#",
+                     "8#",
+                     "11#",
+                     "12#",
+                     "15#",
+                     "18.5#",
+                     "22.5#",
+                     "30#"
+                  ],
+                  "thickness": 0.75
+               }
+            ]
+         },
+         {
+            "mountsTo": [
+               "10TS"
+            ],
+            "cenToMount": 6.875,
+            "railToMount": 3.5,
+            "mountToMount": 3.5,
+            "width": 17.25,
+            "variants": [
+               {
+                  "name": "373-015",
+                  "railSizes": [
+                     "6.25#",
+                     "8#",
+                     "11#",
+                     "12#",
+                     "15#",
+                     "18.5#",
+                     "22.5#",
+                     "30#"
+                  ],
+                  "thickness": 1
+               }
+            ]
+         },
+         {
+            "products": [
+               "12TS"
+            ],
+            "cenToMount": 8.1875,
+            "railToMount": 3.5,
+            "mountToMount": 3.5,
+            "width": 18.5,
+            "variants": [
+               {
+                  "name": "373-015",
+                  "railSizes": [
+                     "6.25#",
+                     "8#",
+                     "11#",
+                     "12#",
+                     "15#",
+                     "18.5#",
+                     "22.5#",
+                     "30#"
+                  ],
+                  "thickness": 1
+               }
+            ]
+         },
+         {
+            "products": [
+               "480",
+               "481",
+               "481-D",
+               "481-T"
+            ],
+            "cenToMount": 4,
+            "railToMount": 2.5,
+            "mountToMount": 3.5,
+            "width": 11,
+            "variants": [
+               {
+                  "name": "373-015",
+                  "railSizes": [
+                     "6.25#",
+                     "8#",
+                     "11#",
+                     "12#",
+                     "15#",
+                     "18.5#",
+                     "22.5#",
+                     "30#"
+                  ],
+                  "thickness": 0.75
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "_id": {
+         "$oid": "60919eca9a970d35ac94ea72"
+      },
+      "shoes": [
+         "371-CI",
+         "371-CS"
+      ],
+      "shoeBoltSize": "5/8-11 UNC",
+      "cenToShoe": 3.75,
+      "railToShoe": 2.5,
+      "shoeToShoe": 3.5,
+      "mountBoltSize": "5/8-11 UNC",
+      "mountsTo": [
+         {
+            "products": [
+               "7T",
+               "6TS"
+            ],
+            "cenToMount": 4.875,
+            "railToMount": 3.5,
+            "mountToMount": 3.5,
+            "width": 11.75,
+            "variants": [
+               {
+                  "name": "373-015",
+                  "railSizes": [
+                     "6.25#",
+                     "8#",
+                     "11#",
+                     "12#",
+                     "15#",
+                     "18.5#",
+                     "22.5#",
+                     "30#"
+                  ],
+                  "thickness": 0.625
+               }
+            ]
+         },
+         {
+            "products": [
+               "8TS"
+            ],
+            "cenToMount": 5.75,
+            "railToMount": 3.5,
+            "mountToMount": 3.5,
+            "width": 13.25,
+            "variants": [
+               {
+                  "name": "373-015",
+                  "railSizes": [
+                     "6.25#",
+                     "8#",
+                     "11#",
+                     "12#",
+                     "15#",
+                     "18.5#",
+                     "22.5#",
+                     "30#"
+                  ],
+                  "thickness": 0.625
+               }
+            ]
+         },
+         {
+            "products": [
+               "10TS"
+            ],
+            "cenToMount": 6.375,
+            "railToMount": 2.25,
+            "mountToMount": 3.5,
+            "width": 15,
+            "variants": [
+               {
+                  "name": "373-015",
+                  "railSizes": [
+                     "6.25#",
+                     "8#",
+                     "11#",
+                     "12#",
+                     "15#",
+                     "18.5#",
+                     "22.5#",
+                     "30#"
+                  ],
+                  "thickness": 0.75
+               }
+            ]
+         },
+         {
+            "products": [
+               "12TS"
+            ],
+            "cenToMount": 8,
+            "railToMount": 3.5,
+            "mountToMount": 3.5,
+            "width": 18.5,
+            "variants": [
+               {
+                  "name": "373-015",
+                  "railSizes": [
+                     "6.25#",
+                     "8#",
+                     "11#",
+                     "12#",
+                     "15#",
+                     "18.5#",
+                     "22.5#",
+                     "30#"
+                  ],
+                  "thickness": 1
+               }
+            ]
+         },
+         {
+            "products": [
+               "480",
+               "481",
+               "481-D",
+               "481-T"
+            ],
+            "cenToMount": 3.75,
+            "railToMount": 2.5,
+            "mountToMount": 3.5,
+            "width": 11,
+            "variants": [
+               {
+                  "name": "373-015",
+                  "railSizes": [
+                     "6.25#",
+                     "8#",
+                     "11#",
+                     "12#",
+                     "15#",
+                     "18.5#",
+                     "22.5#",
+                     "30#"
+                  ],
+                  "thickness": 0.75
+               }
+            ]
+         },
+         {
+            "products": [
+               "540"
+            ],
+            "cenToMount": 3.75,
+            "railToMount": 2.5,
+            "mountToMount": 3.5,
+            "width": 10,
+            "variants": [
+               {
+                  "name": "373-015",
+                  "railSizes": [
+                     "6.25#",
+                     "8#",
+                     "11#",
+                     "12#",
+                     "15#",
+                     "18.5#",
+                     "22.5#",
+                     "30#"
+                  ],
+                  "thickness": 0.625
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "_id": {
+         "$oid": "60919eca9a970d35ac94ea73"
+      },
+      "shoes": [
+         "376"
+      ],
+      "shoeBoltSize": "5/8-11 UNC",
+      "cenToShoe": 1.4375,
+      "railToShoe": 4,
+      "shoeToShoe": 1.75,
+      "mountBoltSize": "5/8-11 UNC",
+      "mountsTo": [
+         {
+            "products": [
+               "230",
+               "231",
+               "250",
+               "251"
+            ],
+            "cenToMount": 1.4375,
+            "railToMount": 4,
+            "mountToMount": 1.75,
+            "width": 6,
+            "variants": [
+               {
+                  "name": "373-015",
+                  "railSizes": [
+                     "6.25#",
+                     "8#",
+                     "11#",
+                     "12#",
+                     "15#",
+                     "18.5#",
+                     "22.5#",
+                     "30#"
+                  ],
+                  "thickness": 0.625
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "_id": {
+         "$oid": "60919eca9a970d35ac94ea74"
+      },
+      "shoes": [
+         "ELSCO SC-8",
+         "ELSCO SD-8"
+      ],
+      "cenToShoe": 1.1875,
+      "railToShoe": 1.5,
+      "shoeToShoe": 2.375,
+      "shoeBoltSize": "1/2-13 UNC",
+      "mountBoltSize": "1/2-13 UNC",
+      "mountsTo": [
+         {
+            "products": [
+               "230",
+               "231",
+               "250",
+               "251"
+            ],
+            "cenToMount": 1.4375,
+            "railToMount": 2.75,
+            "mountToMount": 2,
+            "width": 5,
+            "variants": [
+               {
+                  "name": "373-015",
+                  "railSizes": [
+                     "6.25#",
+                     "8#",
+                     "11#",
+                     "12#",
+                     "15#",
+                     "18.5#",
+                     "22.5#",
+                     "30#"
+                  ],
+                  "thickness": 0.625
+               }
+            ]
+         },
+         {
+            "products": [
+               "540"
+            ],
+            "cenToMount": 3.75,
+            "railToMount": 2.5,
+            "mountToMount": 3.5,
+            "width": 10,
+            "variants": [
+               {
+                  "name": "373-015",
+                  "railSizes": [
+                     "6.25#",
+                     "8#",
+                     "11#",
+                     "12#",
+                     "15#",
+                     "18.5#",
+                     "22.5#",
+                     "30#"
+                  ],
+                  "thickness": 0.625
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "_id": {
+         "$oid": "60919eca9a970d35ac94ea75"
+      },
+      "shoes": [
+         "ELPRO 16SS"
+      ],
+      "shoeBoltSize": "5/8-11 UNC",
+      "cenToShoe": 2.75,
+      "railToShoe": 2.25,
+      "shoeToShoe": 3,
+      "mountBoltSize": "5/8-11 UNC",
+      "mountsTo": [
+         {
+            "products": [
+               "230",
+               "231",
+               "250",
+               "251"
+            ],
+            "cenToMount": 1.4375,
+            "railToMount": 2.75,
+            "mountToMount": 2,
+            "width": 8,
+            "variants": [
+               {
+                  "name": "373-015",
+                  "railSizes": [
+                     "6.25#",
+                     "8#",
+                     "11#",
+                     "12#",
+                     "15#",
+                     "18.5#",
+                     "22.5#",
+                     "30#"
+                  ],
+                  "thickness": 0.625
+               }
+            ]
+         },
+         {
+            "products": [
+               "480",
+               "481",
+               "481-D",
+               "481-T"
+            ],
+            "cenToMount": 4,
+            "railToMount": 2,
+            "mountToMount": 3.125,
+            "width": 11,
+            "variants": [
+               {
+                  "name": "373-015",
+                  "railSizes": [
+                     "6.25#",
+                     "8#",
+                     "11#",
+                     "12#",
+                     "15#",
+                     "18.5#",
+                     "22.5#",
+                     "30#"
+                  ],
+                  "thickness": 0.625
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "_id": {
+         "$oid": "60919eca9a970d35ac94ea76"
+      },
+      "shoes": [
+         "ELPRO 33SRG"
+      ],
+      "shoeBoltSize": "5/8-11 UNC",
+      "cenToShoe": 1.375,
+      "railToShoe": 3.625,
+      "shoeToShoe": 0,
+      "mountBoltSize": "5/8-11 UNC",
+      "mountsTo": [
+         {
+            "products": [
+               "230",
+               "231",
+               "250",
+               "251"
+            ],
+            "cenToMount": 1.4375,
+            "railToMount": 2.75,
+            "mountToMount": 2,
+            "width": 6,
+            "variants": [
+               {
+                  "name": "373-015",
+                  "railSizes": [
+                     "6.25#",
+                     "8#",
+                     "11#",
+                     "12#",
+                     "15#",
+                     "18.5#",
+                     "22.5#",
+                     "30#"
+                  ],
+                  "thickness": 0.625
+               }
+            ]
+         },
+         {
+            "products": [
+               "480",
+               "481",
+               "481-D",
+               "481-T"
+            ],
+            "cenToMount": 4,
+            "railToMount": 2,
+            "mountToMount": 3.125,
+            "width": 10,
+            "variants": [
+               {
+                  "name": "373-015",
+                  "railSizes": [
+                     "6.25#",
+                     "8#",
+                     "11#",
+                     "12#",
+                     "15#",
+                     "18.5#",
+                     "22.5#",
+                     "30#"
+                  ],
+                  "thickness": 0.625
+               }
+            ]
+         }
+      ]
+   }
+]

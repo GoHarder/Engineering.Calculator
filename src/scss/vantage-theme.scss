@@ -14,3 +14,21 @@ $mdc-elevation-3: 0 3px 3px -2px rgb(0 0 0 / 20%), 0 3px 4px 0 rgb(0 0 0 / 14%),
 @mixin vantage-border {
    border-top: 5px solid $mdc-theme-primary;
 }
+
+@mixin vantage-fieldset {
+   @include vantage-paper;
+   border: none;
+   margin: 5px;
+
+   hr {
+      clear: both;
+      border: 1px solid $mdc-theme-primary;
+   }
+
+   legend {
+      font-size: 1.1rem;
+      margin: 6px 0 10px;
+      float: left;
+      clear: right;
+   }
+}

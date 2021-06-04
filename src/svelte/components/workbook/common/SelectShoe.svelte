@@ -51,7 +51,9 @@
 </Select>
 
 {#if shoeModel === 'Other'}
-   <InputWeight bind:value={shoeWeight} label="Weight per Shoe" {metric} />
+   <div transition:slide|local>
+      <InputWeight bind:value={shoeWeight} label="Weight per Shoe" {metric} />
 
-   <InputLength bind:value={shoeHeight} label="Shoe Height" {metric} />
+      <InputLength bind:value={shoeHeight} label="Shoe Height" {metric} />
+   </div>
 {/if}

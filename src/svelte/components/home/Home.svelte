@@ -343,7 +343,7 @@
       align-items: center;
       justify-content: space-between;
       border-radius: 4px;
-      padding: 14px;
+      padding: 19px 19px 0;
       background-color: #ffffff;
       max-width: 835px;
       width: 100%;
@@ -354,7 +354,8 @@
          max-width: 700px;
       }
       .box.n2 {
-         margin-left: 8px;
+         margin-left: 10px;
+         margin-bottom: 20px;
       }
    }
 
