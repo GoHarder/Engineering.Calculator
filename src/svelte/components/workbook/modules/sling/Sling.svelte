@@ -584,7 +584,7 @@
 
    $: switch (sheaveConfig) {
       case 'P-O':
-         sheaveOffsetImage = '/public/img/sheave-offset-1.svg';
+         sheaveOffsetImage = '/public/img/sling/sheave-offset-1.svg';
          topChannelSectionModulus = sheaveQty > 1 ? modulusAtEdgeOffset(overallWeight, sheaveOffset, 14000) : modulusAtCen(overallWeight, topChannelLength, 14000);
          bottomChannelSectionModulus =
             strikePlateQty === 1 ? modulusAtCen(overallWeight, bottomChannelLength, 13750) : modulusAtEdgeOffset(overallWeight, strikePlateOffset, 13750);
@@ -592,7 +592,7 @@
          break;
 
       case 'D-O':
-         sheaveOffsetImage = '/public/img/sheave-offset-2.svg';
+         sheaveOffsetImage = '/public/img/sling/sheave-offset-2.svg';
          topChannelSectionModulus = modulusAtCen(overallWeight, topChannelLength, 14000);
          bottomChannelSectionModulus =
             strikePlateQty === 1 ? modulusAtCen(overallWeight, bottomChannelLength, 13750) : modulusAtEdgeOffset(overallWeight, strikePlateOffset, 13750);
@@ -600,7 +600,7 @@
          break;
 
       case 'P-U':
-         sheaveOffsetImage = '/public/img/sheave-offset-3.svg';
+         sheaveOffsetImage = '/public/img/sling/sheave-offset-3.svg';
          topChannelSectionModulus = 0;
          bottomChannelSectionModulus =
             strikePlateQty === 1 ? modulusAtCen(overallWeight, bottomChannelLength, 13750) : modulusAtEdgeOffset(overallWeight, strikePlateOffset, 13750);
@@ -608,7 +608,7 @@
          break;
 
       case 'D-U':
-         sheaveOffsetImage = '/public/img/sheave-offset-2.svg';
+         sheaveOffsetImage = '/public/img/sling/sheave-offset-2.svg';
          topChannelSectionModulus = 0;
          bottomChannelSectionModulus = modulusAtCen(overallWeight, bottomChannelLength, 13750);
          sheaveChannelSectionModulus = modulusatCenOffset(overallWeight, sheaveOffset, 14000);
@@ -954,7 +954,7 @@
 
       {#if strikePlateQty > 1}
          <div transition:slide|local>
-            <InputImage src="/public/img/strike-plate.svg" alt="Strike Plate Offset" focused={sheaveOffsetFocused}>
+            <InputImage src="/public/img/sling/strike-plate.svg" alt="Strike Plate Offset" focused={sheaveOffsetFocused}>
                <InputLength bind:value={strikePlateOffset} bind:focused={sheaveOffsetFocused} label="Strike Plate Offset" {metric} />
             </InputImage>
          </div>

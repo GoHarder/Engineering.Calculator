@@ -374,7 +374,7 @@
       </div>
 
       <div class="section-2">
-         <img src={`/public/img/${imgString}`} alt="Counterweight Dimensions" />
+         <img src={`/public/img/counterweight/${imgString}`} alt="Counterweight Dimensions" />
       </div>
    </div>
 </fieldset>
