@@ -48,3 +48,59 @@ export const blocks = [
    { name: '230-022', height: 6, depth: 6, weight: 15.62, striker: false },
    { name: '230-014', height: 5, depth: 5, weight: 10.486, striker: false },
 ];
+
+export const stile235 = [
+   {
+      depth: 8,
+      name: 'MC8X22.8',
+      weight: 1.9,
+   },
+   {
+      depth: 9,
+      name: 'MC9X25.4',
+      weight: 2.1167,
+   },
+   {
+      depth: 10,
+      name: 'MC10X28.5',
+      weight: 2.375,
+   },
+   {
+      depth: 12,
+      name: 'MC12X35',
+      weight: 2.9167,
+   },
+];
+
+export const dimensionImages = [
+   { name: '230' },
+   { name: '230-block' },
+   { name: '230-plate' },
+   { name: '230-safety' },
+   { name: '231-341' },
+   { name: '231-341-block' },
+   { name: '231-341-plate' },
+   { name: '231-341-safety' },
+   { name: '231-342' },
+   { name: '231-342-block' },
+   { name: '231-342-plate' },
+   { name: '231-342-safety' },
+   { name: '235' },
+   { name: '236' },
+   { name: '245' },
+   { name: '246' },
+   { name: '250' },
+   { name: '250-block' },
+   { name: '250-plate' },
+   { name: '250-safety' },
+   { name: '251-341' },
+   { name: '251-341-block' },
+   { name: '251-341-plate' },
+   { name: '251-341-safety' },
+   { name: '251-342' },
+   { name: '251-342-block' },
+   { name: '251-342-plate' },
+   { name: '251-342-safety' },
+   { name: '265' },
+   { name: '266' },
+];

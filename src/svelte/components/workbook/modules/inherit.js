@@ -46,5 +46,9 @@ const lib = {
    sling: {
       carWeight: [{ module: 'sling', value: 'modules?.sling?.car?.weight' }],
       compensation: [{ module: 'sling', value: 'modules?.sling?.properties?.compensation' }],
+      ropePitch: [{ module: 'sling', value: 'modules?.sling?.rope?.pitch' }],
+      ropePitchOverride: [{ module: 'sling', value: 'modules?.sling?.rope?.pitchOverride' }],
+      ropeQty: [{ module: 'sling', value: 'modules?.sling?.rope?.qty' }],
+      ropeSize: [{ module: 'sling', value: 'modules?.sling?.rope?.size' }],
    },
 };

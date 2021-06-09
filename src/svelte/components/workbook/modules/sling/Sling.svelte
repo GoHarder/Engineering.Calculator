@@ -10,7 +10,7 @@
    import * as tables from './tables';
 
    // Components
-   import { Fieldset, InputImage, SelectSafety, SelectShoe, SteelOptions } from '../../common';
+   import { Fieldset, InputImage, SelectRopes, SelectSafety, SelectShoe, SteelOptions } from '../../common';
    import { Input, InputLength, InputPressure, InputSpeed, InputWeight } from '../../../material/input';
    import { Option, Select } from '../../../material/select';
    import { Checkbox } from '../../../material/checkbox';
@@ -548,7 +548,6 @@
    $: overallWeight = carWeight + designCapacity;
 
    // - Overrideable
-   $: ropePitchCalc = ropeSize + 0.25;
    $: finFloorWeightCalc = getFinFloorWeight(finFloorArea, finFloorMaterialWeight);
    $: stilesBackToBackCalc = carDBG - 1.5;
 
@@ -691,17 +690,7 @@
 
 {#if carRoping > 1}
    <div class="container">
-      <Fieldset title="Ropes">
-         <Input bind:value={ropeQty} label="Quantity" type="number" />
-
-         <Select bind:value={ropeSize} label="Size">
-            {#each gTables.ropeSizes as { name, value }}
-               <Option text={name} {value} />
-            {/each}
-         </Select>
-
-         <InputLength bind:value={ropePitch} bind:override={ropePitchOverride} bind:calc={ropePitchCalc} label="Pitch" reset {metric} />
-      </Fieldset>
+      <SelectRopes bind:ropePitch bind:ropePitchOverride bind:ropeSize bind:ropeQty {metric} />
 
       <Fieldset title="Sheaves">
          <Input bind:value={sheaveQty} label="Quantity" type="number" />
