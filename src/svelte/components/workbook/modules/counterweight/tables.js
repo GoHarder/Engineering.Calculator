@@ -72,35 +72,29 @@ export const stile235 = [
    },
 ];
 
+const img230 = [{ name: '230' }, { name: '230-block' }, { name: '230-plate' }, { name: '230-safety' }];
+const img231_341 = [{ name: '231-341' }, { name: '231-341-block' }, { name: '231-341-plate' }, { name: '231-341-safety' }];
+const img231_342 = [{ name: '231-342' }, { name: '231-342-block' }, { name: '231-342-plate' }, { name: '231-342-safety' }];
+
+const img245 = [{ name: '245' }, { name: '245-block' }, { name: '245-plate' }, { name: '245-safety' }];
+const img246_341 = [{ name: '246-341' }, { name: '246-341-block' }, { name: '246-341-plate' }, { name: '246-341-safety' }];
+const img246_342 = [{ name: '246-342' }, { name: '246-342-block' }, { name: '246-342-plate' }, { name: '246-342-safety' }];
+const img250 = [{ name: '250' }, { name: '250-block' }, { name: '250-plate' }, { name: '250-safety' }];
+const img251_341 = [{ name: '251-341' }, { name: '251-341-block' }, { name: '251-341-plate' }, { name: '251-341-safety' }];
+const img251_342 = [{ name: '251-342' }, { name: '251-342-block' }, { name: '251-342-plate' }, { name: '251-342-safety' }];
+
 export const dimensionImages = [
-   { name: '230' },
-   { name: '230-block' },
-   { name: '230-plate' },
-   { name: '230-safety' },
-   { name: '231-341' },
-   { name: '231-341-block' },
-   { name: '231-341-plate' },
-   { name: '231-341-safety' },
-   { name: '231-342' },
-   { name: '231-342-block' },
-   { name: '231-342-plate' },
-   { name: '231-342-safety' },
+   ...img230,
+   ...img231_341,
+   ...img231_342,
    { name: '235' },
    { name: '236' },
-   { name: '245' },
-   { name: '246' },
-   { name: '250' },
-   { name: '250-block' },
-   { name: '250-plate' },
-   { name: '250-safety' },
-   { name: '251-341' },
-   { name: '251-341-block' },
-   { name: '251-341-plate' },
-   { name: '251-341-safety' },
-   { name: '251-342' },
-   { name: '251-342-block' },
-   { name: '251-342-plate' },
-   { name: '251-342-safety' },
+   ...img245,
+   ...img246_341,
+   ...img246_342,
+   ...img250,
+   ...img251_341,
+   ...img251_342,
    { name: '265' },
    { name: '266' },
 ];

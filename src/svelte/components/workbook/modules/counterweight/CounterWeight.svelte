@@ -241,7 +241,7 @@
    // - Dom
    $: imgSearchString = [
       cwtModel.match(/\d{3}/)[0],
-      cwtRoping > 1 ? `-${sheaveHangerModel}` : '',
+      cwtRoping > 1 && cwtModel !== '235' ? `-${sheaveHangerModel}` : '',
       blockQty > 0 ? '-block' : '',
       bufferPlate ? '-plate' : '',
       safetyModel !== 'None' ? '-safety' : '',
