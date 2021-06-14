@@ -59,7 +59,7 @@ const getWeight = (plate) => {
    return round(volume * 0.2835992, 3);
 };
 
-console.log(getWeight(plate));
+// console.log(getWeight(plate));
 
 const railData = [
    { railSize: '6.25#', width: 1, length: 1.1875, area: 1.18373 },
@@ -90,3 +90,28 @@ const shoe = {
    railSizes: ['8#', '11#', '12#', '15#', '18.5#'],
    railContactHeight: 5.344,
 };
+
+var now = new Date();
+var millisTill10 = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 12, 0, 0, 0) - now;
+if (millisTill10 < 0) {
+   millisTill10 += 86400000; // it's after 10am, try 10am tomorrow.
+}
+setTimeout(function () {
+   alert("It's 10am!");
+}, millisTill10);
+
+const toNextTime = (hour = 0, min = 0, sec = 0, callback) => {
+   const now = new Date();
+   let toNextPeriod = new Date(now.getFullYear(), now.getMonth(), now.getDate(), hour, min, sec, 0) - now;
+   if (toNextPeriod < 0) toNextPeriod += 86400000;
+
+   setTimeout(function () {
+      setInterval(() => {
+         callback();
+      }, 1000);
+   }, toNextPeriod);
+};
+
+toNextTime(13, 25, 0, () => {
+   console.log('Ding!');
+});

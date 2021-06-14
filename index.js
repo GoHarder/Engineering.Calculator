@@ -14,6 +14,8 @@ const app = {};
 // Init function
 app.init = async () => {
    const { env, protocol, port, baseUrl } = config;
+   let loaded = false;
+   let modules;
 
    let line = '';
 
@@ -23,12 +25,15 @@ app.init = async () => {
 
    console.log('\nEnvironment:', env);
 
-   const modules = await Promise.all([
-      mongo.init(), // Start the database
-      // Add more later is needed
-   ]);
+   // Check if the server is connected to the database
+   const dbConnect = await mongo.init();
 
-   const loaded = modules.filter((pass) => !pass).length === 0;
+   if (dbConnect) {
+      // Check if all modules run
+      modules = await Promise.all([workers.init()]);
+
+      loaded = modules.filter((pass) => !pass).length === 0;
+   }
 
    if (loaded) {
       server.init();
