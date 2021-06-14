@@ -80,11 +80,13 @@
 </div>
 
 <div class="row n3">
-   <Checkbox bind:checked={longToken} label="Keep me signed in" />
+   <div>
+      <Checkbox bind:checked={longToken} label="Keep me signed in" />
+   </div>
 
    <span class="pipe">|</span>
 
-   <A on:click={changeForm}>Forgot Password?</A>
+   <A style="margin-bottom: 19px;" on:click={changeForm}>Forgot Password?</A>
 </div>
 
 <div class="row n4">
@@ -96,7 +98,7 @@
 
 <style lang="scss">
    .row {
-      margin: 8px 0;
+      // margin: 8px 0;
       text-align: center;
 
       &.n1 {
@@ -108,11 +110,15 @@
          align-items: center;
          span {
             color: #d3d3d3;
-            padding: 0 10px;
          }
       }
       &.n4 {
-         margin-bottom: 0;
+         margin: 0;
       }
+   }
+
+   .pipe {
+      margin-bottom: 19px;
+      padding: 0 10px;
    }
 </style>

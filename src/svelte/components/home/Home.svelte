@@ -1,6 +1,6 @@
 <script>
    // Svelte Imports
-   import { createEventDispatcher } from 'svelte';
+   import { createEventDispatcher, onDestroy } from 'svelte';
 
    // Project Components
    import WorkbookRow from './WorkbookRow.svelte';
@@ -32,6 +32,12 @@
    let shareUser = '';
    let calcId = '';
    let user = '';
+   let project = {};
+
+   // Subscriptions
+   const clearProject = projectStore.subscribe((store) => {
+      project = { ...store };
+   });
 
    // Methods
    const fetchRecent = async (page) => {
@@ -94,7 +100,7 @@
    };
 
    const onOpen = (event) => {
-      dispatch('changePage', { comp: 'Project', run: 'open', calcId: event.detail });
+      dispatch('changePage', { comp: 'Project', run: 'open', calcId: event.detail, checkIn: project._id });
    };
 
    const onDeleteDialog = (event) => {
@@ -177,6 +183,11 @@
          throw new Error('text');
       }
    };
+
+   // Lifecycle
+   onDestroy(() => {
+      clearProject();
+   });
 </script>
 
 <svelte:head>

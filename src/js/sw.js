@@ -4,7 +4,7 @@ const staticCache = `static v${version}`;
 const shell = [
    '/',
    '/favicon.ico',
-   '/public/img/vantage-logo.png',
+   '/public/img/vantage-logo.svg',
    'https://fonts.googleapis.com/icon?family=Material+Icons',
    'https://fonts.googleapis.com/css?family=Open+Sans',
 ];

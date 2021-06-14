@@ -27,7 +27,7 @@
 <header>
    <div class="box">
       <div class="logo">
-         <img src="public/img/vantage-logo.png" alt="Vantage Logo" />
+         <img src="public/img/vantage-logo.svg" alt="Vantage Logo" />
       </div>
       <p>
          <span class="hw">Hollister-Whitney</span>

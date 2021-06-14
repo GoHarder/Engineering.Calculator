@@ -1,7 +1,7 @@
 {
    "name": "engineering_calculator",
-   "releaseDate": "June 4, 2021",
-   "version": "0.2.4",
+   "releaseDate": "June 14, 2021",
+   "version": "0.2.5",
    "description": "H-W Engineering Calculations",
    "main": "index.js",
    "scripts": {

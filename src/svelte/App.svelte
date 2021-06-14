@@ -1,6 +1,6 @@
 <script>
    // Svelte Imports
-   import { onDestroy } from 'svelte';
+   import { onMount, onDestroy } from 'svelte';
    import { fade } from 'svelte/transition';
 
    // Common Components
@@ -83,8 +83,12 @@
       // Show the loading animation
       loading = true;
 
+      // console.log(detail);
+
       // Request the server for the calculator data
-      const res = await fetch(`/api/proj/${detail.calcId}`).catch(() => {
+      const res = await fetch(`/api/proj/${detail.calcId}`, {
+         headers: { Authorization: token, clean: detail.checkIn ?? 'none' },
+      }).catch(() => {
          return { ok: false };
       });
 
@@ -152,6 +156,12 @@
    };
 
    // Lifecycle
+   onMount(() => {
+      window.addEventListener('beforeunload', () => {
+         navigator.sendBeacon('/api/proj/beacon', JSON.stringify(user));
+      });
+   });
+
    onDestroy(() => {
       clearToken();
       clearLoading();

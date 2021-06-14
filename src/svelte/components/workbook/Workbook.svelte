@@ -18,6 +18,7 @@
    // Stores
    import projectStore from '../../stores/project';
    import loadingStore from '../../stores/loading';
+   import tokenStore from '../../stores/token';
 
    // Properties
    export let _id = '';
@@ -34,7 +35,10 @@
       const res = await fetch('api/proj', {
          method,
          body: JSON.stringify(project),
-         headers: { 'Content-Type': 'application/json' },
+         headers: {
+            'Content-Type': 'application/json',
+            Authorization: token,
+         },
       }).catch((error) => ({ ok: false, error }));
 
       const body = await res.json();
@@ -80,9 +84,11 @@
    let openNotesMenu = false;
    let userList = [];
    let shareUser = '';
+   let token = '';
 
    // Subscriptions
    const clearLoading = loadingStore.subscribe(() => {});
+   const clearToken = tokenStore.subscribe((store) => (token = store));
    const clearProject = projectStore.subscribe((store) => {
       project = { ...store };
 
@@ -172,12 +178,13 @@
 
    // Lifecycle
    onMount(() => {
-      saveProject();
+      // saveProject();
    });
 
    onDestroy(() => {
       clearProject();
       clearLoading();
+      clearToken();
    });
 </script>
 

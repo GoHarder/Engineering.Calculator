@@ -1,4 +1,11 @@
-<span on:click>
+<script>
+   export { spanClass as class };
+   export let style = '';
+
+   let spanClass;
+</script>
+
+<span class={spanClass} {style} on:click>
    <slot />
 </span>
 

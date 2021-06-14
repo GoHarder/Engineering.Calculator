@@ -234,7 +234,7 @@
 
    $: stileWeight = model?.stileWeight ?? stileChannel.weight;
    $: stileChannel = getFromArray(stileChannelName, tables.stile235);
-   $: stileEndLength = model?.crosshead.channel.depth + model?.plank.depth - model?.stileOffset;
+   // $: stileEndLength = model?.crosshead.channel.depth + model?.plank.depth - model?.stileOffset;
 
    // - Section And Static Weights
 

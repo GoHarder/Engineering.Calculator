@@ -50,25 +50,30 @@ export const blocks = [
 ];
 
 export const stile235 = [
+   { depth: 8, name: 'MC8X22.8', weight: 1.9 },
+   { depth: 9, name: 'MC9X25.4', weight: 2.1167 },
+   { depth: 10, name: 'MC10X28.5', weight: 2.375 },
+   { depth: 12, name: 'MC12X35', weight: 2.9167 },
+];
+
+export const sheaveHangers = [
    {
-      depth: 8,
-      name: 'MC8X22.8',
-      weight: 1.9,
+      name: '341',
+      miscWeight: 45.334,
+      channel: [
+         { stock: true, width: 5, weight: 38.92 },
+         { stock: false, width: 6, weight: 25.274 },
+      ],
+      plateWeight: (length = 36) => round(2.1667 * length, 2),
    },
    {
-      depth: 9,
-      name: 'MC9X25.4',
-      weight: 2.1167,
-   },
-   {
-      depth: 10,
-      name: 'MC10X28.5',
-      weight: 2.375,
-   },
-   {
-      depth: 12,
-      name: 'MC12X35',
-      weight: 2.9167,
+      name: '342',
+      miscWeight: 43.56,
+      channel: [
+         { stock: false, width: 7, weight: 21.716 },
+         { stock: true, width: 8, weight: 27.44 },
+      ],
+      plateWeight: (length = 36) => round(1.6528 * length, 2),
    },
 ];
 
@@ -88,7 +93,9 @@ export const dimensionImages = [
    ...img231_341,
    ...img231_342,
    { name: '235' },
+   { name: '235-safety' },
    { name: '236' },
+   { name: '236-safety' },
    ...img245,
    ...img246_341,
    ...img246_342,
