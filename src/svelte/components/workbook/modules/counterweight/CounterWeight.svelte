@@ -1,3 +1,4 @@
+<!-- TODO: 6-16-2021 2:17 PM - Make formula for sheave hangers -->
 <script>
    import { createEventDispatcher, onDestroy, onMount } from 'svelte';
    import { slide } from 'svelte/transition';
@@ -166,6 +167,7 @@
 
    let sheaveHangerModel = '341';
    let sheaveModel = '';
+   let sheaveHeight = 0;
 
    let safetyModel = module?.safety?.model ?? 'None';
    let safetyHeight = module?.safety?.height ?? 0;
@@ -208,6 +210,8 @@
 
    // - Dimensions
    let bottomEquipHeight = 0;
+   let leadStackHeight = 0;
+   let steelStackHeight = 0;
 
    // - Dom
    let disableSafetySpacers = false;
@@ -219,6 +223,7 @@
    // - Parts
    $: frameChannelLength = roundInc(cwtDBG + (model?.channelOffset ?? 0));
 
+   $: sheave = getFromArray(sheaveModel, sheaves);
    $: shoePlate = getShoePlate(shoePlates, shoeModel, cwtModel, cwtRailSize);
 
    $: crossheadHeight = model?.crosshead.channel.depth ?? 0;
@@ -235,8 +240,6 @@
    $: stileWeight = model?.stileWeight ?? stileChannel.weight;
    $: stileChannel = getFromArray(stileChannelName, tables.stile235);
    // $: stileEndLength = model?.crosshead.channel.depth + model?.plank.depth - model?.stileOffset;
-
-   // - Section And Static Weights
 
    // - Dom
    $: imgSearchString = [
@@ -449,8 +452,7 @@
       <div class="section-1">
          {#if cwtRoping > 1 && cwtModel !== '235'}
             <div transition:slide|local>
-               <!-- TODO: 6-08-2021 2:10 PM - Bind me -->
-               <InputLength label="Sheave" />
+               <InputLength bind:value={sheaveHeight} label="Sheave" />
             </div>
          {/if}
 
@@ -458,13 +460,11 @@
 
          <InputLength bind:value={gap} label="Gap" {metric} />
 
-         <!-- TODO: 6-02-2021 1:09 PM - Bind me -->
-         <InputLength display label={`${lead ? 'Steel ' : ''}Weight Stack`} />
+         <InputLength bind:value={steelStackHeight} display label={`${lead ? 'Steel ' : ''}Weight Stack`} />
 
          {#if lead}
             <div transition:slide|local>
-               <!-- TODO: 6-02-2021 1:09 PM - Bind me -->
-               <InputLength display label="Lead Weight Stack" />
+               <InputLength bind:value={leadStackHeight} display label="Lead Weight Stack" />
             </div>
          {/if}
 

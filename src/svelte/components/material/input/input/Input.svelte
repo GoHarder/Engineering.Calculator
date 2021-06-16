@@ -1,5 +1,5 @@
 <script>
-   import { createEventDispatcher, onDestroy, onMount } from 'svelte';
+   import { afterUpdate, createEventDispatcher, onDestroy, onMount } from 'svelte';
    import { MDCTextField } from '@material/textfield';
 
    // Components
@@ -79,7 +79,8 @@
    // Reactive Rules
    $: if (TextField) {
       TextField.disabled = disabled;
-      TextField.valid = !invalid;
+
+      if (!disableValidation) TextField.valid = !invalid;
    }
 
    $: if (!override && reset) value = calc;
@@ -138,6 +139,10 @@
             bind1.parentNode.insertBefore(text, bind1.nextSibling);
          }
       }
+   });
+
+   afterUpdate(() => {
+      if (!disableValidation) invalid = !TextField.valid;
    });
 
    onDestroy(() => {

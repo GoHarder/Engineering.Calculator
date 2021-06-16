@@ -10,6 +10,7 @@
    import { Input, InputArea, InputLength, InputWeight } from '../../../material/input';
    import { Option, Select } from '../../../material/select';
    import { Checkbox } from '../../../material/checkbox';
+   import { getFromArray } from '../js/functions';
 
    // Properties
    export let workbook = {};
@@ -33,8 +34,10 @@
          },
          cab: {
             depth: cabDepth,
+            depthOverride: cabDepthOverride,
             height: cabHeight,
             width: cabWidth,
+            widthOverride: cabWidthOverride,
             weight: cabWeight,
             weightOverride: cabWeightOverride,
          },
@@ -172,8 +175,10 @@
 
    // - Cab
    let cabDepth = module?.cab?.depth ?? 0;
+   let cabDepthOverride = module?.cab?.depthOverride ?? false;
    let cabHeight = module?.cab?.height ?? 96;
    let cabWidth = module?.cab?.width ?? 0;
+   let cabWidthOverride = module?.cab?.widthOverride ?? false;
    let cabWeight = module?.cab?.weight ?? 0;
    let cabWeightOverride = module?.cab?.weightOverride ?? false;
 
@@ -220,6 +225,12 @@
    // - Door Weight with override
    $: door1WeightCalc = round(door1Width * 7.167);
    $: door2WeightCalc = round(door2Width * 7.167);
+
+   $: door1Thickness = getFromArray(door1Type, tables.doorType).thickness;
+   $: door2Thickness = getFromArray(door1Type, tables.doorType).thickness * (doorQty > 1 ? 1 : 0);
+
+   $: cabWidthCalc = platformWidth - (door2Location !== 'Back' ? door2Thickness + 2 : 4);
+   $: cabDepthCalc = platformDepth - (door1Thickness + (door2Location === 'Back' ? door2Thickness : 2));
 
    // - Toe Guard weight
    $: toeGuard1WeightCalc = getToeGuardWeight(door1Width);
@@ -516,9 +527,9 @@
    <Fieldset title="Cab">
       <InputLength bind:value={cabHeight} label="Height" {metric} />
 
-      <InputLength bind:value={cabWidth} label="Interior Width" {metric} />
+      <InputLength bind:value={cabWidth} bind:override={cabWidthOverride} bind:calc={cabWidthCalc} label="Interior Width" reset {metric} />
 
-      <InputLength bind:value={cabDepth} label="Interior Depth" {metric} />
+      <InputLength bind:value={cabDepth} bind:override={cabDepthOverride} bind:calc={cabDepthCalc} label="Interior Depth" reset {metric} />
 
       <div class="input-bump">
          <InputArea value={cabArea} display label="Interior Area" {metric} />

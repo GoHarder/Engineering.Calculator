@@ -46,7 +46,8 @@
             braceQtyOverride,
             outerSheaveMounting,
             plateMounting,
-            platformFrontToBalance,
+            railToBalance: platformRailToBalance,
+            balanceLocation: platformBalanceLocation,
          },
          equipment: {
             railLock,
@@ -294,6 +295,9 @@
    let outerSheaveMounting = module?.properties?.outerSheaveMounting ?? 'Support Plate';
    let plateMounting = module?.properties?.plateMounting ?? undefined;
 
+   let platformRailToBalance = module?.properties?.railToBalance ?? 0;
+   let platformBalanceLocation = module?.properties?.balanceLocation ?? 1;
+
    let railLock = module?.equipment?.railLock ?? false; // if true then two shoe plates
    let carTopWeight = module?.equipment?.carTopWeight ?? 150;
    let miscEquipmentWeight = module?.equipment?.miscEquipmentWeight ?? 200;
@@ -328,8 +332,6 @@
    let finFloorWeightOverride = module?.finFloor?.weightOverride ?? false;
    let finFloorMaterialWeight = module?.finFloor?.materialWeight ?? 0;
    let finFloorThickness = module?.finFloor?.thickness ?? 0.25;
-
-   let platformFrontToBalance = module?.properties?.platformFrontToBalance ?? 0;
 
    // - Inherited Variables
    let apta = inherit(modules, 'platform.apta', 'value') ?? false;
@@ -382,6 +384,7 @@
    let sheaveChannelSectionModulus = 0;
 
    let balanceWeightCalc = 0;
+   let platformFrontToBalance = 0;
 
    // - Dom
    let strikePlateOffsetFocused = false;
@@ -566,6 +569,7 @@
    $: if (sheaveConfig === 'P-U') {
       slingSheaveChannelLength = bottomChannelLength;
       sheaveChannelLabel = 'Inner Sheave / Safety Channel';
+      platformFrontToBalance = platformFrontToRail + platformRailToBalance * platformBalanceLocation;
    } else {
       sheaveChannelLabel = 'Sheave Channels';
       platformFrontToBalance = platformFrontToRail;
@@ -584,9 +588,12 @@
    $: switch (sheaveConfig) {
       case 'P-O':
          sheaveOffsetImage = '/public/img/sling/sheave-offset-1.svg';
-         topChannelSectionModulus = sheaveQty > 1 ? modulusAtEdgeOffset(overallWeight, sheaveOffset, 14000) : modulusAtCen(overallWeight, topChannelLength, 14000);
+         topChannelSectionModulus =
+            sheaveQty > 1 ? modulusAtEdgeOffset(overallWeight, topChannelLength / 2 - sheaveOffset, 14000) : modulusAtCen(overallWeight, topChannelLength, 14000);
          bottomChannelSectionModulus =
-            strikePlateQty === 1 ? modulusAtCen(overallWeight, bottomChannelLength, 13750) : modulusAtEdgeOffset(overallWeight, strikePlateOffset, 13750);
+            strikePlateQty === 1
+               ? modulusAtCen(overallWeight, bottomChannelLength, 13750)
+               : modulusAtEdgeOffset(overallWeight, bottomChannelLength / 2 - strikePlateOffset, 13750);
          sheaveChannelSectionModulus = 0;
          break;
 
@@ -594,7 +601,9 @@
          sheaveOffsetImage = '/public/img/sling/sheave-offset-2.svg';
          topChannelSectionModulus = modulusAtCen(overallWeight, topChannelLength, 14000);
          bottomChannelSectionModulus =
-            strikePlateQty === 1 ? modulusAtCen(overallWeight, bottomChannelLength, 13750) : modulusAtEdgeOffset(overallWeight, strikePlateOffset, 13750);
+            strikePlateQty === 1
+               ? modulusAtCen(overallWeight, bottomChannelLength, 13750)
+               : modulusAtEdgeOffset(overallWeight, bottomChannelLength / 2 - strikePlateOffset, 13750);
          sheaveChannelSectionModulus = modulusatCenOffset(overallWeight, sheaveOffset, 14000);
          break;
 
@@ -602,8 +611,10 @@
          sheaveOffsetImage = '/public/img/sling/sheave-offset-3.svg';
          topChannelSectionModulus = 0;
          bottomChannelSectionModulus =
-            strikePlateQty === 1 ? modulusAtCen(overallWeight, bottomChannelLength, 13750) : modulusAtEdgeOffset(overallWeight, strikePlateOffset, 13750);
-         sheaveChannelSectionModulus = modulusAtEdgeOffset(overallWeight, sheaveOffset, 14000);
+            strikePlateQty === 1
+               ? modulusAtCen(overallWeight, bottomChannelLength, 13750)
+               : modulusAtEdgeOffset(overallWeight, bottomChannelLength / 2 - strikePlateOffset, 13750);
+         sheaveChannelSectionModulus = modulusAtEdgeOffset(overallWeight, bottomChannelLength / 2 - sheaveOffset, 14000);
          break;
 
       case 'D-U':
@@ -718,6 +729,17 @@
                <InputImage src={sheaveOffsetImage} alt="Strike Plate Offset" focused={strikePlateOffsetFocused}>
                   <InputLength bind:value={sheaveOffset} bind:focused={strikePlateOffsetFocused} label="Sheave Offset" {metric} />
                </InputImage>
+
+               {#if sheaveConfig === 'P-U'}
+                  <div transition:slide|local>
+                     <InputLength bind:value={platformRailToBalance} label="Rail To Sheaves" {metric} />
+
+                     <Select bind:value={platformBalanceLocation} label="Sheave Location">
+                        <Option text="Behind the Rail" value={1} />
+                        <Option text="Front of the Rail" value={-1} />
+                     </Select>
+                  </div>
+               {/if}
             </div>
          {/if}
       </Fieldset>
@@ -817,12 +839,6 @@
       <InputLength bind:value={stilesBackToBack} bind:override={stilesBackToBackOverride} bind:calc={stilesBackToBackCalc} label="Back to Back of Stiles" reset {metric} />
 
       <InputLength bind:value={underBeamHeight} label="Under Beam Height" {metric} />
-
-      {#if sheaveConfig === 'P-U'}
-         <div transition:slide|local>
-            <InputLength bind:value={platformFrontToBalance} label="Front of Platform To Sheaves" {metric} />
-         </div>
-      {/if}
 
       <Select bind:value={compensation} label="Compensation">
          {#each gTables.compensation as { name } (name)}

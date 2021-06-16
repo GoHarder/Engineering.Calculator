@@ -6,8 +6,9 @@
    import ProjectTab from '../common/ProjectTab.svelte';
    import { Button, Label } from '../../material/button';
    import { ArrowForwardIos } from '../../material/button/icons';
-   import { Input } from '../../material/input';
+   import { HelperText, Input } from '../../material/input';
    import { Checkbox } from '../../material/checkbox';
+   import { Content, Dialog, Actions } from '../../material/dialog';
 
    // Stores
    import projectStore from '../../../stores/project';
@@ -31,6 +32,13 @@
    let opened = [];
    let modules = {};
    let temp = false;
+
+   let invalidLayout;
+   let invalidContract;
+   let openJobNameDialog = false;
+   let openCustomerDialog = false;
+   let okJobName = false;
+   let okCustomer = false;
 
    // Subscriptions
    const clearProject = projectStore.subscribe((store) => {
@@ -60,18 +68,70 @@
       }
    });
 
+   // Reactive Variables
+   $: validForm = [!invalidLayout, !invalidContract].every((test) => test);
+   $: checkJobName = jobName.match(/[a-z]/);
+   $: checkCustomer = customer.match(/[a-z]/);
+
+   // Reactive Rules
+   $: if (okJobName && okCustomer) {
+      dispatch('changePage', 'Requirements');
+   }
+
    // Events
    const onHome = () => dispatch('changePage', 'Home');
 
-   const onNext = () => dispatch('changePage', 'Requirements');
+   const onNext = () => {
+      if (checkJobName && checkCustomer) dispatch('changePage', 'Requirements');
+
+      if (!checkJobName) openJobNameDialog = true;
+
+      if (!checkCustomer) openCustomerDialog = true;
+   };
+
+   const onOkJobName = () => {
+      okJobName = true;
+      openJobNameDialog = false;
+   };
+
+   const onOkCustomer = () => {
+      okCustomer = true;
+      openCustomerDialog = false;
+   };
 
    // Lifecycle
    onDestroy(() => {
+      layout = layout.toUpperCase();
+
       projectStore.save('project', { carNo, contract, created, creator, customer, jobName, layout, metric, modules, opened, temp, notes: [] });
 
       clearProject();
    });
 </script>
+
+<Dialog bind:open={openJobNameDialog}>
+   <Content>Are you sure the job name is in all caps?</Content>
+   <Actions>
+      <Button on:click={() => (openJobNameDialog = false)} class="mdc-dialog__button" color="secondary" variant="outlined">
+         <Label>No</Label>
+      </Button>
+      <Button on:click={onOkJobName} class="mdc-dialog__button" variant="contained">
+         <Label>Yes</Label>
+      </Button>
+   </Actions>
+</Dialog>
+
+<Dialog bind:open={openCustomerDialog}>
+   <Content>Are you sure the customer name is in all caps?</Content>
+   <Actions>
+      <Button on:click={() => (openCustomerDialog = false)} class="mdc-dialog__button" color="secondary" variant="outlined">
+         <Label>No</Label>
+      </Button>
+      <Button on:click={onOkCustomer} class="mdc-dialog__button" variant="contained">
+         <Label>Yes</Label>
+      </Button>
+   </Actions>
+</Dialog>
 
 <main>
    <div class="head">
@@ -93,7 +153,11 @@
          <p>Enter the project details and proceed to the next step</p>
          <div class="form-box">
             <div class="box">
-               <Input bind:value={contract} label="Contract" />
+               <Input bind:value={contract} bind:invalid={invalidContract} label="Contract" pattern={'\\d{6,}'}>
+                  <span slot="helperText">
+                     <HelperText validation>Invalid Contract Number</HelperText>
+                  </span>
+               </Input>
             </div>
             <div class="box">
                <Input bind:value={jobName} label="Job Name" />
@@ -105,7 +169,11 @@
                <Input bind:value={customer} label="Customer" />
             </div>
             <div class="box">
-               <Input bind:value={layout} label="Layout Number" />
+               <Input bind:value={layout} bind:invalid={invalidLayout} label="Layout Number" pattern="^(L|l)-[\d-]+$">
+                  <span slot="helperText">
+                     <HelperText validation>Invalid Layout Number</HelperText>
+                  </span>
+               </Input>
             </div>
             <div class="box">
                <Checkbox bind:checked={metric} label="Show Metric Units" />
@@ -117,7 +185,7 @@
       </div>
    </div>
    <div class="paper n2">
-      <Button on:click={onNext} variant="contained">
+      <Button on:click={onNext} disabled={!validForm} variant="contained">
          <Label>Next</Label>
          <ArrowForwardIos />
       </Button>

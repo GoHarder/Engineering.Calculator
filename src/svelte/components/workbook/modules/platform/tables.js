@@ -84,7 +84,12 @@ export const doorLocation = [{ name: 'Back' }, { name: 'Left' }, { name: 'Right'
 
 export const doorQty = [{ name: 1 }, { name: 2 }];
 
-export const doorType = [{ name: 'Single Speed' }, { name: 'Two Speed' }, { name: 'Three Speed' }, { name: 'Gate' }];
+export const doorType = [
+   { name: 'Single Speed', thickness: 7 },
+   { name: 'Two Speed', thickness: 9 },
+   { name: 'Three Speed', thickness: 9 },
+   { name: 'Gate', thickness: 3 },
+];
 
 export const steelType = [
    { name: 'ASTM A36', elasticModulus: 29000000, tensileStrength: 58 }, // 58ksi = 58000psi

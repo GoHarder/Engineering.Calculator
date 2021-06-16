@@ -1,4 +1,4 @@
-![Logo](https://github.com/GoHarder/Engineering.Calculator/blob/master/public/img/vantage-logo.png?raw=true)
+![Logo](https://github.com/GoHarder/Engineering.Calculator/blob/master/public/github-logo.png?raw=true)
 
 # HW Engineering Calculator
 
@@ -18,7 +18,7 @@
 
 ## Tech Stack
 
-**Client:** [Svelte](https://svelte.dev/), Material.io
+**Client:** [Svelte](https://svelte.dev/), [Material.io](https://material.io/)
 
 **Server:** [Node](https://nodejs.org/), [MongoDB](https://www.mongodb.com/), [Mailgun](https://www.mailgun.com/)
 
@@ -73,7 +73,7 @@ To run the production server
 
  - [readme.so](https://readme.so/)
 
-<style>
+<!-- <style>
    img[alt=Logo] {
       width: 250px;
    }
@@ -81,4 +81,4 @@ To run the production server
    hr {
      border: 1px solid #ffcb30;
    }
-</style>
+</style> -->
