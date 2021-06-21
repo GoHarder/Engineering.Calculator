@@ -766,7 +766,7 @@
          {metric}
       />
 
-      <Input value={floor(balanceWeight / rowBalanceWeight)} display label="Balance Weight Rows" type="number" />
+      <Input value={ceil(balanceWeight / rowBalanceWeight)} display label="Balance Weight Rows" type="number" />
 
       {#if ['12#', '15#'].includes(carRailSize)}
          <div transition:slide|local>

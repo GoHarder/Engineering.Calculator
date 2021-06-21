@@ -45,6 +45,7 @@ app.init = async () => {
          console.log('\x1b[0m%s\x1b[35m%s\x1b[0m', '      LAN: ', baseUrl);
          console.log(line);
          console.log('\x1b[34m\x1b[1m%s\x1b[0m', 'Press CTRL-C to stop\n');
+         // console.log(process.env);
       }, 0);
    } else {
       console.log('\n(╯°□°)╯︵ ┻━┻\n');

@@ -1,10 +1,9 @@
-<!-- TODO: 6-16-2021 2:17 PM - Make formula for sheave hangers -->
 <script>
    import { createEventDispatcher, onDestroy, onMount } from 'svelte';
    import { slide } from 'svelte/transition';
 
    import { inherit } from '../inherit';
-   import { floor, round, roundInc } from '../js/math';
+   import { ceil, floor, round, roundInc } from '../js/math';
    import { getFromArray } from '../js/functions';
 
    import * as gTables from '../js/tables';
@@ -158,10 +157,10 @@
    let cwtRailSize = module?.properties?.railSize ?? '8#';
    let cwtWeight = 0;
    let cwtHeight = 0;
+   let cwtHeightOverride = false;
    let counterbalance = module?.properties?.counterbalance ?? 40;
    let weightWidth = module?.properties?.weightWidth ?? 8;
    let lead = module?.properties?.lead ?? false;
-   let gap = 24;
 
    let stileChannelName = 'MC8X22.8';
 
@@ -210,6 +209,8 @@
 
    // - Dimensions
    let bottomEquipHeight = 0;
+   let bottomEquipWeight = 0;
+
    let leadStackHeight = 0;
    let steelStackHeight = 0;
 
@@ -222,24 +223,66 @@
 
    // - Parts
    $: frameChannelLength = roundInc(cwtDBG + (model?.channelOffset ?? 0));
-
-   $: sheave = getFromArray(sheaveModel, sheaves);
-   $: shoePlate = getShoePlate(shoePlates, shoeModel, cwtModel, cwtRailSize);
-
    $: crossheadHeight = model?.crosshead.channel.depth ?? 0;
    $: crossheadWeight = ((model?.crosshead.channel.weight ?? 0) * frameChannelLength + (model?.crosshead?.gusset?.weight ?? 0)) * 2;
-
    $: plankHeight = model?.plank.depth ?? 0;
    $: plankWeight = (model?.plank.weight ?? 0) * frameChannelLength * 2;
 
    $: steelFillerWeight = model?.fillerWeight(cwtDBG, weightWidth, 0.284, 8);
    $: leadFillerWeight = model?.fillerWeight(cwtDBG, weightWidth, 0.4096, 8);
 
+   $: sheave = getFromArray(sheaveModel, sheaves);
+   $: topShoePlate = getShoePlate(shoePlates, shoeModel, cwtModel, cwtRailSize);
+   $: bottomShoePlate = getShoePlate(shoePlates, shoeModel, safety ? safetyModel : cwtModel, cwtRailSize);
+
    $: block = getBlock(weightWidth, isStriker);
 
    $: stileWeight = model?.stileWeight ?? stileChannel.weight;
    $: stileChannel = getFromArray(stileChannelName, tables.stile235);
-   // $: stileEndLength = model?.crosshead.channel.depth + model?.plank.depth - model?.stileOffset;
+
+   $: plateLength = roundInc(cwtDBG - ((shoe?.railToBack ?? 8) + 0.25), 0.25);
+   $: plateWidth = round((model?.stileGap ?? stileChannel.depth) + model?.plank.flangeWidth * 2);
+   $: plateWeight = plateLength * plateWidth * 0.2836;
+
+   $: sheaveHanger = getFromArray(sheaveHangerModel, tables.sheaveHangers);
+   $: sheaveHangerPlateLength = crossheadHeight + 3.5 - ((sheave?.diameter ?? 1) / 2 + 5);
+   $: sheaveHangerPlateWeight = sheaveHanger.plateWeight(sheaveHangerPlateLength);
+   $: sheaveHangerChannelWeight = sheaveHanger.channel.find((nth) => nth.stock).weight;
+   $: sheaveHangerWeight = round(sheaveHanger.miscWeight + sheaveHangerChannelWeight + sheaveHangerPlateWeight * 2, 2);
+
+   $: sheaveAsmWeight = (cwtModel !== '235' ? sheaveHangerWeight : 0) + (sheave?.weight ?? 0);
+   $: hitchPlateWeight = model?.hitchPlateWeight ?? 0;
+
+   $: ropeMountingWeight = cwtRoping === 1 ? hitchPlateWeight : sheaveAsmWeight;
+
+   // - Weight Calculations
+   // NOTE: 6-18-2021 9:44 AM - Tie rod weight = 0.0871 lb / 1 in
+   $: minGap = cwtModel !== '235' ? model?.minGap ?? 0 : (sheave?.diameter ?? 0) + 17;
+   $: startGap = minGap > 24 ? minGap : 24;
+
+   $: staticStyleWeight = (crossheadHeight + plankHeight + (model?.stileOffset ?? 0)) * stileWeight;
+   $: staticTieRodWeight = plankHeight + crossheadHeight + (model?.tieRodOffset ?? 0);
+
+   $: staticWeight =
+      ropeMountingWeight +
+      crossheadWeight +
+      shoeWeight * 4 +
+      (useShoePlates ? topShoePlate.weight : 0) * 2 +
+      (useShoePlates ? bottomShoePlate.weight : 0) * 2 +
+      staticStyleWeight +
+      plankWeight +
+      bottomEquipWeight;
+
+   $: dynamicWeight = round(cwtWeight - staticWeight, 2);
+   // $: gapWeight = gapSectionWeight * startGap;
+   // $: stackWeight = dynamicWeight - gapSectionWeight * startGap;
+   // $: stackHeight = ceil(stackWeight / steelSectionWeight);
+
+   // $: steelStackHeight = lead ? 0 : stackHeight;
+
+   // $: gapSectionWeight = round((stileWeight + 0.0871) * 2, 2);
+   // $: steelSectionWeight = steelFillerWeight + gapSectionWeight;
+   // $: leadSectionWeight = leadFillerWeight + gapSectionWeight;
 
    // - Dom
    $: imgSearchString = [
@@ -260,7 +303,7 @@
    $: if (save) onSave();
 
    $: cwtWeight = round(carWeight + capacity * (counterbalance / 100), 2);
-   $: cwtHeight = roundInc(crossheadHeight + gap + plankHeight + bottomEquipHeight);
+   $: cwtHeightCalc = roundInc(crossheadHeight + startGap + steelStackHeight + leadStackHeight + plankHeight + bottomEquipHeight);
 
    $: if (seismicZone >= 2) useShoePlates = true;
 
@@ -283,15 +326,19 @@
       blockQty = 0;
       bufferPlate = false;
 
+      bottomEquipWeight = safetyWeight + (safetySpacers ? block.weight * 2 : 0);
       bottomEquipHeightString = 'Extension Height';
    } else if (bufferPlate) {
       bottomEquipHeightString = 'Plate';
       bottomEquipHeight = 1;
+      bottomEquipWeight = plateWeight;
    } else if (blockQty > 0) {
       bottomEquipHeightString = 'Block Height';
       bottomEquipHeight = blockQty * block.height;
+      bottomEquipWeight = blockQty * block.weight;
    } else {
       bottomEquipHeight = 0;
+      bottomEquipWeight = 0;
    }
 
    // Events
@@ -300,16 +347,17 @@
    // Lifecycle
    onMount(() => {
       getEngineeringData(capacity, carSpeed, cwtRoping);
-      console.log(workbook);
+      console.log('workbook', workbook);
    });
 
    onDestroy(() => onSave());
 
    // Logs
    $: if (model) console.log('model', model);
-   $: if (safety) console.log('safety', safety);
+   // $: if (safety) console.log('safety', safety);
    // $: if (shoe) console.log('shoe', shoe);
    // $: if (shoePlate) console.log('shoe plate', shoePlate);
+   // $: if (sheave) console.log('sheave', sheave);
 </script>
 
 <div class="container">
@@ -458,13 +506,13 @@
 
          <InputLength value={crossheadHeight} display label="Top Channel" {metric} />
 
-         <InputLength bind:value={gap} label="Gap" {metric} />
+         <!-- <InputLength value={startGap} display label="Gap" {metric} /> -->
 
-         <InputLength bind:value={steelStackHeight} display label={`${lead ? 'Steel ' : ''}Weight Stack`} />
+         <InputLength value={steelStackHeight} display label={`${lead ? 'Steel ' : ''}Weight Stack`} {metric} />
 
          {#if lead}
             <div transition:slide|local>
-               <InputLength bind:value={leadStackHeight} display label="Lead Weight Stack" />
+               <InputLength value={leadStackHeight} display label="Lead Weight Stack" {metric} />
             </div>
          {/if}
 
@@ -474,7 +522,7 @@
             <InputLength value={bottomEquipHeight} display label={bottomEquipHeightString} {metric} />
          {/if}
 
-         <InputLength value={cwtHeight} display label="Overall Height" {metric} />
+         <InputLength bind:value={cwtHeight} bind:override={cwtHeightOverride} calc={cwtHeightCalc} label="Overall Height" reset {metric} />
       </div>
 
       <div class="section-2">

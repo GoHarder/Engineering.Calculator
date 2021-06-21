@@ -56,6 +56,7 @@ export const stile235 = [
    { depth: 12, name: 'MC12X35', weight: 2.9167 },
 ];
 
+// TODO: 6-21-2021 11:33 AM - model has dropdown information hook it up
 export const sheaveHangers = [
    {
       name: '341',
@@ -74,6 +75,12 @@ export const sheaveHangers = [
          { stock: true, width: 8, weight: 27.44 },
       ],
       plateWeight: (length = 36) => round(1.6528 * length, 2),
+   },
+   {
+      name: '345',
+      miscWeight: 224.273,
+      channel: [{ stock: true, weight: 112.876 }],
+      plateWeight: () => 78.065,
    },
 ];
 
