@@ -1,3 +1,7 @@
+<!--
+   TODO: 6-22-2021 9:21 AM
+   Add other non main parts to the weights
+-->
 <script>
    import { createEventDispatcher, onDestroy, onMount } from 'svelte';
    import { slide } from 'svelte/transition';
@@ -30,18 +34,40 @@
             weightWidth,
             railSize: cwtRailSize,
             lead,
+            gap,
+            gapOverride,
+            weight: cwtWeight,
+            height: cwtHeight,
          },
          safety: {
             model: safetyModel,
          },
          shoe: {
             model: shoeModel,
+            shoePlates: useShoePlates,
          },
+         equipment: {
+            blockQty,
+            isStriker,
+            bufferPlate,
+         },
+      };
+
+      const sheave = {
+         model: sheaveModel,
+         height: sheaveHeight,
+         hangerModel: sheaveHangerModel,
+      };
+
+      const stack = {
+         stackHeight,
+         stackHeightOverride,
       };
 
       const safety = {
          height: safetyHeight,
          weight: safetyWeight,
+         spacers: safetySpacers,
       };
 
       const shoe = {
@@ -49,6 +75,9 @@
          weight: shoeWeight,
       };
 
+      if (cwtRoping > 1) saveData = { ...saveData, sheave };
+      if (lead) saveData.properties = { ...saveData.properties, ...stack };
+      if (['235', '236'].includes(cwtModel)) saveData.properties.stileChannel = stileChannelName;
       if (safetyModel === 'Other') saveData.safety = { ...saveData.safety, ...safety };
       if (shoeModel === 'Other') saveData.shoe = { ...saveData.shoe, ...shoe };
 
@@ -155,32 +184,35 @@
    let cwtModel = module?.properties?.model ?? '230';
    let cwtDBG = module?.properties?.dbg ?? 38.75;
    let cwtRailSize = module?.properties?.railSize ?? '8#';
-   let cwtWeight = 0;
-   let cwtHeight = 0;
-   let cwtHeightOverride = false;
+   let cwtWeight = module?.properties?.cwtWeight ?? 0;
+   let cwtHeight = module?.properties?.cwtHeight ?? 0;
+   let gap = module?.properties?.gap ?? 0;
+   let gapOverride = module?.properties?.gapOverride ?? false;
    let counterbalance = module?.properties?.counterbalance ?? 40;
    let weightWidth = module?.properties?.weightWidth ?? 8;
    let lead = module?.properties?.lead ?? false;
+   let stackHeight = module?.properties?.stackHeight ?? 0;
+   let stackHeightOverride = module?.properties?.stackHeightOverride ?? false;
 
-   let stileChannelName = 'MC8X22.8';
+   let stileChannelName = module?.properties?.stileChannel ?? 'MC8X22.8';
 
-   let sheaveHangerModel = '341';
-   let sheaveModel = '';
-   let sheaveHeight = 0;
+   let sheaveHangerModel = module?.sheave?.hangerModel ?? '341';
+   let sheaveModel = module?.sheave?.model ?? '';
+   let sheaveHeight = module?.sheave?.height ?? 0;
 
    let safetyModel = module?.safety?.model ?? 'None';
    let safetyHeight = module?.safety?.height ?? 0;
    let safetyWeight = module?.safety?.weight ?? 0;
-   let safetySpacers = false;
+   let safetySpacers = module?.safety?.spacers ?? false;
 
-   let useShoePlates = false;
+   let useShoePlates = module?.shoe?.shoePlates ?? false;
    let shoeModel = module?.shoe?.model ?? '';
    let shoeHeight = module?.shoe?.height ?? 0;
    let shoeWeight = module?.shoe?.weight ?? 0;
 
-   let blockQty = 0;
-   let isStriker = false;
-   let bufferPlate = false;
+   let blockQty = module?.equipment?.blockQty ?? 0;
+   let isStriker = module?.equipment?.isStriker ?? false;
+   let bufferPlate = module?.equipment?.bufferPlate ?? false;
 
    // - Inherited Variables
    let carWeight = inherit(modules, 'sling.carWeight', 'value') ?? 0;
@@ -210,9 +242,6 @@
    // - Dimensions
    let bottomEquipHeight = 0;
    let bottomEquipWeight = 0;
-
-   let leadStackHeight = 0;
-   let steelStackHeight = 0;
 
    // - Dom
    let disableSafetySpacers = false;
@@ -258,9 +287,10 @@
    // - Weight Calculations
    // NOTE: 6-18-2021 9:44 AM - Tie rod weight = 0.0871 lb / 1 in
    $: minGap = cwtModel !== '235' ? model?.minGap ?? 0 : (sheave?.diameter ?? 0) + 17;
-   $: startGap = minGap > 24 ? minGap : 24;
+   $: gapCalc = minGap > 24 ? minGap : 24;
 
    $: staticStyleWeight = (crossheadHeight + plankHeight + (model?.stileOffset ?? 0)) * stileWeight;
+   // TODO: 6-22-2021 9:19 AM - Finish this
    $: staticTieRodWeight = plankHeight + crossheadHeight + (model?.tieRodOffset ?? 0);
 
    $: staticWeight =
@@ -273,16 +303,19 @@
       plankWeight +
       bottomEquipWeight;
 
-   $: dynamicWeight = round(cwtWeight - staticWeight, 2);
-   // $: gapWeight = gapSectionWeight * startGap;
-   // $: stackWeight = dynamicWeight - gapSectionWeight * startGap;
-   // $: stackHeight = ceil(stackWeight / steelSectionWeight);
+   $: gapSectionWeight = round((stileWeight + 0.0871) * 2, 2);
+   $: steelSectionWeight = steelFillerWeight + gapSectionWeight;
+   $: leadSectionWeight = leadFillerWeight + gapSectionWeight;
 
-   // $: steelStackHeight = lead ? 0 : stackHeight;
+   $: stackWeight = round(cwtWeight - (staticWeight + gap * gapSectionWeight), 2);
 
-   // $: gapSectionWeight = round((stileWeight + 0.0871) * 2, 2);
-   // $: steelSectionWeight = steelFillerWeight + gapSectionWeight;
-   // $: leadSectionWeight = leadFillerWeight + gapSectionWeight;
+   $: stackHeightCalc = ceil(stackWeight / leadSectionWeight);
+
+   $: steelStackHeight = stackHeightOverride ? floor((stackWeight - leadSectionWeight * stackHeight) / (steelSectionWeight - leadSectionWeight)) : 0;
+   $: leadStackHeight = stackHeight - steelStackHeight;
+
+   $: cwtWeight = round(carWeight + capacity * (counterbalance / 100), 2);
+   $: cwtHeight = roundInc(crossheadHeight + gap + stackHeight + plankHeight + bottomEquipHeight);
 
    // - Dom
    $: imgSearchString = [
@@ -302,10 +335,9 @@
    // - Reactive Rules
    $: if (save) onSave();
 
-   $: cwtWeight = round(carWeight + capacity * (counterbalance / 100), 2);
-   $: cwtHeightCalc = roundInc(crossheadHeight + startGap + steelStackHeight + leadStackHeight + plankHeight + bottomEquipHeight);
-
    $: if (seismicZone >= 2) useShoePlates = true;
+
+   $: if (!lead) stackHeight = ceil(stackWeight / steelSectionWeight);
 
    $: if (['235', '236'].includes(cwtModel) && safetyModel === 'None') {
       bufferPlate = true;
@@ -506,12 +538,15 @@
 
          <InputLength value={crossheadHeight} display label="Top Channel" {metric} />
 
-         <!-- <InputLength value={startGap} display label="Gap" {metric} /> -->
+         <InputLength bind:value={gap} bind:override={gapOverride} calc={gapCalc} label="Gap" reset {metric} />
 
-         <InputLength value={steelStackHeight} display label={`${lead ? 'Steel ' : ''}Weight Stack`} {metric} />
+         {#if !lead}
+            <InputLength value={stackHeight} display label="Weight Stack" {metric} />
+         {:else}
+            <InputLength bind:value={stackHeight} bind:override={stackHeightOverride} calc={stackHeightCalc} label="Weight Stack" reset {metric} />
 
-         {#if lead}
             <div transition:slide|local>
+               <InputLength value={steelStackHeight} display label="Steel Weight Stack" {metric} />
                <InputLength value={leadStackHeight} display label="Lead Weight Stack" {metric} />
             </div>
          {/if}
@@ -522,7 +557,7 @@
             <InputLength value={bottomEquipHeight} display label={bottomEquipHeightString} {metric} />
          {/if}
 
-         <InputLength bind:value={cwtHeight} bind:override={cwtHeightOverride} calc={cwtHeightCalc} label="Overall Height" reset {metric} />
+         <InputLength value={cwtHeight} display label="Overall Height" {metric} />
       </div>
 
       <div class="section-2">
