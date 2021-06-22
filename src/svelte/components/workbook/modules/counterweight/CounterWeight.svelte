@@ -288,10 +288,10 @@
    // NOTE: 6-18-2021 9:44 AM - Tie rod weight = 0.0871 lb / 1 in
    $: minGap = cwtModel !== '235' ? model?.minGap ?? 0 : (sheave?.diameter ?? 0) + 17;
    $: gapCalc = minGap > 24 ? minGap : 24;
+   $: invalidGap = gap < minGap;
 
    $: staticStyleWeight = (crossheadHeight + plankHeight + (model?.stileOffset ?? 0)) * stileWeight;
-   // TODO: 6-22-2021 9:19 AM - Finish this
-   $: staticTieRodWeight = plankHeight + crossheadHeight + (model?.tieRodOffset ?? 0);
+   $: staticTieRodWeight = plankHeight + (['235', '236'].includes(cwtModel) ? 0 : crossheadHeight) + (model?.tieRodOffset ?? 0);
 
    $: staticWeight =
       ropeMountingWeight +
@@ -300,14 +300,18 @@
       (useShoePlates ? topShoePlate.weight : 0) * 2 +
       (useShoePlates ? bottomShoePlate.weight : 0) * 2 +
       staticStyleWeight +
+      staticTieRodWeight +
       plankWeight +
       bottomEquipWeight;
 
-   $: gapSectionWeight = round((stileWeight + 0.0871) * 2, 2);
+   $: stileSectionWeight = round(stileWeight * 2, 2);
+   $: gapSectionWeight = stileSectionWeight + 0.1742;
    $: steelSectionWeight = steelFillerWeight + gapSectionWeight;
    $: leadSectionWeight = leadFillerWeight + gapSectionWeight;
 
-   $: stackWeight = round(cwtWeight - (staticWeight + gap * gapSectionWeight), 2);
+   $: gapWeight = ['235', '236'].includes(cwtModel) ? (gap - 12) * stileSectionWeight + 12 * gapSectionWeight : gap * gapSectionWeight;
+
+   $: stackWeight = round(cwtWeight - (staticWeight + gapWeight), 2);
 
    $: stackHeightCalc = ceil(stackWeight / leadSectionWeight);
 
@@ -379,17 +383,18 @@
    // Lifecycle
    onMount(() => {
       getEngineeringData(capacity, carSpeed, cwtRoping);
-      console.log('workbook', workbook);
+      // console.log('workbook', workbook);
    });
 
    onDestroy(() => onSave());
 
    // Logs
-   $: if (model) console.log('model', model);
+   // $: if (model) console.log('model', model);
    // $: if (safety) console.log('safety', safety);
    // $: if (shoe) console.log('shoe', shoe);
    // $: if (shoePlate) console.log('shoe plate', shoePlate);
    // $: if (sheave) console.log('sheave', sheave);
+   // $: console.table({ gap, minGap });
 </script>
 
 <div class="container">
@@ -538,12 +543,30 @@
 
          <InputLength value={crossheadHeight} display label="Top Channel" {metric} />
 
-         <InputLength bind:value={gap} bind:override={gapOverride} calc={gapCalc} label="Gap" reset {metric} />
+         <InputLength
+            bind:value={gap}
+            bind:override={gapOverride}
+            calc={gapCalc}
+            helperText={`Gap must be greater than ${floor(minGap / 12)}'-${round(minGap % 12, 4)}"`}
+            invalid={invalidGap}
+            label="Gap"
+            reset
+            {metric}
+         />
 
          {#if !lead}
             <InputLength value={stackHeight} display label="Weight Stack" {metric} />
          {:else}
-            <InputLength bind:value={stackHeight} bind:override={stackHeightOverride} calc={stackHeightCalc} label="Weight Stack" reset {metric} />
+            <InputLength
+               bind:value={stackHeight}
+               bind:override={stackHeightOverride}
+               calc={stackHeightCalc}
+               helperText={`Stack is shorter than ${floor(stackHeightCalc / 12)}'-${round(stackHeightCalc % 12, 4)}"`}
+               invalid={stackHeight < stackHeightCalc}
+               label="Weight Stack"
+               reset
+               {metric}
+            />
 
             <div transition:slide|local>
                <InputLength value={steelStackHeight} display label="Steel Weight Stack" {metric} />
@@ -576,8 +599,18 @@
 
    .dimensions {
       @include vantage-theme.vantage-fieldset;
+      max-width: 800px;
       .flex {
          display: flex;
+         justify-content: space-between;
+      }
+      .section-1 {
+         min-width: 400px;
+      }
+      .section-2 {
+         flex-grow: 1;
+         display: flex;
+         justify-content: center;
       }
    }
 

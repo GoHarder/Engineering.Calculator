@@ -80,7 +80,7 @@
    $: if (TextField) {
       TextField.disabled = disabled;
 
-      if (!disableValidation) TextField.valid = !invalid;
+      if (disableValidation) TextField.valid = !invalid;
    }
 
    $: if (!override && reset) value = calc;
