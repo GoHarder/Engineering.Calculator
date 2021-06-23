@@ -115,14 +115,14 @@
 </script>
 
 <div class={classes}>
-   <Input bind:disabled bind:invalid bind:override bind:focused={feetFocused} on:change={onFeet} value={feet} calc={floor(calc / 12)} {...parameters1}>
+   <Input bind:disabled {invalid} bind:override bind:focused={feetFocused} on:change={onFeet} value={feet} calc={floor(calc / 12)} {...parameters1}>
       <span slot="helperText">
          {#if helperText}
             <HelperText validation>{helperText}</HelperText>
          {/if}
       </span>
    </Input>
-   <Input bind:disabled bind:invalid bind:override bind:focused={inchFocused} on:change={onInches} value={inches} calc={round(calc % 12, 4)} {...parameters2}>
+   <Input bind:disabled {invalid} bind:override bind:focused={inchFocused} on:change={onInches} value={inches} calc={round(calc % 12, 4)} {...parameters2}>
       <span slot="helperText">
          {#if helperText}
             <HelperText validation>{' '}</HelperText>

@@ -1,5 +1,6 @@
 import { round } from '../js/math';
 
+// Filler weights
 const weight230 = (dbg, width, material) => {
    const area = (dbg - 2.75) * width - (8 + (width / 2 - 0.5) * 0.25);
    return round(area * material, 2);
@@ -22,25 +23,34 @@ const weight245 = (dbg, width, material) => {
    return round(area * material, 2);
 };
 
+// Section modulus or bolt shear check
 const use230Check = (length, weight, zu) => round((weight * length) / (4 * 13750) / 2, 2) <= zu;
 
 const use265Check = (length, weight) => round(-0.185475 * (length + 2.75) ** 3 + 34.8009 * (length + 2.75) ** 2 - 2313.29 * (length + 2.75) + 61576.1, 2) >= weight;
 
+// Misc part weight
+const misc265 = (dbg) => round((dbg - 2.75) * 4 * 1.15, 2);
+
+const misc235 = (dbg) => round((dbg - 2.25) * 0.45 + 2.882, 2);
+
+const misc250 = (dbg) => round(Math.min(dbg - 16.75, dbg > 44.75 ? 1000 : 28, 34) * 1.4888958, 2);
+
+// Full tables
 export const cwtModels = [
    { name: '230', modelCheck: use230Check, fillerWeight: weight230, dbg: 38.75 },
    { name: '230-SPL', modelCheck: use230Check, fillerWeight: weight230 },
    { name: '231', modelCheck: use230Check, fillerWeight: weight230, dbg: 38.75 },
    { name: '231-SPL', modelCheck: use230Check, fillerWeight: weight230 },
-   { name: '235', modelCheck: use230Check, fillerWeight: weight235 },
-   { name: '236', modelCheck: use230Check, fillerWeight: weight235 },
+   { name: '235', modelCheck: use230Check, fillerWeight: weight235, miscWeight: misc235 },
+   { name: '236', modelCheck: use230Check, fillerWeight: weight235, miscWeight: misc235 },
    { name: '245', modelCheck: use230Check, fillerWeight: weight245 },
    { name: '246', modelCheck: use230Check, fillerWeight: weight245 },
-   { name: '250', modelCheck: use230Check, fillerWeight: weight230, dbg: 57.25 },
-   { name: '250-SPL', modelCheck: use230Check, fillerWeight: weight230 },
-   { name: '251', modelCheck: use230Check, fillerWeight: weight230, dbg: 57.25 },
-   { name: '251-SPL', modelCheck: use230Check, fillerWeight: weight230 },
-   { name: '265', modelCheck: use265Check, fillerWeight: weight230 },
-   { name: '266', modelCheck: use265Check, fillerWeight: weight230 },
+   { name: '250', modelCheck: use230Check, fillerWeight: weight230, dbg: 57.25, miscWeight: misc250 },
+   { name: '250-SPL', modelCheck: use230Check, fillerWeight: weight230, miscWeight: misc250 },
+   { name: '251', modelCheck: use230Check, fillerWeight: weight230, dbg: 57.25, miscWeight: misc250 },
+   { name: '251-SPL', modelCheck: use230Check, fillerWeight: weight230, miscWeight: misc250 },
+   { name: '265', modelCheck: use265Check, fillerWeight: weight230, miscWeight: misc265 },
+   { name: '266', modelCheck: use265Check, fillerWeight: weight230, miscWeight: misc265 },
 ];
 
 export const blocks = [
@@ -56,7 +66,6 @@ export const stile235 = [
    { depth: 12, name: 'MC12X35', weight: 2.9167 },
 ];
 
-// TODO: 6-21-2021 11:33 AM - model has dropdown information hook it up
 export const sheaveHangers = [
    {
       name: '341',
@@ -84,6 +93,7 @@ export const sheaveHangers = [
    },
 ];
 
+// Dimension image
 const img230 = [{ name: '230' }, { name: '230-block' }, { name: '230-plate' }, { name: '230-safety' }];
 const img231_341 = [{ name: '231-341' }, { name: '231-341-block' }, { name: '231-341-plate' }, { name: '231-341-safety' }];
 const img231_342 = [{ name: '231-342' }, { name: '231-342-block' }, { name: '231-342-plate' }, { name: '231-342-safety' }];

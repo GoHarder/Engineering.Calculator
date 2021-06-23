@@ -42,7 +42,6 @@
    $: parameters = {
       display,
       invalid,
-      // list,
       max,
       maxLength,
       min,

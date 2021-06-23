@@ -1,6 +1,5 @@
 <!--
-   TODO: 6-22-2021 9:21 AM
-   Add other non main parts to the weights
+   TODO: 6-23-2021 2:23 PM - Comp in there as soon as I figure out that weird rope thing
 -->
 <script>
    import { createEventDispatcher, onDestroy, onMount } from 'svelte';
@@ -260,6 +259,7 @@
    $: steelFillerWeight = model?.fillerWeight(cwtDBG, weightWidth, 0.284, 8);
    $: leadFillerWeight = model?.fillerWeight(cwtDBG, weightWidth, 0.4096, 8);
 
+   $: sheaveHangerOptions = model?.sheaveHangers ?? [];
    $: sheave = getFromArray(sheaveModel, sheaves);
    $: topShoePlate = getShoePlate(shoePlates, shoeModel, cwtModel, cwtRailSize);
    $: bottomShoePlate = getShoePlate(shoePlates, shoeModel, safety ? safetyModel : cwtModel, cwtRailSize);
@@ -279,21 +279,23 @@
    $: sheaveHangerChannelWeight = sheaveHanger.channel.find((nth) => nth.stock).weight;
    $: sheaveHangerWeight = round(sheaveHanger.miscWeight + sheaveHangerChannelWeight + sheaveHangerPlateWeight * 2, 2);
 
-   $: sheaveAsmWeight = (cwtModel !== '235' ? sheaveHangerWeight : 0) + (sheave?.weight ?? 0);
+   $: sheaveAsmWeight = (cwtModel !== '236' ? sheaveHangerWeight : 0) + (sheave?.weight ?? 0);
    $: hitchPlateWeight = model?.hitchPlateWeight ?? 0;
 
    $: ropeMountingWeight = cwtRoping === 1 ? hitchPlateWeight : sheaveAsmWeight;
 
+   $: miscWeight = model?.miscWeight(cwtDBG) ?? 0;
+
    // - Weight Calculations
    // NOTE: 6-18-2021 9:44 AM - Tie rod weight = 0.0871 lb / 1 in
-   $: minGap = cwtModel !== '235' ? model?.minGap ?? 0 : (sheave?.diameter ?? 0) + 17;
+   $: minGap = cwtModel !== '236' ? model?.minGap ?? 0 : (sheave?.diameter ?? 0) + 17;
    $: gapCalc = minGap > 24 ? minGap : 24;
-   $: invalidGap = gap < minGap;
 
    $: staticStyleWeight = (crossheadHeight + plankHeight + (model?.stileOffset ?? 0)) * stileWeight;
    $: staticTieRodWeight = plankHeight + (['235', '236'].includes(cwtModel) ? 0 : crossheadHeight) + (model?.tieRodOffset ?? 0);
 
    $: staticWeight =
+      miscWeight +
       ropeMountingWeight +
       crossheadWeight +
       shoeWeight * 4 +
@@ -319,12 +321,12 @@
    $: leadStackHeight = stackHeight - steelStackHeight;
 
    $: cwtWeight = round(carWeight + capacity * (counterbalance / 100), 2);
-   $: cwtHeight = roundInc(crossheadHeight + gap + stackHeight + plankHeight + bottomEquipHeight);
+   $: cwtHeight = roundInc(sheaveHeight + crossheadHeight + gap + stackHeight + plankHeight + bottomEquipHeight);
 
    // - Dom
    $: imgSearchString = [
       cwtModel.match(/\d{3}/)[0],
-      cwtRoping > 1 && cwtModel !== '235' ? `-${sheaveHangerModel}` : '',
+      cwtRoping > 1 && cwtModel !== '236' ? `-${sheaveHangerModel}` : '',
       blockQty > 0 ? '-block' : '',
       bufferPlate ? '-plate' : '',
       safetyModel !== 'None' ? '-safety' : '',
@@ -389,12 +391,21 @@
    onDestroy(() => onSave());
 
    // Logs
-   // $: if (model) console.log('model', model);
+   $: if (model) console.log('model', model);
    // $: if (safety) console.log('safety', safety);
    // $: if (shoe) console.log('shoe', shoe);
    // $: if (shoePlate) console.log('shoe plate', shoePlate);
    // $: if (sheave) console.log('sheave', sheave);
-   // $: console.table({ gap, minGap });
+   // $: console.table({ gap, minGap, gapCalc });
+   // $: console.table({
+   //    sheaveHeight,
+   //    crossheadHeight,
+   //    gap,
+   //    stackHeight,
+   //    plankHeight,
+   //    bottomEquipHeight,
+   //    total: cwtHeight,
+   // });
 </script>
 
 <div class="container">
@@ -426,11 +437,12 @@
             {/each}
          </Select>
 
-         {#if cwtModel !== '235'}
+         {#if cwtModel !== '236'}
             <div transition:slide|local>
                <Select bind:value={sheaveHangerModel} label="Hanger Model">
-                  <Option text="341" />
-                  <Option text="342" />
+                  {#each sheaveHangerOptions as text (text)}
+                     <Option {text} />
+                  {/each}
                </Select>
             </div>
          {/if}
@@ -535,7 +547,7 @@
    <hr />
    <div class="flex">
       <div class="section-1">
-         {#if cwtRoping > 1 && cwtModel !== '235'}
+         {#if cwtRoping > 1 && cwtModel !== '236'}
             <div transition:slide|local>
                <InputLength bind:value={sheaveHeight} label="Sheave" />
             </div>
@@ -547,8 +559,8 @@
             bind:value={gap}
             bind:override={gapOverride}
             calc={gapCalc}
-            helperText={`Gap must be greater than ${floor(minGap / 12)}'-${round(minGap % 12, 4)}"`}
-            invalid={invalidGap}
+            helperText={`Gap must be at least ${floor(minGap / 12)}'-${round(minGap % 12, 4)}"`}
+            invalid={gap < minGap - 0.0001}
             label="Gap"
             reset
             {metric}
@@ -568,7 +580,7 @@
                {metric}
             />
 
-            <div transition:slide|local>
+            <div class="breakdown" transition:slide|local>
                <InputLength value={steelStackHeight} display label="Steel Weight Stack" {metric} />
                <InputLength value={leadStackHeight} display label="Lead Weight Stack" {metric} />
             </div>
@@ -599,7 +611,7 @@
 
    .dimensions {
       @include vantage-theme.vantage-fieldset;
-      max-width: 800px;
+      max-width: 1000px;
       .flex {
          display: flex;
          justify-content: space-between;
@@ -611,6 +623,26 @@
          flex-grow: 1;
          display: flex;
          justify-content: center;
+         min-width: 400px;
+      }
+   }
+
+   .breakdown {
+      // @include vantage-theme.vantage-paper;
+      position: relative;
+      border: 1px solid black;
+      padding: 10px;
+      margin: 10px 0 5px;
+      &::before {
+         position: absolute;
+         top: -10px;
+         left: calc(50% - 5px);
+         content: '';
+         width: 0;
+         height: 0;
+         border-style: solid;
+         border-width: 0 10px 10px 10px;
+         border-color: transparent transparent black transparent;
       }
    }
 
