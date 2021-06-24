@@ -284,7 +284,7 @@
 
    $: ropeMountingWeight = cwtRoping === 1 ? hitchPlateWeight : sheaveAsmWeight;
 
-   $: miscWeight = model?.miscWeight(cwtDBG) ?? 0;
+   $: miscWeight = model?.miscWeight?.(cwtDBG) ?? 0;
 
    // - Weight Calculations
    // NOTE: 6-18-2021 9:44 AM - Tie rod weight = 0.0871 lb / 1 in
@@ -391,7 +391,7 @@
    onDestroy(() => onSave());
 
    // Logs
-   $: if (model) console.log('model', model);
+   // $: if (model) console.log('model', model);
    // $: if (safety) console.log('safety', safety);
    // $: if (shoe) console.log('shoe', shoe);
    // $: if (shoePlate) console.log('shoe plate', shoePlate);
