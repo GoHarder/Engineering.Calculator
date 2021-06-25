@@ -9,11 +9,14 @@
 
    // Variables
    let chip = 'project-tab-chip-1';
+   let buttonClass = 'inactive';
 
    // Reactive Variables
    $: active = activeTab === index;
 
    // Reactive Rules
+   $: if (index <= activeTab + 1 && index !== activeTab) buttonClass = 'active';
+
    $: if (index === activeTab) {
       chip = 'project-tab-chip-1';
    } else if (activeTab > index) {
@@ -24,7 +27,7 @@
 </script>
 
 <div class="base">
-   <button on:click>
+   <button on:click class={buttonClass}>
       <Chip class={chip}>{index}</Chip>
       <span class={`${active ? 'active' : 'inactive'}`}>{label}</span>
    </button>
@@ -37,14 +40,17 @@
          &-1 {
             background-color: rgba($color: #000000, $alpha: 0.87);
             color: #ffffff;
+            cursor: inherit;
          }
          &-2 {
             background-color: #4d4d4d;
             color: #ffcb30;
+            cursor: inherit;
          }
          &-3 {
             background-color: #ffcb30;
             color: rgba($color: #000000, $alpha: 0.87);
+            cursor: inherit;
          }
       }
    }
@@ -59,6 +65,9 @@
       background-color: transparent;
       &:focus {
          outline: none;
+      }
+      &.inactive {
+         cursor: default;
       }
    }
    span {
