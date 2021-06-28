@@ -1,31 +1,45 @@
-speed       passenger   freight
-0-50	      7.6 		   6.65
-51-75	      7.75		   6.85
-76-100	   7.97		   7
-101-125	   8.1 		   7.15
-126-150	   8.25		   7.3
-151-175	   8.4 		   7.45
-176-200	   8.6 		   7.65
-201-225	   8.75		   7.75
-226-250	   8.9 		   7.9
-251-300	   9.2		   8.2
-301-350	   9.5		   8.45
-351-400	   9.75		   8.7
-401-450	   10 		   8.9
-451-500	   10.25		   9.15
-501-550	   10.45		   9.3
-551-600	   10.7		   9.5
-601-650	   10.85		   9.65
-651-700	   11 		   9.8
-701-750	   11.15		   9.9
-751-800	   11.25		   10
-801-850	   11.35		   10.1
-851-900	   11.45		   10.15
-901-950	   11.5		   10.2
-951-1000	   11.55		   10.30
-1001-1050	11.65		   10.35
-1051-1100	11.7		   10.4
-1101-1150	11.75		   10.45
-1151-1250   11.80		   10.50
-1251-1350   11.85		   10.55
-1351-2000   11.90		   10.55
+const safetyFactorTable = [
+   { speed: 50, passenger: 7.6, freight: 6.65 },
+   { speed: 75, passenger: 7.75, freight: 6.85 },
+   { speed: 100, passenger: 7.97, freight: 7 },
+   { speed: 125, passenger: 8.1, freight: 7.15 },
+   { speed: 150, passenger: 8.25, freight: 7.3 },
+   { speed: 175, passenger: 8.4, freight: 7.45 },
+   { speed: 200, passenger: 8.6, freight: 7.65 },
+   { speed: 225, passenger: 8.75, freight: 7.75 },
+   { speed: 250, passenger: 8.9, freight: 7.9 },
+   { speed: 300, passenger: 9.2, freight: 8.2 },
+   { speed: 350, passenger: 9.5, freight: 8.45 },
+   { speed: 400, passenger: 9.75, freight: 8.7 },
+   { speed: 450, passenger: 10, freight: 8.9 },
+   { speed: 500, passenger: 10.25, freight: 9.15 },
+   { speed: 550, passenger: 10.45, freight: 9.3 },
+   { speed: 600, passenger: 10.7, freight: 9.5 },
+   { speed: 650, passenger: 10.85, freight: 9.65 },
+   { speed: 700, passenger: 11, freight: 9.8 },
+   { speed: 750, passenger: 11.15, freight: 9.9 },
+   { speed: 800, passenger: 11.25, freight: 10 },
+   { speed: 850, passenger: 11.35, freight: 10.1 },
+   { speed: 900, passenger: 11.45, freight: 10.15 },
+   { speed: 950, passenger: 11.5, freight: 10.2 },
+   { speed: 1000, passenger: 11.55, freight: 10.3 },
+   { speed: 1050, passenger: 11.65, freight: 10.35 },
+   { speed: 1100, passenger: 11.7, freight: 10.4 },
+   { speed: 1150, passenger: 11.75, freight: 10.45 },
+   { speed: 1250, passenger: 11.8, freight: 10.5 },
+   { speed: 1350, passenger: 11.85, freight: 10.55 },
+   { speed: 2000, passenger: 11.9, freight: 10.55 },
+];
+
+const loading = {
+   type: 'Passenger',
+};
+
+const roping = ropingNumerator / ropingDenominator;
+
+const requiredStrength = Math.max(
+   ceil((ropeSafetyFactor * ((carWeight + capacity + ropeWeight) / roping + compSheaveWeight / 2 + travelingCableWeight)) / ropeQty),
+   ceil(loadPerRope * ropeSafetyFactor)
+);
+
+const loadPerRope = round((carWeight + capacity + ropeWeight + compensationWeight + compSheaveWeight + travelingCableWeight) / ropeQty / roping, 1);

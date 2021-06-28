@@ -175,7 +175,7 @@
    const dispatch = createEventDispatcher();
 
    const { metric, modules } = workbook;
-   const { capacity, cwtRoping, carSpeed, seismic } = modules.globals;
+   const { capacity, cwtRoping, carSpeed, seismic, counterbalance } = modules.globals;
    const { zone: seismicZone } = seismic;
    const { counterweight: module } = modules;
 
@@ -187,7 +187,6 @@
    let cwtHeight = module?.properties?.cwtHeight ?? 0;
    let gap = module?.properties?.gap ?? 0;
    let gapOverride = module?.properties?.gapOverride ?? false;
-   let counterbalance = module?.properties?.counterbalance ?? 40;
    let weightWidth = module?.properties?.weightWidth ?? 8;
    let lead = module?.properties?.lead ?? false;
    let stackHeight = module?.properties?.stackHeight ?? 0;
@@ -385,7 +384,7 @@
    // Lifecycle
    onMount(() => {
       getEngineeringData(capacity, carSpeed, cwtRoping);
-      // console.log('workbook', workbook);
+      console.log('workbook', workbook);
    });
 
    onDestroy(() => onSave());
@@ -411,6 +410,8 @@
 <div class="container">
    <Fieldset title="Globals">
       <InputWeight value={capacity} on:link={onLink} label="Capacity" link={{ cmd: 'changePage', location: 'Requirements' }} {metric} />
+
+      <Input value={counterbalance} on:link={onLink} label="Counterbalance" link={{ cmd: 'changePage', location: 'Requirements' }} suffix="%" type="number" />
 
       <Input value={`${cwtRoping}:1`} on:link={onLink} label="Roping" link={{ cmd: 'changePage', location: 'Requirements' }} />
    </Fieldset>
@@ -457,12 +458,6 @@
             <Option {text} {disabled} selected={cwtModel === text} />
          {/each}
       </Select>
-
-      <Input bind:value={counterbalance} label="Counterbalance" list="counterbalance" suffix="%" type="number" />
-      <datalist id="counterbalance">
-         <option value="40">40%</option>
-         <option value="50">50%</option>
-      </datalist>
 
       <InputLength bind:value={cwtDBG} label="D.B.G." list="dbg" {metric} />
       <datalist id="dbg">

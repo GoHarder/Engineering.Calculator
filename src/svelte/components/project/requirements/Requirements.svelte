@@ -54,6 +54,7 @@
    let carSpeed = 0;
    let code = 'ASME A17-1 2010';
    let cwtRoping = 1;
+   let counterbalance = 40;
    // - Loading
    let freight = 'None';
    let type = 'Passenger';
@@ -75,6 +76,7 @@
    // Reactive Variables
    $: filteredFreightSel = filterFreightSel(type);
    $: ibc = filterCodeSel(code);
+   $: machineSpeed = carSpeed * carRoping;
 
    $: capacityError = capacity <= 0;
    $: carSpeedError = carSpeed <= 0;
@@ -203,7 +205,7 @@
    onDestroy(() => {
       const loading = { freight, type };
       const seismic = { ibcCategory, ip, sds, useIbc, zone: seismicZone };
-      const saveData = { capacity, carRoping, carSpeed, code, cwtRoping, loading, overallTravel, type, seismic };
+      const saveData = { capacity, carRoping, carSpeed, code, counterbalance, cwtRoping, loading, machineSpeed, overallTravel, type, seismic };
 
       if (_id) saveData._id = _id;
 
@@ -220,6 +222,14 @@
          <div class="box">
             <InputWeight bind:value={capacity} type="number" bind:invalid={capacityError} helperText="Invalid capacity" label="Capacity" {metric} />
          </div>
+         <div class="box">
+            <Input bind:value={counterbalance} label="Counterbalance" list="counterbalance" suffix="%" type="number" />
+            <datalist id="counterbalance">
+               <option value="40">40%</option>
+               <option value="50">50%</option>
+            </datalist>
+         </div>
+
          <div class="box">
             <InputSpeed bind:value={carSpeed} bind:invalid={carSpeedError} helperText="Invalid car speed" label="Car Speed" {metric} />
          </div>
