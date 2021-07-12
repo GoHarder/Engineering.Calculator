@@ -101,7 +101,6 @@
 
       if (res.ok) {
          const body = await res.json();
-         // console.log(body);
          angle = [...body.angle];
          channel = [...body.channel];
       }
