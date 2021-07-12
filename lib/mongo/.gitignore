@@ -1,2 +1,2 @@
-terminal.mongodb
+*.mongodb
 /queries

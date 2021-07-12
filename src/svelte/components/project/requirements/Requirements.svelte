@@ -201,6 +201,8 @@
       }
    };
 
+   const onHome = () => dispatch('changePage', 'Home');
+
    // Lifecycle
    onDestroy(() => {
       const loading = { freight, type };
@@ -215,7 +217,7 @@
    });
 </script>
 
-<ProjectShell on:onNext={onNext} on:onBack={onBack} activeTab={2} validForm={!formError}>
+<ProjectShell on:onNext={onNext} on:onBack={onBack} on:onHome={onHome} activeTab={2} validForm={!formError}>
    <div class="form">
       <p>Enter the car requirements and proceed to the next step</p>
       <div class="form-box">

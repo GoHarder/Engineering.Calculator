@@ -15,8 +15,6 @@
    const dispatch = createEventDispatcher();
 
    // Events
-   const onHome = () => dispatch('changePage', 'Home');
-
    const onTab = (index) => {
       if (index === activeTab + 1) dispatch('onNext');
       if (index === activeTab - 1) dispatch('onBack');
@@ -25,7 +23,7 @@
 
 <main>
    <div class="head">
-      <A on:click={onHome}>Home</A>
+      <A on:click={() => dispatch('onHome')}>Home</A>
 
       <div class="title">
          <i class="material-icons">engineering</i>

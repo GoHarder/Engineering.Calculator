@@ -3,16 +3,19 @@
 # HW Engineering Calculator
 
 ## Sections
-- [Authors](#Authors)
-- [Tech Stack](#Tech-Stack)
-- [Installation](#Installation)
-- [Run Locally](#Run-Locally)
-- [Deployment](#Deployment)
-- [Acknowledgements](#Acknowledgements)
+
+-  [Authors](#Authors)
+-  [Tech Stack](#Tech-Stack)
+-  [Installation](#Installation)
+-  [Run Locally](#Run-Locally)
+-  [Deployment](#Deployment)
+-  [Acknowledgements](#Acknowledgements)
 
 ---
+
 ## Authors
-- [@GoHarder](https://www.github.com/GoHarder)
+
+-  [@GoHarder](https://www.github.com/GoHarder)
 
 ---
 
@@ -24,14 +27,16 @@
 
 ---
 
-## Installation 
+## Installation
 
 Install dependencies
 
-```bash 
+```bash
   npm install
 ```
+
 ---
+
 ## Run Locally
 
 Start the server
@@ -69,9 +74,10 @@ To run the production server
 ```
 
 ---
+
 ## Acknowledgements
 
- - [readme.so](https://readme.so/)
+-  [readme.so](https://readme.so/)
 
 <!-- <style>
    img[alt=Logo] {

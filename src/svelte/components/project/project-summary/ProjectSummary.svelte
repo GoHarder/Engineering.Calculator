@@ -13,12 +13,15 @@
 
    // Properties
    export let _id = '';
+   export let firstName = '';
+   export let lastName = '';
 
    // Constants
    const dispatch = createEventDispatcher();
 
    // Variables
-   let creator = _id;
+   // let creator = _id;
+   let creator = { _id, firstName, lastName };
    let contract = '';
    let jobName = '';
    let carNo = '';
@@ -36,6 +39,7 @@
    let openCustomerDialog = false;
    let okJobName = false;
    let okCustomer = false;
+   let customerList = [];
 
    // Subscriptions
    const clearProject = projectStore.subscribe((store) => {
@@ -60,10 +64,31 @@
          if (search >= 0) {
             opened[search].time = new Date();
          } else {
-            opened.push({ userId: creator, time: created });
+            opened.push({ userId: creator, time: created }); // created is set at line 29
          }
       }
    });
+
+   const getCustomerList = async (search) => {
+      if (search) {
+         const res = await fetch(`api/proj?customer=${search}`, {
+            headers: { 'Content-Type': 'application/json' },
+         }).catch((error) => {
+            console.log(error);
+            return { ok: false };
+         });
+
+         if (res.ok) {
+            const body = await res.json();
+
+            console.log(body);
+
+            customerList = [...body];
+         } else {
+            console.log(res);
+         }
+      }
+   };
 
    // Reactive Variables
    $: validForm = [!invalidLayout, !invalidContract].every((test) => test);
@@ -73,6 +98,8 @@
    // Reactive Rules
    $: if (okJobName && okCustomer) dispatch('changePage', 'Requirements');
 
+   $: getCustomerList(customer);
+
    // Events
    const onNext = () => {
       if (checkJobName && checkCustomer) dispatch('changePage', 'Requirements');
@@ -81,6 +108,8 @@
 
       if (!checkCustomer) openCustomerDialog = true;
    };
+
+   const onHome = () => dispatch('changePage', 'Home');
 
    const onOkJobName = () => {
       okJobName = true;
@@ -126,7 +155,7 @@
    </Actions>
 </Dialog>
 
-<ProjectShell on:onNext={onNext} activeTab={1} {validForm}>
+<ProjectShell on:onNext={onNext} on:onHome={onHome} activeTab={1} {validForm}>
    <div class="form">
       <p>Enter the project details and proceed to the next step</p>
       <div class="form-box">
@@ -144,7 +173,13 @@
             <Input bind:value={carNo} label="Car Number" />
          </div>
          <div class="box">
-            <Input bind:value={customer} label="Customer" />
+            <Input bind:value={customer} label="Customer" list="customer-list" defaultList />
+
+            <datalist id="customer-list">
+               {#each customerList as text (text)}
+                  <option value={text} />
+               {/each}
+            </datalist>
          </div>
          <div class="box">
             <Input bind:value={layout} bind:invalid={invalidLayout} label="Layout Number" pattern="^(L|l)-[\d-]+$">

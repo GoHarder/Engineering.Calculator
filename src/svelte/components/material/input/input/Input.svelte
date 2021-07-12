@@ -21,6 +21,7 @@
    export let label = '';
    export let link = false;
    export let list = '';
+   export let defaultList = false;
    export let max = undefined;
    export let maxLength = undefined;
    export let min = undefined;
@@ -42,6 +43,7 @@
    $: parameters = {
       display,
       invalid,
+      list: defaultList ? list : '',
       max,
       maxLength,
       min,
@@ -180,7 +182,9 @@
       <slot name="helperText" />
    </div>
 
-   <DataList on:select={onSelect} {list} {focused} />
+   {#if !defaultList}
+      <DataList on:select={onSelect} {list} {focused} />
+   {/if}
 
    {#if link && link.location}
       <IconButton on:click={() => dispatch('link', link)} title={link.location}>

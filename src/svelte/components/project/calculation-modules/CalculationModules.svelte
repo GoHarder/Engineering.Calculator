@@ -57,6 +57,8 @@
 
    const onStart = () => dispatch('changePage', 'Workbook');
 
+   const onHome = () => dispatch('changePage', 'Home');
+
    const onSelectAll = () => {
       const copy = [...filteredModules];
 
@@ -107,7 +109,7 @@
    });
 </script>
 
-<ProjectShell on:onNext={onStart} on:onBack={onBack} activeTab={3} validForm={!disableStart}>
+<ProjectShell on:onNext={onStart} on:onBack={onBack} on:onHome={onHome} activeTab={3} validForm={!disableStart}>
    <div class="form">
       <div class="search-container">
          <div class="sub-box-1">
