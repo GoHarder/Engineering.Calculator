@@ -7,6 +7,7 @@ const config = require('./lib/config/build');
 const mongo = require('./lib/mongo/mongo');
 const server = require('./lib/server/server');
 const workers = require('./lib/workers');
+const redis = require('./lib/redis');
 
 // Declare the app
 const app = {};
@@ -30,7 +31,7 @@ app.init = async () => {
 
    if (dbConnect) {
       // Check if all modules run
-      modules = await Promise.all([workers.init()]);
+      modules = await Promise.all([redis.init(), workers.init()]);
 
       loaded = modules.filter((pass) => !pass).length === 0;
    }
