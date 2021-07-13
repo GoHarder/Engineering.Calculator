@@ -33,7 +33,7 @@ app.init = async () => {
       // Check if all modules run
       modules = await Promise.all([redis.init(), workers.init()]);
 
-      loaded = modules.filter((pass) => !pass).length === 0;
+      loaded = modules.every((pass) => pass);
    }
 
    if (loaded) {

@@ -17,6 +17,7 @@
    import CalculationModules from './components/project/calculation-modules/CalculationModules.svelte';
    import Workbook from './components/workbook/Workbook.svelte';
    import Print from './components/print/Print.svelte';
+   import AdminTools from './components/admin/AdminTools.svelte';
 
    // Stores
    import tokenStore from './stores/token';
@@ -34,6 +35,7 @@
       CalculationModules,
       Workbook,
       Print,
+      AdminTools,
    };
 
    // Variables

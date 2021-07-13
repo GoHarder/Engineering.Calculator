@@ -29,7 +29,6 @@
          properties: {
             model: cwtModel,
             dbg: cwtDBG,
-            counterbalance,
             weightWidth,
             railSize: cwtRailSize,
             lead,
@@ -384,7 +383,7 @@
    // Lifecycle
    onMount(() => {
       getEngineeringData(capacity, carSpeed, cwtRoping);
-      console.log('workbook', workbook);
+      // console.log('workbook', workbook);
    });
 
    onDestroy(() => onSave());

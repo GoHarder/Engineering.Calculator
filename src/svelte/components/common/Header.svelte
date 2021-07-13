@@ -17,11 +17,6 @@
 
    // Variables
    let open = false;
-
-   // Events
-   const logout = () => dispatch('logout');
-
-   const createNewUser = () => dispatch('changePage', 'SignUp');
 </script>
 
 <header>
@@ -51,18 +46,18 @@
                </Item>
 
                {#if user.admin}
-                  <!-- <Item on:SMUI:action={() => console.log('TODO: 2-09-2021 3:22 PM - hook up admin tools')}> -->
-                  <!-- <Icon class="material-icons">build</Icon> -->
-                  <!-- <Text>Admin Tools</Text> -->
-                  <!-- </Item> -->
+                  <Item on:click={() => dispatch('changePage', 'AdminTools')}>
+                     <Icon class="material-icons">build</Icon>
+                     <Text>Admin Tools</Text>
+                  </Item>
 
-                  <Item on:click={createNewUser}>
+                  <Item on:click={() => dispatch('changePage', 'SignUp')}>
                      <Icon class="material-icons">person_add</Icon>
                      <Text>Create New User</Text>
                   </Item>
                {/if}
 
-               <Item on:click={logout}>
+               <Item on:click={() => dispatch('logout')}>
                   <Icon class="material-icons">logout</Icon>
                   <Text>Logout</Text>
                </Item>
